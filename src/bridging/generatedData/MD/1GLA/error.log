@@ -1,22 +1,10 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 47, in run_all
-    forcefield, modeller = solvate(modeller)
-                           ~~~~~~~^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in solvate
-    modeller.addSolvent(
-    ~~~~~~~~~~~~~~~~~~~^
-        forcefield,
-        ^^^^^^^^^^^
-        padding=WATER_PADDING_NM * nanometer,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ionicStrength=IONIC_STRENGTH_M * molar,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\modeller.py", line 521, in addSolvent
-    system = forcefield.createSystem(self.topology, residueTemplates=residueTemplates)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
-    templateForResidue = self._matchAllResiduesToTemplates(data, topology, residueTemplates, ignoreExternalBonds)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1486, in _matchAllResiduesToTemplates
-    raise ValueError('No template found for residue %d (%s).  %s  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template' % (res.index, res.name, _findMatchErrors(self, res)))
-ValueError: No template found for residue 669 (GOL).  The set of atoms is similar to NGLU, but is missing 2 C atoms and 1 N atom.  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 52, in run_all
+    fixer = load_and_fix(pdb_file)
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in load_and_fix
+    fixer.findMissingAtoms()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\dever\AppData\Roaming\Python\Python313\site-packages\pdbfixer\pdbfixer.py", line 1198, in findMissingAtoms
+    if residue == chainResidues[-1] and (chain.index, len(chainResidues)) not in self.missingResidues:
+                                                                                 ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PDBFixer' object has no attribute 'missingResidues'. Did you mean: 'findMissingResidues'?

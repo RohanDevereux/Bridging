@@ -1,22 +1,17 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 47, in run_all
-    forcefield, modeller = solvate(modeller)
-                           ~~~~~~~^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in solvate
-    modeller.addSolvent(
-    ~~~~~~~~~~~~~~~~~~~^
-        forcefield,
-        ^^^^^^^^^^^
-        padding=WATER_PADDING_NM * nanometer,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ionicStrength=IONIC_STRENGTH_M * molar,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\modeller.py", line 521, in addSolvent
-    system = forcefield.createSystem(self.topology, residueTemplates=residueTemplates)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
-    templateForResidue = self._matchAllResiduesToTemplates(data, topology, residueTemplates, ignoreExternalBonds)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1486, in _matchAllResiduesToTemplates
-    raise ValueError('No template found for residue %d (%s).  %s  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template' % (res.index, res.name, _findMatchErrors(self, res)))
-ValueError: No template found for residue 410 (MG).  The atoms and bonds in the residue match MG, but the set of externally bonded atoms has 1 Mg atom too many.  Is the chain terminated in a way that is unsupported by the force field?  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 60, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 72, in run_simulation
+    write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\save_utils.py", line 30, in write_ca_topology_pdb
+    PDBFile.writeFile(top_ca, pos_ca, f)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 293, in writeFile
+    PDBFile.writeModel(topology, positions, file, keepIds=keepIds, extraParticleIdentifier=extraParticleIdentifier)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 346, in writeModel
+    if np.isnan(positions).any():
+       ~~~~~~~~^^^^^^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''

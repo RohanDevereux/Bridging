@@ -1,10 +1,10 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 48, in run_all
-    run_simulation(forcefield, modeller, out_dir, temp_k)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 37, in run_simulation
-    platform = Platform.getPlatformByName("CUDA")
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\openmm.py", line 18979, in getPlatformByName
-    return _openmm.Platform_getPlatformByName(name)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-openmm.OpenMMException: There is no registered Platform called "CUDA"
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 52, in run_all
+    fixer = load_and_fix(pdb_file)
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in load_and_fix
+    fixer.findMissingAtoms()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\dever\AppData\Roaming\Python\Python313\site-packages\pdbfixer\pdbfixer.py", line 1198, in findMissingAtoms
+    if residue == chainResidues[-1] and (chain.index, len(chainResidues)) not in self.missingResidues:
+                                                                                 ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PDBFixer' object has no attribute 'missingResidues'. Did you mean: 'findMissingResidues'?

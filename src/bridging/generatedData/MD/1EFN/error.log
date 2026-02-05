@@ -1,16 +1,17 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 45, in run_all
-    fixer = load_and_fix(pdb_file)
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 14, in load_and_fix
-    fixer.addMissingHydrogens()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1393, in addMissingHydrogens
-    extraDefinitions = self._downloadNonstandardDefinitions()
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1410, in _downloadNonstandardDefinitions
-    ccdDefinition = self._downloadCCDDefinition(name)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 504, in _downloadCCDDefinition
-    ccdDefinition = CCDResidueDefinition.fromReader(reader)
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 169, in fromReader
-    coords=mm.Vec3(float(row[xCol]), float(row[yCol]), float(row[zCol]))*0.1,
-                   ~~~~~^^^^^^^^^^^
-ValueError: could not convert string to float: '?'
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 60, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 72, in run_simulation
+    write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\save_utils.py", line 30, in write_ca_topology_pdb
+    PDBFile.writeFile(top_ca, pos_ca, f)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 293, in writeFile
+    PDBFile.writeModel(topology, positions, file, keepIds=keepIds, extraParticleIdentifier=extraParticleIdentifier)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 346, in writeModel
+    if np.isnan(positions).any():
+       ~~~~~~~~^^^^^^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''

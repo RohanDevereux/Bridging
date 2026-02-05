@@ -1,12 +1,12 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 48, in run_all
-    run_simulation(forcefield, modeller, out_dir, temp_k)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 21, in run_simulation
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 60, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 30, in run_simulation
     system = forcefield.createSystem(
         modeller.topology,
-    ...<5 lines>...
-        ignoreExternalBonds=True,
+    ...<6 lines>...
+        residueTemplates=residue_templates or {},
     )
   File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
     templateForResidue = self._matchAllResiduesToTemplates(data, topology, residueTemplates, ignoreExternalBonds)

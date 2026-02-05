@@ -1,16 +1,10 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 45, in run_all
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 52, in run_all
     fixer = load_and_fix(pdb_file)
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 13, in load_and_fix
-    fixer.addMissingAtoms()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1234, in addMissingAtoms
-    (newTopology, newPositions, newAtoms, existingAtomMap) = self._addAtomsToTopology(True, True)
-                                                             ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 632, in _addAtomsToTopology
-    self._addMissingResiduesToChain(newChain, insertHere, startPosition, endPosition, loopDirection, residue, newAtoms, newPositions, firstIndex)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 772, in _addMissingResiduesToChain
-    for atom in template.topology.atoms():
-                ^^^^^^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'topology'
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in load_and_fix
+    fixer.findMissingAtoms()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\dever\AppData\Roaming\Python\Python313\site-packages\pdbfixer\pdbfixer.py", line 1198, in findMissingAtoms
+    if residue == chainResidues[-1] and (chain.index, len(chainResidues)) not in self.missingResidues:
+                                                                                 ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PDBFixer' object has no attribute 'missingResidues'. Did you mean: 'findMissingResidues'?

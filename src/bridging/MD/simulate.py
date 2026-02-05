@@ -14,7 +14,16 @@ from .config import (
 )
 from .save_utils import get_ca_atom_indices, write_ca_topology_pdb
 
-def run_simulation(forcefield, modeller, out_dir, temperature_k):
+def _get_platform():
+    for name in ["CUDA", "OpenCL", "CPU"]:
+        try:
+            return Platform.getPlatformByName(name)
+        except Exception:
+            continue
+    raise RuntimeError("No OpenMM platform found.")
+
+
+def run_simulation(forcefield, modeller, out_dir, temperature_k, residue_templates=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -26,6 +35,7 @@ def run_simulation(forcefield, modeller, out_dir, temperature_k):
         rigidWater=True,
         ewaldErrorTolerance=1e-4,
         ignoreExternalBonds=True,
+        residueTemplates=residue_templates or {},
     )
     system.addForce(MonteCarloBarostat(PRESSURE_ATM * atmosphere, temperature_k * kelvin))
 
@@ -35,7 +45,7 @@ def run_simulation(forcefield, modeller, out_dir, temperature_k):
         TIME_STEP_FS * femtoseconds,
     )
 
-    platform = Platform.getPlatformByName("CUDA")
+    platform = _get_platform()
     simulation = Simulation(modeller.topology, system, integrator, platform)
     simulation.context.setPositions(modeller.positions)
 

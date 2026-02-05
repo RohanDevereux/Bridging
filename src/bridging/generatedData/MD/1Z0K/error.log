@@ -1,10 +1,17 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 48, in run_all
-    run_simulation(forcefield, modeller, out_dir, temp_k)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 38, in run_simulation
-    platform = Platform.getPlatformByName("CUDA")
-  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\openmm.py", line 18979, in getPlatformByName
-    return _openmm.Platform_getPlatformByName(name)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-openmm.OpenMMException: There is no registered Platform called "CUDA"
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 60, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 72, in run_simulation
+    write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\save_utils.py", line 30, in write_ca_topology_pdb
+    PDBFile.writeFile(top_ca, pos_ca, f)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 293, in writeFile
+    PDBFile.writeModel(topology, positions, file, keepIds=keepIds, extraParticleIdentifier=extraParticleIdentifier)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\pdbfile.py", line 346, in writeModel
+    if np.isnan(positions).any():
+       ~~~~~~~~^^^^^^^^^^^
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''

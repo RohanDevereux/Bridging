@@ -4,7 +4,15 @@ import traceback
 import pandas as pd
 
 from .paths import DATA_CSV, MD_OUT_DIR, PDB_CACHE_DIR
-from .prepare_complex import load_and_fix, select_chains, solvate
+from .prepare_complex import (
+    load_and_fix,
+    select_chains,
+    drop_non_protein_residues,
+    mark_disulfides,
+    cysteine_residue_templates,
+    cysteine_variants,
+    solvate,
+)
 from .simulate import run_simulation
 
 
@@ -44,8 +52,12 @@ def run_all():
             pdb_file = PDB_CACHE_DIR / f"{pdb_id}.pdb"
             fixer = load_and_fix(pdb_file)
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
-            forcefield, modeller = solvate(modeller, ph)
-            run_simulation(forcefield, modeller, out_dir, temp_k)
+            modeller = drop_non_protein_residues(modeller)
+            modeller = mark_disulfides(modeller)
+            residue_templates = cysteine_residue_templates(modeller.topology)
+            variants = cysteine_variants(modeller.topology)
+            forcefield, modeller = solvate(modeller, ph, variants=variants)
+            run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")
         except Exception as exc:

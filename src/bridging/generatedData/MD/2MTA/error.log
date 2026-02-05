@@ -1,10 +1,10 @@
 Traceback (most recent call last):
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 47, in run_all
-    forcefield, modeller = solvate(modeller, ph)
-                           ~~~~~~~^^^^^^^^^^^^^^
-  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 27, in solvate
-    modeller.addHydrogens(forcefield, pH=ph)
-    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 59, in run_all
+    forcefield, modeller = solvate(modeller, ph, variants=variants)
+                           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 95, in solvate
+    modeller.addHydrogens(forcefield, pH=ph, variants=variants)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\modeller.py", line 1050, in addHydrogens
     system = forcefield.createSystem(newTopology, rigidWater=False, nonbondedMethod=CutoffNonPeriodic, residueTemplates=newResidueTemplates)
   File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
