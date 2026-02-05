@@ -1,0 +1,5 @@
+N_INTERFACE = 64
+STRIDE = 1
+D0_NM = 0.8
+K_NM = 10.0
+DTYPE = "float16"
