@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 45, in run_all
+    fixer = load_and_fix(pdb_file)
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 13, in load_and_fix
+    fixer.addMissingAtoms()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1234, in addMissingAtoms
+    (newTopology, newPositions, newAtoms, existingAtomMap) = self._addAtomsToTopology(True, True)
+                                                             ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 699, in _addAtomsToTopology
+    self._addMissingResiduesToChain(newChain, insertHere, startPosition, endPosition, None, residue, newAtoms, newPositions, firstIndex)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 772, in _addMissingResiduesToChain
+    for atom in template.topology.atoms():
+                ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'topology'

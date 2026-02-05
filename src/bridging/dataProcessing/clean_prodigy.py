@@ -95,6 +95,12 @@ def main() -> None:
         }
     )
 
+    # Normalize numeric fields and fill defaults for missing values.
+    TEMP_DEFAULT_K = 298.15
+    PH_DEFAULT = 7.0
+    out["Temp_K"] = pd.to_numeric(out["Temp_K"], errors="coerce").fillna(TEMP_DEFAULT_K)
+    out["pH"] = pd.to_numeric(out["pH"], errors="coerce").fillna(PH_DEFAULT)
+
     out_path = package_dir / "processedData" / "PRODIGY_Data.csv"
     out.to_csv(out_path, index=False)
     print(f"Wrote: {out_path}")

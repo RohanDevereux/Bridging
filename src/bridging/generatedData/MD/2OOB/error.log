@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 48, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 37, in run_simulation
+    platform = Platform.getPlatformByName("CUDA")
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\openmm.py", line 18979, in getPlatformByName
+    return _openmm.Platform_getPlatformByName(name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+openmm.OpenMMException: There is no registered Platform called "CUDA"

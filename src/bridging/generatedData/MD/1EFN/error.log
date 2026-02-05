@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 45, in run_all
+    fixer = load_and_fix(pdb_file)
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 14, in load_and_fix
+    fixer.addMissingHydrogens()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1393, in addMissingHydrogens
+    extraDefinitions = self._downloadNonstandardDefinitions()
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 1410, in _downloadNonstandardDefinitions
+    ccdDefinition = self._downloadCCDDefinition(name)
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 504, in _downloadCCDDefinition
+    ccdDefinition = CCDResidueDefinition.fromReader(reader)
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\pdbfixer\pdbfixer.py", line 169, in fromReader
+    coords=mm.Vec3(float(row[xCol]), float(row[yCol]), float(row[zCol]))*0.1,
+                   ~~~~~^^^^^^^^^^^
+ValueError: could not convert string to float: '?'

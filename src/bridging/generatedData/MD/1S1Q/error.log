@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 47, in run_all
+    forcefield, modeller = solvate(modeller)
+                           ~~~~~~~^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\prepare_complex.py", line 26, in solvate
+    modeller.addSolvent(
+    ~~~~~~~~~~~~~~~~~~~^
+        forcefield,
+        ^^^^^^^^^^^
+        padding=WATER_PADDING_NM * nanometer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ionicStrength=IONIC_STRENGTH_M * molar,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\modeller.py", line 521, in addSolvent
+    system = forcefield.createSystem(self.topology, residueTemplates=residueTemplates)
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
+    templateForResidue = self._matchAllResiduesToTemplates(data, topology, residueTemplates, ignoreExternalBonds)
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1486, in _matchAllResiduesToTemplates
+    raise ValueError('No template found for residue %d (%s).  %s  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template' % (res.index, res.name, _findMatchErrors(self, res)))
+ValueError: No template found for residue 222 (SO4).  The set of atoms is similar to HOH, but is missing 2 H atoms and has 3 O atoms and 1 S atom too many.  For more information, see https://github.com/openmm/openmm/wiki/Frequently-Asked-Questions#template

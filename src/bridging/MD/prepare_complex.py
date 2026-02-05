@@ -6,12 +6,12 @@ from .config import FORCEFIELD_FILES, WATER_PADDING_NM, IONIC_STRENGTH_M
 
 def load_and_fix(pdb_file):
     fixer = PDBFixer(filename=str(pdb_file))
-    fixer.findMissingResidues()
     fixer.findNonstandardResidues()
     fixer.replaceNonstandardResidues()
+    fixer.removeHeterogens(keepWater=False)
+    fixer.findMissingResidues()
     fixer.findMissingAtoms()
     fixer.addMissingAtoms()
-    fixer.addMissingHydrogens()
     return fixer
 
 def select_chains(topology, positions, chain_ids):
@@ -21,8 +21,10 @@ def select_chains(topology, positions, chain_ids):
     modeller.delete(atoms_to_delete)
     return modeller
 
-def solvate(modeller):
+def solvate(modeller, ph):
     forcefield = ForceField(*FORCEFIELD_FILES)
+    modeller.topology.createDisulfideBonds(modeller.positions)
+    modeller.addHydrogens(forcefield, pH=ph)
     modeller.addSolvent(
         forcefield,
         padding=WATER_PADDING_NM * nanometer,

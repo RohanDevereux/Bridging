@@ -25,6 +25,7 @@ def run_simulation(forcefield, modeller, out_dir, temperature_k):
         constraints=HBonds,
         rigidWater=True,
         ewaldErrorTolerance=1e-4,
+        ignoreExternalBonds=True,
     )
     system.addForce(MonteCarloBarostat(PRESSURE_ATM * atmosphere, temperature_k * kelvin))
 

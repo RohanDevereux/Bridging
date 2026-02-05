@@ -44,7 +44,7 @@ def run_all():
             pdb_file = PDB_CACHE_DIR / f"{pdb_id}.pdb"
             fixer = load_and_fix(pdb_file)
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
-            forcefield, modeller = solvate(modeller)
+            forcefield, modeller = solvate(modeller, ph)
             run_simulation(forcefield, modeller, out_dir, temp_k)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")

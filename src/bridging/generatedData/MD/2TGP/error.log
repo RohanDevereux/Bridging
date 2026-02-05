@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\run.py", line 48, in run_all
+    run_simulation(forcefield, modeller, out_dir, temp_k)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\src\bridging\MD\simulate.py", line 21, in run_simulation
+    system = forcefield.createSystem(
+        modeller.topology,
+    ...<5 lines>...
+        ignoreExternalBonds=True,
+    )
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1266, in createSystem
+    templateForResidue = self._matchAllResiduesToTemplates(data, topology, residueTemplates, ignoreExternalBonds)
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1454, in _matchAllResiduesToTemplates
+    [template, matches] = self._getResidueTemplateMatches(res, data.bondedToAtom, ignoreExternalBonds=ignoreExternalBonds, ignoreExtraParticles=ignoreExtraParticles)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dever\Project\Bridging\.venv\Lib\site-packages\openmm\app\forcefield.py", line 1054, in _getResidueTemplateMatches
+    raise Exception('Multiple non-identical matching templates found for residue %d (%s): %s.' % (res.index, res.name, ', '.join(match[0].name for match in allMatches)))
+Exception: Multiple non-identical matching templates found for residue 6 (CYS): CYM, CYX.
