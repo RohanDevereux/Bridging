@@ -9,8 +9,6 @@ from .prepare_complex import (
     load_and_fix,
     select_chains,
     drop_non_protein_residues,
-    mark_disulfides,
-    cysteine_variants,
     solvate,
 )
 from .simulate import run_simulation
@@ -61,9 +59,7 @@ def run_all(dataset_path=None):
             fixer = load_and_fix(pdb_file)
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
             modeller = drop_non_protein_residues(modeller)
-            modeller = mark_disulfides(modeller)
-            variants = cysteine_variants(modeller.topology)
-            forcefield, modeller = solvate(modeller, ph, variants=variants)
+            forcefield, modeller = solvate(modeller, ph, pdb_path=pdb_file)
             run_simulation(forcefield, modeller, out_dir, temp_k)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")

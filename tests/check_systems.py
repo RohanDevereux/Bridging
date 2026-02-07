@@ -9,8 +9,6 @@ from bridging.MD.prepare_complex import (
     load_and_fix,
     select_chains,
     drop_non_protein_residues,
-    mark_disulfides,
-    cysteine_variants,
     solvate,
 )
 from bridging.MD.simulate import build_system
@@ -69,9 +67,21 @@ def run_checks(dataset_path, limit=None):
             chain_ids = _chain_ids(row)
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
             modeller = drop_non_protein_residues(modeller)
-            modeller = mark_disulfides(modeller)
-            variants = cysteine_variants(modeller.topology)
-            forcefield, modeller = solvate(modeller, ph=7.0, variants=variants)
+            forcefield, modeller = solvate(modeller, ph=7.0, pdb_path=pdb_file)
+            try:
+                templates = forcefield.getMatchingTemplates(modeller.topology, ignoreExternalBonds=False)
+                cys_templates = [
+                    tmpl.name
+                    for res, tmpl in zip(modeller.topology.residues(), templates)
+                    if res.name == "CYS"
+                ]
+                if cys_templates:
+                    counts = {}
+                    for name in cys_templates:
+                        counts[name] = counts.get(name, 0) + 1
+                    print(f"[PRECHECK] cysteine templates: {counts}")
+            except Exception as exc:
+                print(f"[PRECHECK] template match failed: {exc}")
             build_system(forcefield, modeller)
             print(f"[OK] {pdb_id}")
             ok += 1
