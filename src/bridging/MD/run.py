@@ -3,13 +3,12 @@ import traceback
 
 import pandas as pd
 
-from .paths import DATA_CSV, MD_OUT_DIR, PDB_CACHE_DIR
+from .paths import DATA_CSV, MD_OUT_DIR, PDB_CACHE_DIR, resolve_dataset
 from .prepare_complex import (
     load_and_fix,
     select_chains,
     drop_non_protein_residues,
     mark_disulfides,
-    cysteine_residue_templates,
     cysteine_variants,
     solvate,
 )
@@ -20,11 +19,14 @@ def _chain_ids(chains_1, chains_2):
     return list(dict.fromkeys(list(chains_1) + list(chains_2)))
 
 
-def run_all():
-    df = pd.read_csv(DATA_CSV)
+def run_all(dataset_path=None):
+    dataset_path = resolve_dataset(dataset_path, DATA_CSV)
+    df = pd.read_csv(dataset_path)
     MD_OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    for _, row in df.iterrows():
+    total = len(df)
+    for idx, row in enumerate(df.itertuples(index=False), start=1):
+        row = row._asdict()
         pdb_id = str(row["PDB"]).upper()
         chains_1 = str(row["Chains_1"])
         chains_2 = str(row["Chains_2"])
@@ -38,6 +40,7 @@ def run_all():
             continue
 
         out_dir.mkdir(parents=True, exist_ok=True)
+        print(f"[RUN] {idx}/{total} {pdb_id} ({dataset_path.name})")
 
         meta = {
             "pdb_id": pdb_id,
@@ -54,10 +57,9 @@ def run_all():
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
             modeller = drop_non_protein_residues(modeller)
             modeller = mark_disulfides(modeller)
-            residue_templates = cysteine_residue_templates(modeller.topology)
             variants = cysteine_variants(modeller.topology)
             forcefield, modeller = solvate(modeller, ph, variants=variants)
-            run_simulation(forcefield, modeller, out_dir, temp_k, residue_templates=residue_templates)
+            run_simulation(forcefield, modeller, out_dir, temp_k)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")
         except Exception as exc:

@@ -84,7 +84,7 @@ def cysteine_variants(topology):
     variants = []
     for residue in topology.residues():
         if residue.name == "CYS":
-            variants.append("CYX" if residue in disulfide else "CYS")
+            variants.append("CYX" if residue in disulfide else None)
         else:
             variants.append(None)
     return variants

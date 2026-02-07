@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+
+from openmm import unit
 from openmm.app import PDBFile, Topology
 
 def write_json(path, obj):
@@ -25,6 +27,12 @@ def write_ca_topology_pdb(path, topology, positions):
                 if atom.name == "CA":
                     top_ca.addAtom(atom.name, atom.element, new_res, atom.id)
                     pos_ca.append(positions[atom.index])
+
+    if hasattr(positions, "unit"):
+        pos_unit = positions.unit
+        pos_ca = unit.Quantity([p.value_in_unit(pos_unit) for p in pos_ca], pos_unit)
+    else:
+        pos_ca = unit.Quantity(pos_ca, unit.nanometer)
 
     with open(path, "w") as f:
         PDBFile.writeFile(top_ca, pos_ca, f)

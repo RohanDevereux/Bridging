@@ -13,6 +13,7 @@ from .config import (
     MINIMIZE_MAX_ITERS, EQUIL_STEPS, PROD_STEPS, REPORT_EVERY_STEPS
 )
 from .save_utils import get_ca_atom_indices, write_ca_topology_pdb
+from .prepare_complex import cysteine_residue_templates
 
 def _get_platform():
     for name in ["CUDA", "OpenCL", "CPU"]:
@@ -23,20 +24,50 @@ def _get_platform():
     raise RuntimeError("No OpenMM platform found.")
 
 
-def run_simulation(forcefield, modeller, out_dir, temperature_k, residue_templates=None):
-    out_dir = Path(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
+def _run_stage(simulation, total_steps, report_every, label):
+    chunk = max(report_every * 10, report_every)
+    completed = 0
+    while completed < total_steps:
+        step = min(chunk, total_steps - completed)
+        simulation.step(step)
+        completed += step
+        print(f"[{label}] step {completed}/{total_steps}")
 
-    system = forcefield.createSystem(
+
+def _create_system(forcefield, modeller, ignore_external_bonds, residue_templates=None):
+    return forcefield.createSystem(
         modeller.topology,
         nonbondedMethod=PME,
         nonbondedCutoff=1.0 * nanometer,
         constraints=HBonds,
         rigidWater=True,
         ewaldErrorTolerance=1e-4,
-        ignoreExternalBonds=True,
+        ignoreExternalBonds=ignore_external_bonds,
         residueTemplates=residue_templates or {},
     )
+
+
+def build_system(forcefield, modeller):
+    try:
+        return _create_system(forcefield, modeller, ignore_external_bonds=False)
+    except Exception as exc:
+        msg = str(exc)
+        if "externally bonded atoms" in msg or "Multiple non-identical matching templates" in msg:
+            residue_templates = cysteine_residue_templates(modeller.topology)
+            return _create_system(
+                forcefield,
+                modeller,
+                ignore_external_bonds=True,
+                residue_templates=residue_templates,
+            )
+        raise
+
+
+def run_simulation(forcefield, modeller, out_dir, temperature_k):
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    system = build_system(forcefield, modeller)
     system.addForce(MonteCarloBarostat(PRESSURE_ATM * atmosphere, temperature_k * kelvin))
 
     integrator = LangevinMiddleIntegrator(
@@ -49,6 +80,7 @@ def run_simulation(forcefield, modeller, out_dir, temperature_k, residue_templat
     simulation = Simulation(modeller.topology, system, integrator, platform)
     simulation.context.setPositions(modeller.positions)
 
+    print("[MIN] minimizing energy")
     simulation.minimizeEnergy(maxIterations=MINIMIZE_MAX_ITERS)
     simulation.context.setVelocitiesToTemperature(temperature_k * kelvin)
 
@@ -71,8 +103,10 @@ def run_simulation(forcefield, modeller, out_dir, temperature_k, residue_templat
 
     write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
 
-    simulation.step(EQUIL_STEPS)
-    simulation.step(PROD_STEPS)
+    print("[EQUIL] starting")
+    _run_stage(simulation, EQUIL_STEPS, REPORT_EVERY_STEPS, "EQUIL")
+    print("[PROD] starting")
+    _run_stage(simulation, PROD_STEPS, REPORT_EVERY_STEPS, "PROD")
 
     state = simulation.context.getState(getPositions=True)
     with open(out_dir / "final.pdb", "w") as f:
