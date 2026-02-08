@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bridging"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = ["mdtraj", "numpy", "openmm", "pandas", "pdbfixer-wheel>=1.12.4", "python-docx", "requests", "tables", "torch"]
 
 [tool.setuptools]
