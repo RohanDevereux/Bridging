@@ -10,6 +10,7 @@ from bridging.MD.prepare_complex import (
     select_chains,
     drop_non_protein_residues,
     solvate,
+    SkipComplex,
 )
 from bridging.MD.simulate import build_system
 
@@ -85,6 +86,8 @@ def run_checks(dataset_path, limit=None):
             build_system(forcefield, modeller)
             print(f"[OK] {pdb_id}")
             ok += 1
+        except SkipComplex as exc:
+            print(f"[SKIP] {pdb_id}: {exc}")
         except Exception as exc:
             print(f"[FAIL] {pdb_id}: {exc}")
             print(traceback.format_exc())

@@ -10,6 +10,7 @@ from .prepare_complex import (
     select_chains,
     drop_non_protein_residues,
     solvate,
+    SkipComplex,
 )
 from .simulate import run_simulation
 
@@ -63,6 +64,9 @@ def run_all(dataset_path=None):
             run_simulation(forcefield, modeller, out_dir, temp_k)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")
+        except SkipComplex as exc:
+            (out_dir / "skip.log").write_text(str(exc) + "\n", encoding="utf-8")
+            print(f"[SKIP] {pdb_id}: {exc}")
         except Exception as exc:
             (out_dir / "error.log").write_text(traceback.format_exc(), encoding="utf-8")
             print(f"[FAIL] {pdb_id}: {exc}")

@@ -3,3 +3,7 @@ STRIDE = 1
 D0_NM = 0.8
 K_NM = 10.0
 DTYPE = "float16"
+INTERFACE_K_FRAMES = 50
+DIST_CLIP_NM = 2.0
+USE_LOG_DIST = True
+FEATURES_BASENAME = "contact_distance_fp16.npy"

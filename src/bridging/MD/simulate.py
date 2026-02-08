@@ -68,7 +68,12 @@ def build_system(forcefield, modeller, allow_ignore_external_bonds=False):
 
     for _ in range(25):
         try:
-            return _create_system(forcefield, modeller, ignore_external_bonds=False, residue_templates=residue_templates)
+            return _create_system(
+                forcefield,
+                modeller,
+                ignore_external_bonds=False,
+                residue_templates=residue_templates,
+            )
         except Exception as exc:
             msg = str(exc)
             if "Multiple non-identical matching templates found for residue" not in msg:
