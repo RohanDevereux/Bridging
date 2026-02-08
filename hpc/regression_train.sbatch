@@ -1,9 +1,9 @@
 #!/bin/bash -l
 
-#SBATCH --job-name=bridging_md
-#SBATCH --time=24:00:00
+#SBATCH --job-name=bridging_reg
+#SBATCH --time=08:00:00
 #SBATCH --nodes=1
-#SBATCH --ntasks=8
+#SBATCH --ntasks=4
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --output=logs/%x_%j.out
@@ -27,9 +27,10 @@ nvidia-smi || true
 # If you use a venv in the repo, uncomment:
 # source .venv/bin/activate
 
-# Prefetch PDBs (optional but recommended for stability)
-# python -m bridging.MD.prefetch_dataset --dataset src/bridging/processedData/antibody_antigen_wt_temp_train50_test20.csv
-
 PYTHON="$(command -v python3 || command -v python)"
-"$PYTHON" -m bridging.MD.run_dataset \
-  --dataset src/bridging/processedData/antibody_antigen_wt_temp_train50_test20.csv
+"$PYTHON" -m bridging.regression.train \
+  --dataset src/bridging/processedData/antibody_antigen_wt_temp_train50_test20.csv \
+  --cvae models/cvae_antibody.pt \
+  --features src/bridging/generatedData \
+  --prodigy src/bridging/generatedData/PRODIGY/antibody_antigen_wt_temp_train50_test20_prodigy_estimates.csv \
+  --out-dir src/bridging/generatedData/regression

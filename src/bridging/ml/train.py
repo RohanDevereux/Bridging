@@ -51,13 +51,21 @@ def train(
 
     in_channels, img_size = _infer_shape(paths)
     dataset = FeatureFrameDataset(paths, frame_stride=frame_stride, max_frames=max_frames)
+    if len(dataset) == 0:
+        raise ValueError("No frames available after applying frame_stride/max_frames.")
+    print(f"[ML] feature_files={len(paths)} frame_samples={len(dataset)}")
+    if len(dataset) < batch_size:
+        print(
+            f"[WARN] frame_samples={len(dataset)} is smaller than batch_size={batch_size}; "
+            "training continues with smaller final batches."
+        )
     loader = DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
         pin_memory=torch.cuda.is_available(),
-        drop_last=True,
+        drop_last=False,
     )
 
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")

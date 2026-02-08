@@ -6,7 +6,8 @@
 #SBATCH --ntasks=4
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --output=bridging_ml_%j.out
+#SBATCH --output=logs/%x_%j.out
+#SBATCH --error=logs/%x_%j.err
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=your_email@ucd.ie
 
@@ -28,5 +29,5 @@ nvidia-smi || true
 
 PYTHON="$(command -v python3 || command -v python)"
 "$PYTHON" -m bridging.ml.train \
-  --features "src/bridging/generatedData/MD/*/features/contact_distance_fp16.npy" \
+  --features src/bridging/generatedData \
   --out models/cvae_antibody.pt

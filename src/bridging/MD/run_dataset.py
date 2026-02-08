@@ -57,6 +57,21 @@ def _chain_ids(row):
     raise ValueError("No chain columns found (expected Chains_1/Chains_2, Ligand/Receptor Chains, or complex_pdb).")
 
 
+def _chain_groups(row):
+    normalized = {str(k).strip().lower(): k for k in row.keys()}
+    if "chains_1" in normalized and "chains_2" in normalized:
+        return str(row[normalized["chains_1"]]), str(row[normalized["chains_2"]])
+    if "ligand chains" in normalized and "receptor chains" in normalized:
+        return str(row[normalized["ligand chains"]]), str(row[normalized["receptor chains"]])
+    if "ligand_chains" in normalized and "receptor_chains" in normalized:
+        return str(row[normalized["ligand_chains"]]), str(row[normalized["receptor_chains"]])
+    if "complex_pdb" in normalized:
+        chains = str(row[normalized["complex_pdb"]]).split("_", 1)[-1]
+        left, right = chains.split(":")
+        return left, right
+    return None, None
+
+
 def _get_pdb_id(row):
     if "PDB" in row:
         return str(row["PDB"]).upper()
@@ -112,6 +127,7 @@ def run_all(dataset_path, out_dir=None, limit=None):
             continue
 
         chain_ids = _chain_ids(row)
+        chains_1, chains_2 = _chain_groups(row)
         temp_k = _get_temp_k(row)
         ph = _get_ph(row)
 
@@ -126,6 +142,8 @@ def run_all(dataset_path, out_dir=None, limit=None):
         meta = {
             "pdb_id": pdb_id,
             "chain_ids": chain_ids,
+            "chains_1": chains_1,
+            "chains_2": chains_2,
             "temp_k": temp_k,
             "pH": ph,
             "dataset": str(dataset_path),
