@@ -4,3 +4,8 @@ build/
 *.egg-info/
 __pycache__/
 *.pyc
+
+# Generated data (HPC outputs)
+src/bridging/generatedData/
+bridging_md_*.out
+logs/
