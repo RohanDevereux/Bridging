@@ -33,4 +33,6 @@ DATASET_STEM="$(basename "$DATASET" .csv)"
 FEATURE_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
 "$PYTHON" -m bridging.ml.train \
   --features "$FEATURE_ROOT" \
+  --dataset "$DATASET" \
+  --split train \
   --out "models/cvae_${DATASET_STEM}.pt"

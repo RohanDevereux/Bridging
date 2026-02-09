@@ -1,6 +1,5 @@
 import argparse
 import json
-import re
 import traceback
 from pathlib import Path
 
@@ -22,28 +21,15 @@ from .load_md import load_ca_trajectory
 from .interface import select_interface_atoms
 from .contact_map import contact_distance_channels
 from ..MD.paths import MD_OUT_DIR
+from ..utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
 
 def _parse_chain_group(value):
-    if value is None:
-        return []
-    tokens = re.findall(r"[A-Za-z0-9]", str(value))
-    return list(dict.fromkeys(tokens))
+    return parse_chain_group(value)
 
 
 def _row_chain_groups(row):
-    normalized = {str(k).strip().lower(): k for k in row.keys()}
-    if "chains_1" in normalized and "chains_2" in normalized:
-        return row[normalized["chains_1"]], row[normalized["chains_2"]]
-    if "ligand chains" in normalized and "receptor chains" in normalized:
-        return row[normalized["ligand chains"]], row[normalized["receptor chains"]]
-    if "ligand_chains" in normalized and "receptor_chains" in normalized:
-        return row[normalized["ligand_chains"]], row[normalized["receptor_chains"]]
-    if "complex_pdb" in normalized:
-        chains = str(row[normalized["complex_pdb"]]).split("_", 1)[-1]
-        left, right = chains.split(":")
-        return left, right
-    return None, None
+    return row_chain_groups(row)
 
 
 def _dataset_chain_lookup(dataset_path):
@@ -52,11 +38,8 @@ def _dataset_chain_lookup(dataset_path):
     df = pd.read_csv(dataset_path)
     lookup = {}
     for row in df.to_dict("records"):
-        if "PDB" in row and pd.notna(row["PDB"]):
-            pdb_id = str(row["PDB"]).strip().upper()
-        elif "PDB_ID" in row and pd.notna(row["PDB_ID"]):
-            pdb_id = str(row["PDB_ID"]).strip().upper()
-        else:
+        pdb_id = row_pdb_id(row)
+        if not pdb_id:
             continue
 
         chains_1, chains_2 = _row_chain_groups(row)

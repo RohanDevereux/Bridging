@@ -1,9 +1,13 @@
 import argparse
 import json
+from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 from torch.utils.data import DataLoader
+
+from bridging.utils.dataset_rows import row_pdb_id
 
 from .config import (
     DEFAULT_FEATURE_GLOB,
@@ -27,6 +31,40 @@ def _infer_shape(paths):
     return c, n
 
 
+def _split_name(value) -> str:
+    s = str(value).strip().lower()
+    if s in {"test", "val", "valid", "validation"}:
+        return "test"
+    return "train"
+
+
+def _dataset_split_pdbs(dataset_path: str | Path, split: str) -> set[str]:
+    df = pd.read_csv(dataset_path)
+    keep = []
+    split_mode = str(split).strip().lower()
+    for row in df.to_dict("records"):
+        pdb = row_pdb_id(row)
+        if not pdb:
+            continue
+        if split_mode != "all":
+            row_split = _split_name(row.get("split", "train"))
+            if row_split != split_mode:
+                continue
+        keep.append(str(pdb).upper())
+    return set(keep)
+
+
+def _feature_pdb_id(path_like: str) -> str | None:
+    path = Path(path_like)
+    # expected: .../<PDB>/features/<filename>.npy
+    if path.parent.name != "features":
+        return None
+    pdb = path.parent.parent.name.strip().upper()
+    if len(pdb) != 4:
+        return None
+    return pdb
+
+
 def train(
     features,
     out_path,
@@ -43,11 +81,30 @@ def train(
     num_workers=0,
     contact_weight=1.0,
     dist_weight=1.0,
+    dataset_path=None,
+    split="all",
     device=None,
 ):
     paths = collect_feature_files(features)
     if not paths:
         raise FileNotFoundError(f"No features found for: {features}")
+
+    split_mode = str(split).strip().lower()
+    if split_mode not in {"all", "train", "test"}:
+        raise ValueError(f"Invalid split='{split}'. Expected one of: all, train, test.")
+
+    if dataset_path:
+        allowed = _dataset_split_pdbs(dataset_path, split_mode)
+        before = len(paths)
+        paths = [p for p in paths if (_feature_pdb_id(p) in allowed)]
+        print(
+            f"[ML] dataset_filter dataset={dataset_path} split={split_mode} "
+            f"feature_files={len(paths)}/{before}"
+        )
+        if not paths:
+            raise FileNotFoundError(
+                f"No features left after dataset split filter: dataset={dataset_path} split={split_mode}"
+            )
 
     in_channels, img_size = _infer_shape(paths)
     dataset = FeatureFrameDataset(paths, frame_stride=frame_stride, max_frames=max_frames)
@@ -135,6 +192,8 @@ def main():
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--contact-weight", type=float, default=1.0)
     parser.add_argument("--dist-weight", type=float, default=1.0)
+    parser.add_argument("--dataset", help="Optional dataset CSV used to filter features by split")
+    parser.add_argument("--split", choices=["all", "train", "test"], default="all")
     parser.add_argument("--device", help="cuda or cpu")
     args = parser.parse_args()
 
@@ -153,6 +212,8 @@ def main():
         num_workers=args.num_workers,
         contact_weight=args.contact_weight,
         dist_weight=args.dist_weight,
+        dataset_path=args.dataset,
+        split=args.split,
         device=args.device,
     )
 

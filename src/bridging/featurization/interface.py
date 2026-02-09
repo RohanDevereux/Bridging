@@ -41,6 +41,16 @@ def _ca_atoms_for_chains(traj, chain_ids):
     return np.array(ca, dtype=int)
 
 
+def _sigmoid_stable(x):
+    x = np.asarray(x, dtype=np.float64)
+    out = np.empty_like(x, dtype=np.float64)
+    pos = x >= 0
+    out[pos] = 1.0 / (1.0 + np.exp(-x[pos]))
+    exp_x = np.exp(x[~pos])
+    out[~pos] = exp_x / (1.0 + exp_x)
+    return out
+
+
 def select_interface_atoms(
     traj,
     chains_1,
@@ -88,7 +98,7 @@ def select_interface_atoms(
 
     diff = X[:, :, None, :] - Y[:, None, :, :]
     d12 = np.sqrt((diff * diff).sum(-1))
-    c = 1.0 / (1.0 + np.exp(-k_nm * (d0_nm - d12)))
+    c = _sigmoid_stable(k_nm * (d0_nm - d12))
 
     score1 = c.max(axis=2).mean(axis=0)
     score2 = c.max(axis=1).mean(axis=0)

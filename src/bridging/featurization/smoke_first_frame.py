@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 from pathlib import Path
 
 import mdtraj as md
@@ -11,6 +10,7 @@ import pandas as pd
 
 from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
+from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
 from .config import (
     D0_NM,
@@ -26,42 +26,18 @@ from .interface import select_interface_atoms
 
 
 def _parse_chain_group(value) -> list[str]:
-    if value is None:
-        return []
-    tokens = re.findall(r"[A-Za-z0-9]", str(value))
-    return list(dict.fromkeys(tokens))
+    return parse_chain_group(value)
 
 
 def _row_chain_groups(row: dict) -> tuple[list[str], list[str]]:
-    normalized = {str(k).strip().lower(): k for k in row.keys()}
-    if "chains_1" in normalized and "chains_2" in normalized:
-        return _parse_chain_group(row[normalized["chains_1"]]), _parse_chain_group(row[normalized["chains_2"]])
-    if "ligand chains" in normalized and "receptor chains" in normalized:
-        return _parse_chain_group(row[normalized["ligand chains"]]), _parse_chain_group(row[normalized["receptor chains"]])
-    if "ligand_chains" in normalized and "receptor_chains" in normalized:
-        return _parse_chain_group(row[normalized["ligand_chains"]]), _parse_chain_group(row[normalized["receptor_chains"]])
-    if "complex_pdb" in normalized:
-        chains = str(row[normalized["complex_pdb"]]).split("_", 1)[-1]
-        left, right = chains.split(":")
-        return _parse_chain_group(left), _parse_chain_group(right)
-    return [], []
+    left, right = row_chain_groups(row)
+    if left is None or right is None:
+        return [], []
+    return _parse_chain_group(left), _parse_chain_group(right)
 
 
 def _row_pdb_id(row: dict) -> str | None:
-    normalized = {str(k).strip().lower(): k for k in row.keys()}
-    for key in ("pdb", "pdb_id"):
-        if key in normalized:
-            value = str(row[normalized[key]]).strip().upper()
-            if re.fullmatch(r"[A-Z0-9]{4}", value):
-                return value
-    if "complex_pdb" in normalized:
-        value = str(row[normalized["complex_pdb"]]).strip()
-        if "_" in value:
-            value = value.split("_", 1)[0]
-        value = value.upper()
-        if re.fullmatch(r"[A-Z0-9]{4}", value):
-            return value
-    return None
+    return row_pdb_id(row)
 
 
 def _default_out_dir(dataset_path: Path) -> Path:

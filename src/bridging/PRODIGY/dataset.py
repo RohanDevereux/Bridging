@@ -5,6 +5,9 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from bridging.utils.dataset_rows import parse_chain_group, parse_complex_pdb
+from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
+
 
 @dataclass(frozen=True)
 class ProdigyRequest:
@@ -25,41 +28,23 @@ class ProdigyRequest:
 
 
 def _norm_col(name: str) -> str:
-    return re.sub(r"[^a-z0-9]", "", str(name).strip().lower())
+    return normalize_column_name(name)
 
 
 def _norm_lookup(row: dict) -> dict[str, str]:
-    return {_norm_col(k): k for k in row.keys()}
+    return normalized_lookup(row)
 
 
 def _first_value(row: dict, lookup: dict[str, str], aliases: list[str]):
-    for alias in aliases:
-        key = lookup.get(alias)
-        if key is None:
-            continue
-        value = row.get(key)
-        if pd.isna(value):
-            continue
-        s = str(value).strip()
-        if s:
-            return s
-    return None
+    return first_nonempty(row, lookup, aliases, as_text=True)
 
 
 def _parse_complex_pdb(value: str) -> tuple[str | None, str | None, str | None]:
-    s = str(value).strip()
-    m = re.match(r"^([A-Za-z0-9]{4})_([^:]+):(.+)$", s)
-    if not m:
-        return None, None, None
-    return m.group(1).upper(), m.group(2), m.group(3)
+    return parse_complex_pdb(value)
 
 
 def _parse_chain_ids(value) -> list[str]:
-    if value is None or pd.isna(value):
-        return []
-    tokens = re.findall(r"[A-Za-z0-9]", str(value))
-    unique = list(dict.fromkeys(tokens))
-    return unique
+    return parse_chain_group(value)
 
 
 def _format_group(chain_ids: list[str]) -> str:

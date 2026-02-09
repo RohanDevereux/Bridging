@@ -2,7 +2,14 @@ import numpy as np
 
 
 def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
+    # Stable sigmoid avoids overflow warnings for large |x|.
+    x = np.asarray(x, dtype=np.float64)
+    out = np.empty_like(x, dtype=np.float64)
+    pos = x >= 0
+    out[pos] = 1.0 / (1.0 + np.exp(-x[pos]))
+    exp_x = np.exp(x[~pos])
+    out[~pos] = exp_x / (1.0 + exp_x)
+    return out
 
 
 def soft_contact_maps(traj, idx1, idx2, stride, d0_nm, k_nm, dtype="float16"):

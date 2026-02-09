@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import math
-import re
 from pathlib import Path
 
 import pandas as pd
 
 from bridging.MD.paths import GENERATED_DIR
 from bridging.ml.dataset import collect_feature_files
+from bridging.utils.dataset_rows import row_pdb_id
+from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
 
 from .config import DEFAULT_FEATURE_FILENAME, DEFAULT_PRODIGY_DIR
 
@@ -15,25 +16,15 @@ R_KCAL_PER_MOL_K = 0.00198720425864083
 
 
 def _norm_col(name: str) -> str:
-    return re.sub(r"[^a-z0-9]", "", str(name).strip().lower())
+    return normalize_column_name(name)
 
 
 def _norm_lookup(row: dict) -> dict[str, str]:
-    return {_norm_col(k): k for k in row.keys()}
+    return normalized_lookup(row)
 
 
 def _first_value(row: dict, lookup: dict[str, str], aliases: list[str]):
-    for alias in aliases:
-        key = lookup.get(alias)
-        if key is None:
-            continue
-        value = row.get(key)
-        if pd.isna(value):
-            continue
-        text = str(value).strip()
-        if text:
-            return value
-    return None
+    return first_nonempty(row, lookup, aliases)
 
 
 def _to_float(value):
@@ -49,24 +40,7 @@ def _to_float(value):
 
 
 def _parse_pdb_id(row: dict) -> str | None:
-    lookup = _norm_lookup(row)
-    value = _first_value(row, lookup, ["pdb", "pdbid"])
-    if value is not None:
-        return str(value).strip().upper()[:4]
-
-    complex_pdb = _first_value(row, lookup, ["complexpdb"])
-    if complex_pdb is not None:
-        s = str(complex_pdb).strip()
-        if "_" in s:
-            s = s.split("_", 1)[0]
-        return s.upper()[:4]
-
-    complex_id = _first_value(row, lookup, ["complexid"])
-    if complex_id is not None:
-        m = re.match(r"^([A-Za-z0-9]{4})", str(complex_id).strip())
-        if m:
-            return m.group(1).upper()
-    return None
+    return row_pdb_id(row)
 
 
 def _parse_split(row: dict) -> str:

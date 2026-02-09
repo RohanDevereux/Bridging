@@ -1,57 +1,38 @@
 import argparse
-import re
 
 import pandas as pd
 import requests
 
 from .paths import DATA_CSV, PPB_DATA_CSV, PDB_CACHE_DIR, resolve_dataset
 from .prefetch_pdbs import ensure_pdb_cached
-
-
-def _pdb_from_complex(value):
-    if pd.isna(value):
-        return None
-    s = str(value).strip()
-    if not s:
-        return None
-    if "_" in s:
-        s = s.split("_", 1)[0]
-    m = re.match(r"^[A-Za-z0-9]{4}$", s)
-    return s.upper() if m else None
+from bridging.utils.dataset_rows import row_pdb_id
 
 
 def _collect_pdb_ids(df):
     invalid_samples = []
     invalid_count = 0
+    pdb_ids = []
 
-    def _coerce_pdb(value):
-        nonlocal invalid_count
-        if pd.isna(value):
-            return None
-        s = str(value).strip()
-        if not s:
-            return None
-        if "_" in s:
-            s = s.split("_", 1)[0]
-        s = s.upper()
-        if re.fullmatch(r"[A-Z0-9]{4}", s):
-            return s
-        invalid_count += 1
-        if len(invalid_samples) < 20:
-            invalid_samples.append(s)
-        return None
+    for row in df.to_dict("records"):
+        pdb_id = row_pdb_id(row)
+        if pdb_id is not None:
+            pdb_ids.append(pdb_id)
+            continue
 
-    if "PDB" in df.columns:
-        series = df["PDB"].apply(_coerce_pdb)
-    elif "PDB_ID" in df.columns:
-        series = df["PDB_ID"].apply(_coerce_pdb)
-    elif "complex_pdb" in df.columns:
-        series = df["complex_pdb"].apply(_coerce_pdb)
-    else:
-        raise ValueError("No PDB column found (expected PDB, PDB_ID, or complex_pdb).")
+        candidates = []
+        for key in ("PDB", "PDB_ID", "complex_pdb"):
+            value = row.get(key)
+            if pd.isna(value):
+                continue
+            text = str(value).strip()
+            if text:
+                candidates.append(text)
+        if candidates:
+            invalid_count += 1
+            if len(invalid_samples) < 20:
+                invalid_samples.append(candidates[0])
 
-    pdb_ids = pd.Series(series).dropna().unique().tolist()
-    return sorted(pdb_ids), invalid_count, invalid_samples
+    return sorted(set(pdb_ids)), invalid_count, invalid_samples
 
 
 def prefetch(dataset_path, limit=None):
