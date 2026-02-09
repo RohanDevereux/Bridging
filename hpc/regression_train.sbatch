@@ -28,9 +28,13 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
+DATASET="src/bridging/processedData/PPB_Affinity_OTHER_large_ca64_target100_train80_test20.csv"
+DATASET_STEM="$(basename "$DATASET" .csv)"
+FEATURE_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
+PRODIGY_CSV="src/bridging/generatedData/PRODIGY/PPB_Affinity_OTHER_large_ca64_target100_train80_test20_prodigy_estimates.csv"
 "$PYTHON" -m bridging.regression.train \
-  --dataset src/bridging/processedData/antibody_antigen_wt_temp_train50_test20.csv \
-  --cvae models/cvae_antibody.pt \
-  --features src/bridging/generatedData \
-  --prodigy src/bridging/generatedData/PRODIGY/antibody_antigen_wt_temp_train50_test20_prodigy_estimates.csv \
+  --dataset "$DATASET" \
+  --cvae "models/cvae_${DATASET_STEM}.pt" \
+  --features "$FEATURE_ROOT" \
+  --prodigy "$PRODIGY_CSV" \
   --out-dir src/bridging/generatedData/regression

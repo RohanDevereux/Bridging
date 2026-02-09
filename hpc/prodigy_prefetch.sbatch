@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --job-name=bridging_ml
+#SBATCH --job-name=bridging_prodigy
 #SBATCH --time=08:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=4
@@ -11,13 +11,12 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=your_email@ucd.ie
 
-cd $SLURM_SUBMIT_DIR
+cd "$SLURM_SUBMIT_DIR"
 
 echo "Node: $(hostname)"
 echo "CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES"
 echo "SLURM_JOB_GPUS=$SLURM_JOB_GPUS"
 
-# If your cluster uses modules for CUDA/NVIDIA tools
 module avail >/dev/null 2>&1
 module load cuda 2>/dev/null || true
 
@@ -29,8 +28,5 @@ nvidia-smi || true
 
 PYTHON="$(command -v python3 || command -v python)"
 DATASET="src/bridging/processedData/PPB_Affinity_OTHER_large_ca64_target100_train80_test20.csv"
-DATASET_STEM="$(basename "$DATASET" .csv)"
-FEATURE_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
-"$PYTHON" -m bridging.ml.train \
-  --features "$FEATURE_ROOT" \
-  --out "models/cvae_${DATASET_STEM}.pt"
+"$PYTHON" -m bridging.PRODIGY.prefetch_dataset \
+  --dataset "$DATASET"

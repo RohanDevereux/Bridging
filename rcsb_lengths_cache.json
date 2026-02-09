@@ -1,0 +1,26 @@
+{
+  "1A22|A|B": {
+    "ligand_total_residues": 191,
+    "receptor_total_residues": 238
+  },
+  "1A4Y|A|B": {
+    "ligand_total_residues": 460,
+    "receptor_total_residues": 123
+  },
+  "1AHW|A, B|C": {
+    "ligand_total_residues": 428,
+    "receptor_total_residues": 219
+  },
+  "1B2S|A|D": {
+    "ligand_total_residues": 110,
+    "receptor_total_residues": 90
+  },
+  "1B2U|A|D": {
+    "ligand_total_residues": 110,
+    "receptor_total_residues": 90
+  },
+  "1B3S|A|D": {
+    "ligand_total_residues": 110,
+    "receptor_total_residues": 90
+  }
+}
