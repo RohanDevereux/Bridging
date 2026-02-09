@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from bridging.utils.dataset_rows import row_temperature_k
 from bridging.utils.dataset_rows import parse_chain_group, parse_complex_pdb
 from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
 
@@ -80,37 +81,8 @@ def make_cache_key(
 
 
 def _extract_temperature_k(row: dict, lookup: dict[str, str]) -> float | None:
-    temp_k = _first_value(
-        row,
-        lookup,
-        [
-            "tempk",
-            "temperaturek",
-            "temperaturekelvin",
-        ],
-    )
-    if temp_k is not None:
-        try:
-            return float(temp_k)
-        except Exception:
-            return None
-
-    temp_c = _first_value(
-        row,
-        lookup,
-        [
-            "tempc",
-            "temperaturec",
-            "temperaturecelsius",
-        ],
-    )
-    if temp_c is not None:
-        try:
-            return float(temp_c) + 273.15
-        except Exception:
-            return None
-
-    return None
+    _ = lookup
+    return row_temperature_k(row)
 
 
 def parse_request_row(row: dict, row_index: int) -> ProdigyRequest:

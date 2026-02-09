@@ -28,7 +28,7 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
-DATASET="src/bridging/processedData/PPB_Affinity_OTHER_large_ca64_target100_train80_test20.csv"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_diverse100.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 MD_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
 "$PYTHON" -m bridging.featurization.run \

@@ -6,7 +6,12 @@ from pathlib import Path
 import pandas as pd
 
 from .paths import GENERATED_DIR, PDB_CACHE_DIR
-from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
+from bridging.utils.dataset_rows import (
+    parse_chain_group,
+    row_chain_groups,
+    row_pdb_id,
+    row_temperature_k,
+)
 from .prepare_complex import (
     load_and_fix,
     select_chains,
@@ -37,11 +42,8 @@ def _get_pdb_id(row):
     return row_pdb_id(row)
 
 
-def _get_temp_k(row, default=300.0):
-    for key in ("Temp_K", "Temperature_K", "Temperature (K)"):
-        if key in row:
-            return float(row[key])
-    return float(default)
+def _get_temp_k(row):
+    return row_temperature_k(row)
 
 
 def _get_ph(row, default=7.0):
@@ -85,6 +87,9 @@ def run_all(dataset_path, out_dir=None, limit=None):
         chains_1, chains_2 = _chain_groups(row)
         temp_k = _get_temp_k(row)
         ph = _get_ph(row)
+        if temp_k is None:
+            print(f"[SKIP] {idx}/{total} {pdb_id} missing temperature")
+            continue
 
         out_dir = out_root / pdb_id
         done_file = out_dir / "DONE"

@@ -64,3 +64,43 @@ def row_pdb_id(row: dict) -> str | None:
         if m:
             return m.group(1).upper()
     return None
+
+
+def _parse_numeric_token(value) -> float | None:
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except Exception:
+        pass
+    text = str(value).strip()
+    if not text:
+        return None
+    m = re.search(r"[-+]?\d+(?:\.\d+)?", text)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except Exception:
+        return None
+
+
+def row_temperature_k(row: dict) -> float | None:
+    lookup = normalized_lookup(row)
+    for key in ("tempk", "temperaturek", "temperaturekelvin"):
+        col = lookup.get(key)
+        if col is None:
+            continue
+        t = _parse_numeric_token(row.get(col))
+        if t is not None:
+            return float(t)
+
+    for key in ("tempc", "temperaturec", "temperaturecelsius"):
+        col = lookup.get(key)
+        if col is None:
+            continue
+        tc = _parse_numeric_token(row.get(col))
+        if tc is not None:
+            return float(tc) + 273.15
+    return None

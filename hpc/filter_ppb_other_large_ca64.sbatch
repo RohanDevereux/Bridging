@@ -48,6 +48,7 @@ fi
   --sizes-cache-csv "$SIZE_CSV" \
   --size-source auto \
   --keep-subgroups OTHER \
+  --require-temperature \
   --n-interface 64 \
   --max-dN-nm 2.0 \
   --min-partner-len 200 \

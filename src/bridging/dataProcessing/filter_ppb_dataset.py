@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from bridging.utils.dataset_rows import row_temperature_k
 
 try:
     from rcsbapi.data import DataQuery as Query
@@ -485,6 +486,11 @@ def main():
         help="RCSB total residue count filter per partner; 0 disables.",
     )
     ap.add_argument("--keep-subgroups", default="*", help="Comma list (e.g. OTHER,TCR-pMHC) or *")
+    ap.add_argument(
+        "--require-temperature",
+        action="store_true",
+        help="Keep only rows with parseable temperature (K or C).",
+    )
     ap.add_argument("--no-rcsb", action="store_true", help="Disable RCSB partner length checks")
     ap.add_argument("--rcsb-cache-json", default="rcsb_lengths_cache.json")
     ap.add_argument("--sizes-cache-csv", default="", help="Optional prefetched partner sizes CSV")
@@ -549,12 +555,17 @@ def main():
         ligand = str(row.get(args.col_ligand, ""))
         receptor = str(row.get(args.col_receptor, ""))
         subgroup = _normalize_subgroup(row.get(args.col_subgroup, None))
+        temp_k = row_temperature_k(row)
 
         if i % 250 == 0 or i == total:
             print(f"[FILTER] {i}/{total}")
 
         if keep_set is not None and subgroup not in keep_set:
             report_rows.append({"pdb": pdb_id, "reason": f"subgroup_filtered:{subgroup}", "subgroup": subgroup})
+            continue
+
+        if args.require_temperature and temp_k is None:
+            report_rows.append({"pdb": pdb_id, "reason": "missing_temperature", "subgroup": subgroup})
             continue
 
         if not _is_valid_pdb_id(pdb_id):
@@ -685,6 +696,7 @@ def main():
             {
                 "pdb": pdb_id,
                 "reason": "KEEP",
+                "temperature_k": temp_k,
                 "ligand_len": lig_len,
                 "receptor_len": rec_len,
                 "size_source": size_source,
@@ -695,6 +707,8 @@ def main():
         )
         row_out = row.copy()
         row_out[args.col_subgroup] = subgroup
+        if temp_k is not None:
+            row_out["Temperature(K)"] = float(temp_k)
         kept_rows.append(row_out)
 
     if args.min_partner_len > 0 and not args.no_rcsb:

@@ -7,7 +7,7 @@ import pandas as pd
 
 from bridging.MD.paths import GENERATED_DIR
 from bridging.ml.dataset import collect_feature_files
-from bridging.utils.dataset_rows import row_pdb_id
+from bridging.utils.dataset_rows import row_pdb_id, row_temperature_k
 from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
 
 from .config import DEFAULT_FEATURE_FILENAME, DEFAULT_PRODIGY_DIR
@@ -55,16 +55,7 @@ def _parse_split(row: dict) -> str:
 
 
 def _parse_temp_k(row: dict) -> float | None:
-    lookup = _norm_lookup(row)
-    temp_k = _first_value(row, lookup, ["tempk", "temperaturek", "temperaturekelvin"])
-    tk = _to_float(temp_k)
-    if tk is not None:
-        return tk
-    temp_c = _first_value(row, lookup, ["tempc", "temperaturec", "temperaturecelsius"])
-    tc = _to_float(temp_c)
-    if tc is not None:
-        return tc + 273.15
-    return None
+    return row_temperature_k(row)
 
 
 def _experimental_from_kd(row: dict) -> float | None:
@@ -73,7 +64,9 @@ def _experimental_from_kd(row: dict) -> float | None:
     kd = _to_float(kd_val)
     if kd is None or kd <= 0:
         return None
-    temp_k = _parse_temp_k(row) or 298.15
+    temp_k = _parse_temp_k(row)
+    if temp_k is None:
+        return None
     return R_KCAL_PER_MOL_K * float(temp_k) * math.log(kd)
 
 
