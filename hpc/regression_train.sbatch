@@ -28,7 +28,7 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
-DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_diverse100.csv}"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_len200_ca64_298_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 FEATURE_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
 PRODIGY_CSV="src/bridging/generatedData/PRODIGY/${DATASET_STEM}_prodigy_estimates.csv"

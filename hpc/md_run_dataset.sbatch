@@ -1,12 +1,12 @@
 #!/bin/bash -l
 
 #SBATCH --job-name=bridging_md
-#SBATCH --time=24:00:00
+#SBATCH --time=72:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --array=0-5
+#SBATCH --array=0-1
 #SBATCH --output=logs/%x_%A_%a.out
 #SBATCH --error=logs/%x_%A_%a.err
 #SBATCH --mail-type=ALL
@@ -29,13 +29,13 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
-DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_diverse100.csv}"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_len200_ca64_298_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 OUT_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
-NUM_SHARDS=6
+NUM_SHARDS=2
 SHARD_DIR="src/bridging/processedData/shards/${DATASET_STEM}"
 
-# Generate 6 disjoint shards once (task 0), then all array tasks consume one shard each.
+# Generate 2 disjoint shards once (task 0), then all array tasks consume one shard each.
 if [ "${SLURM_ARRAY_TASK_ID:-0}" -eq 0 ]; then
   mkdir -p "$SHARD_DIR"
   "$PYTHON" - <<PY

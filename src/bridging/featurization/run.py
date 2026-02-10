@@ -65,7 +65,13 @@ def _resolve_chain_groups(meta, dataset_lookup, pdb_id):
 
 def _candidate_md_dirs(md_root):
     md_root = Path(md_root)
-    return sorted({p.parent for p in md_root.rglob("traj_ca.h5")})
+    return sorted(
+        {
+            p.parent
+            for p in md_root.rglob("traj_ca.h5")
+            if (p.parent / "DONE").exists()
+        }
+    )
 
 
 def run_all(md_root=None, dataset_path=None, overwrite=False):

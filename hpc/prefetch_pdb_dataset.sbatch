@@ -27,7 +27,7 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
-DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_diverse100.csv}"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_len200_ca64_298_train80_test20.csv}"
 
 "$PYTHON" -m bridging.MD.prefetch_dataset \
   --dataset "$DATASET"
