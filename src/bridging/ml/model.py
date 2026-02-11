@@ -4,6 +4,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+LOGVAR_MIN = -10.0
+LOGVAR_MAX = 10.0
+
 
 def _downsampled_size(size, layers=4, kernel=3, stride=2, padding=1):
     for _ in range(layers):
@@ -65,6 +68,7 @@ class CVAE(nn.Module):
         return cond
 
     def reparam(self, mu, logvar):
+        logvar = torch.clamp(logvar, min=LOGVAR_MIN, max=LOGVAR_MAX)
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return mu + eps * std
@@ -77,7 +81,7 @@ class CVAE(nn.Module):
             h = torch.cat([h, cond_vec], dim=1)
         h = F.leaky_relu(self.fc(h), 0.1, inplace=True)
         mu = self.mu(h)
-        logvar = self.logvar(h)
+        logvar = torch.clamp(self.logvar(h), min=LOGVAR_MIN, max=LOGVAR_MAX)
         z = self.reparam(mu, logvar)
 
         d = z
@@ -92,6 +96,7 @@ class CVAE(nn.Module):
 
 
 def kl_divergence(mu, logvar):
+    logvar = torch.clamp(logvar, min=LOGVAR_MIN, max=LOGVAR_MAX)
     return -0.5 * torch.sum(1.0 + logvar - mu.pow(2) - logvar.exp(), dim=1).mean()
 
 
