@@ -60,11 +60,22 @@ shard_indices = [[] for _ in range(num_shards)]
 for idx in range(len(df)):
     shard_indices[idx % num_shards].append(idx)
 
+shard_pdb_sets = []
 for shard_id, idxs in enumerate(shard_indices):
     out = df.iloc[idxs].copy()
     out_path = shard_dir / f"shard_{shard_id:02d}.csv"
     out.to_csv(out_path, index=False)
     print(f"[SHARD] id={shard_id} rows={len(out)} out={out_path}")
+    if pdb_col is not None:
+        shard_pdb_sets.append(set(out[pdb_col].astype(str).str.strip().str.upper().tolist()))
+
+if pdb_col is not None:
+    overlap = set()
+    for i in range(len(shard_pdb_sets)):
+        for j in range(i + 1, len(shard_pdb_sets)):
+            overlap |= shard_pdb_sets[i].intersection(shard_pdb_sets[j])
+    if overlap:
+        raise RuntimeError(f"Shard overlap detected for PDB IDs: {sorted(overlap)[:10]}")
 PY
 fi
 

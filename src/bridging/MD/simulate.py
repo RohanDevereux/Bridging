@@ -150,11 +150,6 @@ def run_simulation(
 
     ca_idx = get_ca_atom_indices(modeller.topology)
 
-    simulation.reporters.append(HDF5Reporter(
-        str(out_dir / "traj_ca.h5"),
-        REPORT_EVERY_STEPS,
-        atomSubset=ca_idx,
-    ))
     simulation.reporters.append(StateDataReporter(
         str(out_dir / "log.txt"),
         REPORT_EVERY_STEPS,
@@ -169,6 +164,13 @@ def run_simulation(
 
     print("[EQUIL] starting")
     _run_stage(simulation, EQUIL_STEPS, REPORT_EVERY_STEPS, "EQUIL")
+
+    # Record CA trajectory for production only so 1 ns @ 10 ps yields ~100 frames.
+    simulation.reporters.append(HDF5Reporter(
+        str(out_dir / "traj_ca.h5"),
+        REPORT_EVERY_STEPS,
+        atomSubset=ca_idx,
+    ))
     print("[PROD] starting")
     _run_stage(simulation, PROD_STEPS, REPORT_EVERY_STEPS, "PROD")
 

@@ -156,6 +156,23 @@ def _dedup_by_pdb(df: pd.DataFrame, col_pdb: str) -> tuple[pd.DataFrame, int]:
     return out, before - len(out)
 
 
+def _dedup_exact_pairs(
+    df: pd.DataFrame,
+    *,
+    col_ligand_name: str,
+    col_receptor_name: str,
+) -> tuple[pd.DataFrame, int]:
+    if col_ligand_name not in df.columns or col_receptor_name not in df.columns:
+        raise KeyError(
+            f"Pair dedup requires columns: {col_ligand_name!r}, {col_receptor_name!r}"
+        )
+    out = df.copy()
+    pair_key = out[col_ligand_name].map(_norm_text) + "||" + out[col_receptor_name].map(_norm_text)
+    before = len(out)
+    out = out.loc[~pair_key.duplicated(keep="first")].copy()
+    return out, before - len(out)
+
+
 def _build_feature_table(
     df: pd.DataFrame,
     col_ligand_name: str,
@@ -311,6 +328,11 @@ def main():
     ap.add_argument("--col-ligand-chains", default="Ligand Chains")
     ap.add_argument("--col-receptor-chains", default="Receptor Chains")
     ap.add_argument("--col-subgroup", default="Subgroup")
+    ap.add_argument(
+        "--dedup-exact-pairs",
+        action="store_true",
+        help="Keep only first row per exact (Ligand Name, Receptor Name) pair.",
+    )
 
     ap.add_argument("--w-ligand", type=float, default=1.0)
     ap.add_argument("--w-receptor", type=float, default=1.0)
@@ -346,6 +368,14 @@ def main():
                 keep = False
             keep_mask.append(keep)
         df = df.loc[np.array(keep_mask, dtype=bool)].copy()
+
+    dropped_pair_dupes = 0
+    if args.dedup_exact_pairs:
+        df, dropped_pair_dupes = _dedup_exact_pairs(
+            df,
+            col_ligand_name=args.col_ligand_name,
+            col_receptor_name=args.col_receptor_name,
+        )
 
     df = _build_feature_table(
         df,
@@ -422,7 +452,8 @@ def main():
         subgroup_counts = selected_out[args.col_subgroup].fillna("OTHER").astype(str).value_counts().to_dict()
 
     print(
-        f"[DIVERSE] input={len(pd.read_csv(in_csv))} deduped={len(df)} dropped_dupes={dropped_dupes} "
+        f"[DIVERSE] input={len(pd.read_csv(in_csv))} deduped={len(df)} "
+        f"dropped_pdb_dupes={dropped_dupes} dropped_exact_pair_dupes={dropped_pair_dupes} "
         f"selected={len(selected_out)} out={out_csv}"
     )
     if subgroup_counts:
