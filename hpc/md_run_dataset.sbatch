@@ -25,10 +25,16 @@ module load cuda 2>/dev/null || true
 command -v nvidia-smi || true
 nvidia-smi || true
 
-# If you use a venv in the repo, uncomment:
-# source .venv/bin/activate
-
-PYTHON="$(command -v python3 || command -v python)"
+# Prefer repo venv for consistent interpreter across nodes.
+if [ -f "$SLURM_SUBMIT_DIR/.venv/bin/activate" ]; then
+  source "$SLURM_SUBMIT_DIR/.venv/bin/activate"
+fi
+PYTHON="$SLURM_SUBMIT_DIR/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then
+  PYTHON="$(command -v python3 || command -v python)"
+fi
+echo "[ENV] python=$PYTHON"
+"$PYTHON" -V
 DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_ca64_298_pairuniq_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 OUT_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
@@ -83,12 +89,11 @@ if [ ! -f "$SHARD_CSV" ]; then
   exit 1
 fi
 
-ROWS=$("$PYTHON" - <<PY
-import pandas as pd
-df = pd.read_csv("${SHARD_CSV}")
-print(len(df))
-PY
-)
+# Count data rows without importing pandas again.
+ROWS=$(( $(wc -l < "$SHARD_CSV") - 1 ))
+if [ "$ROWS" -lt 0 ]; then
+  ROWS=0
+fi
 echo "[MD] shard_id=${SHARD_ID} dataset=${SHARD_CSV} rows=${ROWS}"
 if [ "$ROWS" -eq 0 ]; then
   echo "[MD] shard is empty; nothing to run."
