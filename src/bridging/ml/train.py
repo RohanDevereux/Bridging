@@ -13,6 +13,8 @@ from .config import (
     DEFAULT_FEATURE_GLOB,
     LATENT_DIM,
     BASE_CHANNELS,
+    ENCODER_TYPE,
+    SET_HIDDEN,
     BATCH_SIZE,
     LR,
     EPOCHS,
@@ -139,6 +141,8 @@ def train(
     *,
     latent_dim=LATENT_DIM,
     base_channels=BASE_CHANNELS,
+    encoder_type=ENCODER_TYPE,
+    set_hidden=SET_HIDDEN,
     batch_size=BATCH_SIZE,
     lr=LR,
     epochs=EPOCHS,
@@ -155,7 +159,14 @@ def train(
     val_fraction=0.0,
     val_seed=42,
 ):
-    out_path = Path(out_path)
+    out_raw = str(out_path).strip()
+    if not out_raw:
+        raise ValueError("Output path is empty. Set --out to a file path, e.g. models/cvae.pt")
+    out_path = Path(out_raw)
+    if out_path.exists() and out_path.is_dir():
+        raise ValueError(f"--out points to a directory, not a file: {out_path}")
+    if out_path.name in {"", "."}:
+        raise ValueError(f"Invalid output filename for --out: {out_path}")
     paths = collect_feature_files(features)
     if not paths:
         raise FileNotFoundError(f"No features found for: {features}")
@@ -225,6 +236,8 @@ def train(
         img_size=img_size,
         latent_dim=latent_dim,
         base_channels=base_channels,
+        encoder_type=encoder_type,
+        set_hidden=set_hidden,
     ).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=lr)
 
@@ -272,6 +285,8 @@ def train(
         "config": {
             "latent_dim": latent_dim,
             "base_channels": base_channels,
+            "encoder_type": encoder_type,
+            "set_hidden": int(set_hidden),
             "in_channels": in_channels,
             "img_size": img_size,
             "val_fraction": float(val_fraction),
@@ -291,6 +306,8 @@ def main():
     parser.add_argument("--out", default="cvae.pt", help="Output model path")
     parser.add_argument("--latent-dim", type=int, default=LATENT_DIM)
     parser.add_argument("--base-channels", type=int, default=BASE_CHANNELS)
+    parser.add_argument("--encoder-type", choices=["set_edge", "conv"], default=ENCODER_TYPE)
+    parser.add_argument("--set-hidden", type=int, default=SET_HIDDEN)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--lr", type=float, default=LR)
     parser.add_argument("--epochs", type=int, default=EPOCHS)
@@ -318,6 +335,8 @@ def main():
         args.out,
         latent_dim=args.latent_dim,
         base_channels=args.base_channels,
+        encoder_type=args.encoder_type,
+        set_hidden=args.set_hidden,
         batch_size=args.batch_size,
         lr=args.lr,
         epochs=args.epochs,

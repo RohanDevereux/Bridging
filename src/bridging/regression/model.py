@@ -40,7 +40,7 @@ def _make_val_split(n: int, seed: int = 0, frac: float = 0.2):
     return train, val
 
 
-def train_linear(
+def train_linear_torch(
     X_train: np.ndarray,
     y_train: np.ndarray,
     X_val: np.ndarray,
@@ -99,19 +99,51 @@ def train_linear(
     return model, best_val
 
 
+def _closed_form_fit(X: np.ndarray, y: np.ndarray, *, alpha: float = 0.0):
+    if len(X) == 0:
+        raise ValueError("No training rows were provided.")
+    X = np.asarray(X, dtype=np.float64)
+    y = np.asarray(y, dtype=np.float64).reshape(-1)
+    X1 = np.concatenate([X, np.ones((X.shape[0], 1), dtype=np.float64)], axis=1)
+    xtx = X1.T @ X1
+    if alpha > 0:
+        reg = np.eye(X1.shape[1], dtype=np.float64) * float(alpha)
+        reg[-1, -1] = 0.0  # do not penalize bias
+        xtx = xtx + reg
+    xty = X1.T @ y
+    w = np.linalg.pinv(xtx) @ xty
+    coef = w[:-1].astype(np.float32)
+    bias = float(w[-1])
+    return coef, bias
+
+
+def _closed_form_predict(X: np.ndarray, coef: np.ndarray, bias: float):
+    X = np.asarray(X, dtype=np.float32)
+    return (X @ coef + np.float32(bias)).astype(np.float32)
+
+
 @dataclass
 class LinearRegressor:
     mean: np.ndarray
     std: np.ndarray
-    model: RidgeLikeLinear
+    model: RidgeLikeLinear | None
     val_loss: float
     device: str
     train_count: int
+    method: str
+    coef: np.ndarray | None = None
+    bias: float | None = None
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         if len(X) == 0:
             return np.zeros((0,), dtype=np.float32)
         Xs = standardize_apply(X.astype(np.float32), self.mean, self.std)
+        if self.method in {"ols", "ridge_closed"}:
+            if self.coef is None or self.bias is None:
+                raise RuntimeError(f"{self.method} regressor missing coefficients.")
+            return _closed_form_predict(Xs, self.coef, self.bias)
+        if self.model is None:
+            raise RuntimeError("Torch regressor missing model state.")
         dev = torch.device(self.device)
         Xt = torch.tensor(Xs, dtype=torch.float32, device=dev)
         with torch.no_grad():
@@ -129,15 +161,54 @@ def fit_regressor(
     patience: int = 200,
     seed: int = 0,
     device: str | None = None,
+    method: str = "ridge_closed",
 ):
     tr_idx, va_idx = _make_val_split(len(X_train), seed=seed, frac=0.2)
     mean, std = standardize_fit(X_train.astype(np.float32))
     Xs = standardize_apply(X_train.astype(np.float32), mean, std)
-    model, val_loss = train_linear(
+    y = y_train.astype(np.float32)
+
+    if method == "ols":
+        coef, bias = _closed_form_fit(Xs[tr_idx], y[tr_idx], alpha=0.0)
+        pred_val = _closed_form_predict(Xs[va_idx], coef, bias)
+        val_loss = float(np.mean((pred_val - y[va_idx]) ** 2))
+        return LinearRegressor(
+            mean=mean,
+            std=std,
+            model=None,
+            val_loss=val_loss,
+            device="cpu",
+            train_count=int(len(X_train)),
+            method=method,
+            coef=coef,
+            bias=bias,
+        )
+
+    if method == "ridge_closed":
+        alpha = max(float(weight_decay), 0.0)
+        coef, bias = _closed_form_fit(Xs[tr_idx], y[tr_idx], alpha=alpha)
+        pred_val = _closed_form_predict(Xs[va_idx], coef, bias)
+        val_loss = float(np.mean((pred_val - y[va_idx]) ** 2))
+        return LinearRegressor(
+            mean=mean,
+            std=std,
+            model=None,
+            val_loss=val_loss,
+            device="cpu",
+            train_count=int(len(X_train)),
+            method=method,
+            coef=coef,
+            bias=bias,
+        )
+
+    if method != "ridge_torch":
+        raise ValueError("method must be one of: ols, ridge_closed, ridge_torch")
+
+    model, val_loss = train_linear_torch(
         Xs[tr_idx],
-        y_train[tr_idx].astype(np.float32),
+        y[tr_idx],
         Xs[va_idx],
-        y_train[va_idx].astype(np.float32),
+        y[va_idx],
         weight_decay=weight_decay,
         lr=lr,
         steps=steps,
@@ -153,6 +224,9 @@ def fit_regressor(
         val_loss=float(val_loss),
         device=dev,
         train_count=int(len(X_train)),
+        method=method,
+        coef=None,
+        bias=None,
     )
 
 

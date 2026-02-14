@@ -6,13 +6,18 @@ from openmm.app import PME, HBonds
 from openmm.app import StateDataReporter
 from openmm.unit import kelvin, picosecond, femtoseconds, atmosphere, nanometer
 
-from mdtraj.reporters import HDF5Reporter
+from mdtraj.reporters import HDF5Reporter, NetCDFReporter
 
 from .config import (
     TIME_STEP_FS, FRICTION_PER_PS, PRESSURE_ATM,
     MINIMIZE_MAX_ITERS, EQUIL_STEPS, PROD_STEPS, REPORT_EVERY_STEPS
 )
-from .save_utils import get_ca_atom_indices, write_ca_topology_pdb
+from .save_utils import (
+    get_ca_atom_indices,
+    get_protein_atom_indices,
+    write_atom_subset_topology_pdb,
+    write_ca_topology_pdb,
+)
 
 def _get_platform():
     for name in ["CUDA", "OpenCL", "CPU"]:
@@ -149,6 +154,7 @@ def run_simulation(
     simulation.context.setVelocitiesToTemperature(temperature_k * kelvin)
 
     ca_idx = get_ca_atom_indices(modeller.topology)
+    protein_idx = get_protein_atom_indices(modeller.topology)
 
     simulation.reporters.append(StateDataReporter(
         str(out_dir / "log.txt"),
@@ -161,6 +167,12 @@ def run_simulation(
     ))
 
     write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
+    write_atom_subset_topology_pdb(
+        out_dir / "topology_protein.pdb",
+        modeller.topology,
+        modeller.positions,
+        protein_idx,
+    )
 
     print("[EQUIL] starting")
     _run_stage(simulation, EQUIL_STEPS, REPORT_EVERY_STEPS, "EQUIL")
@@ -171,6 +183,11 @@ def run_simulation(
         REPORT_EVERY_STEPS,
         atomSubset=ca_idx,
     ))
+    simulation.reporters.append(NetCDFReporter(
+        str(out_dir / "traj_protein.nc"),
+        REPORT_EVERY_STEPS,
+        atomSubset=protein_idx,
+    ))
     print("[PROD] starting")
     _run_stage(simulation, PROD_STEPS, REPORT_EVERY_STEPS, "PROD")
 
@@ -178,4 +195,9 @@ def run_simulation(
     with open(out_dir / "final.pdb", "w") as f:
         PDBFile.writeFile(simulation.topology, state.getPositions(), f)
 
-    return {"traj_ca_h5": "traj_ca.h5", "topology_ca_pdb": "topology_ca.pdb"}
+    return {
+        "traj_ca_h5": "traj_ca.h5",
+        "topology_ca_pdb": "topology_ca.pdb",
+        "traj_protein_nc": "traj_protein.nc",
+        "topology_protein_pdb": "topology_protein.pdb",
+    }

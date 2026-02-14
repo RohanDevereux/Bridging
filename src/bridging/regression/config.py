@@ -6,5 +6,6 @@ from bridging.featurization.config import FEATURES_BASENAME
 DEFAULT_DATASET = PACKAGE_DIR / "processedData" / "antibody_antigen_wt_temp_train50_test20.csv"
 DEFAULT_CVAE_CHECKPOINT = Path("models") / "cvae_antibody.pt"
 DEFAULT_PRODIGY_DIR = GENERATED_DIR / "PRODIGY"
+DEFAULT_MMGBSA_DIR = GENERATED_DIR / "MMGBSA"
 DEFAULT_OUT_DIR = GENERATED_DIR / "regression"
 DEFAULT_FEATURE_FILENAME = FEATURES_BASENAME

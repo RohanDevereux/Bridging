@@ -10,7 +10,7 @@ from bridging.ml.dataset import collect_feature_files
 from bridging.utils.dataset_rows import row_pdb_id, row_temperature_k
 from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
 
-from .config import DEFAULT_FEATURE_FILENAME, DEFAULT_PRODIGY_DIR
+from .config import DEFAULT_FEATURE_FILENAME, DEFAULT_MMGBSA_DIR, DEFAULT_PRODIGY_DIR
 
 R_KCAL_PER_MOL_K = 0.00198720425864083
 
@@ -130,8 +130,15 @@ def default_prodigy_path(dataset_path: Path) -> Path:
     return DEFAULT_PRODIGY_DIR / f"{dataset_path.stem}_prodigy_estimates.csv"
 
 
-def load_prodigy_map(dataset_path: Path, prodigy_path: str | Path | None = None) -> dict[int, float]:
-    path = Path(prodigy_path) if prodigy_path else default_prodigy_path(dataset_path)
+def default_mmgbsa_path(dataset_path: Path) -> Path:
+    return DEFAULT_MMGBSA_DIR / f"{dataset_path.stem}_mmgbsa_estimates.csv"
+
+
+def _load_baseline_map(
+    dataset_path: Path,
+    path: Path,
+    value_cols: list[str],
+) -> dict[int, float]:
     if not path.exists():
         return {}
 
@@ -150,7 +157,7 @@ def load_prodigy_map(dataset_path: Path, prodigy_path: str | Path | None = None)
         return {}
 
     value_col = None
-    for col in ["delta_g_kcal_mol", "prodigy_estimate", "Baseline_dG"]:
+    for col in value_cols:
         if col in df.columns:
             value_col = col
             break
@@ -165,6 +172,24 @@ def load_prodigy_map(dataset_path: Path, prodigy_path: str | Path | None = None)
             continue
         out[int(idx)] = float(val)
     return out
+
+
+def load_prodigy_map(dataset_path: Path, prodigy_path: str | Path | None = None) -> dict[int, float]:
+    path = Path(prodigy_path) if prodigy_path else default_prodigy_path(dataset_path)
+    return _load_baseline_map(
+        dataset_path=dataset_path,
+        path=path,
+        value_cols=["delta_g_kcal_mol", "prodigy_estimate", "Baseline_dG"],
+    )
+
+
+def load_mmgbsa_map(dataset_path: Path, mmgbsa_path: str | Path | None = None) -> dict[int, float]:
+    path = Path(mmgbsa_path) if mmgbsa_path else default_mmgbsa_path(dataset_path)
+    return _load_baseline_map(
+        dataset_path=dataset_path,
+        path=path,
+        value_cols=["delta_g_kcal_mol", "mmgbsa_estimate", "Baseline_dG"],
+    )
 
 
 def _feature_path_score(path: Path, dataset_stem: str | None) -> tuple[int, float]:
@@ -224,9 +249,15 @@ def collect_feature_index(
     return index, duplicates
 
 
-def build_records(dataset_path: str | Path, feature_index: dict[str, Path], prodigy_map: dict[int, float]):
+def build_records(
+    dataset_path: str | Path,
+    feature_index: dict[str, Path],
+    prodigy_map: dict[int, float],
+    mmgbsa_map: dict[int, float] | None = None,
+):
     dataset_path = Path(dataset_path)
     df = pd.read_csv(dataset_path)
+    mmgbsa_map = mmgbsa_map or {}
     rows = []
     for row_index, row in enumerate(df.to_dict("records")):
         pdb_id = _parse_pdb_id(row)
@@ -235,6 +266,7 @@ def build_records(dataset_path: str | Path, feature_index: dict[str, Path], prod
         baseline = prodigy_map.get(row_index)
         if baseline is None:
             baseline = _row_baseline_prodigy(row)
+        mmgbsa = mmgbsa_map.get(row_index)
 
         feature_path = feature_index.get((pdb_id or "").upper())
         rows.append(
@@ -249,10 +281,12 @@ def build_records(dataset_path: str | Path, feature_index: dict[str, Path], prod
                 "temperature_k": _parse_temp_k(row),
                 "experimental_delta_g": experimental,
                 "prodigy_estimate": baseline,
+                "mmgbsa_estimate": mmgbsa,
                 "feature_path": str(feature_path) if feature_path else None,
                 "feature_available": feature_path is not None,
                 "experimental_available": experimental is not None,
                 "prodigy_available": baseline is not None,
+                "mmgbsa_available": mmgbsa is not None,
             }
         )
     return pd.DataFrame(rows)

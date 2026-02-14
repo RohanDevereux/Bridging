@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "bridging"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["mdtraj", "numpy", "openmm", "pandas", "pdbfixer-wheel>=1.12.4", "prodigy-prot", "py-rcsb-api", "python-docx", "requests", "tables", "torch"]
+dependencies = ["mdtraj", "numpy", "openmm", "pandas", "parmed", "pdbfixer-wheel>=1.12.4", "prodigy-prot", "py-rcsb-api", "python-docx", "requests", "tables", "torch"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

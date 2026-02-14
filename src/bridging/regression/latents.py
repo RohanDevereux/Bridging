@@ -4,7 +4,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn.functional as F
 
 from bridging.ml.model import CVAE
 
@@ -25,6 +24,8 @@ def load_cvae_checkpoint(checkpoint_path: str | Path, device: str | None = None)
         img_size=int(cfg["img_size"]),
         latent_dim=int(cfg["latent_dim"]),
         base_channels=int(cfg["base_channels"]),
+        encoder_type=str(cfg.get("encoder_type", "conv")),
+        set_hidden=int(cfg.get("set_hidden", 64)),
     ).to(dev)
     model.load_state_dict(state["state_dict"])
     model.eval()
@@ -33,13 +34,7 @@ def load_cvae_checkpoint(checkpoint_path: str | Path, device: str | None = None)
 
 @torch.no_grad()
 def _encode_mu_batch(model: CVAE, x: torch.Tensor) -> torch.Tensor:
-    h = model.enc(x)
-    h = h.view(x.size(0), -1)
-    cond_vec = model._cond(x.size(0), None)
-    if cond_vec is not None:
-        h = torch.cat([h, cond_vec], dim=1)
-    h = F.leaky_relu(model.fc(h), 0.1, inplace=False)
-    return model.mu(h)
+    return model.encode_mu(x, cond=None)
 
 
 @torch.no_grad()
@@ -59,12 +54,47 @@ def encode_mu_matrix(model: CVAE, feature_path: str | Path, device, batch_size: 
     return np.concatenate(chunks, axis=0)
 
 
+def _trajectory_dynamic_stats(mu: np.ndarray) -> np.ndarray:
+    if mu.ndim != 2:
+        raise ValueError(f"mu expected shape (T,d), got {mu.shape}")
+    if mu.shape[0] < 2:
+        return np.zeros((5,), dtype=np.float32)
+
+    delta = mu[1:] - mu[:-1]
+    step_norm = np.linalg.norm(delta, axis=1)
+
+    centered = mu - mu.mean(axis=0, keepdims=True)
+    radius = np.linalg.norm(centered, axis=1)
+
+    # Mean lag-1 autocorrelation across latent dimensions.
+    x0 = mu[:-1]
+    x1 = mu[1:]
+    x0c = x0 - x0.mean(axis=0, keepdims=True)
+    x1c = x1 - x1.mean(axis=0, keepdims=True)
+    denom = np.sqrt((x0c * x0c).sum(axis=0) * (x1c * x1c).sum(axis=0)) + 1e-8
+    corr = (x0c * x1c).sum(axis=0) / denom
+    lag1_corr = float(np.nanmean(corr))
+
+    out = np.array(
+        [
+            float(step_norm.mean()),
+            float(step_norm.std(ddof=0)),
+            float(radius.mean()),
+            float(radius.std(ddof=0)),
+            lag1_corr,
+        ],
+        dtype=np.float32,
+    )
+    return out
+
+
 def mean_std_pool(mu: np.ndarray) -> np.ndarray:
     if mu.ndim != 2:
         raise ValueError(f"mu expected shape (T,d), got {mu.shape}")
     mean = mu.mean(axis=0)
     std = mu.std(axis=0, ddof=0)
-    return np.concatenate([mean, std], axis=0).astype(np.float32)
+    dyn = _trajectory_dynamic_stats(mu)
+    return np.concatenate([mean, std, dyn], axis=0).astype(np.float32)
 
 
 def _npz_path(latents_dir: Path, row: dict) -> Path:

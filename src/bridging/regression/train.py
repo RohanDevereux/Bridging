@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 
 from .config import DEFAULT_CVAE_CHECKPOINT, DEFAULT_DATASET, DEFAULT_OUT_DIR
-from .dataset import build_records, collect_feature_index, load_prodigy_map
+from .dataset import build_records, collect_feature_index, load_mmgbsa_map, load_prodigy_map
 from .latents import build_latent_cache, load_cvae_checkpoint
 from .model import fit_regressor, regression_metrics
 
@@ -67,8 +67,10 @@ def _summary_tables(df: pd.DataFrame):
         part = df[_split_mask(df, split_name)]
         out[split_name] = {
             "prodigy": _metric_frame(part, "prodigy_estimate"),
+            "mmgbsa": _metric_frame(part, "mmgbsa_estimate"),
             "direct_latent": _metric_frame(part, "estimate_direct_from_latent"),
             "corrected_prodigy": _metric_frame(part, "estimate_corrected_from_prodigy"),
+            "corrected_mmgbsa": _metric_frame(part, "estimate_corrected_from_mmgbsa"),
         }
     return out
 
@@ -77,7 +79,7 @@ def _print_summary(summary: dict):
     for split_name in ["train", "test"]:
         stats = summary[split_name]
         print(f"[SUMMARY] split={split_name}")
-        for key in ["prodigy", "direct_latent", "corrected_prodigy"]:
+        for key in ["prodigy", "mmgbsa", "direct_latent", "corrected_prodigy", "corrected_mmgbsa"]:
             s = stats[key]
             mae = s["mae"]
             rmse = s["rmse"]
@@ -91,24 +93,50 @@ def _print_summary(summary: dict):
             )
 
 
-def _save_head_state(path: Path, direct, correction):
+def _save_head_state(path: Path, direct, correction_prodigy, correction_mmgbsa):
     payload = {}
     if direct is not None:
-        payload["direct"] = {
+        direct_payload = {
             "mean": direct.mean,
             "std": direct.std,
-            "state_dict": direct.model.state_dict(),
+            "method": direct.method,
             "val_loss": direct.val_loss,
             "train_count": direct.train_count,
         }
-    if correction is not None:
-        payload["correction"] = {
-            "mean": correction.mean,
-            "std": correction.std,
-            "state_dict": correction.model.state_dict(),
-            "val_loss": correction.val_loss,
-            "train_count": correction.train_count,
+        if direct.model is not None:
+            direct_payload["state_dict"] = direct.model.state_dict()
+        if direct.coef is not None:
+            direct_payload["coef"] = direct.coef
+            direct_payload["bias"] = direct.bias
+        payload["direct"] = direct_payload
+    if correction_prodigy is not None:
+        corr_payload = {
+            "mean": correction_prodigy.mean,
+            "std": correction_prodigy.std,
+            "method": correction_prodigy.method,
+            "val_loss": correction_prodigy.val_loss,
+            "train_count": correction_prodigy.train_count,
         }
+        if correction_prodigy.model is not None:
+            corr_payload["state_dict"] = correction_prodigy.model.state_dict()
+        if correction_prodigy.coef is not None:
+            corr_payload["coef"] = correction_prodigy.coef
+            corr_payload["bias"] = correction_prodigy.bias
+        payload["correction_prodigy"] = corr_payload
+    if correction_mmgbsa is not None:
+        corr_payload = {
+            "mean": correction_mmgbsa.mean,
+            "std": correction_mmgbsa.std,
+            "method": correction_mmgbsa.method,
+            "val_loss": correction_mmgbsa.val_loss,
+            "train_count": correction_mmgbsa.train_count,
+        }
+        if correction_mmgbsa.model is not None:
+            corr_payload["state_dict"] = correction_mmgbsa.model.state_dict()
+        if correction_mmgbsa.coef is not None:
+            corr_payload["coef"] = correction_mmgbsa.coef
+            corr_payload["bias"] = correction_mmgbsa.bias
+        payload["correction_mmgbsa"] = corr_payload
     torch.save(payload, path)
 
 
@@ -118,6 +146,7 @@ def run(
     cvae_checkpoint: str | Path = DEFAULT_CVAE_CHECKPOINT,
     features: list[str] | None = None,
     prodigy_path: str | Path | None = None,
+    mmgbsa_path: str | Path | None = None,
     out_dir: str | Path = DEFAULT_OUT_DIR,
     latents_dir: str | Path | None = None,
     latent_batch_size: int = 256,
@@ -128,6 +157,7 @@ def run(
     patience: int = 200,
     seed: int = 0,
     device: str | None = None,
+    regressor_method: str = "ridge_closed",
 ):
     dataset_path = Path(dataset_path)
     cvae_checkpoint = Path(cvae_checkpoint)
@@ -142,14 +172,18 @@ def run(
         print(f"[WARN] duplicate feature files for {len(duplicates)} PDB IDs; selected best-matching path")
 
     prodigy_map = load_prodigy_map(dataset_path, prodigy_path=prodigy_path)
-    df = build_records(dataset_path, feature_index, prodigy_map)
+    mmgbsa_map = load_mmgbsa_map(dataset_path, mmgbsa_path=mmgbsa_path)
+    if len(mmgbsa_map) == 0:
+        print("[WARN] no MMGBSA estimates found; continuing with PRODIGY-only baseline/correction.")
+    df = build_records(dataset_path, feature_index, prodigy_map, mmgbsa_map=mmgbsa_map)
     if df.empty:
         raise RuntimeError("No dataset rows found.")
 
     print(
         f"[REG] dataset={dataset_path} rows={len(df)} "
         f"feature_available={int(df['feature_available'].sum())} "
-        f"prodigy_available={int(df['prodigy_available'].sum())}"
+        f"prodigy_available={int(df['prodigy_available'].sum())} "
+        f"mmgbsa_available={int(df['mmgbsa_available'].sum())}"
     )
 
     model, model_device, model_cfg = load_cvae_checkpoint(cvae_checkpoint, device=device)
@@ -185,9 +219,10 @@ def run(
         patience=patience,
         seed=seed,
         device=device,
+        method=regressor_method,
     )
 
-    correction_model = None
+    correction_prodigy_model = None
     if int(correction_mask.sum()) > 0:
         train_corr_rows, X_train_corr = _matrix_from_rows(
             df,
@@ -199,7 +234,7 @@ def run(
             - train_corr_rows["prodigy_estimate"].to_numpy(dtype=np.float32)
         )
         if len(train_corr_rows) > 0:
-            correction_model = fit_regressor(
+            correction_prodigy_model = fit_regressor(
                 X_train_corr,
                 y_train_corr,
                 weight_decay=weight_decay,
@@ -208,24 +243,63 @@ def run(
                 patience=patience,
                 seed=seed,
                 device=device,
+                method=regressor_method,
+            )
+
+    mmgbsa_correction_mask = direct_mask & df["mmgbsa_available"]
+    correction_mmgbsa_model = None
+    if int(mmgbsa_correction_mask.sum()) == 0:
+        print("[WARN] correction-head (MMGBSA): none available; model will be skipped")
+    else:
+        _warn_availability(df, mmgbsa_correction_mask, "correction-head (MMGBSA) training rows")
+        train_corr_rows, X_train_corr = _matrix_from_rows(
+            df,
+            pooled_by_row,
+            mmgbsa_correction_mask & _split_mask(df, "train"),
+        )
+        y_train_corr = (
+            train_corr_rows["experimental_delta_g"].to_numpy(dtype=np.float32)
+            - train_corr_rows["mmgbsa_estimate"].to_numpy(dtype=np.float32)
+        )
+        if len(train_corr_rows) > 0:
+            correction_mmgbsa_model = fit_regressor(
+                X_train_corr,
+                y_train_corr,
+                weight_decay=weight_decay,
+                lr=lr,
+                steps=steps,
+                patience=patience,
+                seed=seed,
+                device=device,
+                method=regressor_method,
             )
 
     df["estimate_direct_from_latent"] = np.nan
     df["estimate_predicted_correction"] = np.nan
     df["estimate_corrected_from_prodigy"] = np.nan
+    df["estimate_predicted_correction_mmgbsa"] = np.nan
+    df["estimate_corrected_from_mmgbsa"] = np.nan
 
     all_lat_rows, X_all_lat = _matrix_from_rows(df, pooled_by_row, df["latent_available"])
     if len(all_lat_rows) > 0:
         direct_pred = direct_model.predict(X_all_lat)
         df.loc[all_lat_rows.index, "estimate_direct_from_latent"] = direct_pred
 
-    if correction_model is not None and len(all_lat_rows) > 0:
-        corr_pred = correction_model.predict(X_all_lat)
+    if correction_prodigy_model is not None and len(all_lat_rows) > 0:
+        corr_pred = correction_prodigy_model.predict(X_all_lat)
         df.loc[all_lat_rows.index, "estimate_predicted_correction"] = corr_pred
         has_prod = df.loc[all_lat_rows.index, "prodigy_estimate"].notna()
         idx = all_lat_rows.index[has_prod]
         df.loc[idx, "estimate_corrected_from_prodigy"] = (
             df.loc[idx, "prodigy_estimate"] + df.loc[idx, "estimate_predicted_correction"]
+        )
+    if correction_mmgbsa_model is not None and len(all_lat_rows) > 0:
+        corr_pred = correction_mmgbsa_model.predict(X_all_lat)
+        df.loc[all_lat_rows.index, "estimate_predicted_correction_mmgbsa"] = corr_pred
+        has_mmgbsa = df.loc[all_lat_rows.index, "mmgbsa_estimate"].notna()
+        idx = all_lat_rows.index[has_mmgbsa]
+        df.loc[idx, "estimate_corrected_from_mmgbsa"] = (
+            df.loc[idx, "mmgbsa_estimate"] + df.loc[idx, "estimate_predicted_correction_mmgbsa"]
         )
 
     summary = _summary_tables(df)
@@ -242,7 +316,7 @@ def run(
     # - estimate_corrected_from_prodigy
     df.to_csv(predictions_csv, index=False)
     summary_json.write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    _save_head_state(models_pt, direct_model, correction_model)
+    _save_head_state(models_pt, direct_model, correction_prodigy_model, correction_mmgbsa_model)
 
     print(f"[REG] wrote predictions: {predictions_csv}")
     print(f"[REG] wrote summary:     {summary_json}")
@@ -267,6 +341,7 @@ def main():
         help="Feature directory/glob (repeatable). If omitted, scans generatedData roots.",
     )
     parser.add_argument("--prodigy", help="PRODIGY estimates CSV path")
+    parser.add_argument("--mmgbsa", help="MMGBSA estimates CSV path (optional)")
     parser.add_argument("--out-dir", default=str(DEFAULT_OUT_DIR), help="Output directory")
     parser.add_argument("--latents-dir", help="Latents cache directory")
     parser.add_argument("--latent-batch-size", type=int, default=256)
@@ -277,6 +352,12 @@ def main():
     parser.add_argument("--patience", type=int, default=200)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--device", help="cuda or cpu")
+    parser.add_argument(
+        "--regressor-method",
+        default="ridge_closed",
+        choices=["ols", "ridge_closed", "ridge_torch"],
+        help="Regression head fitter.",
+    )
     args = parser.parse_args()
 
     try:
@@ -285,6 +366,7 @@ def main():
             cvae_checkpoint=args.cvae,
             features=args.features,
             prodigy_path=args.prodigy,
+            mmgbsa_path=args.mmgbsa,
             out_dir=args.out_dir,
             latents_dir=args.latents_dir,
             latent_batch_size=args.latent_batch_size,
@@ -295,6 +377,7 @@ def main():
             patience=args.patience,
             seed=args.seed,
             device=args.device,
+            regressor_method=args.regressor_method,
         )
     except Exception as exc:
         raise SystemExit(f"[REG] {exc}") from exc
