@@ -1,13 +1,17 @@
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-from bridging.utils.dataset_rows import row_pdb_id
+from bridging.utils.dataset_rows import row_pdb_id, row_temperature_k
+from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
 
 from .config import (
     DEFAULT_FEATURE_GLOB,
@@ -21,8 +25,10 @@ from .config import (
     BETA_MAX,
     BETA_WARMUP_EPOCHS,
 )
-from .dataset import FeatureFrameDataset, collect_feature_files
+from .dataset import FeatureFrameDataset, collect_feature_files, feature_pdb_id
 from .model import CVAE, loss_fn
+
+R_KCAL_PER_MOL_K = 0.00198720425864083
 
 
 def _infer_shape(paths):
@@ -56,15 +62,60 @@ def _dataset_split_pdbs(dataset_path: str | Path, split: str) -> set[str]:
     return set(keep)
 
 
-def _feature_pdb_id(path_like: str) -> str | None:
-    path = Path(path_like)
-    # expected: .../<PDB>/features/<filename>.npy
-    if path.parent.name != "features":
+def _to_float(value):
+    if value is None:
         return None
-    pdb = path.parent.parent.name.strip().upper()
-    if len(pdb) != 4:
+    try:
+        x = float(value)
+        if math.isnan(x):
+            return None
+        return x
+    except Exception:
         return None
-    return pdb
+
+
+def _experimental_dg(row: dict) -> float | None:
+    lookup = normalized_lookup(row)
+    value = first_nonempty(
+        row,
+        lookup,
+        [
+            "deltagkcal",
+            "experimentaldg",
+            "dgkcalmol",
+            "bindingaffinity",
+            "dgkcalmol",
+        ],
+    )
+    out = _to_float(value)
+    if out is not None:
+        return out
+
+    kd_raw = first_nonempty(row, lookup, ["kdm", "kd"])
+    kd = _to_float(kd_raw)
+    temp_k = row_temperature_k(row)
+    if kd is None or kd <= 0 or temp_k is None:
+        return None
+    return R_KCAL_PER_MOL_K * float(temp_k) * math.log(kd)
+
+
+def _dataset_label_map(dataset_path: str | Path, split: str) -> dict[str, float]:
+    df = pd.read_csv(dataset_path)
+    split_mode = str(split).strip().lower()
+    by_pdb = {}
+    for row in df.to_dict("records"):
+        pdb = row_pdb_id(row)
+        if not pdb:
+            continue
+        if split_mode != "all":
+            row_split = _split_name(row.get("split", "train"))
+            if row_split != split_mode:
+                continue
+        y = _experimental_dg(row)
+        if y is None:
+            continue
+        by_pdb[str(pdb).upper()] = float(y)
+    return by_pdb
 
 
 def _split_paths_for_validation(paths, val_fraction, val_seed):
@@ -95,16 +146,28 @@ def _run_epoch(
     beta,
     contact_weight,
     dist_weight,
+    affinity_weight=0.0,
+    affinity_head=None,
     optimizer=None,
 ):
     train_mode = optimizer is not None
     model.train(train_mode)
+    if affinity_head is not None:
+        affinity_head.train(train_mode)
 
     running = 0.0
     batches = 0
     part_sums = {}
 
-    for x in loader:
+    for batch in loader:
+        if isinstance(batch, (list, tuple)) and len(batch) == 3:
+            x, y, has_y = batch
+            y = y.to(device, non_blocking=True)
+            has_y = has_y.to(device, non_blocking=True)
+        else:
+            x = batch
+            y = None
+            has_y = None
         x = x.to(device, non_blocking=True)
 
         if train_mode:
@@ -120,6 +183,16 @@ def _run_epoch(
             w_contact=contact_weight,
             w_dist=dist_weight,
         )
+
+        if affinity_head is not None and float(affinity_weight) > 0 and y is not None and has_y is not None:
+            mask = has_y.bool()
+            if torch.any(mask):
+                y_hat = affinity_head(mu).squeeze(-1)
+                aff_loss = F.mse_loss(y_hat[mask], y[mask], reduction="mean")
+                loss = loss + float(affinity_weight) * aff_loss
+                parts["aff_mse"] = float(aff_loss.item())
+            else:
+                parts["aff_mse"] = float("nan")
 
         if train_mode:
             loss.backward()
@@ -158,6 +231,7 @@ def train(
     device=None,
     val_fraction=0.0,
     val_seed=42,
+    affinity_weight=0.0,
 ):
     out_raw = str(out_path).strip()
     if not out_raw:
@@ -178,7 +252,7 @@ def train(
     if dataset_path:
         allowed = _dataset_split_pdbs(dataset_path, split_mode)
         before = len(paths)
-        paths = [p for p in paths if (_feature_pdb_id(p) in allowed)]
+        paths = [p for p in paths if (feature_pdb_id(p) in allowed)]
         print(
             f"[ML] dataset_filter dataset={dataset_path} split={split_mode} "
             f"feature_files={len(paths)}/{before}"
@@ -195,8 +269,26 @@ def train(
             f"val_feature_files={len(val_paths)} val_fraction={float(val_fraction):.3f}"
         )
 
+    label_map = {}
+    if float(affinity_weight) > 0:
+        if not dataset_path:
+            print("[WARN] affinity_weight>0 but no --dataset provided; affinity supervision disabled.")
+            affinity_weight = 0.0
+        else:
+            label_map = _dataset_label_map(dataset_path, split_mode)
+            if not label_map:
+                print("[WARN] no experimental labels found in dataset; affinity supervision disabled.")
+                affinity_weight = 0.0
+            else:
+                print(f"[ML] semi_supervised labels={len(label_map)} affinity_weight={float(affinity_weight):.3f}")
+
     in_channels, img_size = _infer_shape(train_paths)
-    dataset = FeatureFrameDataset(train_paths, frame_stride=frame_stride, max_frames=max_frames)
+    dataset = FeatureFrameDataset(
+        train_paths,
+        frame_stride=frame_stride,
+        max_frames=max_frames,
+        target_by_pdb=label_map if float(affinity_weight) > 0 else None,
+    )
     if len(dataset) == 0:
         raise ValueError("No frames available after applying frame_stride/max_frames.")
     print(f"[ML] feature_files={len(train_paths)} frame_samples={len(dataset)}")
@@ -216,7 +308,12 @@ def train(
 
     val_loader = None
     if val_paths:
-        val_dataset = FeatureFrameDataset(val_paths, frame_stride=frame_stride, max_frames=max_frames)
+        val_dataset = FeatureFrameDataset(
+            val_paths,
+            frame_stride=frame_stride,
+            max_frames=max_frames,
+            target_by_pdb=label_map if float(affinity_weight) > 0 else None,
+        )
         if len(val_dataset) == 0:
             print("[WARN] validation split requested but produced zero validation frames; disabling validation.")
         else:
@@ -239,7 +336,12 @@ def train(
         encoder_type=encoder_type,
         set_hidden=set_hidden,
     ).to(device)
-    opt = torch.optim.Adam(model.parameters(), lr=lr)
+    affinity_head = None
+    params = list(model.parameters())
+    if float(affinity_weight) > 0:
+        affinity_head = nn.Linear(latent_dim, 1).to(device)
+        params += list(affinity_head.parameters())
+    opt = torch.optim.Adam(params, lr=lr)
 
     for epoch in range(1, epochs + 1):
         if beta_warmup_epochs <= 0:
@@ -254,6 +356,8 @@ def train(
             beta=beta,
             contact_weight=contact_weight,
             dist_weight=dist_weight,
+            affinity_weight=affinity_weight,
+            affinity_head=affinity_head,
             optimizer=opt,
         )
 
@@ -272,6 +376,8 @@ def train(
                 beta=beta,
                 contact_weight=contact_weight,
                 dist_weight=dist_weight,
+                affinity_weight=affinity_weight,
+                affinity_head=affinity_head,
                 optimizer=None,
             )
         print(
@@ -291,10 +397,13 @@ def train(
             "img_size": img_size,
             "val_fraction": float(val_fraction),
             "val_seed": int(val_seed),
+            "affinity_weight": float(affinity_weight),
             "train_feature_files": int(len(train_paths)),
             "val_feature_files": int(len(val_paths)),
         },
     }
+    if affinity_head is not None:
+        state["affinity_head_state_dict"] = affinity_head.state_dict()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     torch.save(state, out_path)
     print(f"[OK] saved {out_path}")
@@ -328,6 +437,12 @@ def main():
         help="Optional validation fraction of selected feature files (complex-level).",
     )
     parser.add_argument("--val-seed", type=int, default=42)
+    parser.add_argument(
+        "--affinity-weight",
+        type=float,
+        default=0.0,
+        help="Semi-supervised weight for latent->affinity MSE term. 0 keeps pure unsupervised VAE.",
+    )
     args = parser.parse_args()
 
     train(
@@ -352,6 +467,7 @@ def main():
         device=args.device,
         val_fraction=args.val_fraction,
         val_seed=args.val_seed,
+        affinity_weight=args.affinity_weight,
     )
 
 
