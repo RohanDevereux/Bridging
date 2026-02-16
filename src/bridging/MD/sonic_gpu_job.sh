@@ -1,10 +1,12 @@
-#!/bin/bash -l
-#SBATCH -N 1
-#SBATCH -n 8
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
-#SBATCH -t 24:00:00
-#SBATCH --job-name=prodigy_md
+#!/bin/bash
+set -euo pipefail
 
-cd $SLURM_SUBMIT_DIR
-python -m bridging.MD.run
+cd "$(dirname "$0")/../../.."
+source .venv/bin/activate
+
+export PYTHONPATH=src
+
+DATASET="${DATASET:-src/bridging/processedData/PRODIGY_Data.csv}"
+OUT_ROOT="${OUT_ROOT:-src/bridging/generatedData/MD_datasets/$(basename "$DATASET" .csv)}"
+
+python -m bridging.MD.run_dataset --dataset "$DATASET" --out "$OUT_ROOT"

@@ -24,14 +24,6 @@ from ..MD.paths import MD_OUT_DIR
 from ..utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
 
-def _parse_chain_group(value):
-    return parse_chain_group(value)
-
-
-def _row_chain_groups(row):
-    return row_chain_groups(row)
-
-
 def _dataset_chain_lookup(dataset_path):
     if dataset_path is None:
         return {}
@@ -42,17 +34,17 @@ def _dataset_chain_lookup(dataset_path):
         if not pdb_id:
             continue
 
-        chains_1, chains_2 = _row_chain_groups(row)
-        c1 = _parse_chain_group(chains_1)
-        c2 = _parse_chain_group(chains_2)
+        chains_1, chains_2 = row_chain_groups(row)
+        c1 = parse_chain_group(chains_1)
+        c2 = parse_chain_group(chains_2)
         if c1 and c2 and pdb_id not in lookup:
             lookup[pdb_id] = (c1, c2)
     return lookup
 
 
 def _resolve_chain_groups(meta, dataset_lookup, pdb_id):
-    c1 = _parse_chain_group(meta.get("chains_1"))
-    c2 = _parse_chain_group(meta.get("chains_2"))
+    c1 = parse_chain_group(meta.get("chains_1"))
+    c2 = parse_chain_group(meta.get("chains_2"))
     if c1 and c2:
         return c1, c2
 

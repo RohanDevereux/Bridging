@@ -3,17 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-import torch
-import torch.nn as nn
-
-
-class RidgeLikeLinear(nn.Module):
-    def __init__(self, in_dim: int):
-        super().__init__()
-        self.lin = nn.Linear(in_dim, 1)
-
-    def forward(self, x):
-        return self.lin(x).squeeze(-1)
 
 
 def standardize_fit(X: np.ndarray):
@@ -38,65 +27,6 @@ def _make_val_split(n: int, seed: int = 0, frac: float = 0.2):
     val = idx[:n_val]
     train = idx[n_val:]
     return train, val
-
-
-def train_linear_torch(
-    X_train: np.ndarray,
-    y_train: np.ndarray,
-    X_val: np.ndarray,
-    y_val: np.ndarray,
-    *,
-    weight_decay: float = 1e-2,
-    lr: float = 1e-2,
-    steps: int = 2000,
-    patience: int = 200,
-    seed: int = 0,
-    device: str | None = None,
-):
-    if len(X_train) == 0:
-        raise ValueError("No training rows were provided.")
-
-    torch.manual_seed(int(seed))
-    dev = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
-    model = RidgeLikeLinear(X_train.shape[1]).to(dev)
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
-    loss_fn = nn.MSELoss()
-
-    Xt = torch.tensor(X_train, dtype=torch.float32, device=dev)
-    yt = torch.tensor(y_train, dtype=torch.float32, device=dev)
-    if len(X_val) == 0:
-        X_val = X_train
-        y_val = y_train
-    Xv = torch.tensor(X_val, dtype=torch.float32, device=dev)
-    yv = torch.tensor(y_val, dtype=torch.float32, device=dev)
-
-    best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
-    best_val = float("inf")
-    bad = 0
-
-    for _ in range(int(steps)):
-        model.train()
-        opt.zero_grad(set_to_none=True)
-        pred = model(Xt)
-        loss = loss_fn(pred, yt)
-        loss.backward()
-        opt.step()
-
-        model.eval()
-        with torch.no_grad():
-            val_loss = float(loss_fn(model(Xv), yv).item())
-        if val_loss < best_val:
-            best_val = val_loss
-            best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
-            bad = 0
-        else:
-            bad += 1
-            if bad >= int(patience):
-                break
-
-    model.load_state_dict(best_state)
-    model.eval()
-    return model, best_val
 
 
 def _closed_form_fit(X: np.ndarray, y: np.ndarray, *, alpha: float = 0.0):
@@ -126,29 +56,16 @@ def _closed_form_predict(X: np.ndarray, coef: np.ndarray, bias: float):
 class LinearRegressor:
     mean: np.ndarray
     std: np.ndarray
-    model: RidgeLikeLinear | None
+    coef: np.ndarray
+    bias: float
     val_loss: float
-    device: str
     train_count: int
-    method: str
-    coef: np.ndarray | None = None
-    bias: float | None = None
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         if len(X) == 0:
             return np.zeros((0,), dtype=np.float32)
         Xs = standardize_apply(X.astype(np.float32), self.mean, self.std)
-        if self.method in {"ols", "ridge_closed"}:
-            if self.coef is None or self.bias is None:
-                raise RuntimeError(f"{self.method} regressor missing coefficients.")
-            return _closed_form_predict(Xs, self.coef, self.bias)
-        if self.model is None:
-            raise RuntimeError("Torch regressor missing model state.")
-        dev = torch.device(self.device)
-        Xt = torch.tensor(Xs, dtype=torch.float32, device=dev)
-        with torch.no_grad():
-            out = self.model(Xt).detach().cpu().numpy().astype(np.float32)
-        return out
+        return _closed_form_predict(Xs, self.coef, self.bias)
 
 
 def fit_regressor(
@@ -156,77 +73,24 @@ def fit_regressor(
     y_train: np.ndarray,
     *,
     weight_decay: float = 1e-2,
-    lr: float = 1e-2,
-    steps: int = 2000,
-    patience: int = 200,
     seed: int = 0,
-    device: str | None = None,
-    method: str = "ridge_closed",
 ):
     tr_idx, va_idx = _make_val_split(len(X_train), seed=seed, frac=0.2)
     mean, std = standardize_fit(X_train.astype(np.float32))
     Xs = standardize_apply(X_train.astype(np.float32), mean, std)
     y = y_train.astype(np.float32)
 
-    if method == "ols":
-        coef, bias = _closed_form_fit(Xs[tr_idx], y[tr_idx], alpha=0.0)
-        pred_val = _closed_form_predict(Xs[va_idx], coef, bias)
-        val_loss = float(np.mean((pred_val - y[va_idx]) ** 2))
-        return LinearRegressor(
-            mean=mean,
-            std=std,
-            model=None,
-            val_loss=val_loss,
-            device="cpu",
-            train_count=int(len(X_train)),
-            method=method,
-            coef=coef,
-            bias=bias,
-        )
-
-    if method == "ridge_closed":
-        alpha = max(float(weight_decay), 0.0)
-        coef, bias = _closed_form_fit(Xs[tr_idx], y[tr_idx], alpha=alpha)
-        pred_val = _closed_form_predict(Xs[va_idx], coef, bias)
-        val_loss = float(np.mean((pred_val - y[va_idx]) ** 2))
-        return LinearRegressor(
-            mean=mean,
-            std=std,
-            model=None,
-            val_loss=val_loss,
-            device="cpu",
-            train_count=int(len(X_train)),
-            method=method,
-            coef=coef,
-            bias=bias,
-        )
-
-    if method != "ridge_torch":
-        raise ValueError("method must be one of: ols, ridge_closed, ridge_torch")
-
-    model, val_loss = train_linear_torch(
-        Xs[tr_idx],
-        y[tr_idx],
-        Xs[va_idx],
-        y[va_idx],
-        weight_decay=weight_decay,
-        lr=lr,
-        steps=steps,
-        patience=patience,
-        seed=seed,
-        device=device,
-    )
-    dev = str(next(model.parameters()).device)
+    alpha = max(float(weight_decay), 0.0)
+    coef, bias = _closed_form_fit(Xs[tr_idx], y[tr_idx], alpha=alpha)
+    pred_val = _closed_form_predict(Xs[va_idx], coef, bias)
+    val_loss = float(np.mean((pred_val - y[va_idx]) ** 2))
     return LinearRegressor(
         mean=mean,
         std=std,
-        model=model,
-        val_loss=float(val_loss),
-        device=dev,
+        coef=coef,
+        bias=bias,
+        val_loss=val_loss,
         train_count=int(len(X_train)),
-        method=method,
-        coef=None,
-        bias=None,
     )
 
 

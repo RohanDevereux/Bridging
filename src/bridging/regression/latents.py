@@ -23,8 +23,6 @@ def load_cvae_checkpoint(checkpoint_path: str | Path, device: str | None = None)
         in_channels=int(cfg["in_channels"]),
         img_size=int(cfg["img_size"]),
         latent_dim=int(cfg["latent_dim"]),
-        base_channels=int(cfg["base_channels"]),
-        encoder_type=str(cfg.get("encoder_type", "conv")),
         set_hidden=int(cfg.get("set_hidden", 64)),
     ).to(dev)
     model.load_state_dict(state["state_dict"])

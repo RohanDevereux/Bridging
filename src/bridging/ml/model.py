@@ -1,18 +1,9 @@
-import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 LOGVAR_MIN = -10.0
 LOGVAR_MAX = 10.0
-
-
-def _downsampled_size(size, layers=4, kernel=3, stride=2, padding=1):
-    for _ in range(layers):
-        size = math.floor((size + 2 * padding - kernel) / stride) + 1
-    return size
-
 
 class SetEdgeEncoder(nn.Module):
     def __init__(self, in_channels: int, hidden: int = 64):
@@ -33,14 +24,13 @@ class SetEdgeEncoder(nn.Module):
 
         global_mean = h.mean(dim=(1, 2))
         global_max = h.amax(dim=(1, 2))
+        global_std = h.std(dim=(1, 2), unbiased=False)
 
         row_h = h.mean(dim=2)  # (B, N, H)
         col_h = h.mean(dim=1)  # (B, N, H)
-        row_mean = row_h.mean(dim=1)
-        col_mean = col_h.mean(dim=1)
         row_std = row_h.std(dim=1, unbiased=False)
-
-        pooled = torch.cat([global_mean, global_max, row_mean, col_mean, row_std], dim=1)
+        col_std = col_h.std(dim=1, unbiased=False)
+        pooled = torch.cat([global_mean, global_max, global_std, row_std, col_std], dim=1)
         return self.out(pooled)
 
 
@@ -50,63 +40,27 @@ class CVAE(nn.Module):
         in_channels=2,
         img_size=64,
         latent_dim=32,
-        base_channels=32,
         cond_dim=0,
-        encoder_type="set_edge",
         set_hidden=64,
     ):
         super().__init__()
         self.in_channels = in_channels
         self.img_size = img_size
         self.latent_dim = latent_dim
-        self.base_channels = base_channels
         self.cond_dim = cond_dim
-        self.encoder_type = str(encoder_type).strip().lower()
         self.set_hidden = int(set_hidden)
-
-        feat = _downsampled_size(img_size, layers=4)
-        self.dec_feat = base_channels * 8 * feat * feat
-
-        if self.encoder_type == "conv":
-            self.enc = nn.Sequential(
-                nn.Conv2d(in_channels, base_channels, 3, stride=2, padding=1),
-                nn.BatchNorm2d(base_channels),
-                nn.LeakyReLU(0.1, inplace=True),
-                nn.Conv2d(base_channels, base_channels * 2, 3, stride=2, padding=1),
-                nn.BatchNorm2d(base_channels * 2),
-                nn.LeakyReLU(0.1, inplace=True),
-                nn.Conv2d(base_channels * 2, base_channels * 4, 3, stride=2, padding=1),
-                nn.BatchNorm2d(base_channels * 4),
-                nn.LeakyReLU(0.1, inplace=True),
-                nn.Conv2d(base_channels * 4, base_channels * 8, 3, stride=2, padding=1),
-                nn.BatchNorm2d(base_channels * 8),
-                nn.LeakyReLU(0.1, inplace=True),
-            )
-            self.enc_out_dim = self.dec_feat
-        elif self.encoder_type == "set_edge":
-            self.enc = SetEdgeEncoder(in_channels=in_channels, hidden=self.set_hidden)
-            self.enc_out_dim = 256
-        else:
-            raise ValueError("encoder_type must be 'conv' or 'set_edge'")
+        self.enc = SetEdgeEncoder(in_channels=in_channels, hidden=self.set_hidden)
+        self.enc_out_dim = 256
 
         self.fc = nn.Linear(self.enc_out_dim + cond_dim, 256)
         self.mu = nn.Linear(256, latent_dim)
         self.logvar = nn.Linear(256, latent_dim)
 
         self.fc_dec = nn.Linear(latent_dim + cond_dim, 256)
-        self.fc_unflatten = nn.Linear(256, self.dec_feat)
-
         self.dec = nn.Sequential(
-            nn.ConvTranspose2d(base_channels * 8, base_channels * 4, 4, stride=2, padding=1),
-            nn.BatchNorm2d(base_channels * 4),
+            nn.Linear(256, 512),
             nn.LeakyReLU(0.1, inplace=True),
-            nn.ConvTranspose2d(base_channels * 4, base_channels * 2, 4, stride=2, padding=1),
-            nn.BatchNorm2d(base_channels * 2),
-            nn.LeakyReLU(0.1, inplace=True),
-            nn.ConvTranspose2d(base_channels * 2, base_channels, 4, stride=2, padding=1),
-            nn.BatchNorm2d(base_channels),
-            nn.LeakyReLU(0.1, inplace=True),
-            nn.ConvTranspose2d(base_channels, in_channels, 4, stride=2, padding=1),
+            nn.Linear(512, in_channels * img_size * img_size),
         )
 
     def _cond(self, batch, cond):
@@ -123,9 +77,6 @@ class CVAE(nn.Module):
         return mu + eps * std
 
     def _encode_hidden(self, x):
-        if self.encoder_type == "conv":
-            h = self.enc(x)
-            return h.view(x.size(0), -1)
         return self.enc(x)
 
     def encode_stats(self, x, cond=None):
@@ -151,10 +102,8 @@ class CVAE(nn.Module):
         if cond_vec is not None:
             d = torch.cat([z, cond_vec], dim=1)
         d = F.leaky_relu(self.fc_dec(d), 0.1, inplace=True)
-        d = F.leaky_relu(self.fc_unflatten(d), 0.1, inplace=True)
-        feat = _downsampled_size(self.img_size, layers=4)
-        d = d.view(x.size(0), self.base_channels * 8, feat, feat)
-        x_hat_logits = self.dec(d)
+        d = self.dec(d)
+        x_hat_logits = d.view(x.size(0), self.in_channels, self.img_size, self.img_size)
         return x_hat_logits, mu, logvar
 
 

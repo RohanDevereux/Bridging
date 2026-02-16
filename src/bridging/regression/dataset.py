@@ -1,22 +1,16 @@
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 import pandas as pd
 
 from bridging.MD.paths import GENERATED_DIR
 from bridging.ml.dataset import collect_feature_files
+from bridging.utils.affinity import experimental_delta_g_kcalmol, split_name, to_float
 from bridging.utils.dataset_rows import row_pdb_id, row_temperature_k
-from bridging.utils.table import first_nonempty, normalize_column_name, normalized_lookup
+from bridging.utils.table import first_nonempty, normalized_lookup
 
 from .config import DEFAULT_FEATURE_FILENAME, DEFAULT_MMGBSA_DIR, DEFAULT_PRODIGY_DIR
-
-R_KCAL_PER_MOL_K = 0.00198720425864083
-
-
-def _norm_col(name: str) -> str:
-    return normalize_column_name(name)
 
 
 def _norm_lookup(row: dict) -> dict[str, str]:
@@ -27,67 +21,12 @@ def _first_value(row: dict, lookup: dict[str, str], aliases: list[str]):
     return first_nonempty(row, lookup, aliases)
 
 
-def _to_float(value):
-    if value is None:
-        return None
-    try:
-        x = float(value)
-        if math.isnan(x):
-            return None
-        return x
-    except Exception:
-        return None
-
-
 def _parse_pdb_id(row: dict) -> str | None:
     return row_pdb_id(row)
 
 
-def _parse_split(row: dict) -> str:
-    lookup = _norm_lookup(row)
-    value = _first_value(row, lookup, ["split"])
-    if value is None:
-        return "train"
-    s = str(value).strip().lower()
-    if s in {"test", "val", "valid", "validation"}:
-        return "test"
-    return "train"
-
-
 def _parse_temp_k(row: dict) -> float | None:
     return row_temperature_k(row)
-
-
-def _experimental_from_kd(row: dict) -> float | None:
-    lookup = _norm_lookup(row)
-    kd_val = _first_value(row, lookup, ["kdm", "kd"])
-    kd = _to_float(kd_val)
-    if kd is None or kd <= 0:
-        return None
-    temp_k = _parse_temp_k(row)
-    if temp_k is None:
-        return None
-    return R_KCAL_PER_MOL_K * float(temp_k) * math.log(kd)
-
-
-def _parse_experimental_dg(row: dict) -> float | None:
-    lookup = _norm_lookup(row)
-    value = _first_value(
-        row,
-        lookup,
-        [
-            "deltagkcal",
-            "experimentaldg",
-            "dgkcalmol",
-            "dgkcalmol",
-            "bindingaffinity",
-            "dGkcalmol",
-        ],
-    )
-    out = _to_float(value)
-    if out is not None:
-        return out
-    return _experimental_from_kd(row)
 
 
 def _parse_complex_id(row: dict) -> str | None:
@@ -119,7 +58,7 @@ def _row_baseline_prodigy(row: dict) -> float | None:
             "predicteddg",
         ],
     )
-    return _to_float(value)
+    return to_float(value)
 
 
 def _norm_path_text(path_like) -> str:
@@ -166,8 +105,8 @@ def _load_baseline_map(
 
     out = {}
     for row in df.to_dict("records"):
-        idx = _to_float(row.get("row_index"))
-        val = _to_float(row.get(value_col))
+        idx = to_float(row.get("row_index"))
+        val = to_float(row.get(value_col))
         if idx is None or val is None:
             continue
         out[int(idx)] = float(val)
@@ -216,7 +155,6 @@ def collect_feature_index(
         roots = [
             GENERATED_DIR / "MD",
             GENERATED_DIR / "MD_datasets",
-            GENERATED_DIR / "MD_PPB_TCR_pMHC",
         ]
         for root in roots:
             if not root.exists():
@@ -261,8 +199,8 @@ def build_records(
     rows = []
     for row_index, row in enumerate(df.to_dict("records")):
         pdb_id = _parse_pdb_id(row)
-        split = _parse_split(row)
-        experimental = _parse_experimental_dg(row)
+        split = split_name(row.get("split", "train"))
+        experimental = experimental_delta_g_kcalmol(row)
         baseline = prodigy_map.get(row_index)
         if baseline is None:
             baseline = _row_baseline_prodigy(row)

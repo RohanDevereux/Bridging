@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 import requests
 
-from .paths import DATA_CSV, PPB_DATA_CSV, PDB_CACHE_DIR, resolve_dataset
+from .paths import DATA_CSV, PDB_CACHE_DIR, resolve_dataset
 from .prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.dataset_rows import row_pdb_id
 
@@ -73,15 +73,9 @@ def main():
     parser = argparse.ArgumentParser(description="Prefetch PDBs for a dataset into the local cache.")
     parser.add_argument("--dataset", help="CSV path to use instead of default")
     parser.add_argument("--limit", type=int, help="Optional row limit")
-    parser.add_argument(
-        "--ppb",
-        action="store_true",
-        help="Use PPB_Affinity_TCR_pMHC.csv as default dataset",
-    )
     args = parser.parse_args()
 
-    default_path = PPB_DATA_CSV if args.ppb else DATA_CSV
-    prefetch(args.dataset or default_path, limit=args.limit)
+    prefetch(args.dataset or DATA_CSV, limit=args.limit)
 
 
 if __name__ == "__main__":

@@ -21,29 +21,13 @@ from .prepare_complex import (
 )
 from .simulate import run_simulation
 
-def _parse_chain_group(value):
-    return parse_chain_group(value)
-
-
 def _chain_ids(row):
     left, right = row_chain_groups(row)
     if left is not None and right is not None:
-        c1 = _parse_chain_group(left)
-        c2 = _parse_chain_group(right)
+        c1 = parse_chain_group(left)
+        c2 = parse_chain_group(right)
         return list(dict.fromkeys(c1 + c2))
     raise ValueError("No chain columns found (expected Chains_1/Chains_2, Ligand/Receptor Chains, or complex_pdb).")
-
-
-def _chain_groups(row):
-    return row_chain_groups(row)
-
-
-def _get_pdb_id(row):
-    return row_pdb_id(row)
-
-
-def _get_temp_k(row):
-    return row_temperature_k(row)
 
 
 def _get_ph(row, default=7.0):
@@ -78,14 +62,14 @@ def run_all(dataset_path, out_dir=None, limit=None):
     print(f"[RUN] dataset={dataset_path} rows={total} out={out_root}")
 
     for idx, row in enumerate(records, start=1):
-        pdb_id = _get_pdb_id(row)
+        pdb_id = row_pdb_id(row)
         if not pdb_id:
             print(f"[SKIP] {idx}/{total} missing PDB")
             continue
 
         chain_ids = _chain_ids(row)
-        chains_1, chains_2 = _chain_groups(row)
-        temp_k = _get_temp_k(row)
+        chains_1, chains_2 = row_chain_groups(row)
+        temp_k = row_temperature_k(row)
         ph = _get_ph(row)
         if temp_k is None:
             print(f"[SKIP] {idx}/{total} {pdb_id} missing temperature")

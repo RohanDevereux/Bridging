@@ -99,43 +99,31 @@ def _save_head_state(path: Path, direct, correction_prodigy, correction_mmgbsa):
         direct_payload = {
             "mean": direct.mean,
             "std": direct.std,
-            "method": direct.method,
             "val_loss": direct.val_loss,
             "train_count": direct.train_count,
+            "coef": direct.coef,
+            "bias": direct.bias,
         }
-        if direct.model is not None:
-            direct_payload["state_dict"] = direct.model.state_dict()
-        if direct.coef is not None:
-            direct_payload["coef"] = direct.coef
-            direct_payload["bias"] = direct.bias
         payload["direct"] = direct_payload
     if correction_prodigy is not None:
         corr_payload = {
             "mean": correction_prodigy.mean,
             "std": correction_prodigy.std,
-            "method": correction_prodigy.method,
             "val_loss": correction_prodigy.val_loss,
             "train_count": correction_prodigy.train_count,
+            "coef": correction_prodigy.coef,
+            "bias": correction_prodigy.bias,
         }
-        if correction_prodigy.model is not None:
-            corr_payload["state_dict"] = correction_prodigy.model.state_dict()
-        if correction_prodigy.coef is not None:
-            corr_payload["coef"] = correction_prodigy.coef
-            corr_payload["bias"] = correction_prodigy.bias
         payload["correction_prodigy"] = corr_payload
     if correction_mmgbsa is not None:
         corr_payload = {
             "mean": correction_mmgbsa.mean,
             "std": correction_mmgbsa.std,
-            "method": correction_mmgbsa.method,
             "val_loss": correction_mmgbsa.val_loss,
             "train_count": correction_mmgbsa.train_count,
+            "coef": correction_mmgbsa.coef,
+            "bias": correction_mmgbsa.bias,
         }
-        if correction_mmgbsa.model is not None:
-            corr_payload["state_dict"] = correction_mmgbsa.model.state_dict()
-        if correction_mmgbsa.coef is not None:
-            corr_payload["coef"] = correction_mmgbsa.coef
-            corr_payload["bias"] = correction_mmgbsa.bias
         payload["correction_mmgbsa"] = corr_payload
     torch.save(payload, path)
 
@@ -152,12 +140,8 @@ def run(
     latent_batch_size: int = 256,
     overwrite_latents: bool = False,
     weight_decay: float = 1e-2,
-    lr: float = 1e-2,
-    steps: int = 2000,
-    patience: int = 200,
     seed: int = 0,
     device: str | None = None,
-    regressor_method: str = "ridge_closed",
 ):
     dataset_path = Path(dataset_path)
     cvae_checkpoint = Path(cvae_checkpoint)
@@ -214,12 +198,7 @@ def run(
         X_train_direct,
         y_train_direct,
         weight_decay=weight_decay,
-        lr=lr,
-        steps=steps,
-        patience=patience,
         seed=seed,
-        device=device,
-        method=regressor_method,
     )
 
     correction_prodigy_model = None
@@ -238,12 +217,7 @@ def run(
                 X_train_corr,
                 y_train_corr,
                 weight_decay=weight_decay,
-                lr=lr,
-                steps=steps,
-                patience=patience,
                 seed=seed,
-                device=device,
-                method=regressor_method,
             )
 
     mmgbsa_correction_mask = direct_mask & df["mmgbsa_available"]
@@ -266,12 +240,7 @@ def run(
                 X_train_corr,
                 y_train_corr,
                 weight_decay=weight_decay,
-                lr=lr,
-                steps=steps,
-                patience=patience,
                 seed=seed,
-                device=device,
-                method=regressor_method,
             )
 
     df["estimate_direct_from_latent"] = np.nan
@@ -333,8 +302,8 @@ def main():
     parser = argparse.ArgumentParser(
         description="Train pooled-latent regression heads (direct and PRODIGY-correction)."
     )
-    parser.add_argument("--dataset", default=str(DEFAULT_DATASET), help="Dataset CSV path")
-    parser.add_argument("--cvae", default=str(DEFAULT_CVAE_CHECKPOINT), help="Trained CVAE checkpoint path")
+    parser.add_argument("--dataset", required=True, help="Dataset CSV path")
+    parser.add_argument("--cvae", required=True, help="Trained CVAE checkpoint path")
     parser.add_argument(
         "--features",
         action="append",
@@ -347,17 +316,8 @@ def main():
     parser.add_argument("--latent-batch-size", type=int, default=256)
     parser.add_argument("--overwrite-latents", action="store_true")
     parser.add_argument("--weight-decay", type=float, default=1e-2)
-    parser.add_argument("--lr", type=float, default=1e-2)
-    parser.add_argument("--steps", type=int, default=2000)
-    parser.add_argument("--patience", type=int, default=200)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--device", help="cuda or cpu")
-    parser.add_argument(
-        "--regressor-method",
-        default="ridge_closed",
-        choices=["ols", "ridge_closed", "ridge_torch"],
-        help="Regression head fitter.",
-    )
     args = parser.parse_args()
 
     try:
@@ -372,12 +332,8 @@ def main():
             latent_batch_size=args.latent_batch_size,
             overwrite_latents=args.overwrite_latents,
             weight_decay=args.weight_decay,
-            lr=args.lr,
-            steps=args.steps,
-            patience=args.patience,
             seed=args.seed,
             device=args.device,
-            regressor_method=args.regressor_method,
         )
     except Exception as exc:
         raise SystemExit(f"[REG] {exc}") from exc
