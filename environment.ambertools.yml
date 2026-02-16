@@ -1,0 +1,5 @@
+name: bridging-ambertools
+channels:
+  - conda-forge
+dependencies:
+  - ambertools
