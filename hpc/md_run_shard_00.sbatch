@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
 #SBATCH --job-name=bridging_md_s0
-#SBATCH --time=72:00:00
+#SBATCH --time=10-00:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
 #SBATCH --partition=gpu
@@ -34,10 +34,18 @@ fi
 echo "[ENV] python=$PYTHON"
 "$PYTHON" -V
 
-DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_ca64_298_pairuniq_train80_test20.csv}"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 SHARD_CSV="src/bridging/processedData/shards/${DATASET_STEM}/shard_00.csv"
-OUT_ROOT="src/bridging/generatedData/MD_datasets/${DATASET_STEM}"
+PARENT_DIR="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"
+SCRATCH_ROOT="${SCRATCH_ROOT:-$PARENT_DIR/scratch}"
+BRIDGING_SCRATCH_ROOT="${BRIDGING_SCRATCH_ROOT:-$SCRATCH_ROOT}"
+export BRIDGING_SCRATCH_ROOT
+OUT_ROOT="${OUT_ROOT:-$SCRATCH_ROOT/MD_datasets/${DATASET_STEM}}"
+PDB_CACHE_DIR="${PDB_CACHE_DIR:-$BRIDGING_SCRATCH_ROOT/pdb_cache}"
+mkdir -p "$PDB_CACHE_DIR"
+mkdir -p "$OUT_ROOT"
+echo "[PATHS] scratch=$BRIDGING_SCRATCH_ROOT pdb_cache=$PDB_CACHE_DIR out=$OUT_ROOT"
 
 if [ ! -f "$SHARD_CSV" ]; then
   echo "[FAIL] missing shard CSV: $SHARD_CSV"

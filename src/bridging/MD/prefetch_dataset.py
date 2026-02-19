@@ -48,6 +48,7 @@ def prefetch(dataset_path, limit=None):
         f"[PREFETCH] dataset={dataset_path} count={len(pdb_ids)} "
         f"invalid_pdb_values={invalid_count}"
     )
+    print(f"[PREFETCH] pdb_cache={PDB_CACHE_DIR}")
     if invalid_samples:
         print(f"[PREFETCH] skipped invalid PDB values (sample): {invalid_samples}")
 
@@ -55,7 +56,7 @@ def prefetch(dataset_path, limit=None):
     fail = 0
     for pdb_id in pdb_ids:
         try:
-            _, downloaded = ensure_pdb_cached(pdb_id)
+            _, downloaded = ensure_pdb_cached(pdb_id, cache_dir=PDB_CACHE_DIR)
             if downloaded:
                 print(f"[OK] {pdb_id}")
             ok += 1

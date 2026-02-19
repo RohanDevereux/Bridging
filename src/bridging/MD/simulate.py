@@ -6,17 +6,15 @@ from openmm.app import PME, HBonds
 from openmm.app import StateDataReporter
 from openmm.unit import kelvin, picosecond, femtoseconds, atmosphere, nanometer
 
-from mdtraj.reporters import HDF5Reporter, NetCDFReporter
+from mdtraj.reporters import NetCDFReporter
 
 from .config import (
     TIME_STEP_FS, FRICTION_PER_PS, PRESSURE_ATM,
     MINIMIZE_MAX_ITERS, EQUIL_STEPS, PROD_STEPS, REPORT_EVERY_STEPS
 )
 from .save_utils import (
-    get_ca_atom_indices,
     get_protein_atom_indices,
     write_atom_subset_topology_pdb,
-    write_ca_topology_pdb,
 )
 
 def _get_platform():
@@ -153,9 +151,10 @@ def run_simulation(
     simulation.minimizeEnergy(maxIterations=MINIMIZE_MAX_ITERS)
     simulation.context.setVelocitiesToTemperature(temperature_k * kelvin)
 
-    ca_idx = get_ca_atom_indices(modeller.topology)
     protein_idx = get_protein_atom_indices(modeller.topology)
 
+    with open(out_dir / "topology_full.pdb", "w") as f:
+        PDBFile.writeFile(modeller.topology, modeller.positions, f)
     simulation.reporters.append(StateDataReporter(
         str(out_dir / "log.txt"),
         REPORT_EVERY_STEPS,
@@ -165,29 +164,25 @@ def run_simulation(
         temperature=True,
         speed=True,
     ))
-
-    write_ca_topology_pdb(out_dir / "topology_ca.pdb", modeller.topology, modeller.positions)
     write_atom_subset_topology_pdb(
         out_dir / "topology_protein.pdb",
         modeller.topology,
         modeller.positions,
         protein_idx,
     )
-
-    print("[EQUIL] starting")
-    _run_stage(simulation, EQUIL_STEPS, REPORT_EVERY_STEPS, "EQUIL")
-
-    # Record CA trajectory for production only so 1 ns @ 10 ps yields ~100 frames.
-    simulation.reporters.append(HDF5Reporter(
-        str(out_dir / "traj_ca.h5"),
+    simulation.reporters.append(NetCDFReporter(
+        str(out_dir / "traj_full.nc"),
         REPORT_EVERY_STEPS,
-        atomSubset=ca_idx,
     ))
     simulation.reporters.append(NetCDFReporter(
         str(out_dir / "traj_protein.nc"),
         REPORT_EVERY_STEPS,
         atomSubset=protein_idx,
     ))
+
+    print("[EQUIL] starting")
+    _run_stage(simulation, EQUIL_STEPS, REPORT_EVERY_STEPS, "EQUIL")
+
     print("[PROD] starting")
     _run_stage(simulation, PROD_STEPS, REPORT_EVERY_STEPS, "PROD")
 
@@ -196,8 +191,8 @@ def run_simulation(
         PDBFile.writeFile(simulation.topology, state.getPositions(), f)
 
     return {
-        "traj_ca_h5": "traj_ca.h5",
-        "topology_ca_pdb": "topology_ca.pdb",
+        "traj_full_nc": "traj_full.nc",
+        "topology_full_pdb": "topology_full.pdb",
         "traj_protein_nc": "traj_protein.nc",
         "topology_protein_pdb": "topology_protein.pdb",
     }

@@ -6,6 +6,8 @@ from pathlib import Path
 import pandas as pd
 
 from .paths import GENERATED_DIR, PDB_CACHE_DIR
+from .prefetch_pdbs import ensure_pdb_cached
+from .config import DEFAULT_TEMPERATURE_K
 from bridging.utils.dataset_rows import (
     parse_chain_group,
     row_chain_groups,
@@ -60,6 +62,7 @@ def run_all(dataset_path, out_dir=None, limit=None):
     records = df.to_dict("records")
     total = len(records)
     print(f"[RUN] dataset={dataset_path} rows={total} out={out_root}")
+    print(f"[RUN] pdb_cache={PDB_CACHE_DIR}")
 
     for idx, row in enumerate(records, start=1):
         pdb_id = row_pdb_id(row)
@@ -70,10 +73,12 @@ def run_all(dataset_path, out_dir=None, limit=None):
         chain_ids = _chain_ids(row)
         chains_1, chains_2 = row_chain_groups(row)
         temp_k = row_temperature_k(row)
-        ph = _get_ph(row)
         if temp_k is None:
-            print(f"[SKIP] {idx}/{total} {pdb_id} missing temperature")
-            continue
+            temp_k = float(DEFAULT_TEMPERATURE_K)
+            temp_source = "default"
+        else:
+            temp_source = "dataset"
+        ph = _get_ph(row)
 
         out_dir = out_root / pdb_id
         done_file = out_dir / "DONE"
@@ -89,17 +94,28 @@ def run_all(dataset_path, out_dir=None, limit=None):
             "chains_1": chains_1,
             "chains_2": chains_2,
             "temp_k": temp_k,
+            "temp_source": temp_source,
             "pH": ph,
             "dataset": str(dataset_path),
         }
         (out_dir / "meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
 
         try:
-            pdb_file = PDB_CACHE_DIR / f"{pdb_id}.pdb"
+            pdb_file, downloaded = ensure_pdb_cached(pdb_id, cache_dir=PDB_CACHE_DIR)
+            if downloaded:
+                print(f"[PDB] downloaded {pdb_id} -> {pdb_file}")
             fixer = load_and_fix(pdb_file)
             modeller = select_chains(fixer.topology, fixer.positions, chain_ids)
             modeller = drop_non_protein_residues(modeller)
-            forcefield, modeller = solvate(modeller, ph, pdb_path=pdb_file)
+            forcefield, modeller = solvate(
+                modeller,
+                ph,
+                pdb_path=pdb_file,
+                qc_max_internal_breaks=None,
+                qc_max_internal_missing_total=None,
+                qc_max_internal_run=None,
+                qc_skip_breaks_near_interface=False,
+            )
             run_simulation(forcefield, modeller, out_dir, temp_k)
             done_file.write_text("ok\n", encoding="utf-8")
             print(f"[OK] {pdb_id}")

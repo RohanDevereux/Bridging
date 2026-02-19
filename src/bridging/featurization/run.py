@@ -57,13 +57,13 @@ def _resolve_chain_groups(meta, dataset_lookup, pdb_id):
 
 def _candidate_md_dirs(md_root):
     md_root = Path(md_root)
-    return sorted(
-        {
-            p.parent
-            for p in md_root.rglob("traj_ca.h5")
-            if (p.parent / "DONE").exists()
-        }
-    )
+    names = ("traj_ca.h5", "traj_protein.nc", "traj_full.nc")
+    dirs = set()
+    for name in names:
+        for p in md_root.rglob(name):
+            if (p.parent / "DONE").exists():
+                dirs.add(p.parent)
+    return sorted(dirs)
 
 
 def run_all(md_root=None, dataset_path=None, overwrite=False):
@@ -87,10 +87,10 @@ def run_all(md_root=None, dataset_path=None, overwrite=False):
     for out_dir in out_dirs:
         pdb_id = out_dir.name
         meta_path = out_dir / "meta.json"
-        top_path = out_dir / "topology_ca.pdb"
-        traj_path = out_dir / "traj_ca.h5"
-
-        if not (meta_path.exists() and top_path.exists() and traj_path.exists()):
+        has_legacy = (out_dir / "traj_ca.h5").exists()
+        has_protein = (out_dir / "traj_protein.nc").exists() and (out_dir / "topology_protein.pdb").exists()
+        has_full = (out_dir / "traj_full.nc").exists() and (out_dir / "topology_full.pdb").exists()
+        if not meta_path.exists() or not (has_legacy or has_protein or has_full):
             skip_count += 1
             continue
 

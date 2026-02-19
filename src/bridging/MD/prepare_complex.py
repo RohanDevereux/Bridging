@@ -152,10 +152,10 @@ def _add_disulfides_from_ssbond(modeller, ssbond_pairs, min_nm=0.162, max_nm=0.2
         a1 = next((a for a in res1.atoms() if a.name == "SG"), None)
         a2 = next((a for a in res2.atoms() if a.name == "SG"), None)
         if a1 is None or a2 is None:
-            raise SkipComplex("SSBOND references CYS without SG atom; skipping.")
+            continue
         d = _distance_nm(modeller.positions, a1, a2)
         if d < min_nm or d > max_nm:
-            raise SkipComplex(f"SSBOND SG-SG distance {d:.3f} nm out of QC window; skipping.")
+            continue
         if any(
             (b.atom1 is a1 and b.atom2 is a2) or (b.atom1 is a2 and b.atom2 is a1)
             for b in modeller.topology.bonds()
@@ -261,10 +261,10 @@ def permissive_qc_or_skip(
     pdb_path,
     modeller,
     *,
-    max_internal_breaks=3,
-    max_internal_missing_total=30,
-    max_internal_run=12,
-    skip_breaks_near_interface=True,
+    max_internal_breaks=None,
+    max_internal_missing_total=None,
+    max_internal_run=None,
+    skip_breaks_near_interface=False,
     interface_cutoff_nm=0.5,
 ):
     if pdb_path is None:
@@ -303,11 +303,11 @@ def permissive_qc_or_skip(
 
     internal_break_count = sum(len(v) for v in breaks.values())
 
-    if internal_break_count > max_internal_breaks:
+    if max_internal_breaks is not None and internal_break_count > int(max_internal_breaks):
         raise SkipComplex(f"Too many internal chain breaks ({internal_break_count}).")
-    if internal_total > max_internal_missing_total:
+    if max_internal_missing_total is not None and internal_total > int(max_internal_missing_total):
         raise SkipComplex(f"Too many internal missing residues ({internal_total}).")
-    if max_run > max_internal_run:
+    if max_internal_run is not None and max_run > int(max_internal_run):
         raise SkipComplex(f"Internal missing run too long ({max_run}).")
 
     if skip_breaks_near_interface:
@@ -386,10 +386,10 @@ def solvate(
     ph,
     pdb_path=None,
     force_reduced_cys=True,
-    qc_max_internal_breaks=3,
-    qc_max_internal_missing_total=30,
-    qc_max_internal_run=12,
-    qc_skip_breaks_near_interface=True,
+    qc_max_internal_breaks=None,
+    qc_max_internal_missing_total=None,
+    qc_max_internal_run=None,
+    qc_skip_breaks_near_interface=False,
     qc_interface_cutoff_nm=0.5,
 ):
     forcefield = ForceField(*FORCEFIELD_FILES)

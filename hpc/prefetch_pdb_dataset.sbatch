@@ -28,6 +28,11 @@ nvidia-smi || true
 
 PYTHON="$(command -v python3 || command -v python)"
 DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_TCR_len200_ca64_298_train80_test20.csv}"
+PARENT_DIR="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"
+SCRATCH_ROOT="${SCRATCH_ROOT:-$PARENT_DIR/scratch}"
+BRIDGING_SCRATCH_ROOT="${BRIDGING_SCRATCH_ROOT:-$SCRATCH_ROOT}"
+export BRIDGING_SCRATCH_ROOT
+echo "[PATHS] scratch=$BRIDGING_SCRATCH_ROOT pdb_cache=$BRIDGING_SCRATCH_ROOT/pdb_cache"
 
 "$PYTHON" -m bridging.MD.prefetch_dataset \
   --dataset "$DATASET"

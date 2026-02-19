@@ -7,7 +7,20 @@ DATA_CSV = PACKAGE_DIR / "processedData" / "PRODIGY_Data.csv"
 
 GENERATED_DIR = PACKAGE_DIR / "generatedData"
 MD_OUT_DIR = GENERATED_DIR / "MD"
-PDB_CACHE_DIR = GENERATED_DIR / "pdb_cache"
+
+
+def _resolve_scratch_root() -> Path | None:
+    raw = os.getenv("BRIDGING_SCRATCH_ROOT") or os.getenv("SCRATCH_ROOT")
+    if not raw:
+        return None
+    path = Path(raw).expanduser()
+    if not path.is_absolute():
+        path = (Path.cwd() / path).resolve()
+    return path
+
+
+SCRATCH_ROOT = _resolve_scratch_root()
+PDB_CACHE_DIR = (SCRATCH_ROOT / "pdb_cache") if SCRATCH_ROOT else (GENERATED_DIR / "pdb_cache")
 
 # Backwards-compatible aliases for existing modules.
 DATA_DIR = PACKAGE_DIR / "processedData"

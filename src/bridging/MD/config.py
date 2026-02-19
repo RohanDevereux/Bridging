@@ -5,6 +5,7 @@ FORCEFIELD_FILES = ("amber14-all.xml", "amber14/tip3pfb.xml")
 
 WATER_PADDING_NM = 1.0          # nm of solvent padding
 IONIC_STRENGTH_M = 0.15         # molar
+DEFAULT_TEMPERATURE_K = 298.15  # fallback when dataset temperature is missing
 
 TIME_STEP_FS = 2.0              # fs
 FRICTION_PER_PS = 1.0           # 1/ps
