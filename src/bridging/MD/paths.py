@@ -11,12 +11,18 @@ MD_OUT_DIR = GENERATED_DIR / "MD"
 
 def _resolve_scratch_root() -> Path | None:
     raw = os.getenv("BRIDGING_SCRATCH_ROOT") or os.getenv("SCRATCH_ROOT")
-    if not raw:
-        return None
-    path = Path(raw).expanduser()
-    if not path.is_absolute():
-        path = (Path.cwd() / path).resolve()
-    return path
+    if raw:
+        path = Path(raw).expanduser()
+        if not path.is_absolute():
+            path = (Path.cwd() / path).resolve()
+        return path
+
+    # Sensible cluster default (Sonic-style): ~/scratch
+    home_scratch = (Path.home() / "scratch").expanduser()
+    if home_scratch.exists():
+        return home_scratch
+
+    return None
 
 
 SCRATCH_ROOT = _resolve_scratch_root()

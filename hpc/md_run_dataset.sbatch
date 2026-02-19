@@ -37,8 +37,7 @@ echo "[ENV] python=$PYTHON"
 "$PYTHON" -V
 DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
-PARENT_DIR="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"
-SCRATCH_ROOT="${SCRATCH_ROOT:-$PARENT_DIR/scratch}"
+SCRATCH_ROOT="${SCRATCH_ROOT:-$HOME/scratch}"
 BRIDGING_SCRATCH_ROOT="${BRIDGING_SCRATCH_ROOT:-$SCRATCH_ROOT}"
 export BRIDGING_SCRATCH_ROOT
 OUT_ROOT="${OUT_ROOT:-$SCRATCH_ROOT/MD_datasets/${DATASET_STEM}}"

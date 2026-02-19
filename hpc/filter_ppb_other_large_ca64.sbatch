@@ -29,13 +29,19 @@ nvidia-smi || true
 PYTHON="$(command -v python3 || command -v python)"
 SIZE_CSV="src/bridging/processedData/PPB_Affinity_partner_sizes.csv"
 OUT_BASE="src/bridging/processedData/PPB_Affinity_OTHER_large_ca64_target100"
+SCRATCH_ROOT="${SCRATCH_ROOT:-$HOME/scratch}"
+BRIDGING_SCRATCH_ROOT="${BRIDGING_SCRATCH_ROOT:-$SCRATCH_ROOT}"
+export BRIDGING_SCRATCH_ROOT
+PDB_ROOT="${PDB_ROOT:-$BRIDGING_SCRATCH_ROOT/pdb_cache}"
+mkdir -p "$PDB_ROOT"
+echo "[PATHS] scratch=$BRIDGING_SCRATCH_ROOT pdb_root=$PDB_ROOT"
 
 if [ ! -f "$SIZE_CSV" ]; then
   echo "[INFO] size cache not found at $SIZE_CSV; generating..."
   "$PYTHON" -m bridging.dataProcessing.prefetch_partner_sizes \
     --in-csv src/bridging/rawData/PPB-Affinity.csv \
     --out-csv "$SIZE_CSV" \
-    --pdb-root src/bridging/generatedData/pdb_cache
+    --pdb-root "$PDB_ROOT"
 fi
 
 "$PYTHON" -m bridging.dataProcessing.filter_ppb_dataset \
@@ -44,7 +50,7 @@ fi
   --report-csv "${OUT_BASE}_report.csv" \
   --train-csv "${OUT_BASE}_train.csv" \
   --test-csv "${OUT_BASE}_test.csv" \
-  --pdb-root src/bridging/generatedData/pdb_cache \
+  --pdb-root "$PDB_ROOT" \
   --sizes-cache-csv "$SIZE_CSV" \
   --size-source auto \
   --keep-subgroups OTHER \

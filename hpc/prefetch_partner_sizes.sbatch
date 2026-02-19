@@ -27,7 +27,13 @@ nvidia-smi || true
 # source .venv/bin/activate
 
 PYTHON="$(command -v python3 || command -v python)"
+SCRATCH_ROOT="${SCRATCH_ROOT:-$HOME/scratch}"
+BRIDGING_SCRATCH_ROOT="${BRIDGING_SCRATCH_ROOT:-$SCRATCH_ROOT}"
+export BRIDGING_SCRATCH_ROOT
+PDB_ROOT="${PDB_ROOT:-$BRIDGING_SCRATCH_ROOT/pdb_cache}"
+mkdir -p "$PDB_ROOT"
+echo "[PATHS] scratch=$BRIDGING_SCRATCH_ROOT pdb_root=$PDB_ROOT"
 "$PYTHON" -m bridging.dataProcessing.prefetch_partner_sizes \
   --in-csv src/bridging/rawData/PPB-Affinity.csv \
   --out-csv src/bridging/processedData/PPB_Affinity_partner_sizes.csv \
-  --pdb-root src/bridging/generatedData/pdb_cache
+  --pdb-root "$PDB_ROOT"
