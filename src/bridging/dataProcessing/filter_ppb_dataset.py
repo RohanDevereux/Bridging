@@ -382,7 +382,7 @@ def partner_ca_stats(
 def fetch_entry_polymer_entity_lengths(pdb_id: str):
     if not RCSB_OK:
         raise RuntimeError(
-            "py-rcsb-api not available; install it or pass --no-rcsb / --min-partner-len 0."
+            "rcsb-api not available; install it or pass --no-rcsb / --min-partner-len 0."
         )
     pdb_id = pdb_id.strip().upper()
     q = Query(
@@ -541,10 +541,10 @@ def main():
     if args.min_partner_len > 0 and (not args.no_rcsb) and (not RCSB_OK):
         if len(sizes_cache) == 0:
             raise RuntimeError(
-                "min-partner-len > 0 requested but py-rcsb-api is not available and no --sizes-cache-csv was provided. "
+                "min-partner-len > 0 requested but rcsb-api is not available and no --sizes-cache-csv was provided. "
                 "Install dependencies (`pip install -e .`) or rerun with --no-rcsb / --sizes-cache-csv / --min-partner-len 0."
             )
-        print("[WARN] py-rcsb-api unavailable; using --sizes-cache-csv and/or modeled lengths only.")
+        print("[WARN] rcsb-api unavailable; using --sizes-cache-csv and/or modeled lengths only.")
 
     report_rows = []
 

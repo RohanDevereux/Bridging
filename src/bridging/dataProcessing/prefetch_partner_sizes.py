@@ -49,7 +49,7 @@ def main():
     args = ap.parse_args()
 
     if args.use_rcsb and not RCSB_OK:
-        raise RuntimeError("`--use-rcsb` requested but py-rcsb-api is not installed.")
+        raise RuntimeError("`--use-rcsb` requested but rcsb-api is not installed.")
 
     in_csv = Path(args.in_csv)
     out_csv = Path(args.out_csv)
