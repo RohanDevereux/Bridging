@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 from pathlib import Path
 
 import mdtraj as md
@@ -118,6 +119,17 @@ def _save_frame_pdb(traj: md.Trajectory, frame_index: int, out_path: Path, overw
     traj[frame_index].save_pdb(str(out_path))
 
 
+def _save_baseline_pdb(*, pdb: str, raw_pdb_path: Path, structures_root: Path, overwrite: bool) -> Path:
+    # BaselineModel derives "source" from parent directory name of pdb_path.
+    # Keep parent dir fixed to "RCSB" so entry source "RCSB" and parsed structure keys match.
+    out_path = structures_root / "baseline" / "RCSB" / f"{pdb}.pdb"
+    if out_path.exists() and not overwrite:
+        return out_path
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(raw_pdb_path, out_path)
+    return out_path
+
+
 def build_ppb_inputs(
     *,
     dataset_csv: Path,
@@ -154,7 +166,10 @@ def build_ppb_inputs(
             skipped_incomplete_md.append(pdb)
             continue
 
-        traj = md.load(str(traj_path), top=str(top_path))
+        try:
+            traj = md.load(str(traj_path), top=str(top_path))
+        except Exception as exc:
+            raise RuntimeError(f"{pdb}: failed to read trajectory {traj_path}") from exc
         n_frames = int(traj.n_frames)
         if n_frames <= 0:
             skipped_empty_traj.append(pdb)
@@ -169,6 +184,12 @@ def build_ppb_inputs(
             except Exception:
                 skipped_missing_raw_pdb.append(pdb)
             else:
+                baseline_pdb_path = _save_baseline_pdb(
+                    pdb=pdb,
+                    raw_pdb_path=raw_pdb_path,
+                    structures_root=structures_root,
+                    overwrite=overwrite,
+                )
                 baseline_rows.append(
                     _build_ppb_row(
                         pdb=pdb,
@@ -176,7 +197,7 @@ def build_ppb_inputs(
                         ligand=rec["ligand"],
                         receptor=rec["receptor"],
                         dG=rec["dG"],
-                        pdb_path=raw_pdb_path,
+                        pdb_path=baseline_pdb_path,
                     )
                 )
 
