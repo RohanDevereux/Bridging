@@ -114,6 +114,19 @@ def _split_by_counts(x: torch.Tensor, counts: list[int]) -> list[torch.Tensor]:
     return out
 
 
+def _next_complex_group(state: dict, batch_size_complex: int) -> list[str]:
+    order = state["complex_order"]
+    ptr = int(state["complex_ptr"])
+    if ptr >= len(order):
+        order = list(state["train_complexes"])
+        state["py_rng"].shuffle(order)
+        state["complex_order"] = order
+        ptr = 0
+    group = order[ptr : ptr + batch_size_complex]
+    state["complex_ptr"] = ptr + batch_size_complex
+    return group
+
+
 def _evaluate_trajectory_model(
     model: TrajectoryTemporalModel,
     dataset,
@@ -185,10 +198,20 @@ def run_trajectory_mode(
 
     all_pred_rows: list[pd.DataFrame] = []
     all_fold_metrics: list[dict] = []
+    total_folds = int(args.num_cvfolds)
+    if getattr(args, "only_fold", None) is None:
+        fold_indices = list(range(total_folds))
+    else:
+        fold_indices = [int(args.only_fold)]
+    num_active_folds = len(fold_indices)
 
-    for fold in range(int(args.num_cvfolds)):
+    fold_states = []
+    best_states = []
+    best_val_rmse = []
+
+    for fold in fold_indices:
         seed_all(int(args.seed) + fold)
-        rng = np.random.default_rng(int(args.seed) + fold)
+        fold_seed = int(args.seed) + fold
         reset_cache = bool(args.reset_cache and fold == 0)
 
         train_ds = MixedDataset(
@@ -248,86 +271,142 @@ def run_trajectory_mode(
             betas=(0.9, 0.999),
             weight_decay=float(args.weight_decay),
         )
-
-        best_state = copy.deepcopy(model.state_dict())
-        best_val_rmse = float("inf")
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            factor=float(args.scheduler_factor),
+            patience=int(args.scheduler_patience),
+            min_lr=float(args.scheduler_min_lr),
+        )
 
         print(
             f"[PPB][{mode_name}] fold={fold} train_complex={len(train_complex_to_indices)} "
             f"test_complex={len(val_complex_to_indices)} train_rows={len(train_ds)} test_rows={len(val_ds)}"
         )
 
-        for epoch in range(1, int(args.epochs) + 1):
-            model.train()
-            random.shuffle(train_complexes)
-            running = 0.0
-            steps = 0
+        fold_states.append(
+            {
+                "fold": fold,
+                "model": model,
+                "optimizer": optimizer,
+                "scheduler": scheduler,
+                "train_ds": train_ds,
+                "val_ds": val_ds,
+                "train_eval_ds": train_eval_ds,
+                "train_complex_to_indices": train_complex_to_indices,
+                "val_complex_to_indices": val_complex_to_indices,
+                "train_eval_complex_to_indices": train_eval_complex_to_indices,
+                "train_complexes": train_complexes,
+                "complex_order": [],
+                "complex_ptr": 0,
+                "np_rng": np.random.default_rng(fold_seed),
+                "py_rng": random.Random(fold_seed),
+            }
+        )
+        best_states.append(copy.deepcopy(model.state_dict()))
+        best_val_rmse.append(float("inf"))
 
-            batch_size_complex = max(1, int(args.traj_batch_complexes))
-            for start in range(0, len(train_complexes), batch_size_complex):
-                group = train_complexes[start : start + batch_size_complex]
-                flat_idx = []
-                counts = []
-                for c in group:
-                    idxs = train_complex_to_indices[c]
-                    pick = _sample_indices_temporal(rng, idxs, int(args.traj_frames_train))
-                    flat_idx.extend(pick)
-                    counts.append(len(pick))
-                if not flat_idx:
-                    continue
+    max_iters = int(args.max_iters)
+    val_freq = max(1, int(args.val_freq))
+    log_freq = max(1, int(args.train_log_freq))
+    batch_size_complex = max(1, int(args.traj_batch_complexes))
 
-                items = [train_ds[i] for i in flat_idx]
-                batch = collate_fn(items)
-                batch = recursive_to(batch, args.device)
+    for it in range(1, max_iters + 1):
+        active_idx = it % num_active_folds
+        state = fold_states[active_idx]
+        model = state["model"]
+        optimizer = state["optimizer"]
 
-                optimizer.zero_grad(set_to_none=True)
-                frame_emb = model.encode_frames(batch)  # (N_frames, F)
-                seq_list = _split_by_counts(frame_emb, counts)
-                seq_padded = pad_sequence(seq_list, batch_first=True)  # (B, T, F)
-                lengths = torch.tensor(counts, device=seq_padded.device, dtype=torch.long)
-                pred_t = model.forward_sequences(seq_padded, lengths)  # (B,)
+        model.train()
+        group = _next_complex_group(state, batch_size_complex)
+        if not group:
+            continue
 
-                dG_all = batch["dG"].reshape(-1)
-                true_vals = []
-                ptr = 0
-                for n in counts:
-                    true_vals.append(dG_all[ptr])
-                    ptr += n
-                true_t = torch.stack(true_vals, dim=0)
-                loss = F.mse_loss(pred_t, true_t, reduction="mean")
-                loss.backward()
-                clip_grad_norm_(model.parameters(), float(args.max_grad_norm))
-                optimizer.step()
+        flat_idx = []
+        counts = []
+        for c in group:
+            idxs = state["train_complex_to_indices"][c]
+            pick = _sample_indices_temporal(state["np_rng"], idxs, int(args.traj_frames_train))
+            flat_idx.extend(pick)
+            counts.append(len(pick))
+        if not flat_idx:
+            continue
 
-                running += float(loss.item())
-                steps += 1
+        items = [state["train_ds"][i] for i in flat_idx]
+        batch = collate_fn(items)
+        batch = recursive_to(batch, args.device)
 
-            val_rows = _evaluate_trajectory_model(
-                model,
-                val_ds,
-                val_complex_to_indices,
-                frames_per_complex_eval=int(args.traj_frames_eval),
-                collate_fn=collate_fn,
-                recursive_to=recursive_to,
-                device=args.device,
-            )
-            val_metrics = regression_metrics(val_rows["dG_true"].to_numpy(), val_rows["dG_pred"].to_numpy())
-            train_loss = running / max(1, steps)
+        optimizer.zero_grad(set_to_none=True)
+        frame_emb = model.encode_frames(batch)  # (N_frames, F)
+        seq_list = _split_by_counts(frame_emb, counts)
+        seq_padded = pad_sequence(seq_list, batch_first=True)  # (B, T, F)
+        lengths = torch.tensor(counts, device=seq_padded.device, dtype=torch.long)
+        pred_t = model.forward_sequences(seq_padded, lengths)  # (B,)
+
+        dG_all = batch["dG"].reshape(-1)
+        true_vals = []
+        ptr = 0
+        for n in counts:
+            true_vals.append(dG_all[ptr])
+            ptr += n
+        true_t = torch.stack(true_vals, dim=0)
+        loss = F.mse_loss(pred_t, true_t, reduction="mean")
+        loss.backward()
+        clip_grad_norm_(model.parameters(), float(args.max_grad_norm))
+        optimizer.step()
+
+        if it % log_freq == 0:
+            lr = float(optimizer.param_groups[0]["lr"])
             print(
-                f"[PPB][{mode_name}] fold={fold} epoch={epoch:03d} "
-                f"train_loss={train_loss:.4f} val_rmse={val_metrics['rmse']:.4f} "
-                f"val_r={val_metrics['pearson_r']:.4f} val_r2={val_metrics['r2']:.4f}"
+                f"[PPB][{mode_name}] iter={it:06d} fold={state['fold']} "
+                f"train_loss={float(loss.item()):.4f} lr={lr:.6g}"
             )
-            if val_metrics["rmse"] < best_val_rmse:
-                best_val_rmse = val_metrics["rmse"]
-                best_state = copy.deepcopy(model.state_dict())
 
-        model.load_state_dict(best_state)
+        if it % val_freq == 0:
+            for eval_idx, eval_state in enumerate(fold_states):
+                val_rows = _evaluate_trajectory_model(
+                    eval_state["model"],
+                    eval_state["val_ds"],
+                    eval_state["val_complex_to_indices"],
+                    frames_per_complex_eval=int(args.traj_frames_eval),
+                    collate_fn=collate_fn,
+                    recursive_to=recursive_to,
+                    device=args.device,
+                )
+                if val_rows.empty:
+                    val_metrics = {
+                        "rmse": float("inf"),
+                        "pearson_r": float("nan"),
+                        "r2": float("nan"),
+                    }
+                    val_mse = float("inf")
+                else:
+                    val_metrics = regression_metrics(
+                        val_rows["dG_true"].to_numpy(),
+                        val_rows["dG_pred"].to_numpy(),
+                    )
+                    val_err = val_rows["dG_pred"].to_numpy() - val_rows["dG_true"].to_numpy()
+                    val_mse = float(np.mean(val_err * val_err))
 
+                eval_state["scheduler"].step(val_mse)
+                if val_metrics["rmse"] < best_val_rmse[eval_idx]:
+                    best_val_rmse[eval_idx] = val_metrics["rmse"]
+                    best_states[eval_idx] = copy.deepcopy(eval_state["model"].state_dict())
+
+                print(
+                    f"[PPB][{mode_name}] iter={it:06d} fold={eval_idx} "
+                    f"val_rmse={val_metrics['rmse']:.4f} val_r={val_metrics['pearson_r']:.4f} "
+                    f"val_r2={val_metrics['r2']:.4f} val_mse={val_mse:.6f}"
+                )
+
+    for idx, state in enumerate(fold_states):
+        state["model"].load_state_dict(best_states[idx])
+
+    for state in fold_states:
+        fold = int(state["fold"])
         train_rows = _evaluate_trajectory_model(
-            model,
-            train_eval_ds,
-            train_eval_complex_to_indices,
+            state["model"],
+            state["train_eval_ds"],
+            state["train_eval_complex_to_indices"],
             frames_per_complex_eval=int(args.traj_frames_eval),
             collate_fn=collate_fn,
             recursive_to=recursive_to,
@@ -337,9 +416,9 @@ def run_trajectory_mode(
         train_rows["split"] = "train"
 
         test_rows = _evaluate_trajectory_model(
-            model,
-            val_ds,
-            val_complex_to_indices,
+            state["model"],
+            state["val_ds"],
+            state["val_complex_to_indices"],
             frames_per_complex_eval=int(args.traj_frames_eval),
             collate_fn=collate_fn,
             recursive_to=recursive_to,

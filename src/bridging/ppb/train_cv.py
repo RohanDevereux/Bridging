@@ -23,10 +23,22 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--out-dir", required=True, help="Output directory for metrics/predictions")
     parser.add_argument("--device", default="cpu", help="cpu or cuda")
     parser.add_argument("--num-cvfolds", type=int, default=5)
-    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument(
+        "--only-fold",
+        type=int,
+        default=None,
+        help="Run only one fold index (0-based) while keeping split definition from --num-cvfolds.",
+    )
+    parser.add_argument("--epochs", type=int, default=20, help="Deprecated; use --max-iters/--val-freq.")
+    parser.add_argument("--max-iters", type=int, default=100_000)
+    parser.add_argument("--val-freq", type=int, default=1_000)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--lr", type=float, default=5e-4)
     parser.add_argument("--weight-decay", type=float, default=0.0)
+    parser.add_argument("--scheduler-factor", type=float, default=0.8)
+    parser.add_argument("--scheduler-patience", type=int, default=2)
+    parser.add_argument("--scheduler-min-lr", type=float, default=1e-6)
+    parser.add_argument("--train-log-freq", type=int, default=10)
     parser.add_argument("--max-grad-norm", type=float, default=100.0)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--seed", type=int, default=2024)
@@ -83,6 +95,8 @@ def main() -> None:
 
     if not args.baseline_csv and not args.frame_aug_csv:
         raise ValueError("Provide at least one of --baseline-csv or --frame-aug-csv")
+    if args.only_fold is not None and not (0 <= int(args.only_fold) < int(args.num_cvfolds)):
+        raise ValueError(f"--only-fold must be in [0, {int(args.num_cvfolds)-1}]")
 
     print("[PPB] using local vendored BaselineModel package")
 

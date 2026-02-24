@@ -40,14 +40,20 @@ PPB_TRAIN_OUT="${PPB_TRAIN_OUT:-src/bridging/generatedData/ppb_results/$DATASET_
 
 FRAMES_PER_COMPLEX="${FRAMES_PER_COMPLEX:-120}"
 DROP_FIRST_FRACTION="${DROP_FIRST_FRACTION:-0.0}"
-EPOCHS="${EPOCHS:-20}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
-NUM_WORKERS="${NUM_WORKERS:-0}"
+NUM_WORKERS="${NUM_WORKERS:-4}"
 NUM_CVFOLDS="${NUM_CVFOLDS:-5}"
 SEED="${SEED:-2024}"
+MAX_ITERS="${MAX_ITERS:-100000}"
+VAL_FREQ="${VAL_FREQ:-1000}"
+TRAIN_LOG_FREQ="${TRAIN_LOG_FREQ:-10}"
+SCHEDULER_FACTOR="${SCHEDULER_FACTOR:-0.8}"
+SCHEDULER_PATIENCE="${SCHEDULER_PATIENCE:-2}"
+SCHEDULER_MIN_LR="${SCHEDULER_MIN_LR:-1e-6}"
 TRAJ_FRAMES_TRAIN="${TRAJ_FRAMES_TRAIN:-24}"
 TRAJ_FRAMES_EVAL="${TRAJ_FRAMES_EVAL:-120}"
 TRAJ_BATCH_COMPLEXES="${TRAJ_BATCH_COMPLEXES:-4}"
+ONLY_FOLD="${ONLY_FOLD:-}"
 
 mkdir -p "$PPB_PREP_ROOT" "$PPB_TRAIN_OUT"
 
@@ -77,19 +83,30 @@ if [ ! -f "$FRAME_AUG_CSV" ]; then
   exit 1
 fi
 
+EXTRA_ARGS=()
+if [ -n "$ONLY_FOLD" ]; then
+  EXTRA_ARGS+=(--only-fold "$ONLY_FOLD")
+fi
+
 "$PYTHON" -m bridging.ppb.train_cv \
   --baseline-csv "$BASELINE_CSV" \
   --frame-aug-csv "$FRAME_AUG_CSV" \
   --out-dir "$PPB_TRAIN_OUT" \
   --device cpu \
   --num-cvfolds "$NUM_CVFOLDS" \
-  --epochs "$EPOCHS" \
+  --max-iters "$MAX_ITERS" \
+  --val-freq "$VAL_FREQ" \
   --batch-size "$BATCH_SIZE" \
   --num-workers "$NUM_WORKERS" \
   --seed "$SEED" \
+  --train-log-freq "$TRAIN_LOG_FREQ" \
+  --scheduler-factor "$SCHEDULER_FACTOR" \
+  --scheduler-patience "$SCHEDULER_PATIENCE" \
+  --scheduler-min-lr "$SCHEDULER_MIN_LR" \
   --traj-frames-train "$TRAJ_FRAMES_TRAIN" \
   --traj-frames-eval "$TRAJ_FRAMES_EVAL" \
-  --traj-batch-complexes "$TRAJ_BATCH_COMPLEXES"
+  --traj-batch-complexes "$TRAJ_BATCH_COMPLEXES" \
+  "${EXTRA_ARGS[@]}"
 
 echo "[DONE] PPB train complete"
 echo "[DONE] prep_report=$PPB_PREP_ROOT/ppb_prepare_report.json"
