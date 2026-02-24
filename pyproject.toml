@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "bridging"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["biopython", "easydict", "matplotlib", "mdtraj", "numpy", "openmm", "pandas", "parmed", "pdbfixer-wheel>=1.12.4", "prodigy-prot", "rcsb-api", "python-docx", "pyyaml", "requests", "scikit-learn", "tables", "torch", "tqdm"]
+dependencies = ["biopython", "easydict", "matplotlib", "mdtraj", "netCDF4", "numpy", "openmm", "pandas", "parmed", "pdbfixer-wheel>=1.12.4", "prodigy-prot", "rcsb-api", "python-docx", "pyyaml", "requests", "scikit-learn", "tables", "torch", "tqdm"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -134,6 +134,7 @@ def build_ppb_inputs(
     baseline_rows: list[dict] = []
     frame_rows: list[dict] = []
     skipped_missing_md: list[str] = []
+    skipped_incomplete_md: list[str] = []
     skipped_empty_traj: list[str] = []
     skipped_missing_raw_pdb: list[str] = []
 
@@ -145,8 +146,12 @@ def build_ppb_inputs(
         md_dir = md_root / pdb
         traj_path = md_dir / "traj_protein.nc"
         top_path = md_dir / "topology_protein.pdb"
+        done_path = md_dir / "DONE"
         if not traj_path.exists() or not top_path.exists():
             skipped_missing_md.append(pdb)
+            continue
+        if not done_path.exists():
+            skipped_incomplete_md.append(pdb)
             continue
 
         traj = md.load(str(traj_path), top=str(top_path))
@@ -203,9 +208,11 @@ def build_ppb_inputs(
         "n_baseline_rows": int(len(baseline_rows)),
         "n_frame_rows": int(len(frame_rows)),
         "n_missing_md": int(len(skipped_missing_md)),
+        "n_incomplete_md": int(len(skipped_incomplete_md)),
         "n_empty_traj": int(len(skipped_empty_traj)),
         "n_missing_raw_pdb": int(len(skipped_missing_raw_pdb)),
         "missing_md_pdb": skipped_missing_md[:50],
+        "incomplete_md_pdb": skipped_incomplete_md[:50],
         "empty_traj_pdb": skipped_empty_traj[:50],
         "missing_raw_pdb": skipped_missing_raw_pdb[:50],
     }
@@ -267,6 +274,7 @@ def main() -> None:
     print(f"[PPB-PREP] frame_rows={result.get('n_frame_rows', 0)}")
     print(
         f"[PPB-PREP] missing_md={result.get('n_missing_md', 0)} "
+        f"incomplete_md={result.get('n_incomplete_md', 0)} "
         f"empty_traj={result.get('n_empty_traj', 0)} "
         f"missing_raw_pdb={result.get('n_missing_raw_pdb', 0)}"
     )
