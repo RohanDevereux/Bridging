@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from bridging.MD.prefetch_pdbs import ensure_pdb_cached
+from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.utils.affinity import experimental_delta_g_kcalmol
 from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
@@ -20,7 +20,7 @@ from .config import (
     STATIC_EDGE_FEATURES,
     STATIC_NODE_FEATURES,
 )
-from .chain_remap import build_raw_to_md_chain_map, remap_query_pair
+from .chain_remap import build_raw_to_md_chain_map, load_chain_order, remap_query_pair
 from .deeprank_adapter import (
     build_deeprank_hdf5,
     index_hdf5_entries,
@@ -38,6 +38,10 @@ def _fmt_seconds(seconds: float) -> str:
     h, rem = divmod(s, 3600)
     m, sec = divmod(rem, 60)
     return f"{h:02d}:{m:02d}:{sec:02d}"
+
+
+def _cached_raw_pdb_path(pdb_id: str, pdb_cache_root: Path) -> Path:
+    return pdb_cache_root / f"{str(pdb_id).strip().upper()}.pdb"
 
 
 def _select_complex_entries(dataset_csv: Path) -> tuple[list[dict], dict]:
@@ -121,6 +125,9 @@ def _resolve_hdf5_paths(
         "n_entries": int(len(entries)),
         "n_md_topology_sources": 0,
         "n_raw_pdb_sources": 0,
+        "n_raw_pdb_cache_hits": 0,
+        "n_raw_pdb_cache_miss": 0,
+        "n_raw_pdb_sources_missing": 0,
         "n_md_topology_missing": 0,
         "n_query_chain_remapped": 0,
         "n_query_chain_fallback": 0,
@@ -129,28 +136,50 @@ def _resolve_hdf5_paths(
     chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
 
     for rec in entries:
-        raw_pdb_path, _ = ensure_pdb_cached(rec["pdb_id"], cache_dir=pdb_cache_root)
+        raw_pdb_path = _cached_raw_pdb_path(rec["pdb_id"], pdb_cache_root)
+        raw_exists = raw_pdb_path.exists()
+        if raw_exists:
+            source_report["n_raw_pdb_cache_hits"] += 1
+        else:
+            source_report["n_raw_pdb_cache_miss"] += 1
         rec["pdb_path"] = str(raw_pdb_path)
         rec["query_model_id"] = rec["complex_id"]
         rec["query_source_pdb_path"] = str(raw_pdb_path)
 
         if graph_source != "md_topology_protein":
-            source_report["n_raw_pdb_sources"] += 1
+            if raw_exists:
+                source_report["n_raw_pdb_sources"] += 1
+            else:
+                source_report["n_raw_pdb_sources_missing"] += 1
             continue
 
         md_pdb_path = md_root / str(rec["pdb_id"]) / "topology_protein.pdb"
         if not md_pdb_path.exists():
             source_report["n_md_topology_missing"] += 1
-            source_report["n_raw_pdb_sources"] += 1
             continue
 
         source_report["n_md_topology_sources"] += 1
         rec["query_source_pdb_path"] = str(md_pdb_path)
+        md_chain_order = load_chain_order(md_pdb_path)
+        if not md_chain_order:
+            source_report["n_md_topology_missing"] += 1
+            continue
 
-        cache_key = str(rec["pdb_id"])
-        if cache_key not in chain_map_cache:
-            chain_map_cache[cache_key] = build_raw_to_md_chain_map(raw_pdb_path, md_pdb_path)
-        chain_map, md_chain_order, map_report = chain_map_cache[cache_key]
+        if raw_exists:
+            cache_key = str(rec["pdb_id"])
+            if cache_key not in chain_map_cache:
+                chain_map_cache[cache_key] = build_raw_to_md_chain_map(raw_pdb_path, md_pdb_path)
+            chain_map, _md_chain_order, map_report = chain_map_cache[cache_key]
+        else:
+            chain_map = {}
+            map_report = {
+                "n_raw_chains": 0,
+                "n_md_chains": int(len(md_chain_order)),
+                "n_mapped": 0,
+                "direct_chain_id_overlap": [],
+                "mapping_scores": {},
+                "note": "raw_pdb_missing_used_md_chain_fallback",
+            }
 
         q1_old = str(rec["query_chain_1"]).strip().upper()
         q2_old = str(rec["query_chain_2"]).strip().upper()
@@ -429,7 +458,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", required=True, help="PPB-derived CSV with affinity labels/chains.")
     parser.add_argument("--md-root", required=True, help="Per-PDB MD directories containing traj_full/topology_full.")
     parser.add_argument("--out-dir", required=True, help="Output directory for prepared graph dataset.")
-    parser.add_argument("--pdb-cache-root", default="~/scratch/pdb_cache")
+    parser.add_argument("--pdb-cache-root", default=str(PDB_CACHE_DIR))
     parser.add_argument(
         "--graph-source",
         choices=["raw_pdb", "md_topology_protein"],

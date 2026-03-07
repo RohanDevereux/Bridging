@@ -5,6 +5,8 @@ import json
 import time
 from pathlib import Path
 
+from bridging.MD.paths import PDB_CACHE_DIR
+
 from .prepare import build_prepared_dataset
 from .regress import run_linear_probe
 from .supervised_baseline import run_supervised_baseline
@@ -221,7 +223,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", required=True)
     parser.add_argument("--md-root", required=True)
     parser.add_argument("--out-dir", required=True)
-    parser.add_argument("--pdb-cache-root", default="~/scratch/pdb_cache")
+    parser.add_argument("--pdb-cache-root", default=str(PDB_CACHE_DIR))
     parser.add_argument(
         "--graph-source",
         choices=["raw_pdb", "md_topology_protein"],

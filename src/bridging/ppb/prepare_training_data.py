@@ -9,6 +9,7 @@ import mdtraj as md
 import numpy as np
 import pandas as pd
 
+from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.affinity import experimental_delta_g_kcalmol
 from bridging.utils.dataset_rows import parse_chain_group, row_pdb_id
@@ -274,7 +275,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--pdb-cache-root",
-        default="~/scratch/pdb_cache",
+        default=str(PDB_CACHE_DIR),
         help="Directory for raw RCSB PDB files used by baseline PPB model.",
     )
     parser.add_argument("--overwrite", action="store_true")

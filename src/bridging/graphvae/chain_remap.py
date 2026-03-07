@@ -61,6 +61,10 @@ def _load_chain_sequences(pdb_path: Path) -> ChainSeqs:
     return ChainSeqs(order=order, seqs=seqs)
 
 
+def load_chain_order(pdb_path: Path) -> list[str]:
+    return list(_load_chain_sequences(pdb_path).order)
+
+
 def _seq_score(a: str, b: str) -> float:
     if not a or not b:
         return 0.0
