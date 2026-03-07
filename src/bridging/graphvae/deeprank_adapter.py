@@ -1,0 +1,152 @@
+from __future__ import annotations
+
+import json
+import shutil
+from pathlib import Path
+from typing import Any
+
+import h5py
+import numpy as np
+from deeprank2.features import components, contact, exposure, surfacearea
+from deeprank2.query import ProteinProteinInterfaceQuery, QueryCollection
+
+from .ids import sanitize_filename_token
+
+
+def _as_path_list(paths: Any) -> list[Path]:
+    if paths is None:
+        return []
+    if isinstance(paths, (str, Path)):
+        return [Path(paths)]
+    return [Path(p) for p in paths]
+
+
+def _decode_chain_id(x) -> str:
+    if isinstance(x, bytes):
+        return x.decode("utf-8", errors="ignore").strip().upper()
+    return str(x).strip().upper()
+
+
+def _read_feature_column(group: h5py.Group, name: str, n_rows: int) -> np.ndarray:
+    if name not in group:
+        return np.full((n_rows,), np.nan, dtype=np.float32)
+    arr = np.asarray(group[name])
+    if arr.ndim == 2 and arr.shape[1] == 1:
+        arr = arr[:, 0]
+    if arr.ndim != 1:
+        arr = np.reshape(arr, (n_rows, -1))[:, 0]
+    out = arr.astype(np.float32, copy=False)
+    if out.shape[0] != n_rows:
+        raise ValueError(f"Feature {name} has incompatible length {out.shape[0]} != {n_rows}")
+    return out
+
+
+def _entry_model_id(entry_name: str) -> str:
+    token = str(entry_name).split(":")[-1]
+    return token.strip()
+
+
+def stage_query_pdbs(entries: list[dict], pdb_stage_dir: Path, overwrite: bool = False) -> list[dict]:
+    pdb_stage_dir.mkdir(parents=True, exist_ok=True)
+    out = []
+    for row in entries:
+        staged = pdb_stage_dir / f"{sanitize_filename_token(row['complex_id'])}.pdb"
+        source_path = Path(row.get("query_source_pdb_path", row["pdb_path"]))
+        if overwrite or not staged.exists():
+            shutil.copy2(source_path, staged)
+        rec = dict(row)
+        rec["query_pdb_path"] = str(staged)
+        out.append(rec)
+    return out
+
+
+def build_deeprank_hdf5(
+    *,
+    staged_entries: list[dict],
+    out_prefix: Path,
+    influence_radius: float,
+    max_edge_length: float | None,
+) -> list[Path]:
+    feature_modules = [components, contact, exposure, surfacearea]
+
+    query_collection = QueryCollection()
+    for rec in staged_entries:
+        chain_ids = [rec["query_chain_1"], rec["query_chain_2"]]
+        query = ProteinProteinInterfaceQuery(
+            pdb_path=rec["query_pdb_path"],
+            resolution="residue",
+            chain_ids=chain_ids,
+            targets={"dG": float(rec["dG"])},
+        )
+        query_collection.add(query)
+
+    kwargs = {
+        "prefix": str(out_prefix),
+        "feature_modules": feature_modules,
+        "influence_radius": float(influence_radius),
+    }
+    if max_edge_length is not None:
+        kwargs["max_edge_length"] = float(max_edge_length)
+    hdf5_paths = query_collection.process(**kwargs)
+    return _as_path_list(hdf5_paths)
+
+
+def index_hdf5_entries(hdf5_paths: list[Path]) -> dict[str, dict]:
+    out: dict[str, dict] = {}
+    for path in hdf5_paths:
+        with h5py.File(path, "r") as h5:
+            for key in h5.keys():
+                model_id = _entry_model_id(key)
+                if model_id not in out:
+                    out[model_id] = {"hdf5_path": str(path), "entry_name": str(key)}
+    return out
+
+
+def load_deeprank_graph(
+    *,
+    hdf5_path: Path,
+    entry_name: str,
+    node_feature_names: list[str],
+    edge_feature_names: list[str],
+) -> dict:
+    with h5py.File(hdf5_path, "r") as h5:
+        entry = h5[entry_name]
+        node_group = entry["node_features"]
+        edge_group = entry["edge_features"]
+
+        chain_ids_raw = np.asarray(node_group["_chain_id"])
+        positions_raw = np.asarray(node_group["_position"])
+        n_nodes = int(chain_ids_raw.shape[0])
+
+        node_chain_id = [_decode_chain_id(v) for v in chain_ids_raw.tolist()]
+        node_position = [int(p) for p in np.asarray(positions_raw).astype(np.int64).tolist()]
+
+        edge_index_raw = np.asarray(edge_group["_index"]).astype(np.int64)
+        if edge_index_raw.ndim != 2:
+            raise ValueError(f"Unexpected edge index shape: {edge_index_raw.shape}")
+        if edge_index_raw.shape[0] == 2:
+            edge_index = edge_index_raw
+            n_edges = int(edge_index_raw.shape[1])
+        elif edge_index_raw.shape[1] == 2:
+            edge_index = edge_index_raw.T
+            n_edges = int(edge_index_raw.shape[0])
+        else:
+            raise ValueError(f"Unexpected edge index shape: {edge_index_raw.shape}")
+
+        node_cols = [_read_feature_column(node_group, name, n_nodes) for name in node_feature_names]
+        edge_cols = [_read_feature_column(edge_group, name, n_edges) for name in edge_feature_names]
+
+        node_features = np.stack(node_cols, axis=1).astype(np.float32, copy=False)
+        edge_features = np.stack(edge_cols, axis=1).astype(np.float32, copy=False)
+
+    return {
+        "node_features": node_features,
+        "edge_features": edge_features,
+        "edge_index": edge_index.astype(np.int64, copy=False),
+        "node_chain_id": node_chain_id,
+        "node_position": node_position,
+    }
+
+
+def write_deeprank_index(index: dict[str, dict], out_path: Path) -> None:
+    out_path.write_text(json.dumps(index, indent=2), encoding="utf-8")

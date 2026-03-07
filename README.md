@@ -33,3 +33,83 @@ cpptraj -h >/dev/null && echo "cpptraj ok"
 MMPBSA.py -h >/dev/null && echo "MMPBSA.py ok"
 python -m bridging.MMGBSA.prefetch_dataset --help
 ```
+
+## GraphVAE (S vs SD) Pipeline
+New pipeline in `src/bridging/graphvae/`:
+- `S`: static structure features only
+- `SD`: static + MD dynamic features
+- shared 8-D masked Graph-VAE encoder, then linear Ridge probe on latent `mu_0..mu_7`
+
+Install extras:
+
+```bash
+pip install -e .
+```
+
+Notes:
+- `deeprank2` and `torch-geometric` are required dependencies for this pipeline.
+- Default DeepRank influence radius is set very large (`1e6`) to approximate whole-complex node coverage.
+- By default, prep fails if any protein residue (with CA) is missing from the DeepRank node set. Override with `--allow-partial-node-coverage`.
+- DeepRank2 upstream currently documents Python 3.10 support; if your main environment is Python 3.11, generate HDF5 in a Py3.10 env and train/probe with existing files.
+- Default `--graph-source` is `md_topology_protein` so DeepRank node IDs match the saved MD topology/trajectory ID space.
+- Prep logs include progress/ETA; tune frequency with `--progress-every` (`prepare`) or `--prepare-progress-every` (`run_full`).
+
+Prepare records:
+
+```bash
+python -m bridging.graphvae.prepare \
+  --dataset src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
+  --md-root "$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20" \
+  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared \
+  --graph-source md_topology_protein \
+  --deep-rank-hdf5 /path/to/deeprank_graphs.hdf5
+```
+
+Train mode `S` and export latents:
+
+```bash
+python -m bridging.graphvae.train \
+  --records src/bridging/generatedData/graphvae/ppb_broad_prepared/graph_records.pt \
+  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S \
+  --mode S \
+  --latent-dim 8 \
+  --device cpu
+```
+
+Linear probe:
+
+```bash
+python -m bridging.graphvae.regress \
+  --latents-csv src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S/latents_S.csv \
+  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S
+```
+
+Full end-to-end run (S + SD + compare):
+
+```bash
+python -m bridging.graphvae.run_full \
+  --dataset src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
+  --md-root "$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20" \
+  --out-dir src/bridging/generatedData/graphvae/ppb_broad_full \
+  --graph-source md_topology_protein \
+  --deep-rank-hdf5 /path/to/deeprank_graphs.hdf5 \
+  --latent-dim 8 \
+  --device cuda
+```
+
+GPU sbatch wrapper:
+
+```bash
+DATASET=src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
+MD_ROOT=$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20 \
+DEEPRANK_HDF5="/path/to/deeprank_graphs.hdf5" \
+sbatch hpc/graphvae_full_gpu.sbatch
+```
+
+Dynamic feature variation report (after prepare/full run):
+
+```bash
+python -m bridging.graphvae.analyze_dynamic_variation \
+  --records src/bridging/generatedData/graphvae/ppb_broad_full/prepared/graph_records.pt \
+  --out-dir src/bridging/generatedData/graphvae/ppb_broad_full/dynamic_variation
+```
