@@ -40,6 +40,7 @@ PDB_CACHE_ROOT="${PDB_CACHE_ROOT:-$SCRATCH_ROOT/pdb_cache}"
 OUT_DIR="${OUT_DIR:-src/bridging/generatedData/graphvae/$DATASET_STEM}"
 
 BUILD_DEEPRANK="${BUILD_DEEPRANK:-0}"
+REUSE_PREPARED="${REUSE_PREPARED:-0}"
 DEEPRANK_PREFIX="${DEEPRANK_PREFIX:-$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs}"
 DEEPRANK_HDF5="${DEEPRANK_HDF5:-}"
 
@@ -68,7 +69,11 @@ if [ "${ALLOW_PARTIAL_NODE_COVERAGE:-0}" = "1" ]; then
   COMMON_ARGS+=(--allow-partial-node-coverage)
 fi
 
-if [ "$BUILD_DEEPRANK" = "1" ]; then
+if [ "$REUSE_PREPARED" = "1" ]; then
+  "$PYTHON" -m bridging.graphvae.run_full \
+    "${COMMON_ARGS[@]}" \
+    --reuse-prepared
+elif [ "$BUILD_DEEPRANK" = "1" ]; then
   "$PYTHON" -m bridging.graphvae.run_full \
     "${COMMON_ARGS[@]}" \
     --build-deeprank \
