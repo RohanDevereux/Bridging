@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -27,14 +28,47 @@ def _decode_chain_id(x) -> str:
     return str(x).strip().upper()
 
 
+def _decode_name(x) -> str:
+    if isinstance(x, bytes):
+        return x.decode("utf-8", errors="ignore").strip()
+    return str(x).strip()
+
+
+def _parse_resseq_from_node_name(name: str) -> int:
+    parts = str(name).strip().split()
+    if len(parts) < 3:
+        raise ValueError(f"Cannot parse DeepRank node name: {name!r}")
+    last = parts[-1]
+    m = re.fullmatch(r"(-?\d+)([A-Za-z]?)", last)
+    if m is None:
+        raise ValueError(
+            "Cannot parse residue number from DeepRank node name "
+            f"{name!r}; expected trailing token like '<resseq>' or '<resseq><icode>'."
+        )
+    return int(m.group(1))
+
+
+def _read_id_column(group: h5py.Group, name: str) -> list:
+    if name not in group:
+        raise KeyError(f"Missing required metadata '{name}' in HDF5 group '{group.name}'.")
+    arr = np.asarray(group[name])
+    if arr.ndim == 1:
+        return arr.tolist()
+    if arr.ndim == 2 and arr.shape[1] == 1:
+        return arr[:, 0].tolist()
+    raise ValueError(f"Unexpected shape for metadata '{name}' in '{group.name}': {arr.shape}")
+
+
 def _read_feature_column(group: h5py.Group, name: str, n_rows: int) -> np.ndarray:
     if name not in group:
         raise KeyError(f"Missing required feature '{name}' in HDF5 group '{group.name}'.")
     arr = np.asarray(group[name])
-    if arr.ndim == 2 and arr.shape[1] == 1:
+    if arr.ndim == 1:
+        pass
+    elif arr.ndim == 2 and arr.shape[1] == 1:
         arr = arr[:, 0]
-    if arr.ndim != 1:
-        arr = np.reshape(arr, (n_rows, -1))[:, 0]
+    else:
+        raise ValueError(f"Feature '{name}' must be 1D or Nx1 in '{group.name}', found shape={arr.shape}")
     out = arr.astype(np.float32, copy=False)
     if out.shape[0] != n_rows:
         raise ValueError(f"Feature {name} has incompatible length {out.shape[0]} != {n_rows}")
@@ -120,12 +154,18 @@ def load_deeprank_graph(
         node_group = entry["node_features"]
         edge_group = entry["edge_features"]
 
-        chain_ids_raw = np.asarray(node_group["_chain_id"])
-        positions_raw = np.asarray(node_group["_position"])
-        n_nodes = int(chain_ids_raw.shape[0])
+        chain_vals = _read_id_column(node_group, "_chain_id")
+        name_vals = _read_id_column(node_group, "_name")
+        if len(chain_vals) != len(name_vals):
+            raise ValueError(
+                f"Node metadata length mismatch in '{entry_name}': "
+                f"_chain_id={len(chain_vals)} _name={len(name_vals)}"
+            )
+        n_nodes = int(len(chain_vals))
 
-        node_chain_id = [_decode_chain_id(v) for v in chain_ids_raw.tolist()]
-        node_position = [int(p) for p in np.asarray(positions_raw).astype(np.int64).tolist()]
+        node_chain_id = [_decode_chain_id(v) for v in chain_vals]
+        node_names = [_decode_name(v) for v in name_vals]
+        node_position = [_parse_resseq_from_node_name(name) for name in node_names]
 
         edge_index_raw = np.asarray(edge_group["_index"]).astype(np.int64)
         if edge_index_raw.ndim != 2:

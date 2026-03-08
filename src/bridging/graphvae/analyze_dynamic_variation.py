@@ -44,6 +44,26 @@ def _feature_column(arr: np.ndarray, names: list[str], feature_name: str) -> np.
     return np.asarray(arr[:, idx[feature_name]], dtype=np.float64)
 
 
+def _row_summary(vals: np.ndarray) -> tuple[float, float, float, float]:
+    finite = vals[np.isfinite(vals)]
+    if finite.size < 1:
+        return float("nan"), float("nan"), float("nan"), float("nan")
+    return (
+        float(np.mean(finite)),
+        float(np.std(finite)),
+        float(np.quantile(finite, 0.05)),
+        float(np.quantile(finite, 0.95)),
+    )
+
+
+def _concat_finite(chunks: list[np.ndarray]) -> np.ndarray:
+    finite_chunks = [np.asarray(c, dtype=np.float64)[np.isfinite(c)] for c in chunks if c.size > 0]
+    finite_chunks = [c for c in finite_chunks if c.size > 0]
+    if not finite_chunks:
+        return np.asarray([], dtype=np.float64)
+    return np.concatenate(finite_chunks, axis=0)
+
+
 def analyze_dynamic_variation(*, records_path: Path, out_dir: Path) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     records = torch.load(records_path, map_location="cpu")
@@ -77,18 +97,20 @@ def analyze_dynamic_variation(*, records_path: Path, out_dir: Path) -> dict:
         for feat in node_dyn:
             vals = _feature_column(node_arr, node_names, feat)
             global_store[feat].append(vals)
-            row[f"{feat}__mean"] = float(np.nanmean(vals))
-            row[f"{feat}__std"] = float(np.nanstd(vals))
-            row[f"{feat}__p05"] = float(np.nanquantile(vals, 0.05))
-            row[f"{feat}__p95"] = float(np.nanquantile(vals, 0.95))
+            mean, std, p05, p95 = _row_summary(vals)
+            row[f"{feat}__mean"] = mean
+            row[f"{feat}__std"] = std
+            row[f"{feat}__p05"] = p05
+            row[f"{feat}__p95"] = p95
 
         for feat in edge_dyn:
             vals = _feature_column(edge_arr, edge_names, feat)
             global_store[feat].append(vals)
-            row[f"{feat}__mean"] = float(np.nanmean(vals))
-            row[f"{feat}__std"] = float(np.nanstd(vals))
-            row[f"{feat}__p05"] = float(np.nanquantile(vals, 0.05))
-            row[f"{feat}__p95"] = float(np.nanquantile(vals, 0.95))
+            mean, std, p05, p95 = _row_summary(vals)
+            row[f"{feat}__mean"] = mean
+            row[f"{feat}__std"] = std
+            row[f"{feat}__p05"] = p05
+            row[f"{feat}__p95"] = p95
             if feat == "dyn_contact_freq_8A":
                 finite = vals[np.isfinite(vals)]
                 if finite.size > 0:
@@ -110,15 +132,14 @@ def analyze_dynamic_variation(*, records_path: Path, out_dir: Path) -> dict:
     for feat, chunks in global_store.items():
         if not chunks:
             continue
-        all_vals = np.concatenate([c[np.isfinite(c)] for c in chunks if c.size > 0], axis=0)
+        all_vals = _concat_finite(chunks)
+        if all_vals.size < 1:
+            continue
         global_stats[feat] = _stats(all_vals)
 
     contact_global = {}
     if "dyn_contact_freq_8A" in global_store:
-        all_contact = np.concatenate(
-            [c[np.isfinite(c)] for c in global_store["dyn_contact_freq_8A"] if c.size > 0],
-            axis=0,
-        )
+        all_contact = _concat_finite(global_store["dyn_contact_freq_8A"])
         if all_contact.size > 0:
             contact_global = {
                 "frac_near0": float(np.mean(all_contact <= 0.05)),
@@ -203,4 +224,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

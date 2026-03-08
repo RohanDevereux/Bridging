@@ -116,6 +116,7 @@ def _resolve_hdf5_paths(
     influence_radius: float,
     max_edge_length: float | None,
     overwrite: bool,
+    progress_every: int,
 ) -> tuple[list[Path], dict[str, dict], list[dict], dict]:
     if graph_source not in {"raw_pdb", "md_topology_protein"}:
         raise ValueError(f"Unsupported graph_source={graph_source}")
@@ -137,7 +138,8 @@ def _resolve_hdf5_paths(
     }
     chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
 
-    for rec in entries:
+    total_entries = int(len(entries))
+    for i, rec in enumerate(entries, start=1):
         raw_pdb_path = _cached_raw_pdb_path(rec["pdb_id"], pdb_cache_root)
         raw_exists = raw_pdb_path.exists()
         if raw_exists:
@@ -206,6 +208,15 @@ def _resolve_hdf5_paths(
                     "map_report": map_report,
                 }
             )
+        if progress_every > 0 and (i % progress_every == 0 or i == total_entries):
+            print(
+                f"[PREP] source_resolve {i}/{total_entries} "
+                f"md_sources={source_report['n_md_topology_sources']} "
+                f"md_missing={source_report['n_md_topology_missing']} "
+                f"remapped={source_report['n_query_chain_remapped']} "
+                f"fallback={source_report['n_query_chain_fallback']}",
+                flush=True,
+            )
 
     if build_deeprank:
         pdb_stage = out_dir / "deeprank_stage_pdb"
@@ -220,15 +231,28 @@ def _resolve_hdf5_paths(
                 source_report["n_stage_skipped_missing_source_pdb"] += 1
                 continue
             stage_inputs.append(rec)
+        print(
+            f"[PREP] deeprank stage_inputs={len(stage_inputs)} "
+            f"skipped_not_done={source_report['n_stage_skipped_not_done']} "
+            f"skipped_missing_source_pdb={source_report['n_stage_skipped_missing_source_pdb']}",
+            flush=True,
+        )
         staged = stage_query_pdbs(stage_inputs, pdb_stage, overwrite=overwrite)
         for rec in staged:
             rec["query_model_id"] = Path(rec["query_pdb_path"]).stem
         prefix = deeprank_prefix if deeprank_prefix else (out_dir / "deeprank_graphs")
+        dr_t0 = time.perf_counter()
+        print(f"[PREP] deeprank build start prefix={prefix}", flush=True)
         hdf5_paths = build_deeprank_hdf5(
             staged_entries=staged,
             out_prefix=prefix,
             influence_radius=influence_radius,
             max_edge_length=max_edge_length,
+        )
+        print(
+            f"[PREP] deeprank build done n_hdf5={len(hdf5_paths)} "
+            f"elapsed={_fmt_seconds(time.perf_counter() - dr_t0)}",
+            flush=True,
         )
         entries = staged
     else:
@@ -284,6 +308,7 @@ def build_prepared_dataset(
         influence_radius=influence_radius,
         max_edge_length=max_edge_length,
         overwrite=overwrite,
+        progress_every=progress_every,
     )
 
     edge_dyn_names = list(DYNAMIC_EDGE_FEATURES_WITH_DIST if include_dynamic_dist_stats else DYNAMIC_EDGE_FEATURES_BASE)

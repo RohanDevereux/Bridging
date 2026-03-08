@@ -26,6 +26,7 @@ if [ ! -x "$PYTHON" ]; then
   PYTHON="$(command -v python3 || command -v python)"
 fi
 export PYTHONPATH="${PYTHONPATH:-src}"
+export PYTHONUNBUFFERED=1
 
 echo "[ENV] host=$(hostname)"
 echo "[ENV] python=$PYTHON"
