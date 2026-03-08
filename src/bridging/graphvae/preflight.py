@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import inspect
 import random
+import shutil
 from pathlib import Path
 
 import mdtraj as md
@@ -36,6 +37,22 @@ def _check_records(dataset_csv: Path) -> int:
     if df.empty:
         raise RuntimeError(f"Dataset CSV has no rows: {dataset_csv}")
     return int(len(df))
+
+
+def _check_msms() -> str:
+    msms = shutil.which("msms")
+    if msms is None:
+        raise RuntimeError(
+            "msms executable not found on PATH. DeepRank exposure features (res_depth/hse) require msms. "
+            "Load/install msms before running graphvae prepare."
+        )
+    return msms
+
+
+def _check_freesasa() -> str:
+    import freesasa  # noqa: PLC0415
+
+    return str(getattr(freesasa, "__version__", "unknown"))
 
 
 def _check_md_root(md_root: Path, sample_n: int, require_done: int) -> dict:
@@ -80,6 +97,8 @@ def _parse_args() -> argparse.Namespace:
 def main() -> None:
     args = _parse_args()
     deeprank2_version = _check_deeprank2(str(args.expected_deeprank2_version))
+    msms_path = _check_msms()
+    freesasa_version = _check_freesasa()
     n_rows = _check_records(Path(args.dataset))
     md_stats = _check_md_root(
         Path(args.md_root),
@@ -87,7 +106,8 @@ def main() -> None:
         require_done=int(args.require_done),
     )
     print(
-        f"[PREFLIGHT] ok deeprank2={deeprank2_version} dataset_rows={n_rows} "
+        f"[PREFLIGHT] ok deeprank2={deeprank2_version} freesasa={freesasa_version} "
+        f"msms={msms_path} dataset_rows={n_rows} "
         f"complex_dirs={md_stats['n_complex_dirs']} done={md_stats['n_done_dirs']} "
         f"sample_checked={md_stats['sample_checked']}"
     )

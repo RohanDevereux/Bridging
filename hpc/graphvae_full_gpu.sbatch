@@ -32,6 +32,19 @@ echo "[ENV] python=$PYTHON"
 "$PYTHON" -V
 command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi || true
 
+if [ -n "${MSMS_MODULE:-}" ]; then
+  module load "$MSMS_MODULE"
+fi
+if [ -n "${MSMS_BIN_DIR:-}" ]; then
+  export PATH="${MSMS_BIN_DIR}:$PATH"
+fi
+if ! command -v msms >/dev/null 2>&1; then
+  echo "[FAIL] msms not found on PATH. DeepRank exposure features require msms."
+  echo "[HINT] set MSMS_MODULE (if available) or install msms on this cluster."
+  exit 1
+fi
+echo "[ENV] msms=$(command -v msms)"
+
 DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv}"
 DATASET_STEM="$(basename "$DATASET" .csv)"
 SCRATCH_ROOT="${SCRATCH_ROOT:-$HOME/scratch}"

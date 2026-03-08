@@ -69,6 +69,10 @@ def build_deeprank_hdf5(
 ) -> list[Path]:
     if not staged_entries:
         raise ValueError("No staged entries available for DeepRank2 graph generation.")
+    if shutil.which("msms") is None:
+        raise RuntimeError(
+            "msms executable not found on PATH. DeepRank exposure features (res_depth/hse) require msms."
+        )
     feature_modules = [components, contact, exposure, surfacearea]
     out_prefix.parent.mkdir(parents=True, exist_ok=True)
 
