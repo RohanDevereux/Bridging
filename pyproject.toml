@@ -10,6 +10,7 @@ dependencies = [
   "biopython",
   "easydict",
   "deeprank2==3.1.0",
+  "freesasa",
   "h5py",
   "matplotlib",
   "mdtraj",
