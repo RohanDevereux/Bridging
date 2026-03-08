@@ -7,7 +7,6 @@ from typing import Any
 
 import h5py
 import numpy as np
-from Bio.PDB import PDBParser
 from deeprank2.features import components, contact, exposure, surfacearea
 from deeprank2.query import ProteinProteinInterfaceQuery, QueryCollection
 
@@ -26,13 +25,6 @@ def _decode_chain_id(x) -> str:
     if isinstance(x, bytes):
         return x.decode("utf-8", errors="ignore").strip().upper()
     return str(x).strip().upper()
-
-
-def _chain_ids_in_pdb(pdb_path: Path) -> set[str]:
-    parser = PDBParser(QUIET=True)
-    structure = parser.get_structure(str(pdb_path.stem), str(pdb_path))
-    model = next(structure.get_models())
-    return {str(chain.id).strip().upper() for chain in model.get_chains()}
 
 
 def _read_feature_column(group: h5py.Group, name: str, n_rows: int) -> np.ndarray:
@@ -83,14 +75,6 @@ def build_deeprank_hdf5(
     query_collection = QueryCollection()
     for rec in staged_entries:
         chain_ids = [rec["query_chain_1"], rec["query_chain_2"]]
-        pdb_path = Path(rec["query_pdb_path"])
-        available_chain_ids = _chain_ids_in_pdb(pdb_path)
-        missing = [c for c in chain_ids if c not in available_chain_ids]
-        if missing:
-            raise ValueError(
-                f"{rec.get('complex_id', pdb_path.stem)}: query chains {missing} not found in "
-                f"{pdb_path}. available={sorted(available_chain_ids)}"
-            )
         query = ProteinProteinInterfaceQuery(
             pdb_path=rec["query_pdb_path"],
             resolution="residue",

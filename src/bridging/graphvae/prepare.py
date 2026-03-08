@@ -131,6 +131,8 @@ def _resolve_hdf5_paths(
         "n_md_topology_missing": 0,
         "n_query_chain_remapped": 0,
         "n_query_chain_fallback": 0,
+        "n_stage_skipped_not_done": 0,
+        "n_stage_skipped_missing_source_pdb": 0,
         "chain_remap_examples": [],
     }
     chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
@@ -207,7 +209,17 @@ def _resolve_hdf5_paths(
 
     if build_deeprank:
         pdb_stage = out_dir / "deeprank_stage_pdb"
-        stage_inputs = [rec for rec in entries if Path(str(rec.get("query_source_pdb_path", rec["pdb_path"]))).exists()]
+        stage_inputs = []
+        for rec in entries:
+            done_path = md_root / str(rec["pdb_id"]) / "DONE"
+            if not done_path.exists():
+                source_report["n_stage_skipped_not_done"] += 1
+                continue
+            source_pdb = Path(str(rec.get("query_source_pdb_path", rec["pdb_path"])))
+            if not source_pdb.exists():
+                source_report["n_stage_skipped_missing_source_pdb"] += 1
+                continue
+            stage_inputs.append(rec)
         staged = stage_query_pdbs(stage_inputs, pdb_stage, overwrite=overwrite)
         for rec in staged:
             rec["query_model_id"] = Path(rec["query_pdb_path"]).stem
