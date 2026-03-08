@@ -44,6 +44,13 @@ REUSE_PREPARED="${REUSE_PREPARED:-0}"
 DEEPRANK_PREFIX="${DEEPRANK_PREFIX:-$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs}"
 DEEPRANK_HDF5="${DEEPRANK_HDF5:-}"
 
+"$PYTHON" -m bridging.graphvae.preflight \
+  --dataset "$DATASET" \
+  --md-root "$MD_ROOT" \
+  --expected-deeprank2-version "${DEEPRANK2_VERSION:-3.1.0}" \
+  --sample-done "${PREFLIGHT_SAMPLE_DONE:-20}" \
+  --require-done "${PREFLIGHT_REQUIRE_DONE:-50}"
+
 COMMON_ARGS=(
   --dataset "$DATASET"
   --md-root "$MD_ROOT"

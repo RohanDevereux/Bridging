@@ -13,7 +13,8 @@ def seed_all(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
 
 def _safe_pearson(y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -49,10 +50,7 @@ def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
 
 def recursive_to(obj, device: str):
     if isinstance(obj, torch.Tensor):
-        try:
-            return obj.cuda(device=device, non_blocking=True)
-        except RuntimeError:
-            return obj.to(device)
+        return obj.to(device=device, non_blocking=True)
     if isinstance(obj, list):
         return [recursive_to(o, device=device) for o in obj]
     if isinstance(obj, tuple):

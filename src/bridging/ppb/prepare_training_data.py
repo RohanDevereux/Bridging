@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 
 from bridging.MD.paths import PDB_CACHE_DIR
-from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.affinity import experimental_delta_g_kcalmol
 from bridging.utils.dataset_rows import parse_chain_group, row_pdb_id
 from bridging.utils.table import normalized_lookup
@@ -131,6 +130,10 @@ def _save_baseline_pdb(*, pdb: str, raw_pdb_path: Path, structures_root: Path, o
     return out_path
 
 
+def _cached_raw_pdb_path(pdb: str, pdb_cache_root: Path) -> Path:
+    return pdb_cache_root / f"{str(pdb).strip().upper()}.pdb"
+
+
 def build_ppb_inputs(
     *,
     dataset_csv: Path,
@@ -149,6 +152,7 @@ def build_ppb_inputs(
     skipped_missing_md: list[str] = []
     skipped_incomplete_md: list[str] = []
     skipped_empty_traj: list[str] = []
+    skipped_bad_traj: list[dict] = []
     skipped_missing_raw_pdb: list[str] = []
 
     structures_root = out_dir / "structures"
@@ -170,7 +174,8 @@ def build_ppb_inputs(
         try:
             traj = md.load(str(traj_path), top=str(top_path))
         except Exception as exc:
-            raise RuntimeError(f"{pdb}: failed to read trajectory {traj_path}") from exc
+            skipped_bad_traj.append({"pdb": pdb, "error": repr(exc)})
+            continue
         n_frames = int(traj.n_frames)
         if n_frames <= 0:
             skipped_empty_traj.append(pdb)
@@ -180,9 +185,8 @@ def build_ppb_inputs(
         candidate_idx = np.arange(start_idx, n_frames, dtype=np.int64)
 
         if mode in {"baseline", "both"}:
-            try:
-                raw_pdb_path, _ = ensure_pdb_cached(pdb, cache_dir=Path(pdb_cache_root))
-            except Exception:
+            raw_pdb_path = _cached_raw_pdb_path(pdb, Path(pdb_cache_root))
+            if not raw_pdb_path.exists():
                 skipped_missing_raw_pdb.append(pdb)
             else:
                 baseline_pdb_path = _save_baseline_pdb(
@@ -232,10 +236,12 @@ def build_ppb_inputs(
         "n_missing_md": int(len(skipped_missing_md)),
         "n_incomplete_md": int(len(skipped_incomplete_md)),
         "n_empty_traj": int(len(skipped_empty_traj)),
+        "n_bad_traj": int(len(skipped_bad_traj)),
         "n_missing_raw_pdb": int(len(skipped_missing_raw_pdb)),
         "missing_md_pdb": skipped_missing_md[:50],
         "incomplete_md_pdb": skipped_incomplete_md[:50],
         "empty_traj_pdb": skipped_empty_traj[:50],
+        "bad_traj": skipped_bad_traj[:50],
         "missing_raw_pdb": skipped_missing_raw_pdb[:50],
     }
 
@@ -298,6 +304,7 @@ def main() -> None:
         f"[PPB-PREP] missing_md={result.get('n_missing_md', 0)} "
         f"incomplete_md={result.get('n_incomplete_md', 0)} "
         f"empty_traj={result.get('n_empty_traj', 0)} "
+        f"bad_traj={result.get('n_bad_traj', 0)} "
         f"missing_raw_pdb={result.get('n_missing_raw_pdb', 0)}"
     )
     if "baseline_csv" in result:

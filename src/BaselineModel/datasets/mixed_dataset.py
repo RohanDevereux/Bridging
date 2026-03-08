@@ -44,9 +44,8 @@ def load_data_entries(csv_path, blocklist={'1KBH'}):
         try:
             wt_type, mutchain, mt_type = mut_name[0], mut_name[1], mut_name[-1]
             mutseq = int(mut_name[2:-1])
-        except:
-            import pdb
-            pdb.set_trace()
+        except Exception as exc:
+            raise ValueError(f"Invalid mutation token: {mut_name}") from exc
         return {
             'wt': wt_type,
             'mt': mt_type,
@@ -214,6 +213,10 @@ class MixedDataset(Dataset):
         else:
             with open(self.structures_cache, 'rb') as f:
                 self.structures = pickle.load(f)
+            expected = {e['pdbcode'] for e in self.entries_full}
+            present = set(self.structures.keys())
+            if not expected.issubset(present):
+                self.structures = self._preprocess_structures()
 
     def _preprocess_structures(self):
         structures = {}
@@ -224,9 +227,8 @@ class MixedDataset(Dataset):
             model = parser.get_structure(None, pdb_path)[0]
             try:
                 data, seq_map = parse_biopython_structure(model)
-            except:
-                import pdb
-                pdb.set_trace()
+            except Exception as exc:
+                raise RuntimeError(f"Failed to parse structure: {pdb_path}") from exc
             source = os.path.basename(os.path.dirname(pdb_path))
             pdbcode = os.path.splitext(os.path.basename(pdb_path))[0].upper()
             if '.ENT' in pdbcode or '.ent' in pdbcode:
@@ -290,11 +292,10 @@ class MixedDataset(Dataset):
             try:
                 data_tf = self.transform(data)
                 data = data_tf
-            except IndexError:
-                print(data['pdbcode'])
-                print(data['itf_flag'].sum())
-                import pdb
-                pdb.set_trace()
+            except IndexError as exc:
+                raise IndexError(
+                    f"Transform failed for {data['pdbcode']} with itf_count={int(data['itf_flag'].sum())}"
+                ) from exc
         
         return data
 

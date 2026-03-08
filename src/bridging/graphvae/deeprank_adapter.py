@@ -7,6 +7,7 @@ from typing import Any
 
 import h5py
 import numpy as np
+from Bio.PDB import PDBParser
 from deeprank2.features import components, contact, exposure, surfacearea
 from deeprank2.query import ProteinProteinInterfaceQuery, QueryCollection
 
@@ -27,9 +28,16 @@ def _decode_chain_id(x) -> str:
     return str(x).strip().upper()
 
 
+def _chain_ids_in_pdb(pdb_path: Path) -> set[str]:
+    parser = PDBParser(QUIET=True)
+    structure = parser.get_structure(str(pdb_path.stem), str(pdb_path))
+    model = next(structure.get_models())
+    return {str(chain.id).strip().upper() for chain in model.get_chains()}
+
+
 def _read_feature_column(group: h5py.Group, name: str, n_rows: int) -> np.ndarray:
     if name not in group:
-        return np.full((n_rows,), np.nan, dtype=np.float32)
+        raise KeyError(f"Missing required feature '{name}' in HDF5 group '{group.name}'.")
     arr = np.asarray(group[name])
     if arr.ndim == 2 and arr.shape[1] == 1:
         arr = arr[:, 0]
@@ -67,27 +75,37 @@ def build_deeprank_hdf5(
     influence_radius: float,
     max_edge_length: float | None,
 ) -> list[Path]:
+    if not staged_entries:
+        raise ValueError("No staged entries available for DeepRank2 graph generation.")
     feature_modules = [components, contact, exposure, surfacearea]
+    out_prefix.parent.mkdir(parents=True, exist_ok=True)
 
     query_collection = QueryCollection()
     for rec in staged_entries:
         chain_ids = [rec["query_chain_1"], rec["query_chain_2"]]
+        pdb_path = Path(rec["query_pdb_path"])
+        available_chain_ids = _chain_ids_in_pdb(pdb_path)
+        missing = [c for c in chain_ids if c not in available_chain_ids]
+        if missing:
+            raise ValueError(
+                f"{rec.get('complex_id', pdb_path.stem)}: query chains {missing} not found in "
+                f"{pdb_path}. available={sorted(available_chain_ids)}"
+            )
         query = ProteinProteinInterfaceQuery(
             pdb_path=rec["query_pdb_path"],
             resolution="residue",
             chain_ids=chain_ids,
             targets={"dG": float(rec["dG"])},
+            influence_radius=float(influence_radius),
+            max_edge_length=(float(max_edge_length) if max_edge_length is not None else None),
         )
         query_collection.add(query)
 
-    kwargs = {
-        "prefix": str(out_prefix),
-        "feature_modules": feature_modules,
-        "influence_radius": float(influence_radius),
-    }
-    if max_edge_length is not None:
-        kwargs["max_edge_length"] = float(max_edge_length)
-    hdf5_paths = query_collection.process(**kwargs)
+    hdf5_paths = query_collection.process(
+        prefix=str(out_prefix),
+        feature_modules=feature_modules,
+        log_error_traceback=True,
+    )
     return _as_path_list(hdf5_paths)
 
 

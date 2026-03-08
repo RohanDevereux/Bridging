@@ -281,6 +281,7 @@ def build_prepared_dataset(
     records = []
     missing_graph = []
     missing_md = []
+    bad_md = []
     partial_node_coverage = []
     traj_cache = {}
     total_entries = int(len(entries))
@@ -304,7 +305,8 @@ def build_prepared_dataset(
         print(
             f"[PREP] progress {processed}/{total_entries} ({pct:.1f}%) "
             f"records={len(records)} missing_md={len(missing_md)} "
-            f"missing_graph={len(missing_graph)} partial={len(partial_node_coverage)} "
+            f"missing_graph={len(missing_graph)} bad_md={len(bad_md)} "
+            f"partial={len(partial_node_coverage)} "
             f"elapsed={_fmt_seconds(elapsed)} eta={_fmt_seconds(eta)} "
             f"rate={rate*3600:.1f}/h"
         )
@@ -333,15 +335,20 @@ def build_prepared_dataset(
             edge_feature_names=list(STATIC_EDGE_FEATURES),
         )
 
-        if pdb_id not in traj_cache:
-            traj_cache[pdb_id] = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
-        dyn = compute_dynamic_features(
-            traj=traj_cache[pdb_id],
-            node_chain_id=graph["node_chain_id"],
-            node_position=graph["node_position"],
-            edge_index=graph["edge_index"],
-            include_distance_stats=include_dynamic_dist_stats,
-        )
+        try:
+            if pdb_id not in traj_cache:
+                traj_cache[pdb_id] = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
+            dyn = compute_dynamic_features(
+                traj=traj_cache[pdb_id],
+                node_chain_id=graph["node_chain_id"],
+                node_position=graph["node_position"],
+                edge_index=graph["edge_index"],
+                include_distance_stats=include_dynamic_dist_stats,
+            )
+        except Exception as exc:
+            bad_md.append({"complex_id": rec["complex_id"], "pdb_id": pdb_id, "error": repr(exc)})
+            _log_progress()
+            continue
         graph_node_keys = {
             (str(c).strip().upper(), int(p))
             for c, p in zip(graph["node_chain_id"], graph["node_position"])
@@ -431,9 +438,11 @@ def build_prepared_dataset(
         "n_records": int(len(records)),
         "n_missing_graph": int(len(missing_graph)),
         "n_missing_md": int(len(missing_md)),
+        "n_bad_md": int(len(bad_md)),
         "n_partial_node_coverage": int(len(partial_node_coverage)),
         "missing_graph_complex_ids": missing_graph[:100],
         "missing_md_complex_ids": missing_md[:100],
+        "bad_md": bad_md[:100],
         "partial_node_coverage": partial_node_coverage[:100],
         "node_feature_names": node_feature_names,
         "edge_feature_names": edge_feature_names,
@@ -445,6 +454,11 @@ def build_prepared_dataset(
     }
     report_path = out_dir / "prepare_report.json"
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    if len(records) < 1:
+        raise RuntimeError(
+            "No prepared graph records were produced. "
+            f"missing_md={len(missing_md)} missing_graph={len(missing_graph)} bad_md={len(bad_md)}"
+        )
     return report
 
 

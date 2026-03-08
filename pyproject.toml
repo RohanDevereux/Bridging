@@ -5,16 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bridging"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 dependencies = [
   "biopython",
   "easydict",
-  "deeprank2",
+  "deeprank2==3.1.0",
   "h5py",
   "matplotlib",
   "mdtraj",
   "netCDF4",
-  "numpy",
+  "numpy<2.0",
   "openmm",
   "pandas",
   "parmed",

@@ -93,7 +93,7 @@ class DG_Network(nn.Module):
             regression_loss = F.mse_loss(preds.unsqueeze(-1), batch['labels'], reduction='none')
             regression_loss = (regression_loss * labels_mask).sum() / labels_mask.sum()
         if regression_loss.isnan().any():
-            import pdb;pdb.set_trace()
+            raise RuntimeError("NaN regression loss encountered in DG_Network.forward")
 
         loss_dict = {
             'regression': regression_loss

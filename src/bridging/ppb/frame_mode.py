@@ -178,7 +178,7 @@ def run_frame_mode(
     log_freq = max(1, int(args.train_log_freq))
 
     for it in range(1, max_iters + 1):
-        active_idx = it % num_active_folds
+        active_idx = (it - 1) % num_active_folds
         state = fold_states[active_idx]
         model = state["model"]
         optimizer = state["optimizer"]
@@ -219,7 +219,7 @@ def run_frame_mode(
                     best_states[eval_idx] = copy.deepcopy(eval_state["model"].state_dict())
 
                 print(
-                    f"[PPB][{mode_name}] iter={it:06d} fold={eval_idx} "
+                    f"[PPB][{mode_name}] iter={it:06d} fold={eval_state['fold']} "
                     f"val_rmse={val_metrics['rmse']:.4f} val_r={val_metrics['pearson_r']:.4f} "
                     f"val_r2={val_metrics['r2']:.4f} val_mse={val_mse:.6f}"
                 )
