@@ -58,12 +58,21 @@ REUSE_PREPARED="${REUSE_PREPARED:-0}"
 DEEPRANK_PREFIX="${DEEPRANK_PREFIX:-$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs}"
 DEEPRANK_HDF5="${DEEPRANK_HDF5:-}"
 
+PREFLIGHT_ARGS=()
+H5_LIST=()
+if [ "$BUILD_DEEPRANK" = "0" ] && [ -n "$DEEPRANK_HDF5" ]; then
+  # shellcheck disable=SC2206
+  H5_LIST=( $DEEPRANK_HDF5 )
+  PREFLIGHT_ARGS+=(--deep-rank-hdf5 "${H5_LIST[@]}")
+fi
+
 "$PYTHON" -m bridging.graphvae.preflight \
   --dataset "$DATASET" \
   --md-root "$MD_ROOT" \
   --expected-deeprank2-version "${DEEPRANK2_VERSION:-3.1.0}" \
   --sample-done "${PREFLIGHT_SAMPLE_DONE:-20}" \
-  --require-done "${PREFLIGHT_REQUIRE_DONE:-50}"
+  --require-done "${PREFLIGHT_REQUIRE_DONE:-50}" \
+  "${PREFLIGHT_ARGS[@]}"
 
 COMMON_ARGS=(
   --dataset "$DATASET"
@@ -105,8 +114,10 @@ else
     echo "[HINT] set DEEPRANK_HDF5 to one or more space-separated hdf5 paths."
     exit 1
   fi
-  # shellcheck disable=SC2206
-  H5_LIST=( $DEEPRANK_HDF5 )
+  if [ "${#H5_LIST[@]}" -eq 0 ]; then
+    # shellcheck disable=SC2206
+    H5_LIST=( $DEEPRANK_HDF5 )
+  fi
   "$PYTHON" -m bridging.graphvae.run_full \
     "${COMMON_ARGS[@]}" \
     --deep-rank-hdf5 "${H5_LIST[@]}"

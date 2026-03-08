@@ -28,7 +28,7 @@ from .deeprank_adapter import (
     stage_query_pdbs,
     write_deeprank_index,
 )
-from .ids import canonical_complex_id, primary_chain
+from .ids import canonical_complex_id, primary_chain, sanitize_filename_token
 from .md_dynamics import compute_dynamic_features, load_full_md_trajectory
 from .splits import make_train_val_test_split
 
@@ -147,7 +147,7 @@ def _resolve_hdf5_paths(
         else:
             source_report["n_raw_pdb_cache_miss"] += 1
         rec["pdb_path"] = str(raw_pdb_path)
-        rec["query_model_id"] = rec["complex_id"]
+        rec["query_model_id"] = sanitize_filename_token(rec["complex_id"])
         rec["query_source_pdb_path"] = str(raw_pdb_path)
 
         if graph_source != "md_topology_protein":
