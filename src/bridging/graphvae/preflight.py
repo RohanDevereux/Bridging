@@ -4,6 +4,7 @@ import argparse
 import glob
 import inspect
 import json
+import os
 import random
 import shutil
 from pathlib import Path
@@ -47,11 +48,15 @@ def _check_records(dataset_csv: Path) -> int:
 
 
 def _check_msms() -> str:
+    msms_bin_dir = os.environ.get("MSMS_BIN_DIR", "").strip()
+    if msms_bin_dir:
+        os.environ["PATH"] = f"{msms_bin_dir}:{os.environ.get('PATH', '')}"
     msms = shutil.which("msms")
     if msms is None:
         raise RuntimeError(
             "msms executable not found on PATH. DeepRank exposure features (res_depth/hse) require msms. "
-            "Load/install msms before running graphvae prepare."
+            "Load/install msms before running graphvae prepare. "
+            "If installed in scratch, export MSMS_BIN_DIR=/path/to/bin first."
         )
     return msms
 
