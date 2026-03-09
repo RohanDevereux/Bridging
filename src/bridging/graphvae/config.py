@@ -4,8 +4,24 @@ from dataclasses import dataclass
 
 
 DEEPRANK_NODE_FEATURES = ("bsa", "sasa", "res_depth", "hse_0", "hse_1", "hse_2")
-STATIC_NODE_FEATURES = DEEPRANK_NODE_FEATURES + ("n_same_chain_8A", "n_other_chain_8A")
 STATIC_EDGE_FEATURES = ("distance", "same_chain", "electrostatic", "vanderwaals")
+
+AA_CODES = ("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")
+AA_ONEHOT_FEATURES = tuple(f"aa_{aa}" for aa in AA_CODES)
+AA_TYPE_FEATURES = ("aa_type_nonpolar", "aa_type_polar", "aa_type_charged")
+PHYS_NODE_FEATURES = (
+    "phys_sidechain_size",
+    "phys_net_charge",
+    "phys_hydrophobicity",
+    "phys_alpha_propensity",
+    "phys_beta_propensity",
+)
+TERMINUS_FEATURES = ("is_n_terminus", "is_c_terminus")
+NODE_IDENTITY_FEATURES = AA_ONEHOT_FEATURES + AA_TYPE_FEATURES + PHYS_NODE_FEATURES + TERMINUS_FEATURES
+
+STATIC_NODE_FEATURES = DEEPRANK_NODE_FEATURES + ("n_same_chain_8A", "n_other_chain_8A") + NODE_IDENTITY_FEATURES
+STATIC_NODE_MASK_TARGETS = DEEPRANK_NODE_FEATURES + ("n_same_chain_8A", "n_other_chain_8A")
+STATIC_EDGE_MASK_TARGETS = ("distance",)
 
 DYNAMIC_NODE_FEATURES = (
     "dyn_log1p_water_count_5A_mean",

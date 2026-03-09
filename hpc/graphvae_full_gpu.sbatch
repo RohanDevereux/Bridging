@@ -106,6 +106,9 @@ fi
 if [ "${ALLOW_PARTIAL_NODE_COVERAGE:-0}" = "1" ]; then
   COMMON_ARGS+=(--allow-partial-node-coverage)
 fi
+if [ "${INCLUDE_DYNAMIC_DIST_STATS:-1}" = "0" ]; then
+  COMMON_ARGS+=(--no-include-dynamic-dist-stats)
+fi
 
 if [ "$REUSE_PREPARED" = "1" ]; then
   "$PYTHON" -m bridging.graphvae.run_full \

@@ -20,6 +20,7 @@ from .config import (
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
     DYNAMIC_NODE_FEATURES,
+    NODE_IDENTITY_FEATURES,
     STATIC_EDGE_FEATURES,
     STATIC_NODE_FEATURES,
 )
@@ -532,6 +533,7 @@ def build_prepared_dataset(
                         dyn["node_structural_context"],
                         columns=["n_same_chain_8A", "n_other_chain_8A"],
                     ),
+                    pd.DataFrame(dyn["node_identity"], columns=list(NODE_IDENTITY_FEATURES)),
                     pd.DataFrame(dyn["node_dynamic"], columns=list(DYNAMIC_NODE_FEATURES)),
                 ],
                 axis=1,
@@ -688,7 +690,11 @@ def _parse_args() -> argparse.Namespace:
         default=25,
         help="Write checkpoint shard every N newly prepared records.",
     )
-    parser.add_argument("--include-dynamic-dist-stats", action="store_true")
+    parser.add_argument(
+        "--include-dynamic-dist-stats",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
     parser.add_argument("--allow-partial-node-coverage", action="store_true")
     parser.add_argument("--progress-every", type=int, default=25, help="Print progress every N processed complexes.")
     parser.add_argument("--overwrite", action="store_true")

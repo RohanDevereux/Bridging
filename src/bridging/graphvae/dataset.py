@@ -11,7 +11,9 @@ from .config import (
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
     DYNAMIC_NODE_FEATURES,
+    STATIC_EDGE_MASK_TARGETS,
     STATIC_EDGE_FEATURES,
+    STATIC_NODE_MASK_TARGETS,
     STATIC_NODE_FEATURES,
 )
 
@@ -47,8 +49,8 @@ def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
     if mode == "S":
         node_input_names = [n for n in STATIC_NODE_FEATURES if n in node_names_all]
         edge_input_names = [n for n in STATIC_EDGE_FEATURES if n in edge_names_all]
-        node_target_names = [n for n in STATIC_NODE_FEATURES if n in node_input_names]
-        edge_target_names = [n for n in ("distance",) if n in edge_input_names]
+        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
+        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
     else:
         dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_WITH_DIST if n in edge_names_all]
         if not dyn_edge:

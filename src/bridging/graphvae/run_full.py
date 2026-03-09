@@ -285,7 +285,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--split-seed", type=int, default=42)
     parser.add_argument("--frames-per-complex", type=int, default=120)
     parser.add_argument("--prepare-traj-cache-size", type=int, default=1)
-    parser.add_argument("--include-dynamic-dist-stats", action="store_true")
+    parser.add_argument(
+        "--include-dynamic-dist-stats",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
     parser.add_argument("--allow-partial-node-coverage", action="store_true")
     parser.add_argument("--prepare-progress-every", type=int, default=25)
     parser.add_argument("--prepare-checkpoint-every", type=int, default=25)

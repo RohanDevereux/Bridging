@@ -5,6 +5,70 @@ from pathlib import Path
 import mdtraj as md
 import numpy as np
 
+from .config import AA_CODES, NODE_IDENTITY_FEATURES
+
+
+AA3_TO_AA1 = {
+    "ALA": "A",
+    "ARG": "R",
+    "ASN": "N",
+    "ASP": "D",
+    "ASH": "D",
+    "CYS": "C",
+    "CYM": "C",
+    "CYX": "C",
+    "GLN": "Q",
+    "GLU": "E",
+    "GLH": "E",
+    "GLY": "G",
+    "HIS": "H",
+    "HID": "H",
+    "HIE": "H",
+    "HIP": "H",
+    "ILE": "I",
+    "LEU": "L",
+    "LYS": "K",
+    "LYN": "K",
+    "MET": "M",
+    "MSE": "M",
+    "PHE": "F",
+    "PRO": "P",
+    "SER": "S",
+    "THR": "T",
+    "TRP": "W",
+    "TYR": "Y",
+    "VAL": "V",
+}
+
+AA_NONPOLAR = {"A", "V", "I", "L", "M", "F", "P", "G"}
+AA_POLAR = {"S", "T", "N", "Q", "C", "Y", "W"}
+AA_CHARGED = {"D", "E", "K", "R", "H"}
+
+# sidechain_size (heavy atom count), net_charge, hydrophobicity (Kyte-Doolittle),
+# alpha_propensity, beta_propensity (Chou-Fasman)
+AA_PHYSCHEM = {
+    "A": (1.0, 0.0, 1.8, 1.42, 0.83),
+    "R": (7.0, 1.0, -4.5, 0.98, 0.93),
+    "N": (4.0, 0.0, -3.5, 0.67, 0.89),
+    "D": (4.0, -1.0, -3.5, 1.01, 0.54),
+    "C": (2.0, 0.0, 2.5, 0.70, 1.19),
+    "Q": (5.0, 0.0, -3.5, 1.11, 1.10),
+    "E": (5.0, -1.0, -3.5, 1.51, 0.37),
+    "G": (0.0, 0.0, -0.4, 0.57, 0.75),
+    "H": (6.0, 0.0, -3.2, 1.00, 0.87),
+    "I": (4.0, 0.0, 4.5, 1.08, 1.60),
+    "L": (4.0, 0.0, 3.8, 1.21, 1.30),
+    "K": (5.0, 1.0, -3.9, 1.16, 0.74),
+    "M": (4.0, 0.0, 1.9, 1.45, 1.05),
+    "F": (7.0, 0.0, 2.8, 1.13, 1.38),
+    "P": (3.0, 0.0, -1.6, 0.57, 0.55),
+    "S": (2.0, 0.0, -0.8, 0.77, 0.75),
+    "T": (3.0, 0.0, -0.7, 0.83, 1.19),
+    "W": (10.0, 0.0, -0.9, 1.08, 1.37),
+    "Y": (8.0, 0.0, -1.3, 0.69, 1.47),
+    "V": (3.0, 0.0, 4.2, 1.06, 1.70),
+}
+
 
 def _sample_frame_indices(n_frames: int, max_frames: int | None) -> np.ndarray:
     if max_frames is None or max_frames <= 0 or n_frames <= max_frames:
@@ -30,6 +94,10 @@ def _chain_id(chain) -> str:
             if value is not None and str(value).strip() != "":
                 return str(value).strip().upper()
     return str(getattr(chain, "index")).strip().upper()
+
+
+def _aa1_from_residue_name(name: str) -> str:
+    return AA3_TO_AA1.get(str(name).strip().upper(), "X")
 
 
 def _build_residue_maps(topology) -> tuple[dict, dict, dict, dict, dict, set[tuple[str, int]], list[int]]:
@@ -67,6 +135,69 @@ def _build_residue_maps(topology) -> tuple[dict, dict, dict, dict, dict, set[tup
         protein_residue_keys,
         sorted(set(all_heavy_atoms)),
     )
+
+
+def _protein_chain_terminals(topology) -> dict[str, tuple[int, int]]:
+    out: dict[str, tuple[int, int]] = {}
+    for chain in topology.chains:
+        chain_key = _chain_id(chain)
+        protein_residues = [
+            res
+            for res in chain.residues
+            if res.is_protein and any(a.name == "CA" for a in res.atoms)
+        ]
+        if not protein_residues:
+            continue
+        out[chain_key] = (int(protein_residues[0].index), int(protein_residues[-1].index))
+    return out
+
+
+def _compute_node_identity_features(
+    topology,
+    node_keys: list[tuple[str, int]],
+    residue_map: dict[tuple[str, int], int],
+) -> np.ndarray:
+    out = np.zeros((len(node_keys), len(NODE_IDENTITY_FEATURES)), dtype=np.float32)
+    aa_to_idx = {aa: i for i, aa in enumerate(AA_CODES)}
+    terminals = _protein_chain_terminals(topology)
+
+    offset_onehot = 0
+    offset_type = offset_onehot + len(AA_CODES)
+    offset_phys = offset_type + 3
+    offset_terminus = offset_phys + 5
+
+    for i, key in enumerate(node_keys):
+        residue_idx = residue_map.get(key)
+        if residue_idx is None:
+            continue
+        residue = topology.residue(int(residue_idx))
+        aa = _aa1_from_residue_name(getattr(residue, "name", ""))
+
+        aa_idx = aa_to_idx.get(aa)
+        if aa_idx is not None:
+            out[i, offset_onehot + aa_idx] = 1.0
+
+        if aa in AA_NONPOLAR:
+            out[i, offset_type + 0] = 1.0
+        elif aa in AA_POLAR:
+            out[i, offset_type + 1] = 1.0
+        elif aa in AA_CHARGED:
+            out[i, offset_type + 2] = 1.0
+
+        sidechain_size, net_charge, hydrophobicity, alpha_prop, beta_prop = AA_PHYSCHEM.get(aa, (0.0, 0.0, 0.0, 0.0, 0.0))
+        out[i, offset_phys + 0] = float(sidechain_size)
+        out[i, offset_phys + 1] = float(net_charge)
+        out[i, offset_phys + 2] = float(hydrophobicity)
+        out[i, offset_phys + 3] = float(alpha_prop)
+        out[i, offset_phys + 4] = float(beta_prop)
+
+        chain_key = str(key[0]).strip().upper()
+        termini = terminals.get(chain_key)
+        if termini is not None:
+            n_term_idx, c_term_idx = termini
+            out[i, offset_terminus + 0] = float(int(residue_idx == n_term_idx))
+            out[i, offset_terminus + 1] = float(int(residue_idx == c_term_idx))
+    return out
 
 
 def _water_oxygen_indices(topology) -> tuple[list[int], dict[int, int]]:
@@ -263,6 +394,11 @@ def compute_dynamic_features(
         residue_chain_map=residue_chain_map,
         all_heavy_atoms=all_heavy_atoms,
     )
+    node_identity = _compute_node_identity_features(
+        topology=topology,
+        node_keys=node_keys,
+        residue_map=residue_map,
+    )
 
     node_dynamic = np.stack(
         [
@@ -281,6 +417,7 @@ def compute_dynamic_features(
     ).astype(np.float32, copy=False)
     return {
         "node_dynamic": node_dynamic,
+        "node_identity": node_identity,
         "edge_dynamic": edge_dynamic,
         "node_structural_context": structural_context,
         "protein_residue_keys": protein_residue_keys,
