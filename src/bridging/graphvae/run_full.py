@@ -5,6 +5,8 @@ import json
 import time
 from pathlib import Path
 
+import torch
+
 from bridging.MD.paths import PDB_CACHE_DIR
 
 from .prepare import build_prepared_dataset
@@ -31,10 +33,12 @@ def run_full_pipeline(
     val_fraction: float,
     split_seed: int,
     frames_per_complex: int,
+    prepare_traj_cache_size: int,
     include_dynamic_dist_stats: bool,
     require_all_protein_nodes: bool,
     overwrite: bool,
     prepare_progress_every: int,
+    prepare_checkpoint_every: int,
     reuse_prepared: bool,
     device: str,
     latent_dim: int,
@@ -52,6 +56,7 @@ def run_full_pipeline(
     corr_weight: float,
     seed: int,
     num_workers: int,
+    train_checkpoint_every: int,
     alpha_grid: list[float],
     bootstrap: int,
     run_supervised: bool,
@@ -64,7 +69,25 @@ def run_full_pipeline(
 
     if reuse_prepared and records_path.exists():
         print(f"[PIPE] prepare reuse records={records_path}")
-        prepare_report = json.loads((prepared_dir / "prepare_report.json").read_text(encoding="utf-8"))
+        prepare_report_path = prepared_dir / "prepare_report.json"
+        if not prepare_report_path.exists():
+            raise RuntimeError(
+                f"--reuse-prepared was requested but missing prepare report: {prepare_report_path}"
+            )
+        prepare_report = json.loads(prepare_report_path.read_text(encoding="utf-8"))
+        n_records_report = int(prepare_report.get("n_records", -1))
+        if n_records_report < 1:
+            raise RuntimeError(
+                f"--reuse-prepared requested but prepare_report has n_records={n_records_report}. "
+                "Re-run prepare without --reuse-prepared."
+            )
+        reused_records = torch.load(records_path, map_location="cpu")
+        if not isinstance(reused_records, list) or len(reused_records) < 1:
+            raise RuntimeError(
+                f"--reuse-prepared requested but records file is empty/invalid: {records_path}. "
+                "Re-run prepare without --reuse-prepared."
+            )
+        print(f"[PIPE] prepare reuse validated n_records={len(reused_records)}")
     else:
         step_t0 = time.perf_counter()
         print("[PIPE] prepare start")
@@ -85,10 +108,12 @@ def run_full_pipeline(
             val_fraction=val_fraction,
             split_seed=split_seed,
             frames_per_complex=frames_per_complex,
+            traj_cache_size=prepare_traj_cache_size,
             include_dynamic_dist_stats=include_dynamic_dist_stats,
             require_all_protein_nodes=require_all_protein_nodes,
             overwrite=overwrite,
             progress_every=prepare_progress_every,
+            checkpoint_every=prepare_checkpoint_every,
         )
         print(f"[PIPE] prepare done elapsed_s={time.perf_counter() - step_t0:.1f}")
 
@@ -116,6 +141,7 @@ def run_full_pipeline(
         corr_weight=corr_weight,
         seed=seed,
         num_workers=num_workers,
+        checkpoint_every=train_checkpoint_every,
     )
     print(f"[PIPE] train mode=S done elapsed_s={time.perf_counter() - step_t0:.1f}")
     step_t0 = time.perf_counter()
@@ -140,6 +166,7 @@ def run_full_pipeline(
         corr_weight=corr_weight,
         seed=seed,
         num_workers=num_workers,
+        checkpoint_every=train_checkpoint_every,
     )
     print(f"[PIPE] train mode=SD done elapsed_s={time.perf_counter() - step_t0:.1f}")
 
@@ -178,6 +205,7 @@ def run_full_pipeline(
             patience=patience,
             seed=seed,
             num_workers=num_workers,
+            checkpoint_every=train_checkpoint_every,
         )
         sup_sd = run_supervised_baseline(
             records_path=records_path,
@@ -193,6 +221,7 @@ def run_full_pipeline(
             patience=patience,
             seed=seed,
             num_workers=num_workers,
+            checkpoint_every=train_checkpoint_every,
         )
         sup = {"S": sup_s, "SD": sup_sd}
         print(f"[PIPE] supervised baselines done elapsed_s={time.perf_counter() - step_t0:.1f}")
@@ -255,9 +284,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--val-fraction", type=float, default=0.15)
     parser.add_argument("--split-seed", type=int, default=42)
     parser.add_argument("--frames-per-complex", type=int, default=120)
+    parser.add_argument("--prepare-traj-cache-size", type=int, default=1)
     parser.add_argument("--include-dynamic-dist-stats", action="store_true")
     parser.add_argument("--allow-partial-node-coverage", action="store_true")
     parser.add_argument("--prepare-progress-every", type=int, default=25)
+    parser.add_argument("--prepare-checkpoint-every", type=int, default=25)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--reuse-prepared", action="store_true")
     parser.add_argument("--device", default="cpu")
@@ -276,6 +307,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--corr-weight", type=float, default=0.01)
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--train-checkpoint-every", type=int, default=1)
     parser.add_argument("--alpha-grid", default="1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100")
     parser.add_argument("--bootstrap", type=int, default=0)
     parser.add_argument("--run-supervised-baselines", action="store_true")
@@ -302,9 +334,11 @@ def main() -> None:
         val_fraction=float(args.val_fraction),
         split_seed=int(args.split_seed),
         frames_per_complex=int(args.frames_per_complex),
+        prepare_traj_cache_size=int(args.prepare_traj_cache_size),
         include_dynamic_dist_stats=bool(args.include_dynamic_dist_stats),
         require_all_protein_nodes=not bool(args.allow_partial_node_coverage),
         prepare_progress_every=int(args.prepare_progress_every),
+        prepare_checkpoint_every=int(args.prepare_checkpoint_every),
         overwrite=bool(args.overwrite),
         reuse_prepared=bool(args.reuse_prepared),
         device=args.device,
@@ -323,6 +357,7 @@ def main() -> None:
         corr_weight=float(args.corr_weight),
         seed=int(args.seed),
         num_workers=int(args.num_workers),
+        train_checkpoint_every=int(args.train_checkpoint_every),
         alpha_grid=alphas,
         bootstrap=int(args.bootstrap),
         run_supervised=bool(args.run_supervised_baselines),

@@ -122,8 +122,10 @@ def train_masked_graph_vae(
     corr_weight: float,
     seed: int,
     num_workers: int,
+    checkpoint_every: int = 1,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_every = max(1, int(checkpoint_every))
     _seed_all(seed)
 
     records = torch.load(records_path, map_location="cpu")
@@ -164,6 +166,9 @@ def train_masked_graph_vae(
     history = []
     run_t0 = time.perf_counter()
     epoch_times: list[float] = []
+    history_path = out_dir / f"train_history_{mode}.csv"
+    best_ckpt_path = out_dir / f"masked_graph_vae_{mode}_best.pt"
+    last_ckpt_path = out_dir / f"masked_graph_vae_{mode}_last.pt"
 
     for epoch in range(1, max_epochs + 1):
         epoch_t0 = time.perf_counter()
@@ -214,11 +219,63 @@ def train_masked_graph_vae(
             best_epoch = epoch
             best_state = {k: v.detach().cpu() for k, v in model.state_dict().items()}
             bad_epochs = 0
+            torch.save(
+                {
+                    "mode": mode,
+                    "kind": "best",
+                    "epoch": int(epoch),
+                    "model_state_dict": best_state,
+                    "feature_spec": {
+                        "node_input_names": spec.node_input_names,
+                        "edge_input_names": spec.edge_input_names,
+                        "node_target_names": spec.node_target_names,
+                        "edge_target_names": spec.edge_target_names,
+                        "node_target_idx": spec.node_target_idx,
+                        "edge_target_idx": spec.edge_target_idx,
+                    },
+                    "scaler": scaler.to_dict(),
+                    "config": {
+                        "latent_dim": latent_dim,
+                        "hidden_dim": hidden_dim,
+                        "num_layers": num_layers,
+                        "mask_ratio": mask_ratio,
+                        "lr": lr,
+                        "weight_decay": weight_decay,
+                        "batch_size": batch_size,
+                        "max_epochs": max_epochs,
+                        "patience": patience,
+                        "beta_start": beta_start,
+                        "beta_end": beta_end,
+                        "beta_anneal_fraction": beta_anneal_fraction,
+                        "corr_weight": corr_weight,
+                        "seed": seed,
+                    },
+                    "records_path": str(records_path),
+                    "best_epoch": int(best_epoch),
+                    "best_val_recon": float(best_val),
+                },
+                best_ckpt_path,
+            )
         else:
             bad_epochs += 1
             if bad_epochs >= patience:
                 print(f"[GVAE][{mode}] early stopping at epoch={epoch}")
                 break
+
+        if epoch % checkpoint_every == 0 or epoch == max_epochs:
+            pd.DataFrame(history).to_csv(history_path, index=False)
+            torch.save(
+                {
+                    "mode": mode,
+                    "kind": "last",
+                    "epoch": int(epoch),
+                    "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "best_epoch": int(best_epoch),
+                    "best_val_recon": float(best_val),
+                },
+                last_ckpt_path,
+            )
 
     if best_state is None:
         raise RuntimeError("Training did not produce a best model state.")
@@ -233,7 +290,6 @@ def train_masked_graph_vae(
     latents_df.to_csv(latents_path, index=False)
 
     history_df = pd.DataFrame(history)
-    history_path = out_dir / f"train_history_{mode}.csv"
     history_df.to_csv(history_path, index=False)
 
     ckpt_path = out_dir / f"masked_graph_vae_{mode}.pt"
@@ -269,6 +325,8 @@ def train_masked_graph_vae(
             "records_path": str(records_path),
             "best_epoch": best_epoch,
             "best_val_recon": best_val,
+            "best_checkpoint_path": str(best_ckpt_path),
+            "last_checkpoint_path": str(last_ckpt_path),
         },
         ckpt_path,
     )
@@ -311,6 +369,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--corr-weight", type=float, default=0.01)
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--checkpoint-every", type=int, default=1)
     return parser.parse_args()
 
 
@@ -336,6 +395,7 @@ def main() -> None:
         corr_weight=float(args.corr_weight),
         seed=int(args.seed),
         num_workers=int(args.num_workers),
+        checkpoint_every=int(args.checkpoint_every),
     )
     print(f"[GVAE] mode={summary['mode']} best_val_recon={summary['best_val_recon']:.6f} best_epoch={summary['best_epoch']}")
     print(f"[GVAE] latents_csv={summary['latents_csv']}")

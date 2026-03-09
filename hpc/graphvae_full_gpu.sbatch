@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
 #SBATCH --job-name=graphvae_full_gpu
-#SBATCH --time=3-00:00:00
+#SBATCH --time=10-00:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
@@ -87,7 +87,9 @@ COMMON_ARGS=(
   --deeprank-query-mode "$DEEPRANK_QUERY_MODE"
   --deeprank-cpu-count "$DEEPRANK_CPU_COUNT"
   --frames-per-complex "${FRAMES_PER_COMPLEX:-120}"
+  --prepare-traj-cache-size "${PREP_TRAJ_CACHE_SIZE:-1}"
   --prepare-progress-every "${PREP_PROGRESS_EVERY:-25}"
+  --prepare-checkpoint-every "${PREP_CHECKPOINT_EVERY:-25}"
   --split-seed "${SPLIT_SEED:-42}"
   --max-epochs "${MAX_EPOCHS:-120}"
   --patience "${PATIENCE:-20}"
@@ -95,6 +97,7 @@ COMMON_ARGS=(
   --latent-dim "${LATENT_DIM:-8}"
   --device "${DEVICE:-cuda}"
   --num-workers "${NUM_WORKERS:-4}"
+  --train-checkpoint-every "${TRAIN_CHECKPOINT_EVERY:-1}"
   --alpha-grid "${ALPHA_GRID:-1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100}"
 )
 if [ "${RUN_SUP_BASELINES:-0}" = "1" ]; then

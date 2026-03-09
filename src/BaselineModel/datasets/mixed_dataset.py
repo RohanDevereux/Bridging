@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
+import json
+import hashlib
 import copy
 import random
 import pickle
@@ -135,16 +137,58 @@ class MixedDataset(Dataset):
         self.split_seed = split_seed
 
         self.entries_cache = os.path.join(cache_dir, 'entries.pkl')
+        self.entries_meta = os.path.join(cache_dir, 'entries.meta.json')
         self.entries = None
         self.entries_full = None
         self._load_entries(reset)
 
         self.structures_cache = os.path.join(cache_dir, 'structures.pkl')
+        self.structures_meta = os.path.join(cache_dir, 'structures.meta.json')
         self.structures = None
         self._load_structures(reset)
 
+    def _csv_signature(self):
+        stat = os.stat(self.csv_path)
+        return {
+            'csv_path': os.path.abspath(self.csv_path),
+            'csv_size': int(stat.st_size),
+            'csv_mtime_ns': int(stat.st_mtime_ns),
+        }
+
+    def _entries_cache_valid(self):
+        if not os.path.exists(self.entries_cache):
+            return False
+        if not os.path.exists(self.entries_meta):
+            return False
+        try:
+            with open(self.entries_meta, 'r', encoding='utf-8') as f:
+                cached = json.load(f)
+        except Exception:
+            return False
+        return cached == self._csv_signature()
+
+    def _structures_signature(self):
+        pdb_paths = sorted(set([e['pdb_path'] for e in self.entries_full]))
+        digest = hashlib.sha1('\n'.join(pdb_paths).encode('utf-8')).hexdigest()
+        return {
+            'n_pdb_paths': int(len(pdb_paths)),
+            'pdb_paths_sha1': digest,
+        }
+
+    def _structures_cache_valid(self):
+        if not os.path.exists(self.structures_cache):
+            return False
+        if not os.path.exists(self.structures_meta):
+            return False
+        try:
+            with open(self.structures_meta, 'r', encoding='utf-8') as f:
+                cached = json.load(f)
+        except Exception:
+            return False
+        return cached == self._structures_signature()
+
     def _load_entries(self, reset):
-        if not os.path.exists(self.entries_cache) or reset:
+        if reset or (not self._entries_cache_valid()):
             self.entries_full = self._preprocess_entries()
         else:
             with open(self.entries_cache, 'rb') as f:
@@ -205,10 +249,12 @@ class MixedDataset(Dataset):
         entries = load_data_entries(self.csv_path, self.blocklist)
         with open(self.entries_cache, 'wb') as f:
             pickle.dump(entries, f)
+        with open(self.entries_meta, 'w', encoding='utf-8') as f:
+            json.dump(self._csv_signature(), f, indent=2)
         return entries
 
     def _load_structures(self, reset):
-        if not os.path.exists(self.structures_cache) or reset:
+        if reset or (not self._structures_cache_valid()):
             self.structures = self._preprocess_structures()
         else:
             with open(self.structures_cache, 'rb') as f:
@@ -237,6 +283,8 @@ class MixedDataset(Dataset):
             structures[pdbcode] = (data, seq_map)
         with open(self.structures_cache, 'wb') as f:
             pickle.dump(structures, f)
+        with open(self.structures_meta, 'w', encoding='utf-8') as f:
+            json.dump(self._structures_signature(), f, indent=2)
         return structures
 
     def __len__(self):

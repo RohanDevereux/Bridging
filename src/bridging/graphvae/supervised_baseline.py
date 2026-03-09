@@ -116,8 +116,10 @@ def run_supervised_baseline(
     patience: int = 25,
     seed: int = 2026,
     num_workers: int = 0,
+    checkpoint_every: int = 1,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_every = max(1, int(checkpoint_every))
     _seed_all(seed)
     records = torch.load(records_path, map_location="cpu")
     spec = build_feature_spec(records, mode=mode)
@@ -152,6 +154,10 @@ def run_supervised_baseline(
     best_epoch = -1
     run_t0 = time.perf_counter()
     epoch_times: list[float] = []
+    history: list[dict] = []
+    history_path = out_dir / f"supervised_baseline_history_{mode}.csv"
+    best_ckpt_path = out_dir / f"supervised_baseline_{mode}_best.pt"
+    last_ckpt_path = out_dir / f"supervised_baseline_{mode}_last.pt"
     for epoch in range(1, max_epochs + 1):
         epoch_t0 = time.perf_counter()
         train_mse = _run_epoch(model, train_loader, device=dev, optimizer=optimizer)
@@ -168,15 +174,50 @@ def run_supervised_baseline(
             f"best_val_mse={best_val if best_epoch > 0 else val_mse:.5f} "
             f"epoch_s={epoch_s:.1f} elapsed={_fmt_seconds(elapsed_s)} eta={_fmt_seconds(eta_s)}"
         )
+        history.append(
+            {
+                "epoch": int(epoch),
+                "train_mse": float(train_mse),
+                "val_mse": float(val_mse),
+                "best_val_mse": float(best_val if best_epoch > 0 else val_mse),
+                "epoch_s": float(epoch_s),
+                "elapsed_s": float(elapsed_s),
+                "eta_s": float(eta_s),
+            }
+        )
         if val_mse < best_val:
             best_val = val_mse
             best_state = {k: v.detach().cpu() for k, v in model.state_dict().items()}
             best_epoch = epoch
             bad = 0
+            torch.save(
+                {
+                    "mode": mode,
+                    "kind": "best",
+                    "epoch": int(epoch),
+                    "model_state_dict": best_state,
+                    "best_val_mse": float(best_val),
+                },
+                best_ckpt_path,
+            )
         else:
             bad += 1
             if bad >= patience:
                 break
+        if epoch % checkpoint_every == 0 or epoch == max_epochs:
+            pd.DataFrame(history).to_csv(history_path, index=False)
+            torch.save(
+                {
+                    "mode": mode,
+                    "kind": "last",
+                    "epoch": int(epoch),
+                    "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "best_epoch": int(best_epoch),
+                    "best_val_mse": float(best_val),
+                },
+                last_ckpt_path,
+            )
     if best_state is None:
         raise RuntimeError("No best baseline model state.")
     model.load_state_dict(best_state)
@@ -204,6 +245,9 @@ def run_supervised_baseline(
         "metrics": metrics,
         "best_epoch": int(best_epoch),
         "best_val_mse": float(best_val),
+        "history_csv": str(history_path),
+        "best_checkpoint_path": str(best_ckpt_path),
+        "last_checkpoint_path": str(last_ckpt_path),
     }
     summary_path = out_dir / f"supervised_baseline_summary_{mode}.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -225,6 +269,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--patience", type=int, default=25)
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--checkpoint-every", type=int, default=1)
     return parser.parse_args()
 
 
@@ -244,6 +289,7 @@ def main() -> None:
         patience=int(args.patience),
         seed=int(args.seed),
         num_workers=int(args.num_workers),
+        checkpoint_every=int(args.checkpoint_every),
     )
     t = summary["metrics"]["test"]
     print(f"[BASE] mode={summary['mode']} test_rmse={t['rmse']:.4f} test_r2={t['r2']:.4f}")

@@ -142,6 +142,7 @@ def mode_summary_and_write(
     fold_metrics_df: pd.DataFrame,
     args,
     csv_path: Path,
+    extra_summary: dict | None = None,
 ) -> dict:
     pred_rows_path = out_dir / f"{mode_name}_predictions_rows.csv"
     pred_rows_df.to_csv(pred_rows_path, index=False)
@@ -186,8 +187,24 @@ def mode_summary_and_write(
             split_complex["dG_true"].to_numpy(),
             split_complex["dG_pred"].to_numpy(),
         )
+    if extra_summary:
+        summary.update(extra_summary)
 
     summary_path = out_dir / f"{mode_name}_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"[PPB][{mode_name}] summary={summary_path}")
     return summary
+
+
+def save_fold_checkpoint(
+    *,
+    checkpoint_dir: Path,
+    mode_name: str,
+    fold: int,
+    kind: str,
+    payload: dict,
+) -> Path:
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    path = checkpoint_dir / f"{mode_name}_fold{int(fold)}_{kind}.pt"
+    torch.save(payload, path)
+    return path

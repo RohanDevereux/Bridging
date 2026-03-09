@@ -16,6 +16,7 @@ from .common import (
     evaluate_loader,
     mode_summary_and_write,
     regression_metrics,
+    save_fold_checkpoint,
     seed_all,
 )
 
@@ -46,6 +47,12 @@ def run_frame_mode(
 
     cache_dir = out_dir / "cache" / csv_path.stem
     cache_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_dir = out_dir / "checkpoints" / mode_name
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    progress_rows: list[dict] = []
+    best_ckpt_paths: dict[int, str] = {}
+    last_ckpt_paths: dict[int, str] = {}
+    progress_csv_path = out_dir / f"{mode_name}_progress.csv"
 
     train_tf_cfg, val_tf_cfg = common_transforms(args)
     model_cfg = build_model_cfg(
@@ -217,12 +224,59 @@ def run_frame_mode(
                 if val_metrics["rmse"] < best_val_rmse[eval_idx]:
                     best_val_rmse[eval_idx] = val_metrics["rmse"]
                     best_states[eval_idx] = copy.deepcopy(eval_state["model"].state_dict())
-
+                    best_path = save_fold_checkpoint(
+                        checkpoint_dir=checkpoint_dir,
+                        mode_name=mode_name,
+                        fold=int(eval_state["fold"]),
+                        kind="best",
+                        payload={
+                            "mode": mode_name,
+                            "fold": int(eval_state["fold"]),
+                            "iter": int(it),
+                            "model_state_dict": best_states[eval_idx],
+                            "best_val_rmse": float(best_val_rmse[eval_idx]),
+                            "val_metrics": val_metrics,
+                        },
+                    )
+                    best_ckpt_paths[int(eval_state["fold"])] = str(best_path.resolve())
+                last_path = save_fold_checkpoint(
+                    checkpoint_dir=checkpoint_dir,
+                    mode_name=mode_name,
+                    fold=int(eval_state["fold"]),
+                    kind="last",
+                    payload={
+                        "mode": mode_name,
+                        "fold": int(eval_state["fold"]),
+                        "iter": int(it),
+                        "model_state_dict": {k: v.detach().cpu() for k, v in eval_state["model"].state_dict().items()},
+                        "optimizer_state_dict": eval_state["optimizer"].state_dict(),
+                        "scheduler_state_dict": eval_state["scheduler"].state_dict(),
+                        "best_val_rmse": float(best_val_rmse[eval_idx]),
+                        "val_metrics": val_metrics,
+                    },
+                )
+                last_ckpt_paths[int(eval_state["fold"])] = str(last_path.resolve())
+                progress_rows.append(
+                    {
+                        "iter": int(it),
+                        "fold": int(eval_state["fold"]),
+                        "split": "val",
+                        "rmse": float(val_metrics["rmse"]),
+                        "mae": float(val_metrics["mae"]),
+                        "pearson_r": float(val_metrics["pearson_r"]),
+                        "r2": float(val_metrics["r2"]),
+                        "val_mse": float(val_mse),
+                        "best_val_rmse": float(best_val_rmse[eval_idx]),
+                        "lr": float(eval_state["optimizer"].param_groups[0]["lr"]),
+                    }
+                )
                 print(
                     f"[PPB][{mode_name}] iter={it:06d} fold={eval_state['fold']} "
                     f"val_rmse={val_metrics['rmse']:.4f} val_r={val_metrics['pearson_r']:.4f} "
                     f"val_r2={val_metrics['r2']:.4f} val_mse={val_mse:.6f}"
                 )
+            if progress_rows:
+                pd.DataFrame(progress_rows).to_csv(progress_csv_path, index=False)
 
     for idx, state in enumerate(fold_states):
         state["model"].load_state_dict(best_states[idx])
@@ -261,4 +315,10 @@ def run_frame_mode(
         fold_metrics_df=fold_metrics_df,
         args=args,
         csv_path=csv_path,
+        extra_summary={
+            "checkpoint_dir": str(checkpoint_dir.resolve()),
+            "progress_csv": str(progress_csv_path.resolve()) if progress_rows else None,
+            "best_checkpoints": best_ckpt_paths,
+            "last_checkpoints": last_ckpt_paths,
+        },
     )

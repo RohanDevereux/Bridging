@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import argparse
+from collections import OrderedDict
 import json
+import re
+import shutil
 import time
 from pathlib import Path
 
@@ -38,6 +41,18 @@ def _fmt_seconds(seconds: float) -> str:
     h, rem = divmod(s, 3600)
     m, sec = divmod(rem, 60)
     return f"{h:02d}:{m:02d}:{sec:02d}"
+
+
+def _checkpoint_index_from_name(path: Path) -> int:
+    m = re.fullmatch(r"records_(\d{5})\.pt", path.name)
+    if m is None:
+        return -1
+    return int(m.group(1))
+
+
+def _sorted_checkpoint_shards(checkpoint_dir: Path) -> list[Path]:
+    shards = [p for p in checkpoint_dir.glob("records_*.pt") if p.is_file()]
+    return sorted(shards, key=_checkpoint_index_from_name)
 
 
 def _cached_raw_pdb_path(pdb_id: str, pdb_cache_root: Path) -> Path:
@@ -303,12 +318,20 @@ def build_prepared_dataset(
     val_fraction: float,
     split_seed: int,
     frames_per_complex: int,
+    traj_cache_size: int,
+    checkpoint_every: int,
     include_dynamic_dist_stats: bool,
     require_all_protein_nodes: bool,
     overwrite: bool,
     progress_every: int = 25,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
+    records_path = out_dir / "graph_records.pt"
+    split_path = out_dir / "splits.json"
+    report_path = out_dir / "prepare_report.json"
+    for stale in (records_path, split_path, report_path):
+        if stale.exists():
+            stale.unlink()
     entries, select_report = _select_complex_entries(dataset_csv)
     if require_all_protein_nodes and build_deeprank and deeprank_query_mode == "ppi":
         multi = _multichain_complexes(entries)
@@ -347,20 +370,66 @@ def build_prepared_dataset(
     node_feature_names = list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_FEATURES)
     edge_feature_names = list(STATIC_EDGE_FEATURES) + edge_dyn_names
 
-    records = []
+    checkpoint_every = max(1, int(checkpoint_every))
+    checkpoint_dir = out_dir / "checkpoints"
+    if overwrite and checkpoint_dir.exists():
+        shutil.rmtree(checkpoint_dir)
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    resumed_records = 0
+    resume_skipped = 0
+    completed_complex_ids: set[str] = set()
+    shard_paths = _sorted_checkpoint_shards(checkpoint_dir)
+    next_shard_idx = 0
+    if shard_paths and not overwrite:
+        for shard in shard_paths:
+            chunk = torch.load(shard, map_location="cpu")
+            if not isinstance(chunk, list):
+                raise RuntimeError(f"Invalid checkpoint shard format: {shard}")
+            resumed_records += int(len(chunk))
+            for row in chunk:
+                cid = str(row.get("complex_id", "")).strip()
+                if cid:
+                    completed_complex_ids.add(cid)
+        next_shard_idx = max(_checkpoint_index_from_name(p) for p in shard_paths) + 1
+        print(
+            f"[PREP] resume shards={len(shard_paths)} resumed_records={resumed_records} "
+            f"completed_complexes={len(completed_complex_ids)} checkpoint_dir={checkpoint_dir}",
+            flush=True,
+        )
+
+    records_buffer: list[dict] = []
+    records_new_count = 0
     missing_graph = []
     missing_md = []
     bad_md = []
     partial_node_coverage = []
-    traj_cache = {}
+    traj_cache: OrderedDict[str, object] = OrderedDict()
+    traj_cache_size = max(0, int(traj_cache_size))
     total_entries = int(len(entries))
     processed = 0
     loop_t0 = time.perf_counter()
 
     print(
         f"[PREP] start total_entries={total_entries} graph_source={graph_source} "
-        f"frames_per_complex={frames_per_complex} progress_every={progress_every}"
+        f"frames_per_complex={frames_per_complex} progress_every={progress_every} "
+        f"checkpoint_every={checkpoint_every} checkpoint_dir={checkpoint_dir} "
+        f"traj_cache_size={traj_cache_size}"
     )
+
+    def _flush_records_buffer() -> None:
+        nonlocal records_buffer, next_shard_idx
+        if not records_buffer:
+            return
+        shard_path = checkpoint_dir / f"records_{next_shard_idx:05d}.pt"
+        torch.save(records_buffer, shard_path)
+        next_shard_idx += 1
+        records_buffer = []
+        total_saved = resumed_records + records_new_count
+        print(
+            f"[PREP] checkpoint saved={shard_path.name} records_total={total_saved}",
+            flush=True,
+        )
 
     def _log_progress() -> None:
         if progress_every <= 0:
@@ -373,7 +442,7 @@ def build_prepared_dataset(
         pct = (100.0 * processed / total_entries) if total_entries > 0 else 100.0
         print(
             f"[PREP] progress {processed}/{total_entries} ({pct:.1f}%) "
-            f"records={len(records)} missing_md={len(missing_md)} "
+            f"records={resumed_records + records_new_count} missing_md={len(missing_md)} "
             f"missing_graph={len(missing_graph)} bad_md={len(bad_md)} "
             f"partial={len(partial_node_coverage)} "
             f"elapsed={_fmt_seconds(elapsed)} eta={_fmt_seconds(eta)} "
@@ -382,18 +451,23 @@ def build_prepared_dataset(
 
     for rec in entries:
         processed += 1
+        complex_id = str(rec["complex_id"])
+        if complex_id in completed_complex_ids:
+            resume_skipped += 1
+            _log_progress()
+            continue
         pdb_id = rec["pdb_id"]
         md_dir = md_root / str(pdb_id)
         done = md_dir / "DONE"
         if not done.exists():
-            missing_md.append(rec["complex_id"])
+            missing_md.append(complex_id)
             _log_progress()
             continue
 
-        model_id = rec.get("query_model_id", rec["complex_id"])
+        model_id = rec.get("query_model_id", complex_id)
         graph_ref = deeprank_index.get(model_id)
         if graph_ref is None:
-            missing_graph.append(rec["complex_id"])
+            missing_graph.append(complex_id)
             _log_progress()
             continue
 
@@ -405,17 +479,24 @@ def build_prepared_dataset(
         )
 
         try:
-            if pdb_id not in traj_cache:
-                traj_cache[pdb_id] = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
+            if pdb_id in traj_cache:
+                traj = traj_cache.pop(pdb_id)
+                traj_cache[pdb_id] = traj
+            else:
+                traj = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
+                if traj_cache_size > 0:
+                    traj_cache[pdb_id] = traj
+                    if len(traj_cache) > traj_cache_size:
+                        traj_cache.popitem(last=False)
             dyn = compute_dynamic_features(
-                traj=traj_cache[pdb_id],
+                traj=traj,
                 node_chain_id=graph["node_chain_id"],
                 node_position=graph["node_position"],
                 edge_index=graph["edge_index"],
                 include_distance_stats=include_dynamic_dist_stats,
             )
         except Exception as exc:
-            bad_md.append({"complex_id": rec["complex_id"], "pdb_id": pdb_id, "error": repr(exc)})
+            bad_md.append({"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)})
             _log_progress()
             continue
         graph_node_keys = {
@@ -427,7 +508,7 @@ def build_prepared_dataset(
         if missing_nodes:
             partial_node_coverage.append(
                 {
-                    "complex_id": rec["complex_id"],
+                    "complex_id": complex_id,
                     "missing_count": int(len(missing_nodes)),
                     "missing_sample": [
                         {"chain": c, "resseq": int(p)}
@@ -437,7 +518,7 @@ def build_prepared_dataset(
             )
             if require_all_protein_nodes:
                 raise RuntimeError(
-                    f"Graph missing protein residues for {rec['complex_id']}: "
+                    f"Graph missing protein residues for {complex_id}: "
                     f"missing={len(missing_nodes)}. "
                     "Increase influence radius / adjust DeepRank query or pass "
                     "--allow-partial-node-coverage."
@@ -469,11 +550,11 @@ def build_prepared_dataset(
         )
         edge_index = torch.as_tensor(graph["edge_index"], dtype=torch.long)
 
-        records.append(
+        records_buffer.append(
             {
-                "complex_id": rec["complex_id"],
+                "complex_id": complex_id,
                 "pdb_id": rec["pdb_id"],
-                "split": split_map[rec["complex_id"]],
+                "split": split_map[complex_id],
                 "dG": float(rec["dG"]),
                 "node_feature_names": node_feature_names,
                 "edge_feature_names": edge_feature_names,
@@ -486,12 +567,22 @@ def build_prepared_dataset(
                 "deeprank_entry_name": graph_ref["entry_name"],
             }
         )
+        records_new_count += 1
+        if len(records_buffer) >= checkpoint_every:
+            _flush_records_buffer()
 
         _log_progress()
 
-    records_path = out_dir / "graph_records.pt"
+    _flush_records_buffer()
+    final_shards = _sorted_checkpoint_shards(checkpoint_dir)
+    records: list[dict] = []
+    for shard in final_shards:
+        chunk = torch.load(shard, map_location="cpu")
+        if not isinstance(chunk, list):
+            raise RuntimeError(f"Invalid checkpoint shard format: {shard}")
+        records.extend(chunk)
+
     torch.save(records, records_path)
-    split_path = out_dir / "splits.json"
     split_path.write_text(json.dumps(split_map, indent=2), encoding="utf-8")
     split_counts = {
         "train": int(sum(1 for r in records if r["split"] == "train")),
@@ -504,12 +595,17 @@ def build_prepared_dataset(
         "md_root": str(md_root),
         "graph_source": graph_source,
         "progress_every": int(progress_every),
+        "checkpoint_every": int(checkpoint_every),
+        "checkpoint_dir": str(checkpoint_dir),
         "records_path": str(records_path),
         "splits_path": str(split_path),
         "deeprank_hdf5_paths": [str(p) for p in hdf5_paths],
         "graph_source_report": source_report,
         "select_report": select_report,
         "n_records": int(len(records)),
+        "n_resume_records": int(resumed_records),
+        "n_resume_skipped": int(resume_skipped),
+        "n_checkpoint_shards": int(len(final_shards)),
         "n_missing_graph": int(len(missing_graph)),
         "n_missing_md": int(len(missing_md)),
         "n_bad_md": int(len(bad_md)),
@@ -522,7 +618,6 @@ def build_prepared_dataset(
         "edge_feature_names": edge_feature_names,
         "split_counts": split_counts,
     }
-    report_path = out_dir / "prepare_report.json"
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     if len(records) < 1:
         raise RuntimeError(
@@ -581,6 +676,18 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--val-fraction", type=float, default=0.15)
     parser.add_argument("--split-seed", type=int, default=42)
     parser.add_argument("--frames-per-complex", type=int, default=120)
+    parser.add_argument(
+        "--traj-cache-size",
+        type=int,
+        default=1,
+        help="Max number of loaded MD trajectories kept in memory during prepare.",
+    )
+    parser.add_argument(
+        "--checkpoint-every",
+        type=int,
+        default=25,
+        help="Write checkpoint shard every N newly prepared records.",
+    )
     parser.add_argument("--include-dynamic-dist-stats", action="store_true")
     parser.add_argument("--allow-partial-node-coverage", action="store_true")
     parser.add_argument("--progress-every", type=int, default=25, help="Print progress every N processed complexes.")
@@ -607,6 +714,8 @@ def main() -> None:
         val_fraction=float(args.val_fraction),
         split_seed=int(args.split_seed),
         frames_per_complex=int(args.frames_per_complex),
+        traj_cache_size=int(args.traj_cache_size),
+        checkpoint_every=int(args.checkpoint_every),
         include_dynamic_dist_stats=bool(args.include_dynamic_dist_stats),
         require_all_protein_nodes=not bool(args.allow_partial_node_coverage),
         overwrite=bool(args.overwrite),
