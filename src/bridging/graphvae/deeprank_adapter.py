@@ -60,15 +60,37 @@ def _read_id_column(group: h5py.Group, name: str) -> list:
 
 
 def _read_feature_column(group: h5py.Group, name: str, n_rows: int) -> np.ndarray:
-    if name not in group:
-        raise KeyError(f"Missing required feature '{name}' in HDF5 group '{group.name}'.")
-    arr = np.asarray(group[name])
+    m = re.fullmatch(r"([A-Za-z0-9]+)_(\d+)", name)
+    base_name = m.group(1) if m is not None else name
+    component = int(m.group(2)) if m is not None else None
+
+    if base_name not in group:
+        raise KeyError(f"Missing required feature '{base_name}' in HDF5 group '{group.name}' (requested '{name}').")
+    arr = np.asarray(group[base_name])
     if arr.ndim == 1:
-        pass
-    elif arr.ndim == 2 and arr.shape[1] == 1:
-        arr = arr[:, 0]
+        if component is not None:
+            raise ValueError(
+                f"Feature '{base_name}' in '{group.name}' is 1D but component '{name}' was requested."
+            )
+    elif arr.ndim == 2:
+        if component is None:
+            if arr.shape[1] != 1:
+                raise ValueError(
+                    f"Feature '{base_name}' in '{group.name}' has shape={arr.shape}. "
+                    "Request a specific component like '<name>_0'."
+                )
+            arr = arr[:, 0]
+        else:
+            if component >= arr.shape[1]:
+                raise ValueError(
+                    f"Requested component '{name}' is out of range for feature '{base_name}' "
+                    f"with shape={arr.shape} in '{group.name}'."
+                )
+            arr = arr[:, component]
     else:
-        raise ValueError(f"Feature '{name}' must be 1D or Nx1 in '{group.name}', found shape={arr.shape}")
+        raise ValueError(
+            f"Feature '{base_name}' must be 1D or 2D in '{group.name}', found shape={arr.shape}."
+        )
     out = arr.astype(np.float32, copy=False)
     if out.shape[0] != n_rows:
         raise ValueError(f"Feature {name} has incompatible length {out.shape[0]} != {n_rows}")

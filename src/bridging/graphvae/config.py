@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
-DEEPRANK_NODE_FEATURES = ("bsa", "sasa", "res_depth", "hse")
+DEEPRANK_NODE_FEATURES = ("bsa", "sasa", "res_depth", "hse_0", "hse_1", "hse_2")
 STATIC_NODE_FEATURES = DEEPRANK_NODE_FEATURES + ("n_same_chain_8A", "n_other_chain_8A")
 STATIC_EDGE_FEATURES = ("distance", "same_chain", "electrostatic", "vanderwaals")
 
