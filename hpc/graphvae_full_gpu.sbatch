@@ -57,6 +57,8 @@ BUILD_DEEPRANK="${BUILD_DEEPRANK:-0}"
 REUSE_PREPARED="${REUSE_PREPARED:-0}"
 DEEPRANK_PREFIX="${DEEPRANK_PREFIX:-$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs}"
 DEEPRANK_HDF5="${DEEPRANK_HDF5:-}"
+DEEPRANK_QUERY_MODE="${DEEPRANK_QUERY_MODE:-full_complex}"
+DEEPRANK_CPU_COUNT="${DEEPRANK_CPU_COUNT:-4}"
 
 PREFLIGHT_ARGS=()
 H5_LIST=()
@@ -72,6 +74,7 @@ fi
   --expected-deeprank2-version "${DEEPRANK2_VERSION:-3.1.0}" \
   --sample-done "${PREFLIGHT_SAMPLE_DONE:-20}" \
   --require-done "${PREFLIGHT_REQUIRE_DONE:-50}" \
+  --validate-hdf5-sample "${PREFLIGHT_VALIDATE_HDF5_SAMPLE:-40}" \
   "${PREFLIGHT_ARGS[@]}"
 
 COMMON_ARGS=(
@@ -81,6 +84,8 @@ COMMON_ARGS=(
   --pdb-cache-root "$PDB_CACHE_ROOT"
   --graph-source "${GRAPH_SOURCE:-md_topology_protein}"
   --influence-radius "${INFLUENCE_RADIUS:-1000000}"
+  --deeprank-query-mode "$DEEPRANK_QUERY_MODE"
+  --deeprank-cpu-count "$DEEPRANK_CPU_COUNT"
   --frames-per-complex "${FRAMES_PER_COMPLEX:-120}"
   --prepare-progress-every "${PREP_PROGRESS_EVERY:-25}"
   --split-seed "${SPLIT_SEED:-42}"

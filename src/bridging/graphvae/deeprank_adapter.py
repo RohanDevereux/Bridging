@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import shutil
 from pathlib import Path
@@ -9,7 +10,10 @@ from typing import Any
 import h5py
 import numpy as np
 from deeprank2.features import components, contact, exposure, surfacearea
-from deeprank2.query import ProteinProteinInterfaceQuery, QueryCollection
+from deeprank2.query import ProteinProteinInterfaceQuery, Query, QueryCollection
+from deeprank2.utils.buildgraph import get_structure
+from deeprank2.utils.graph import Graph
+from pdb2sql import pdb2sql as pdb2sql_object
 
 from .ids import sanitize_filename_token
 
@@ -116,12 +120,46 @@ def stage_query_pdbs(entries: list[dict], pdb_stage_dir: Path, overwrite: bool =
     return out
 
 
+class ProteinComplexQuery(Query):
+    def get_query_id(self) -> str:
+        return f"{self.resolution}-complex:{self.model_id}"
+
+    def _build_helper(self) -> Graph:
+        pdb = pdb2sql_object(self.pdb_path)
+        try:
+            structure = get_structure(pdb, self.model_id)
+        finally:
+            pdb._close()
+
+        residues = []
+        for chain in structure.chains:
+            for residue in chain.residues:
+                if residue.amino_acid is None:
+                    continue
+                if len(residue.atoms) < 1:
+                    continue
+                residues.append(residue)
+        if not residues:
+            raise ValueError(f"No protein residues found for full-complex graph: {self.pdb_path}")
+
+        max_edge = float(self.max_edge_length) if self.max_edge_length is not None else 10.0
+        graph = Graph.build_graph(nodes=residues, graph_id=self.get_query_id(), max_edge_length=max_edge)
+        if len(graph.edges) < 1:
+            raise ValueError(f"Graph has zero edges for full-complex query: {self.pdb_path}")
+
+        all_atoms = [atom for residue in residues for atom in residue.atoms]
+        graph.center = np.mean([atom.position for atom in all_atoms], axis=0)
+        return graph
+
+
 def build_deeprank_hdf5(
     *,
     staged_entries: list[dict],
     out_prefix: Path,
     influence_radius: float,
     max_edge_length: float | None,
+    query_mode: str,
+    cpu_count: int | None = None,
 ) -> list[Path]:
     if not staged_entries:
         raise ValueError("No staged entries available for DeepRank2 graph generation.")
@@ -129,25 +167,41 @@ def build_deeprank_hdf5(
         raise RuntimeError(
             "msms executable not found on PATH. DeepRank exposure features (res_depth/hse) require msms."
         )
+    if query_mode not in {"ppi", "full_complex"}:
+        raise ValueError(f"Unsupported DeepRank query_mode={query_mode}. Use 'ppi' or 'full_complex'.")
+    # DeepRank emits one warning per unknown atom for forcefield-derived terms.
+    # This can produce multi-million-line logs on PPB and hide real failures.
+    logging.getLogger("deeprank2.utils.parsing").setLevel(logging.ERROR)
     feature_modules = [components, contact, exposure, surfacearea]
     out_prefix.parent.mkdir(parents=True, exist_ok=True)
 
     query_collection = QueryCollection()
     for rec in staged_entries:
-        chain_ids = [rec["query_chain_1"], rec["query_chain_2"]]
-        query = ProteinProteinInterfaceQuery(
-            pdb_path=rec["query_pdb_path"],
-            resolution="residue",
-            chain_ids=chain_ids,
-            targets={"dG": float(rec["dG"])},
-            influence_radius=float(influence_radius),
-            max_edge_length=(float(max_edge_length) if max_edge_length is not None else None),
-        )
+        if query_mode == "ppi":
+            chain_ids = [rec["query_chain_1"], rec["query_chain_2"]]
+            query = ProteinProteinInterfaceQuery(
+                pdb_path=rec["query_pdb_path"],
+                resolution="residue",
+                chain_ids=chain_ids,
+                targets={"dG": float(rec["dG"])},
+                influence_radius=float(influence_radius),
+                max_edge_length=(float(max_edge_length) if max_edge_length is not None else None),
+            )
+        else:
+            query = ProteinComplexQuery(
+                pdb_path=rec["query_pdb_path"],
+                resolution="residue",
+                chain_ids=[],
+                targets={"dG": float(rec["dG"])},
+                influence_radius=float(influence_radius),
+                max_edge_length=(float(max_edge_length) if max_edge_length is not None else None),
+            )
         query_collection.add(query)
 
     hdf5_paths = query_collection.process(
         prefix=str(out_prefix),
         feature_modules=feature_modules,
+        cpu_count=cpu_count,
         log_error_traceback=True,
     )
     return _as_path_list(hdf5_paths)

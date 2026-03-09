@@ -25,6 +25,8 @@ def run_full_pipeline(
     deeprank_prefix: Path | None,
     influence_radius: float,
     max_edge_length: float | None,
+    deeprank_query_mode: str,
+    deeprank_cpu_count: int | None,
     train_fraction: float,
     val_fraction: float,
     split_seed: int,
@@ -77,6 +79,8 @@ def run_full_pipeline(
             deeprank_prefix=deeprank_prefix,
             influence_radius=influence_radius,
             max_edge_length=max_edge_length,
+            deeprank_query_mode=deeprank_query_mode,
+            deeprank_cpu_count=deeprank_cpu_count,
             train_fraction=train_fraction,
             val_fraction=val_fraction,
             split_seed=split_seed,
@@ -234,6 +238,13 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--deep-rank-hdf5", nargs="*")
     parser.add_argument("--deeprank-prefix")
     parser.add_argument(
+        "--deeprank-query-mode",
+        choices=["full_complex", "ppi"],
+        default="full_complex",
+        help="DeepRank query type: full_complex includes all protein residues; ppi uses one chain pair.",
+    )
+    parser.add_argument("--deeprank-cpu-count", type=int, default=4)
+    parser.add_argument(
         "--influence-radius",
         type=float,
         default=1_000_000.0,
@@ -285,6 +296,8 @@ def main() -> None:
         deeprank_prefix=Path(args.deeprank_prefix) if args.deeprank_prefix else None,
         influence_radius=float(args.influence_radius),
         max_edge_length=float(args.max_edge_length) if args.max_edge_length is not None else None,
+        deeprank_query_mode=str(args.deeprank_query_mode),
+        deeprank_cpu_count=int(args.deeprank_cpu_count) if args.deeprank_cpu_count is not None else None,
         train_fraction=float(args.train_fraction),
         val_fraction=float(args.val_fraction),
         split_seed=int(args.split_seed),

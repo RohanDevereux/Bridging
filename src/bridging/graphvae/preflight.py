@@ -12,6 +12,8 @@ import h5py
 import mdtraj as md
 import pandas as pd
 
+from .config import DEEPRANK_NODE_FEATURES, STATIC_EDGE_FEATURES
+from .deeprank_adapter import load_deeprank_graph
 from .ids import canonical_complex_id, sanitize_filename_token
 
 
@@ -112,15 +114,9 @@ def _as_path_list(values: list[str] | None) -> list[Path]:
     return unique
 
 
-def _check_deeprank_overlap(dataset_csv: Path, md_root: Path, hdf5_paths: list[Path]) -> dict:
-    if not hdf5_paths:
-        raise RuntimeError("No HDF5 paths were provided for DeepRank overlap check.")
-    for p in hdf5_paths:
-        if not p.exists():
-            raise FileNotFoundError(f"DeepRank HDF5 not found: {p}")
-
+def _collect_done_models(dataset_csv: Path, md_root: Path) -> set[str]:
     df = pd.read_csv(dataset_csv)
-    done_models = set()
+    done_models: set[str] = set()
     for row in df.to_dict("records"):
         complex_id = canonical_complex_id(row)
         if complex_id is None:
@@ -128,12 +124,30 @@ def _check_deeprank_overlap(dataset_csv: Path, md_root: Path, hdf5_paths: list[P
         pdb_id = str(complex_id).split("__", 1)[0]
         if (md_root / pdb_id / "DONE").exists():
             done_models.add(sanitize_filename_token(complex_id))
+    return done_models
 
-    hdf5_models = set()
+
+def _index_hdf5_entries(hdf5_paths: list[Path]) -> dict[str, tuple[Path, str]]:
+    out: dict[str, tuple[Path, str]] = {}
     for p in hdf5_paths:
         with h5py.File(p, "r") as h5:
             for key in h5.keys():
-                hdf5_models.add(str(key).split(":")[-1].strip())
+                model_id = str(key).split(":")[-1].strip()
+                if model_id not in out:
+                    out[model_id] = (p, str(key))
+    return out
+
+
+def _check_deeprank_overlap(dataset_csv: Path, md_root: Path, hdf5_paths: list[Path]) -> tuple[dict, set[str], dict[str, tuple[Path, str]]]:
+    if not hdf5_paths:
+        raise RuntimeError("No HDF5 paths were provided for DeepRank overlap check.")
+    for p in hdf5_paths:
+        if not p.exists():
+            raise FileNotFoundError(f"DeepRank HDF5 not found: {p}")
+
+    done_models = _collect_done_models(dataset_csv, md_root)
+    hdf5_index = _index_hdf5_entries(hdf5_paths)
+    hdf5_models = set(hdf5_index.keys())
 
     overlap = done_models.intersection(hdf5_models)
     report = {
@@ -148,7 +162,53 @@ def _check_deeprank_overlap(dataset_csv: Path, md_root: Path, hdf5_paths: list[P
             "DeepRank HDF5 has zero overlap with DONE complexes after model-id normalization. "
             f"diagnostic={json.dumps(report)}"
         )
-    return report
+    return report, done_models, hdf5_index
+
+
+def _check_deeprank_schema_sample(
+    *,
+    done_models: set[str],
+    hdf5_index: dict[str, tuple[Path, str]],
+    sample_n: int,
+) -> dict:
+    if sample_n <= 0:
+        return {"sample_checked": 0, "sample_failed": 0}
+    overlap_models = sorted(set(done_models).intersection(set(hdf5_index.keys())))
+    if not overlap_models:
+        raise RuntimeError("No overlap models available for DeepRank schema validation.")
+
+    rng = random.Random(2026)
+    if len(overlap_models) > sample_n:
+        picks = sorted(rng.sample(overlap_models, sample_n))
+    else:
+        picks = overlap_models
+
+    failures = []
+    for model_id in picks:
+        hdf5_path, entry_name = hdf5_index[model_id]
+        try:
+            _ = load_deeprank_graph(
+                hdf5_path=hdf5_path,
+                entry_name=entry_name,
+                node_feature_names=list(DEEPRANK_NODE_FEATURES),
+                edge_feature_names=list(STATIC_EDGE_FEATURES),
+            )
+        except Exception as exc:
+            failures.append(
+                {
+                    "model_id": model_id,
+                    "hdf5_path": str(hdf5_path),
+                    "entry_name": entry_name,
+                    "error": repr(exc),
+                }
+            )
+    if failures:
+        sample = failures[:5]
+        raise RuntimeError(
+            "DeepRank schema validation failed for sampled entries. "
+            f"failures={len(failures)} sample={json.dumps(sample)}"
+        )
+    return {"sample_checked": int(len(picks)), "sample_failed": 0}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -159,6 +219,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--sample-done", type=int, default=20)
     parser.add_argument("--require-done", type=int, default=50)
     parser.add_argument("--deep-rank-hdf5", nargs="*", help="Optional DeepRank HDF5 paths (or glob patterns).")
+    parser.add_argument("--validate-hdf5-sample", type=int, default=40, help="Sample overlap entries to validate HDF5 schema with the production loader.")
     return parser.parse_args()
 
 
@@ -176,13 +237,23 @@ def main() -> None:
     overlap_stats = None
     hdf5_paths = _as_path_list(args.deep_rank_hdf5)
     if hdf5_paths:
-        overlap_stats = _check_deeprank_overlap(Path(args.dataset), Path(args.md_root), hdf5_paths)
+        overlap_stats, done_models, hdf5_index = _check_deeprank_overlap(Path(args.dataset), Path(args.md_root), hdf5_paths)
         print(
             "[PREFLIGHT] deeprank_overlap "
             f"hdf5_files={overlap_stats['n_hdf5_files']} "
             f"hdf5_models={overlap_stats['n_hdf5_models']} "
             f"done_models={overlap_stats['n_done_models']} "
             f"overlap={overlap_stats['n_overlap']}"
+        )
+        schema_stats = _check_deeprank_schema_sample(
+            done_models=done_models,
+            hdf5_index=hdf5_index,
+            sample_n=int(args.validate_hdf5_sample),
+        )
+        print(
+            "[PREFLIGHT] deeprank_schema "
+            f"sample_checked={schema_stats['sample_checked']} "
+            f"sample_failed={schema_stats['sample_failed']}"
         )
     print(
         f"[PREFLIGHT] ok deeprank2={deeprank2_version} freesasa={freesasa_version} "

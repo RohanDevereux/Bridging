@@ -103,6 +103,16 @@ def _select_complex_entries(dataset_csv: Path) -> tuple[list[dict], dict]:
     return rows, report
 
 
+def _multichain_complexes(entries: list[dict]) -> list[str]:
+    out = []
+    for rec in entries:
+        left = str(rec.get("chains_1", "")).strip()
+        right = str(rec.get("chains_2", "")).strip()
+        if len(left) > 1 or len(right) > 1:
+            out.append(str(rec["complex_id"]))
+    return out
+
+
 def _resolve_hdf5_paths(
     *,
     entries: list[dict],
@@ -115,6 +125,8 @@ def _resolve_hdf5_paths(
     deeprank_prefix: Path | None,
     influence_radius: float,
     max_edge_length: float | None,
+    deeprank_query_mode: str,
+    deeprank_cpu_count: int | None,
     overwrite: bool,
     progress_every: int,
 ) -> tuple[list[Path], dict[str, dict], list[dict], dict]:
@@ -248,6 +260,8 @@ def _resolve_hdf5_paths(
             out_prefix=prefix,
             influence_radius=influence_radius,
             max_edge_length=max_edge_length,
+            query_mode=deeprank_query_mode,
+            cpu_count=deeprank_cpu_count,
         )
         print(
             f"[PREP] deeprank build done n_hdf5={len(hdf5_paths)} "
@@ -262,6 +276,10 @@ def _resolve_hdf5_paths(
 
     index = index_hdf5_entries(hdf5_paths)
     write_deeprank_index(index, out_dir / "deeprank_index.json")
+    print(
+        f"[PREP] deeprank index hdf5_files={len(hdf5_paths)} entries={len(index)}",
+        flush=True,
+    )
     source_report["n_deeprank_stage_inputs"] = int(len(entries) if build_deeprank else 0)
     source_report["n_deeprank_indexed_entries"] = int(len(index))
     return hdf5_paths, index, entries, source_report
@@ -279,6 +297,8 @@ def build_prepared_dataset(
     deeprank_prefix: Path | None,
     influence_radius: float,
     max_edge_length: float | None,
+    deeprank_query_mode: str,
+    deeprank_cpu_count: int | None,
     train_fraction: float,
     val_fraction: float,
     split_seed: int,
@@ -290,6 +310,16 @@ def build_prepared_dataset(
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     entries, select_report = _select_complex_entries(dataset_csv)
+    if require_all_protein_nodes and build_deeprank and deeprank_query_mode == "ppi":
+        multi = _multichain_complexes(entries)
+        if multi:
+            raise RuntimeError(
+                "Strict full-protein node coverage is incompatible with DeepRank single-pair query "
+                "for multichain complexes when --deeprank-query-mode=ppi. "
+                f"multichain_complexes={len(multi)} sample={multi[:10]}. "
+                "Use --deeprank-query-mode=full_complex for all-residue coverage, "
+                "or use --allow-partial-node-coverage."
+            )
     split_map = make_train_val_test_split(
         [e["complex_id"] for e in entries],
         train_fraction=train_fraction,
@@ -307,6 +337,8 @@ def build_prepared_dataset(
         deeprank_prefix=deeprank_prefix,
         influence_radius=influence_radius,
         max_edge_length=max_edge_length,
+        deeprank_query_mode=deeprank_query_mode,
+        deeprank_cpu_count=deeprank_cpu_count,
         overwrite=overwrite,
         progress_every=progress_every,
     )
@@ -461,6 +493,11 @@ def build_prepared_dataset(
     torch.save(records, records_path)
     split_path = out_dir / "splits.json"
     split_path.write_text(json.dumps(split_map, indent=2), encoding="utf-8")
+    split_counts = {
+        "train": int(sum(1 for r in records if r["split"] == "train")),
+        "val": int(sum(1 for r in records if r["split"] == "val")),
+        "test": int(sum(1 for r in records if r["split"] == "test")),
+    }
 
     report = {
         "dataset_csv": str(dataset_csv),
@@ -483,11 +520,7 @@ def build_prepared_dataset(
         "partial_node_coverage": partial_node_coverage[:100],
         "node_feature_names": node_feature_names,
         "edge_feature_names": edge_feature_names,
-        "split_counts": {
-            "train": int(sum(1 for r in records if r["split"] == "train")),
-            "val": int(sum(1 for r in records if r["split"] == "val")),
-            "test": int(sum(1 for r in records if r["split"] == "test")),
-        },
+        "split_counts": split_counts,
     }
     report_path = out_dir / "prepare_report.json"
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -495,6 +528,12 @@ def build_prepared_dataset(
         raise RuntimeError(
             "No prepared graph records were produced. "
             f"missing_md={len(missing_md)} missing_graph={len(missing_graph)} bad_md={len(bad_md)}"
+        )
+    if min(split_counts.values()) < 1:
+        raise RuntimeError(
+            "Prepared records produced empty split after MD/graph filtering. "
+            f"split_counts={split_counts}. "
+            "Adjust split seed/fractions or increase available DONE+graph overlap."
         )
     return report
 
@@ -519,6 +558,18 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--build-deeprank", action="store_true", help="Generate DeepRank2 HDF5 from staged PDBs.")
     parser.add_argument("--deep-rank-hdf5", nargs="*", help="Existing DeepRank2 HDF5 file(s).")
     parser.add_argument("--deeprank-prefix", help="Output prefix for DeepRank2 generated HDF5.")
+    parser.add_argument(
+        "--deeprank-query-mode",
+        choices=["full_complex", "ppi"],
+        default="full_complex",
+        help="DeepRank query type: full_complex includes all protein residues; ppi uses one chain pair.",
+    )
+    parser.add_argument(
+        "--deeprank-cpu-count",
+        type=int,
+        default=4,
+        help="CPU workers used by DeepRank QueryCollection.process.",
+    )
     parser.add_argument(
         "--influence-radius",
         type=float,
@@ -550,6 +601,8 @@ def main() -> None:
         deeprank_prefix=Path(args.deeprank_prefix) if args.deeprank_prefix else None,
         influence_radius=float(args.influence_radius),
         max_edge_length=float(args.max_edge_length) if args.max_edge_length is not None else None,
+        deeprank_query_mode=str(args.deeprank_query_mode),
+        deeprank_cpu_count=int(args.deeprank_cpu_count) if args.deeprank_cpu_count is not None else None,
         train_fraction=float(args.train_fraction),
         val_fraction=float(args.val_fraction),
         split_seed=int(args.split_seed),
