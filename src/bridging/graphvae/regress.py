@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge, RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import KFold
 
 
 def _pearson(y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -68,6 +69,112 @@ def _bootstrap_coef_ci(
     }
 
 
+def _summary_stats(values: np.ndarray) -> dict[str, float]:
+    arr = np.asarray(values, dtype=np.float64)
+    arr = arr[np.isfinite(arr)]
+    if arr.size < 1:
+        return {"mean": float("nan"), "std": float("nan"), "min": float("nan"), "max": float("nan")}
+    std = float(np.std(arr, ddof=1)) if arr.size > 1 else 0.0
+    return {
+        "mean": float(np.mean(arr)),
+        "std": std,
+        "min": float(np.min(arr)),
+        "max": float(np.max(arr)),
+    }
+
+
+def _repeated_kfold_probe(
+    *,
+    X: np.ndarray,
+    y: np.ndarray,
+    complex_ids: np.ndarray,
+    alpha_grid: list[float],
+    n_splits: int,
+    n_repeats: int,
+    inner_folds: int,
+    seed: int,
+    out_dir: Path,
+) -> dict:
+    if n_splits < 2 or n_repeats < 1:
+        return {}
+    if X.shape[0] < n_splits:
+        raise ValueError(
+            f"Repeated K-fold requested with n_splits={n_splits}, but only {X.shape[0]} samples are available."
+        )
+    alphas = np.asarray(alpha_grid, dtype=np.float64)
+    fold_rows: list[dict] = []
+    pred_rows: list[dict] = []
+
+    for rep in range(n_repeats):
+        kf = KFold(n_splits=n_splits, shuffle=True, random_state=seed + rep)
+        for fold_id, (tr_idx, te_idx) in enumerate(kf.split(X), start=1):
+            X_tr = X[tr_idx]
+            y_tr = y[tr_idx]
+            X_te = X[te_idx]
+            y_te = y[te_idx]
+
+            cv_inner = min(max(2, int(inner_folds)), int(len(tr_idx)))
+            if cv_inner >= 2:
+                model = RidgeCV(alphas=alphas, cv=cv_inner)
+            else:
+                model = Ridge(alpha=float(alphas[0]))
+            model.fit(X_tr, y_tr)
+            alpha = float(model.alpha_) if hasattr(model, "alpha_") else float(alphas[0])
+
+            y_pred = model.predict(X_te)
+            m = _metrics(y_te, y_pred)
+            fold_rows.append(
+                {
+                    "repeat": int(rep + 1),
+                    "fold": int(fold_id),
+                    "n_train": int(len(tr_idx)),
+                    "n_test": int(len(te_idx)),
+                    "alpha": alpha,
+                    **m,
+                }
+            )
+            for i, idx in enumerate(te_idx):
+                pred_rows.append(
+                    {
+                        "repeat": int(rep + 1),
+                        "fold": int(fold_id),
+                        "complex_id": str(complex_ids[idx]),
+                        "dG": float(y[idx]),
+                        "dG_pred": float(y_pred[i]),
+                        "error": float(y_pred[i] - y[idx]),
+                        "alpha": alpha,
+                    }
+                )
+
+    fold_df = pd.DataFrame(fold_rows)
+    pred_df = pd.DataFrame(pred_rows)
+    fold_csv = out_dir / "latent_ridge_cv_fold_metrics.csv"
+    pred_csv = out_dir / "latent_ridge_cv_predictions.csv"
+    fold_df.to_csv(fold_csv, index=False)
+    pred_df.to_csv(pred_csv, index=False)
+
+    metric_names = ["rmse", "mae", "r2", "pearson_r", "spearman_r", "mean_error"]
+    summary = {name: _summary_stats(fold_df[name].to_numpy(dtype=np.float64)) for name in metric_names}
+    alpha_stats = _summary_stats(fold_df["alpha"].to_numpy(dtype=np.float64))
+    pooled = _metrics(
+        pred_df["dG"].to_numpy(dtype=np.float64),
+        pred_df["dG_pred"].to_numpy(dtype=np.float64),
+    )
+
+    return {
+        "n_splits": int(n_splits),
+        "n_repeats": int(n_repeats),
+        "n_fits": int(n_splits * n_repeats),
+        "inner_folds": int(inner_folds),
+        "fold_metrics_csv": str(fold_csv),
+        "heldout_predictions_csv": str(pred_csv),
+        "fold_metric_summary": summary,
+        "alpha_summary": alpha_stats,
+        "pooled_heldout_metrics": pooled,
+        "note": "Each sample appears in held-out predictions once per repeat.",
+    }
+
+
 def run_linear_probe(
     *,
     latents_csv: Path,
@@ -75,6 +182,9 @@ def run_linear_probe(
     alpha_grid: list[float],
     bootstrap: int,
     seed: int,
+    ridge_cv_folds: int = 0,
+    ridge_cv_repeats: int = 0,
+    ridge_cv_inner_folds: int = 5,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(latents_csv)
@@ -119,6 +229,17 @@ def run_linear_probe(
         n_bootstrap=int(bootstrap),
         seed=seed,
     )
+    cv = _repeated_kfold_probe(
+        X=df[mu_cols].to_numpy(dtype=np.float64),
+        y=df["dG"].to_numpy(dtype=np.float64),
+        complex_ids=df["complex_id"].to_numpy(),
+        alpha_grid=alpha_grid,
+        n_splits=int(ridge_cv_folds),
+        n_repeats=int(ridge_cv_repeats),
+        inner_folds=int(ridge_cv_inner_folds),
+        seed=seed,
+        out_dir=out_dir,
+    )
     summary = {
         "latents_csv": str(latents_csv),
         "predictions_csv": str(pred_path),
@@ -127,6 +248,7 @@ def run_linear_probe(
         "intercept": float(model.intercept_),
         "split_metrics": split_metrics,
         "bootstrap": boot,
+        "repeated_kfold": cv,
     }
     summary_path = out_dir / "latent_ridge_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -139,6 +261,9 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--out-dir", required=True)
     parser.add_argument("--alpha-grid", default="1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100")
     parser.add_argument("--bootstrap", type=int, default=0)
+    parser.add_argument("--ridge-cv-folds", type=int, default=0, help="Repeated random K-fold outer splits (0 disables).")
+    parser.add_argument("--ridge-cv-repeats", type=int, default=0, help="Number of random repeats for outer K-fold.")
+    parser.add_argument("--ridge-cv-inner-folds", type=int, default=5, help="Inner CV folds for alpha selection.")
     parser.add_argument("--seed", type=int, default=2026)
     return parser.parse_args()
 
@@ -151,6 +276,9 @@ def main() -> None:
         out_dir=Path(args.out_dir),
         alpha_grid=alphas,
         bootstrap=int(args.bootstrap),
+        ridge_cv_folds=int(args.ridge_cv_folds),
+        ridge_cv_repeats=int(args.ridge_cv_repeats),
+        ridge_cv_inner_folds=int(args.ridge_cv_inner_folds),
         seed=int(args.seed),
     )
     test = summary["split_metrics"]["test"]
@@ -158,9 +286,16 @@ def main() -> None:
         f"[RIDGE] test rmse={test['rmse']:.4f} mae={test['mae']:.4f} "
         f"r2={test['r2']:.4f} r={test['pearson_r']:.4f}"
     )
+    cv = summary.get("repeated_kfold") or {}
+    if cv:
+        pooled = cv["pooled_heldout_metrics"]
+        print(
+            f"[RIDGE][CV] fits={cv['n_fits']} "
+            f"pooled_rmse={pooled['rmse']:.4f} pooled_r2={pooled['r2']:.4f} "
+            f"pooled_r={pooled['pearson_r']:.4f}"
+        )
     print(f"[RIDGE] summary={Path(args.out_dir) / 'latent_ridge_summary.json'}")
 
 
 if __name__ == "__main__":
     main()
-

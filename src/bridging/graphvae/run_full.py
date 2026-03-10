@@ -13,6 +13,7 @@ from .prepare import build_prepared_dataset
 from .regress import run_linear_probe
 from .supervised_baseline import run_supervised_baseline
 from .train import train_masked_graph_vae
+from .crossval import run_vae_crossval
 
 
 def run_full_pipeline(
@@ -59,6 +60,12 @@ def run_full_pipeline(
     train_checkpoint_every: int,
     alpha_grid: list[float],
     bootstrap: int,
+    ridge_cv_folds: int,
+    ridge_cv_repeats: int,
+    ridge_cv_inner_folds: int,
+    vae_cv_folds: int,
+    vae_cv_repeats: int,
+    vae_cv_val_fraction: float,
     run_supervised: bool,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -177,6 +184,9 @@ def run_full_pipeline(
         out_dir=mode_s_dir,
         alpha_grid=alpha_grid,
         bootstrap=bootstrap,
+        ridge_cv_folds=ridge_cv_folds,
+        ridge_cv_repeats=ridge_cv_repeats,
+        ridge_cv_inner_folds=ridge_cv_inner_folds,
         seed=seed,
     )
     reg_sd = run_linear_probe(
@@ -184,9 +194,50 @@ def run_full_pipeline(
         out_dir=mode_sd_dir,
         alpha_grid=alpha_grid,
         bootstrap=bootstrap,
+        ridge_cv_folds=ridge_cv_folds,
+        ridge_cv_repeats=ridge_cv_repeats,
+        ridge_cv_inner_folds=ridge_cv_inner_folds,
         seed=seed,
     )
     print(f"[PIPE] ridge probes done elapsed_s={time.perf_counter() - step_t0:.1f}")
+    vae_cv = {}
+    if int(vae_cv_folds) >= 2 and int(vae_cv_repeats) >= 1:
+        step_t0 = time.perf_counter()
+        cv_dir = out_dir / "crossval"
+        print(
+            f"[PIPE] vae crossval start folds={int(vae_cv_folds)} repeats={int(vae_cv_repeats)} "
+            f"val_fraction={float(vae_cv_val_fraction):.3f}"
+        )
+        vae_cv = run_vae_crossval(
+            records_path=records_path,
+            out_dir=cv_dir,
+            n_splits=int(vae_cv_folds),
+            n_repeats=int(vae_cv_repeats),
+            val_fraction_of_trainval=float(vae_cv_val_fraction),
+            seed=seed,
+            device=device,
+            latent_dim=latent_dim,
+            hidden_dim=hidden_dim,
+            num_layers=num_layers,
+            mask_ratio=mask_ratio,
+            lr=lr,
+            weight_decay=weight_decay,
+            batch_size=batch_size,
+            max_epochs=max_epochs,
+            patience=patience,
+            beta_start=beta_start,
+            beta_end=beta_end,
+            beta_anneal_fraction=beta_anneal_fraction,
+            corr_weight=corr_weight,
+            num_workers=num_workers,
+            train_checkpoint_every=train_checkpoint_every,
+            alpha_grid=alpha_grid,
+            bootstrap=bootstrap,
+            ridge_cv_folds=ridge_cv_folds,
+            ridge_cv_repeats=ridge_cv_repeats,
+            ridge_cv_inner_folds=ridge_cv_inner_folds,
+        )
+        print(f"[PIPE] vae crossval done elapsed_s={time.perf_counter() - step_t0:.1f}")
     sup = {}
     if run_supervised:
         step_t0 = time.perf_counter()
@@ -234,6 +285,7 @@ def run_full_pipeline(
         "mode_SD_train": train_sd,
         "mode_S_regression": reg_s,
         "mode_SD_regression": reg_sd,
+        "vae_crossval": vae_cv,
         "supervised_baselines": sup,
         "primary_outcome": {
             "metric": "test_rmse (lower is better), test_r2 (higher is better)",
@@ -314,6 +366,12 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--train-checkpoint-every", type=int, default=1)
     parser.add_argument("--alpha-grid", default="1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100")
     parser.add_argument("--bootstrap", type=int, default=0)
+    parser.add_argument("--ridge-cv-folds", type=int, default=0, help="Repeated random outer K-folds for latent ridge (0 disables).")
+    parser.add_argument("--ridge-cv-repeats", type=int, default=0, help="Number of random repeats for ridge K-fold.")
+    parser.add_argument("--ridge-cv-inner-folds", type=int, default=5, help="Inner CV folds for alpha selection in each outer fold.")
+    parser.add_argument("--vae-cv-folds", type=int, default=0, help="Full VAE+ridge outer K-fold training (0 disables).")
+    parser.add_argument("--vae-cv-repeats", type=int, default=0, help="Random repeats for full VAE+ridge CV.")
+    parser.add_argument("--vae-cv-val-fraction", type=float, default=0.15, help="Validation fraction from non-heldout data in each VAE CV fold.")
     parser.add_argument("--run-supervised-baselines", action="store_true")
     return parser.parse_args()
 
@@ -364,6 +422,12 @@ def main() -> None:
         train_checkpoint_every=int(args.train_checkpoint_every),
         alpha_grid=alphas,
         bootstrap=int(args.bootstrap),
+        ridge_cv_folds=int(args.ridge_cv_folds),
+        ridge_cv_repeats=int(args.ridge_cv_repeats),
+        ridge_cv_inner_folds=int(args.ridge_cv_inner_folds),
+        vae_cv_folds=int(args.vae_cv_folds),
+        vae_cv_repeats=int(args.vae_cv_repeats),
+        vae_cv_val_fraction=float(args.vae_cv_val_fraction),
         run_supervised=bool(args.run_supervised_baselines),
     )
     prim = out["primary_outcome"]

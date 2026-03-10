@@ -99,6 +99,12 @@ COMMON_ARGS=(
   --num-workers "${NUM_WORKERS:-4}"
   --train-checkpoint-every "${TRAIN_CHECKPOINT_EVERY:-1}"
   --alpha-grid "${ALPHA_GRID:-1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100}"
+  --ridge-cv-folds "${RIDGE_CV_FOLDS:-0}"
+  --ridge-cv-repeats "${RIDGE_CV_REPEATS:-0}"
+  --ridge-cv-inner-folds "${RIDGE_CV_INNER_FOLDS:-5}"
+  --vae-cv-folds "${VAE_CV_FOLDS:-0}"
+  --vae-cv-repeats "${VAE_CV_REPEATS:-0}"
+  --vae-cv-val-fraction "${VAE_CV_VAL_FRACTION:-0.15}"
 )
 if [ "${RUN_SUP_BASELINES:-0}" = "1" ]; then
   COMMON_ARGS+=(--run-supervised-baselines)
