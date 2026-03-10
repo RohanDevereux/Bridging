@@ -5,7 +5,7 @@ from pathlib import Path
 import mdtraj as md
 import numpy as np
 
-from .config import AA_CODES, NODE_IDENTITY_FEATURES
+from .config import AA_CODES, NODE_IDENTITY_FEATURES, TORSION_NODE_INPUT_FEATURES
 
 
 AA3_TO_AA1 = {
@@ -308,6 +308,79 @@ def _compute_edge_contact_stats(
             out[e, 1] = float(np.mean(d))
             out[e, 2] = float(np.std(d))
     return out
+
+
+def _torsion_mean_sincos(angles: np.ndarray) -> tuple[float, float]:
+    if angles.size < 1:
+        return 0.0, 0.0
+    sin_v = np.sin(angles)
+    cos_v = np.cos(angles)
+    return float(np.mean(sin_v)), float(np.mean(cos_v))
+
+
+def compute_node_torsion_sincos_features(
+    *,
+    traj: md.Trajectory,
+    node_chain_id: list[str],
+    node_position: list[int],
+) -> tuple[np.ndarray, dict[str, int]]:
+    topology = traj.topology
+    node_keys = [(str(c).strip().upper(), int(p)) for c, p in zip(node_chain_id, node_position)]
+    out = np.zeros((len(node_keys), len(TORSION_NODE_INPUT_FEATURES)), dtype=np.float32)
+
+    key_to_residue: dict[tuple[str, int], list[int]] = {}
+    for residue in topology.residues:
+        if not residue.is_protein:
+            continue
+        if not any(a.name == "CA" for a in residue.atoms):
+            continue
+        key = (_chain_id(residue.chain), int(residue.resSeq))
+        key_to_residue.setdefault(key, []).append(int(residue.index))
+
+    phi_idx, phi_angles = md.compute_phi(traj)
+    psi_idx, psi_angles = md.compute_psi(traj)
+
+    phi_by_residue: dict[int, np.ndarray] = {}
+    psi_by_residue: dict[int, np.ndarray] = {}
+    for k in range(phi_idx.shape[0]):
+        residue_idx = int(topology.atom(int(phi_idx[k, 1])).residue.index)
+        phi_by_residue[residue_idx] = np.asarray(phi_angles[:, k], dtype=np.float64)
+    for k in range(psi_idx.shape[0]):
+        residue_idx = int(topology.atom(int(psi_idx[k, 1])).residue.index)
+        psi_by_residue[residue_idx] = np.asarray(psi_angles[:, k], dtype=np.float64)
+
+    stats = {
+        "n_nodes": int(len(node_keys)),
+        "n_mapped_nodes": 0,
+        "n_ambiguous_keys": 0,
+        "n_phi_defined": 0,
+        "n_psi_defined": 0,
+    }
+
+    for i, key in enumerate(node_keys):
+        hits = key_to_residue.get(key, [])
+        if len(hits) != 1:
+            if len(hits) > 1:
+                stats["n_ambiguous_keys"] += 1
+            continue
+        residue_idx = int(hits[0])
+        stats["n_mapped_nodes"] += 1
+
+        phi = phi_by_residue.get(residue_idx)
+        if phi is not None:
+            s, c = _torsion_mean_sincos(phi)
+            out[i, 0] = s
+            out[i, 1] = c
+            stats["n_phi_defined"] += 1
+
+        psi = psi_by_residue.get(residue_idx)
+        if psi is not None:
+            s, c = _torsion_mean_sincos(psi)
+            out[i, 2] = s
+            out[i, 3] = c
+            stats["n_psi_defined"] += 1
+
+    return out.astype(np.float32, copy=False), stats
 
 
 def _compute_chain_neighbor_counts(

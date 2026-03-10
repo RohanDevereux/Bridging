@@ -10,6 +10,8 @@ from torch_geometric.data import Data
 from .config import (
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
+    DYNAMIC_NODE_INPUT_FEATURES,
+    DYNAMIC_NODE_MASK_TARGETS,
     DYNAMIC_NODE_FEATURES,
     STATIC_EDGE_MASK_TARGETS,
     STATIC_EDGE_FEATURES,
@@ -55,9 +57,9 @@ def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
         dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_WITH_DIST if n in edge_names_all]
         if not dyn_edge:
             dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_BASE if n in edge_names_all]
-        node_input_names = [n for n in (list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_FEATURES)) if n in node_names_all]
+        node_input_names = [n for n in (list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_INPUT_FEATURES)) if n in node_names_all]
         edge_input_names = [n for n in (list(STATIC_EDGE_FEATURES) + dyn_edge) if n in edge_names_all]
-        node_target_names = [n for n in DYNAMIC_NODE_FEATURES if n in node_input_names]
+        node_target_names = [n for n in DYNAMIC_NODE_MASK_TARGETS if n in node_input_names]
         edge_target_names = [n for n in dyn_edge if n in edge_input_names]
 
     node_target_idx = _idx(node_input_names, node_target_names)

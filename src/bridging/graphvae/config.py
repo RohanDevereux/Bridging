@@ -28,6 +28,14 @@ DYNAMIC_NODE_FEATURES = (
     "dyn_water_count_5A_std",
     "dyn_rmsf_ca",
 )
+TORSION_NODE_INPUT_FEATURES = (
+    "dyn_sin_phi_mean",
+    "dyn_cos_phi_mean",
+    "dyn_sin_psi_mean",
+    "dyn_cos_psi_mean",
+)
+DYNAMIC_NODE_MASK_TARGETS = DYNAMIC_NODE_FEATURES
+DYNAMIC_NODE_INPUT_FEATURES = DYNAMIC_NODE_MASK_TARGETS + TORSION_NODE_INPUT_FEATURES
 DYNAMIC_EDGE_FEATURES_BASE = ("dyn_contact_freq_8A",)
 DYNAMIC_EDGE_FEATURES_WITH_DIST = ("dyn_contact_freq_8A", "dyn_dist_mean", "dyn_dist_std")
 
