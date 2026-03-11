@@ -9,10 +9,12 @@ import pandas as pd
 from bridging.MD.paths import DATA_CSV, resolve_dataset
 from bridging.MD.prefetch_dataset import prefetch as prefetch_pdbs_for_dataset
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
+from bridging.utils.dataset_rows import parse_chain_group
+from bridging.graphvae.chain_remap import build_raw_to_md_chain_map
 
 from .dataset import MMGBSARequest, parse_request_row
 from .paths import MMGBSA_OUT_DIR, default_results_path
-from .runner import run_mmgbsa_delta_g_kcalmol, validate_mmgbsa_tools
+from .runner import pdb_has_chains, run_mmgbsa_delta_g_kcalmol, validate_mmgbsa_tools
 
 
 RESULT_COLUMNS = [
@@ -22,6 +24,8 @@ RESULT_COLUMNS = [
     "pdb_id",
     "ligand_group",
     "receptor_group",
+    "used_ligand_group",
+    "used_receptor_group",
     "temperature_k",
     "solvation_model",
     "igb",
@@ -127,6 +131,8 @@ def _record_from_request(
     delta_g: float | None,
     status: str,
     message: str = "",
+    used_ligand_group: str | None = None,
+    used_receptor_group: str | None = None,
     source_pdb: Path | None = None,
     source_kind: str = "",
     work_dir: Path | None = None,
@@ -138,6 +144,8 @@ def _record_from_request(
         "pdb_id": req.pdb_id,
         "ligand_group": req.ligand_group,
         "receptor_group": req.receptor_group,
+        "used_ligand_group": used_ligand_group or req.ligand_group,
+        "used_receptor_group": used_receptor_group or req.receptor_group,
         "temperature_k": req.temperature_k,
         "solvation_model": str(solvation_model).strip().lower(),
         "igb": int(igb),
@@ -170,21 +178,63 @@ def _save_results(out_path: Path, records_by_row: dict[int, dict]) -> None:
     df.to_csv(out_path, index=False)
 
 
-def _resolve_source(req: MMGBSARequest, md_root: Path | None) -> tuple[Path, str, Path | None]:
+def _format_group(chain_ids: list[str]) -> str:
+    return ",".join([str(c).strip().upper() for c in chain_ids if str(c).strip()])
+
+
+def _resolve_source(
+    req: MMGBSARequest,
+    md_root: Path | None,
+    *,
+    chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] | None = None,
+) -> tuple[Path, str, Path | None, str, str]:
+    raw_lig = [c.upper() for c in parse_chain_group(req.ligand_group)]
+    raw_rec = [c.upper() for c in parse_chain_group(req.receptor_group)]
+    needed_chains = [c for c in (raw_lig + raw_rec) if c.strip()]
     if md_root is not None:
         md_top = md_root / req.pdb_id / "topology_protein.pdb"
         if md_top.exists():
-            for traj_name in ("traj_protein.nc", "traj_protein.dcd"):
-                traj = md_root / req.pdb_id / traj_name
-                if traj.exists():
-                    return md_top, "md_top_with_traj", traj
-            return md_top, "md_top_single", None
+            used_lig = raw_lig
+            used_rec = raw_rec
+            source_kind = "md_top"
+
+            raw_pdb, _ = ensure_pdb_cached(req.pdb_id)
+            if raw_pdb.exists():
+                cache_key = str(req.pdb_id).strip().upper()
+                if chain_map_cache is not None and cache_key in chain_map_cache:
+                    chain_map, md_chain_order, _ = chain_map_cache[cache_key]
+                else:
+                    chain_map, md_chain_order, report = build_raw_to_md_chain_map(raw_pdb, md_top)
+                    if chain_map_cache is not None:
+                        chain_map_cache[cache_key] = (chain_map, md_chain_order, report)
+                remapped_lig = [chain_map.get(c, c) for c in raw_lig]
+                remapped_rec = [chain_map.get(c, c) for c in raw_rec]
+                remapped_needed = [c for c in (remapped_lig + remapped_rec) if c.strip()]
+                if remapped_needed and pdb_has_chains(md_top, remapped_needed):
+                    used_lig = remapped_lig
+                    used_rec = remapped_rec
+                    source_kind = "md_top_remapped"
+                    needed_chains = remapped_needed
+
+            if pdb_has_chains(md_top, needed_chains):
+                used_ligand_group = _format_group(used_lig)
+                used_receptor_group = _format_group(used_rec)
+                for traj_name in ("traj_protein.nc", "traj_protein.dcd"):
+                    traj = md_root / req.pdb_id / traj_name
+                    if traj.exists():
+                        return md_top, f"{source_kind}_with_traj", traj, used_ligand_group, used_receptor_group
+                return md_top, f"{source_kind}_single", None, used_ligand_group, used_receptor_group
 
         md_final = md_root / req.pdb_id / "final.pdb"
-        if md_final.exists():
-            return md_final, "md_final_single", None
+        if md_final.exists() and pdb_has_chains(md_final, needed_chains):
+            return md_final, "md_final_single", None, req.ligand_group, req.receptor_group
+
     cached, _ = ensure_pdb_cached(req.pdb_id)
-    return cached, "rcsb_cache", None
+    if not pdb_has_chains(cached, needed_chains):
+        raise RuntimeError(
+            f"No available source PDB contains required chains {sorted(set(needed_chains))} for {req.pdb_id}."
+        )
+    return cached, "rcsb_cache", None, req.ligand_group, req.receptor_group
 
 
 def _cache_key_to_dir(cache_key: str) -> str:
@@ -236,6 +286,7 @@ def fetch_and_save_dataset_estimates(
 
     records_by_row = _load_existing(out_path, dataset_ref)
     key_cache = _build_success_cache(records_by_row)
+    chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
     target_sig = _config_signature(
         solvation_model=solvation_model,
         igb=igb,
@@ -264,6 +315,8 @@ def fetch_and_save_dataset_estimates(
                 "pdb_id": "",
                 "ligand_group": "",
                 "receptor_group": "",
+                "used_ligand_group": "",
+                "used_receptor_group": "",
                 "temperature_k": None,
                 "solvation_model": str(solvation_model).strip().lower(),
                 "igb": int(igb),
@@ -311,6 +364,8 @@ def fetch_and_save_dataset_estimates(
                 delta_g=delta_g,
                 status="ok",
                 message="reused cached estimate",
+                used_ligand_group=req.ligand_group,
+                used_receptor_group=req.receptor_group,
             )
             _save_results(out_path, records_by_row)
             print(
@@ -321,13 +376,19 @@ def fetch_and_save_dataset_estimates(
 
         source_pdb = None
         source_kind = ""
+        used_ligand_group = req.ligand_group
+        used_receptor_group = req.receptor_group
         work_dir = work_root_path / _cache_key_to_dir(req.cache_key)
         try:
-            source_pdb, source_kind, traj_path = _resolve_source(req, md_root_path)
+            source_pdb, source_kind, traj_path, used_ligand_group, used_receptor_group = _resolve_source(
+                req,
+                md_root_path,
+                chain_map_cache=chain_map_cache,
+            )
             delta_g = run_mmgbsa_delta_g_kcalmol(
                 pdb_path=source_pdb,
-                ligand_group=req.ligand_group,
-                receptor_group=req.receptor_group,
+                ligand_group=used_ligand_group,
+                receptor_group=used_receptor_group,
                 work_dir=work_dir,
                 trajectory_path=traj_path,
                 tleap_exe=tleap_exe,
@@ -355,13 +416,15 @@ def fetch_and_save_dataset_estimates(
                 interval=interval,
                 delta_g=delta_g,
                 status="ok",
+                used_ligand_group=used_ligand_group,
+                used_receptor_group=used_receptor_group,
                 source_pdb=source_pdb,
                 source_kind=source_kind,
                 work_dir=work_dir,
             )
             print(
                 f"[OK] {row_index + 1}/{total} {req.pdb_id} source={source_kind} "
-                f"lig={req.ligand_group} rec={req.receptor_group} dG={delta_g:.3f}"
+                f"lig={used_ligand_group} rec={used_receptor_group} dG={delta_g:.3f}"
             )
         except Exception as exc:
             fail_count += 1
@@ -379,6 +442,8 @@ def fetch_and_save_dataset_estimates(
                 delta_g=None,
                 status="fail",
                 message=message,
+                used_ligand_group=used_ligand_group,
+                used_receptor_group=used_receptor_group,
                 source_pdb=source_pdb,
                 source_kind=source_kind,
                 work_dir=work_dir,

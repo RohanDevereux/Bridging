@@ -28,6 +28,17 @@ def _run_checked(cmd: list[str], cwd: Path | None = None):
     return proc
 
 
+def available_chain_ids(pdb_path: Path) -> list[str]:
+    pdb = PDBFile(str(pdb_path))
+    return sorted({str(c.id).strip().upper() for c in pdb.topology.chains()})
+
+
+def pdb_has_chains(pdb_path: Path, chain_ids: list[str]) -> bool:
+    available = set(available_chain_ids(pdb_path))
+    wanted = {str(c).strip().upper() for c in chain_ids}
+    return wanted.issubset(available)
+
+
 def _parse_group(group: str) -> list[str]:
     return [c.upper() for c in parse_chain_group(group)]
 
