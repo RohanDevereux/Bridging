@@ -44,8 +44,41 @@ conda env create -f environment.ambertools.yml
 ```
 
 `environment.ambertools.yml` pins Python 3.12 to avoid landing in Python 3.13, which does not satisfy this repo's `pyproject.toml` requirement (`>=3.10,<3.13`).
+It also pins `numpy<2` because AmberTools / ParmEd still imports `numpy.compat`.
 
 If Sonic provides a working AmberTools module, that is also acceptable. If the module is incompatible with worker-node CPUs, use a user-local micromamba/conda environment and expose only its binaries.
+
+### Sonic: recommended AmberTools setup
+On Sonic, the most reliable setup is:
+
+1. use `.venv` for all `python -m bridging...` commands
+2. install AmberTools into a user-local micromamba env under `~/scratch`
+3. expose only the AmberTools binaries from that env on `PATH`
+4. do not `activate` the micromamba env in your shell
+
+If `conda` is not available on the login node, bootstrap micromamba once:
+
+```bash
+cd ~/scratch
+mkdir -p micromamba-bin micromamba
+
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest \
+  | tar -xvj -C micromamba-bin --strip-components=1 bin/micromamba
+
+export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
+export PATH="$HOME/scratch/micromamba-bin:$PATH"
+
+micromamba env create -f ~/Bridging/environment.ambertools.yml
+```
+
+The environment file creates:
+
+```bash
+$HOME/scratch/micromamba/envs/bridging-ambertools
+```
+
+Do not run `pip install -e .` inside that AmberTools env.
+That env is not the main project environment.
 
 Then, in `bash`, activate your project venv and expose AmberTools binaries on `PATH`:
 
@@ -63,6 +96,8 @@ For a user-local micromamba install, the equivalent is:
 ```bash
 source .venv/bin/activate
 export PYTHONNOUSERSITE=1
+module unload amber/ambertools25 2>/dev/null || true
+unset AMBERTOOLS_MODULE
 export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
 export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
 export AMBERTOOLS_BIN="$AMBERHOME/bin"
@@ -76,6 +111,7 @@ which tleap cpptraj MMPBSA.py
 tleap -h >/dev/null && echo "tleap ok"
 cpptraj -h >/dev/null && echo "cpptraj ok"
 MMPBSA.py -h >/dev/null && echo "MMPBSA.py ok"
+"$AMBERHOME/bin/python" -c "import numpy, sys; print(sys.executable); print(numpy.__version__)"
 python -m bridging.MMGBSA.prefetch_dataset --help
 ```
 
@@ -83,6 +119,20 @@ Important:
 - The Python used for `python -m bridging...` should still be `.venv/bin/python`.
 - The AmberTools env only needs to contribute `tleap`, `cpptraj`, and `MMPBSA.py` on `PATH`.
 - You generally should not run `pip install -e .` inside the AmberTools env.
+- If `MMPBSA.py` fails with `numpy.compat` import errors, the AmberTools env has NumPy 2.x. Reinstall `numpy<2` in that env.
+- If batch logs show `Loading amber/ambertools25`, the system module is still leaking into the job environment. Clear `AMBERTOOLS_MODULE` and use `AMBERTOOLS_BIN` instead.
+- On Sonic, the `amber/ambertools25` module may fail on some worker nodes due to CPU instruction-set mismatch. The user-local micromamba env avoids that.
+- The AmberTools env may contain a stale partial editable `bridging` install from earlier experiments. That does not matter as long as `.venv` is the Python actually running `bridging`.
+
+### Repairing a broken AmberTools env
+If you accidentally created the AmberTools env with Python 3.13 or NumPy 2.x, either recreate it from `environment.ambertools.yml` or at minimum force NumPy back below 2:
+
+```bash
+export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
+export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
+"$AMBERHOME/bin/python" -m pip install "numpy<2"
+"$AMBERHOME/bin/python" -c "import numpy; print(numpy.__version__)"
+```
 
 ### MMGBSA Sonic launch presets
 `hpc/submit_mmgbsa_parallel.sh` now accepts `MMGBSA_PRESET`:
@@ -98,6 +148,8 @@ Example:
 source .venv/bin/activate
 export PYTHONPATH=src
 export PYTHONNOUSERSITE=1
+module unload amber/ambertools25 2>/dev/null || true
+unset AMBERTOOLS_MODULE
 export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
 export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
 export AMBERTOOLS_BIN="$AMBERHOME/bin"
@@ -110,6 +162,19 @@ export MMGBSA_PRESET=full_gb
 export RUN_TAG=gb_full_done1458
 
 bash hpc/submit_mmgbsa_parallel.sh
+```
+
+Notes:
+- `balanced_gb` is the cheap baseline.
+- `full_gb` is the main "better accuracy, slower" setting.
+- `pb_pilot` should be used before `full_pb`; do not launch a full PB campaign blind.
+- Each shard CSV is saved after every processed row. Partial results are therefore usable mid-run.
+- To build a live partial merged CSV while a run is still active:
+
+```bash
+python -m bridging.MMGBSA.merge_sharded_results \
+  --shard-root "$OUT_ROOT" \
+  --out "$OUT_ROOT/live_partial_mmgbsa.csv"
 ```
 
 ### Resumable torsion augmentation on Sonic
@@ -134,6 +199,11 @@ This augments the base and parallel-prepare checkpoint shards separately and the
 ```bash
 src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1/prepared/graph_records.pt
 ```
+
+Notes:
+- This path is resumable at the checkpoint-directory level.
+- If a torsion array task is re-run and the output checkpoint count already matches the input checkpoint count, that part is skipped.
+- The merged `graph_records.pt` is only written after the dependency merge job completes.
 
 ## GraphVAE (S vs SD) Pipeline
 New pipeline in `src/bridging/graphvae/`:
