@@ -34,6 +34,7 @@ RESULT_COLUMNS = [
     "start_frame",
     "end_frame",
     "interval",
+    "source_mode",
     "delta_g_kcal_mol",
     "status",
     "message",
@@ -74,6 +75,7 @@ def _config_signature(
     start_frame: int,
     end_frame: int | None,
     interval: int,
+    source_mode: str,
 ) -> tuple:
     return (
         str(solvation_model).strip().lower(),
@@ -83,6 +85,7 @@ def _config_signature(
         int(start_frame),
         (None if end_frame is None else int(end_frame)),
         int(interval),
+        str(source_mode).strip().lower(),
     )
 
 
@@ -99,6 +102,7 @@ def _record_signature(record: dict) -> tuple:
             else int(float(record.get("end_frame")))
         ),
         interval=int(record.get("interval", 1) or 1),
+        source_mode=str(record.get("source_mode", "protein_traj") or "protein_traj"),
     )
 
 
@@ -128,6 +132,7 @@ def _record_from_request(
     start_frame: int,
     end_frame: int | None,
     interval: int,
+    source_mode: str,
     delta_g: float | None,
     status: str,
     message: str = "",
@@ -154,6 +159,7 @@ def _record_from_request(
         "start_frame": int(start_frame),
         "end_frame": (None if end_frame is None else int(end_frame)),
         "interval": int(interval),
+        "source_mode": str(source_mode).strip().lower(),
         "delta_g_kcal_mol": delta_g,
         "status": status,
         "message": message,
@@ -187,16 +193,36 @@ def _resolve_source(
     md_root: Path | None,
     *,
     chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] | None = None,
-) -> tuple[Path, str, Path | None, str, str]:
+    source_mode: str = "protein_traj",
+) -> tuple[Path, str, Path | None, str, str, str]:
     raw_lig = [c.upper() for c in parse_chain_group(req.ligand_group)]
     raw_rec = [c.upper() for c in parse_chain_group(req.receptor_group)]
     needed_chains = [c for c in (raw_lig + raw_rec) if c.strip()]
+    source_mode = str(source_mode).strip().lower()
     if md_root is not None:
         md_top = md_root / req.pdb_id / "topology_protein.pdb"
-        if md_top.exists():
+        md_top_full = md_root / req.pdb_id / "topology_full.pdb"
+        md_traj_protein = next(
+            (
+                p
+                for p in (md_root / req.pdb_id / "traj_protein.nc", md_root / req.pdb_id / "traj_protein.dcd")
+                if p.exists()
+            ),
+            None,
+        )
+        md_traj_full = next(
+            (
+                p
+                for p in (md_root / req.pdb_id / "traj_full.nc", md_root / req.pdb_id / "traj_full.dcd")
+                if p.exists()
+            ),
+            None,
+        )
+        remap_pdb = md_top if md_top.exists() else md_top_full
+        if remap_pdb is not None and remap_pdb.exists():
             used_lig = raw_lig
             used_rec = raw_rec
-            source_kind = "md_top"
+            source_kind = "md_top" if remap_pdb == md_top else "md_full"
 
             raw_pdb, _ = ensure_pdb_cached(req.pdb_id)
             if raw_pdb.exists():
@@ -204,37 +230,77 @@ def _resolve_source(
                 if chain_map_cache is not None and cache_key in chain_map_cache:
                     chain_map, md_chain_order, _ = chain_map_cache[cache_key]
                 else:
-                    chain_map, md_chain_order, report = build_raw_to_md_chain_map(raw_pdb, md_top)
+                    chain_map, md_chain_order, report = build_raw_to_md_chain_map(raw_pdb, remap_pdb)
                     if chain_map_cache is not None:
                         chain_map_cache[cache_key] = (chain_map, md_chain_order, report)
                 remapped_lig = [chain_map.get(c, c) for c in raw_lig]
                 remapped_rec = [chain_map.get(c, c) for c in raw_rec]
                 remapped_needed = [c for c in (remapped_lig + remapped_rec) if c.strip()]
-                if remapped_needed and pdb_has_chains(md_top, remapped_needed):
+                if remapped_needed and pdb_has_chains(remap_pdb, remapped_needed):
                     used_lig = remapped_lig
                     used_rec = remapped_rec
-                    source_kind = "md_top_remapped"
+                    source_kind = f"{source_kind}_remapped"
                     needed_chains = remapped_needed
 
-            if pdb_has_chains(md_top, needed_chains):
-                used_ligand_group = _format_group(used_lig)
-                used_receptor_group = _format_group(used_rec)
-                for traj_name in ("traj_protein.nc", "traj_protein.dcd"):
-                    traj = md_root / req.pdb_id / traj_name
-                    if traj.exists():
-                        return md_top, f"{source_kind}_with_traj", traj, used_ligand_group, used_receptor_group
-                return md_top, f"{source_kind}_single", None, used_ligand_group, used_receptor_group
+            used_ligand_group = _format_group(used_lig)
+            used_receptor_group = _format_group(used_rec)
+
+            if (
+                source_mode == "full_traj"
+                and md_top_full.exists()
+                and md_traj_full is not None
+                and pdb_has_chains(md_top_full, needed_chains)
+            ):
+                return (
+                    md_top_full,
+                    f"{source_kind}_with_full_traj",
+                    md_traj_full,
+                    used_ligand_group,
+                    used_receptor_group,
+                    "full_topology_select",
+                )
+
+            if (
+                source_mode in {"protein_traj", "auto"}
+                and md_top.exists()
+                and pdb_has_chains(md_top, needed_chains)
+            ):
+                if md_traj_protein is not None:
+                    return (
+                        md_top,
+                        f"{source_kind}_with_traj",
+                        md_traj_protein,
+                        used_ligand_group,
+                        used_receptor_group,
+                        "direct",
+                    )
+                return md_top, f"{source_kind}_single", None, used_ligand_group, used_receptor_group, "direct"
+
+            if (
+                source_mode == "auto"
+                and md_top_full.exists()
+                and md_traj_full is not None
+                and pdb_has_chains(md_top_full, needed_chains)
+            ):
+                return (
+                    md_top_full,
+                    f"{source_kind}_with_full_traj",
+                    md_traj_full,
+                    used_ligand_group,
+                    used_receptor_group,
+                    "full_topology_select",
+                )
 
         md_final = md_root / req.pdb_id / "final.pdb"
         if md_final.exists() and pdb_has_chains(md_final, needed_chains):
-            return md_final, "md_final_single", None, req.ligand_group, req.receptor_group
+            return md_final, "md_final_single", None, req.ligand_group, req.receptor_group, "direct"
 
     cached, _ = ensure_pdb_cached(req.pdb_id)
     if not pdb_has_chains(cached, needed_chains):
         raise RuntimeError(
             f"No available source PDB contains required chains {sorted(set(needed_chains))} for {req.pdb_id}."
         )
-    return cached, "rcsb_cache", None, req.ligand_group, req.receptor_group
+    return cached, "rcsb_cache", None, req.ligand_group, req.receptor_group, "direct"
 
 
 def _cache_key_to_dir(cache_key: str) -> str:
@@ -260,6 +326,7 @@ def fetch_and_save_dataset_estimates(
     start_frame: int = 1,
     end_frame: int | None = None,
     interval: int = 1,
+    source_mode: str = "protein_traj",
 ) -> Path:
     validate_mmgbsa_tools(tleap_exe=tleap_exe, cpptraj_exe=cpptraj_exe, mmpbsa_exe=mmpbsa_exe)
     dataset_path = resolve_dataset(dataset_path, DATA_CSV)
@@ -278,7 +345,8 @@ def fetch_and_save_dataset_estimates(
     print(
         f"[MMGBSA] dataset={dataset_path} dataset_label={dataset_ref} rows={total} out={out_path} "
         f"model={str(solvation_model).lower()} start={int(start_frame)} "
-        f"end={('NA' if end_frame is None else int(end_frame))} interval={int(interval)}"
+        f"end={('NA' if end_frame is None else int(end_frame))} interval={int(interval)} "
+        f"source_mode={str(source_mode).strip().lower()}"
     )
     if prefetch_pdbs:
         print("[MMGBSA] prefetching PDBs into local cache")
@@ -295,6 +363,7 @@ def fetch_and_save_dataset_estimates(
         start_frame=start_frame,
         end_frame=end_frame,
         interval=interval,
+        source_mode=source_mode,
     )
 
     ok_count = 0
@@ -325,6 +394,7 @@ def fetch_and_save_dataset_estimates(
                 "start_frame": int(start_frame),
                 "end_frame": (None if end_frame is None else int(end_frame)),
                 "interval": int(interval),
+                "source_mode": str(source_mode).strip().lower(),
                 "delta_g_kcal_mol": None,
                 "status": "parse_error",
                 "message": str(exc),
@@ -361,6 +431,7 @@ def fetch_and_save_dataset_estimates(
                 start_frame=start_frame,
                 end_frame=end_frame,
                 interval=interval,
+                source_mode=source_mode,
                 delta_g=delta_g,
                 status="ok",
                 message="reused cached estimate",
@@ -376,14 +447,16 @@ def fetch_and_save_dataset_estimates(
 
         source_pdb = None
         source_kind = ""
+        trajectory_mode = "direct"
         used_ligand_group = req.ligand_group
         used_receptor_group = req.receptor_group
         work_dir = work_root_path / _cache_key_to_dir(req.cache_key)
         try:
-            source_pdb, source_kind, traj_path, used_ligand_group, used_receptor_group = _resolve_source(
+            source_pdb, source_kind, traj_path, used_ligand_group, used_receptor_group, trajectory_mode = _resolve_source(
                 req,
                 md_root_path,
                 chain_map_cache=chain_map_cache,
+                source_mode=source_mode,
             )
             delta_g = run_mmgbsa_delta_g_kcalmol(
                 pdb_path=source_pdb,
@@ -401,6 +474,7 @@ def fetch_and_save_dataset_estimates(
                 start_frame=start_frame,
                 end_frame=end_frame,
                 interval=interval,
+                trajectory_mode=trajectory_mode,
             )
             key_cache[cache_lookup] = delta_g
             ok_count += 1
@@ -414,6 +488,7 @@ def fetch_and_save_dataset_estimates(
                 start_frame=start_frame,
                 end_frame=end_frame,
                 interval=interval,
+                source_mode=source_mode,
                 delta_g=delta_g,
                 status="ok",
                 used_ligand_group=used_ligand_group,
@@ -439,6 +514,7 @@ def fetch_and_save_dataset_estimates(
                 start_frame=start_frame,
                 end_frame=end_frame,
                 interval=interval,
+                source_mode=source_mode,
                 delta_g=None,
                 status="fail",
                 message=message,
@@ -482,8 +558,8 @@ def main():
     parser.add_argument(
         "--md-root",
         help=(
-            "Optional MD root. Uses <md_root>/<PDB>/topology_protein.pdb + traj_protein.nc "
-            "when available, else falls back to final.pdb."
+            "Optional MD root. Supports protein-only trajectory sourcing and full-trajectory "
+            "protein-subset sourcing from saved OpenMM outputs."
         ),
     )
     parser.add_argument("--work-root", help="Directory for MMGBSA working files")
@@ -497,6 +573,12 @@ def main():
     parser.add_argument("--start-frame", type=int, default=1)
     parser.add_argument("--end-frame", type=int)
     parser.add_argument("--interval", type=int, default=1)
+    parser.add_argument(
+        "--source-mode",
+        choices=["protein_traj", "full_traj", "auto"],
+        default="protein_traj",
+        help="Use the saved protein-only trajectory, or derive a protein subset from the saved full trajectory.",
+    )
     args = parser.parse_args()
 
     try:
@@ -519,6 +601,7 @@ def main():
             start_frame=args.start_frame,
             end_frame=args.end_frame,
             interval=args.interval,
+            source_mode=args.source_mode,
         )
     except Exception as exc:
         raise SystemExit(f"[MMGBSA] {exc}") from exc

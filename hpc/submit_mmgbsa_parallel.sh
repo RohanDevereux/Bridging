@@ -38,6 +38,7 @@ case "$MMGBSA_PRESET" in
     : "${SOLVATION_MODEL:=gb}"
     : "${START_FRAME:=21}"
     : "${INTERVAL:=5}"
+    : "${SOURCE_MODE:=protein_traj}"
     : "${IGB:=5}"
     : "${SALTCON:=0.150}"
     : "${ISTRNG:=0.150}"
@@ -46,6 +47,7 @@ case "$MMGBSA_PRESET" in
     : "${SOLVATION_MODEL:=gb}"
     : "${START_FRAME:=21}"
     : "${INTERVAL:=1}"
+    : "${SOURCE_MODE:=full_traj}"
     : "${IGB:=5}"
     : "${SALTCON:=0.150}"
     : "${ISTRNG:=0.150}"
@@ -54,6 +56,7 @@ case "$MMGBSA_PRESET" in
     : "${SOLVATION_MODEL:=pb}"
     : "${START_FRAME:=21}"
     : "${INTERVAL:=2}"
+    : "${SOURCE_MODE:=full_traj}"
     : "${IGB:=5}"
     : "${SALTCON:=0.150}"
     : "${ISTRNG:=0.150}"
@@ -62,6 +65,7 @@ case "$MMGBSA_PRESET" in
     : "${SOLVATION_MODEL:=pb}"
     : "${START_FRAME:=21}"
     : "${INTERVAL:=1}"
+    : "${SOURCE_MODE:=full_traj}"
     : "${IGB:=5}"
     : "${SALTCON:=0.150}"
     : "${ISTRNG:=0.150}"
@@ -76,10 +80,10 @@ esac
 END_FRAME="${END_FRAME:-}"
 
 RUN_TAG="${RUN_TAG:-${SOLVATION_MODEL}_sf${START_FRAME}_int${INTERVAL}}"
-SHARD_DIR="${SHARD_DIR:-tmp/mmgbsa_shards/${DATASET_STEM}_${RUN_TAG}}"
-OUT_ROOT="${OUT_ROOT:-src/bridging/generatedData/MMGBSA/${DATASET_STEM}_${RUN_TAG}}"
-WORK_ROOT="${WORK_ROOT:-$SCRATCH_ROOT/mmgbsa_work/${DATASET_STEM}_${RUN_TAG}}"
-MERGED_CSV="${MERGED_CSV:-$OUT_ROOT/${DATASET_STEM}_mmgbsa_estimates.csv}"
+SHARD_DIR="${MMGBSA_SHARD_DIR:-${SHARD_DIR:-tmp/mmgbsa_shards/${DATASET_STEM}_${RUN_TAG}}}"
+OUT_ROOT="${MMGBSA_OUT_ROOT:-${OUT_ROOT:-src/bridging/generatedData/MMGBSA/${DATASET_STEM}_${RUN_TAG}}}"
+WORK_ROOT="${MMGBSA_WORK_ROOT:-${WORK_ROOT:-$SCRATCH_ROOT/mmgbsa_work/${DATASET_STEM}_${RUN_TAG}}}"
+MERGED_CSV="${MMGBSA_MERGED_CSV:-${MERGED_CSV:-$OUT_ROOT/${DATASET_STEM}_mmgbsa_estimates.csv}}"
 
 mkdir -p logs tmp "$SHARD_DIR" "$OUT_ROOT"
 
@@ -109,13 +113,13 @@ MMGBSA_JID=$(
   sbatch \
     --array="0-$((N_SHARDS - 1))" \
     --cpus-per-task="$CPUS_PER_SHARD" \
-    --export=ALL,DATASET="$SHARD_DATASET",DATASET_LABEL="$DATASET_LABEL",SCRATCH_ROOT="$SCRATCH_ROOT",MD_ROOT="$MD_ROOT",SHARD_DIR="$SHARD_DIR",OUT_ROOT="$OUT_ROOT",WORK_ROOT="$WORK_ROOT",SOLVATION_MODEL="$SOLVATION_MODEL",START_FRAME="$START_FRAME",INTERVAL="$INTERVAL",END_FRAME="$END_FRAME",IGB="$IGB",SALTCON="$SALTCON",ISTRNG="$ISTRNG" \
+    --export=ALL,DATASET="$SHARD_DATASET",DATASET_LABEL="$DATASET_LABEL",SCRATCH_ROOT="$SCRATCH_ROOT",MD_ROOT="$MD_ROOT",MMGBSA_SHARD_DIR="$SHARD_DIR",MMGBSA_OUT_ROOT="$OUT_ROOT",MMGBSA_WORK_ROOT="$WORK_ROOT",SOLVATION_MODEL="$SOLVATION_MODEL",START_FRAME="$START_FRAME",INTERVAL="$INTERVAL",END_FRAME="$END_FRAME",IGB="$IGB",SALTCON="$SALTCON",ISTRNG="$ISTRNG",SOURCE_MODE="$SOURCE_MODE" \
     hpc/mmgbsa_prefetch_sharded_cpu.sbatch \
     | awk '{print $4}'
 )
 echo "[SUBMIT] MMGBSA_JID=$MMGBSA_JID"
 
-echo "[MMGBSA] preset=$MMGBSA_PRESET model=$SOLVATION_MODEL start=$START_FRAME end=${END_FRAME:-NA} interval=$INTERVAL igb=$IGB saltcon=$SALTCON istrng=$ISTRNG"
+echo "[MMGBSA] preset=$MMGBSA_PRESET model=$SOLVATION_MODEL start=$START_FRAME end=${END_FRAME:-NA} interval=$INTERVAL source_mode=$SOURCE_MODE igb=$IGB saltcon=$SALTCON istrng=$ISTRNG"
 
 echo "[STEP] submit merge job"
 MERGE_JID=$(

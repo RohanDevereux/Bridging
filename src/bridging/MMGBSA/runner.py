@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 import os
 
+import mdtraj as md
 import pandas as pd
 from openmm import unit
 from openmm.app import PDBFile
@@ -18,6 +19,7 @@ from bridging.MD.prepare_complex import (
     drop_non_protein_residues,
     select_chains,
     strip_hydrogens,
+    STANDARD_AA,
 )
 from bridging.utils.dataset_rows import parse_chain_group
 
@@ -57,12 +59,13 @@ def _copy_tleap_safe_subset(
     positions,
     out_pdb: Path,
     disulfide_residues: set,
-) -> list[tuple[int, int]]:
+) -> tuple[list[tuple[int, int]], list[int]]:
     top_new = Topology()
     atom_map = {}
     residue_order = {}
     pos_new = []
     residue_counter = 0
+    selected_atom_indices: list[int] = []
 
     for chain in topology.chains():
         residues = list(chain.residues())
@@ -85,6 +88,7 @@ def _copy_tleap_safe_subset(
                 new_atom = top_new.addAtom(atom.name, atom.element, new_residue, atom.id)
                 atom_map[atom] = new_atom
                 pos_new.append(positions[atom.index])
+                selected_atom_indices.append(int(atom.index))
 
     disulfide_pairs: set[tuple[int, int]] = set()
     for bond in topology.bonds():
@@ -111,10 +115,10 @@ def _copy_tleap_safe_subset(
 
     with out_pdb.open("w", encoding="utf-8") as f:
         PDBFile.writeFile(top_new, pos_new, f)
-    return sorted(disulfide_pairs)
+    return sorted(disulfide_pairs), selected_atom_indices
 
 
-def _write_subset_pdb(in_pdb: Path, out_pdb: Path, chain_ids: list[str]) -> list[tuple[int, int]]:
+def _write_subset_pdb(in_pdb: Path, out_pdb: Path, chain_ids: list[str]) -> tuple[list[tuple[int, int]], list[int]]:
     pdb = PDBFile(str(in_pdb))
     available = {c.id.upper() for c in pdb.topology.chains()}
     missing = [c for c in chain_ids if c.upper() not in available]
@@ -130,6 +134,26 @@ def _write_subset_pdb(in_pdb: Path, out_pdb: Path, chain_ids: list[str]) -> list
         out_pdb=out_pdb,
         disulfide_residues=disulfide_residues,
     )
+
+
+def _selected_atom_indices_from_full_topology(in_pdb: Path, chain_ids: list[str]) -> list[int]:
+    pdb = PDBFile(str(in_pdb))
+    wanted = {str(c).strip().upper() for c in chain_ids}
+    out: list[int] = []
+    for chain in pdb.topology.chains():
+        chain_id = str(chain.id).strip().upper()
+        if chain_id not in wanted:
+            continue
+        for residue in chain.residues():
+            if str(residue.name).strip().upper() not in STANDARD_AA:
+                continue
+            for atom in residue.atoms():
+                if atom.element is None or atom.element.symbol == "H":
+                    continue
+                out.append(int(atom.index))
+    if not out:
+        raise RuntimeError(f"No selected protein atoms found in {in_pdb.name} for chains={sorted(wanted)}")
+    return out
 
 
 def _append_bond_lines(lines: list[str], unit_name: str, residue_pairs: list[tuple[int, int]]) -> None:
@@ -231,12 +255,15 @@ def _parse_final_results_delta_g(final_results: Path) -> float:
     if not final_results.exists():
         raise RuntimeError(f"Missing MMGBSA output: {final_results}")
     text = final_results.read_text(encoding="utf-8", errors="ignore")
+    candidates: list[float] = []
     for line in text.splitlines():
         if "DELTA TOTAL" not in line.upper():
             continue
         vals = re.findall(r"[-+]?\d+(?:\.\d+)?(?:[Ee][-+]?\d+)?", line)
         if vals:
-            return float(vals[0])
+            candidates.append(float(vals[0]))
+    if candidates:
+        return float(candidates[-1])
     m = re.search(
         r"DELTA\s+G\s+binding\s*=\s*([-+]?\d+(?:\.\d+)?(?:[Ee][-+]?\d+)?)",
         text,
@@ -281,6 +308,20 @@ def _mmpbsa_command(mmpbsa_exe: str) -> list[str]:
     return [str(exe_path)]
 
 
+def _prepare_subset_trajectory(
+    *,
+    work_dir: Path,
+    source_pdb: Path,
+    trajectory_path: Path,
+    atom_indices: list[int],
+) -> Path:
+    out_path = work_dir / "traj_subset.nc"
+    traj = md.load(str(trajectory_path), top=str(source_pdb))
+    sliced = traj.atom_slice(atom_indices, inplace=False)
+    sliced.save_netcdf(str(out_path))
+    return out_path
+
+
 def run_mmgbsa_delta_g_kcalmol(
     *,
     pdb_path: Path,
@@ -298,6 +339,7 @@ def run_mmgbsa_delta_g_kcalmol(
     start_frame: int = 1,
     end_frame: int | None = None,
     interval: int = 1,
+    trajectory_mode: str = "direct",
 ) -> float:
     tleap_exe, cpptraj_exe, mmpbsa_exe = validate_mmgbsa_tools(
         tleap_exe=tleap_exe, cpptraj_exe=cpptraj_exe, mmpbsa_exe=mmpbsa_exe
@@ -311,9 +353,9 @@ def run_mmgbsa_delta_g_kcalmol(
         raise RuntimeError("Empty ligand/receptor chain groups.")
 
     work_dir.mkdir(parents=True, exist_ok=True)
-    rec_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "rec.pdb", rec_chains)
-    lig_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "lig.pdb", lig_chains)
-    com_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "com.pdb", all_chains)
+    rec_disulfides, _ = _write_subset_pdb(Path(pdb_path), work_dir / "rec.pdb", rec_chains)
+    lig_disulfides, _ = _write_subset_pdb(Path(pdb_path), work_dir / "lig.pdb", lig_chains)
+    com_disulfides, com_atom_indices = _write_subset_pdb(Path(pdb_path), work_dir / "com.pdb", all_chains)
 
     _write_leap_input(
         work_dir / "leap.in",
@@ -329,6 +371,22 @@ def run_mmgbsa_delta_g_kcalmol(
         traj_path = work_dir / "traj_single.nc"
     else:
         traj_path = Path(trajectory_path).resolve()
+        mode = str(trajectory_mode).strip().lower()
+        if mode == "full_topology_select":
+            atom_indices = _selected_atom_indices_from_full_topology(Path(pdb_path), all_chains)
+            if atom_indices != com_atom_indices:
+                raise RuntimeError(
+                    "Full-trajectory atom selection does not match written com.pdb subset. "
+                    f"selected={len(atom_indices)} com_subset={len(com_atom_indices)}"
+                )
+            traj_path = _prepare_subset_trajectory(
+                work_dir=work_dir,
+                source_pdb=Path(pdb_path),
+                trajectory_path=traj_path,
+                atom_indices=atom_indices,
+            )
+        elif mode != "direct":
+            raise ValueError(f"Unsupported trajectory_mode={trajectory_mode!r}")
 
     _write_mmpbsa_input(
         work_dir / "mmpbsa.in",
@@ -411,6 +469,7 @@ def get_mmgbsa_estimate(
     start_frame: int = 1,
     end_frame: int | None = None,
     interval: int = 1,
+    trajectory_mode: str = "direct",
 ) -> float:
     if prefer_prefetched and cache_path is not None:
         cached = get_prefetched_estimate(
@@ -444,4 +503,5 @@ def get_mmgbsa_estimate(
         start_frame=start_frame,
         end_frame=end_frame,
         interval=interval,
+        trajectory_mode=trajectory_mode,
     )

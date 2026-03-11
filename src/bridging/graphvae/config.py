@@ -34,8 +34,14 @@ TORSION_NODE_INPUT_FEATURES = (
     "dyn_sin_psi_mean",
     "dyn_cos_psi_mean",
 )
+FORCE_NODE_INPUT_FEATURES = (
+    "dyn_coul_force_mean",
+    "dyn_coul_force_std",
+    "dyn_lj_force_mean",
+    "dyn_lj_force_std",
+)
 DYNAMIC_NODE_MASK_TARGETS = DYNAMIC_NODE_FEATURES
-DYNAMIC_NODE_INPUT_FEATURES = DYNAMIC_NODE_MASK_TARGETS + TORSION_NODE_INPUT_FEATURES
+DYNAMIC_NODE_INPUT_FEATURES = DYNAMIC_NODE_MASK_TARGETS + TORSION_NODE_INPUT_FEATURES + FORCE_NODE_INPUT_FEATURES
 DYNAMIC_EDGE_FEATURES_BASE = ("dyn_contact_freq_8A",)
 DYNAMIC_EDGE_FEATURES_WITH_DIST = ("dyn_contact_freq_8A", "dyn_dist_mean", "dyn_dist_std")
 

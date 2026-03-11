@@ -55,9 +55,9 @@ DATASET_STEM="$(basename "$DATASET" .csv)"
 SCRATCH_ROOT="${SCRATCH_ROOT:-$HOME/scratch}"
 MD_ROOT="${MD_ROOT:-$SCRATCH_ROOT/MD_datasets/$DATASET_STEM}"
 
-SHARD_DIR="${SHARD_DIR:-tmp/mmgbsa_shards/$DATASET_STEM}"
-OUT_ROOT="${OUT_ROOT:-src/bridging/generatedData/MMGBSA/${DATASET_STEM}_gb_prodonly_v1}"
-WORK_ROOT="${WORK_ROOT:-$SCRATCH_ROOT/mmgbsa_work/${DATASET_STEM}_gb_prodonly_v1}"
+SHARD_DIR="${MMGBSA_SHARD_DIR:-${SHARD_DIR:-tmp/mmgbsa_shards/$DATASET_STEM}}"
+OUT_ROOT="${MMGBSA_OUT_ROOT:-${OUT_ROOT:-src/bridging/generatedData/MMGBSA/${DATASET_STEM}_gb_prodonly_v1}}"
+WORK_ROOT="${MMGBSA_WORK_ROOT:-${WORK_ROOT:-$SCRATCH_ROOT/mmgbsa_work/${DATASET_STEM}_gb_prodonly_v1}}"
 SHARD_ID="$(printf '%02d' "${SLURM_ARRAY_TASK_ID}")"
 SHARD_CSV="$SHARD_DIR/shard_${SHARD_ID}.csv"
 OUT_CSV="$OUT_ROOT/shard_${SHARD_ID}.csv"
@@ -92,6 +92,7 @@ ARGS=(
   --istrng "${ISTRNG:-0.150}"
   --start-frame "${START_FRAME:-21}"
   --interval "${INTERVAL:-5}"
+  --source-mode "${SOURCE_MODE:-protein_traj}"
   --no-pdb-prefetch
 )
 if [ -n "${END_FRAME:-}" ]; then
