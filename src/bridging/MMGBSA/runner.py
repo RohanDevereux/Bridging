@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
+import os
 
 import pandas as pd
 from openmm import unit
@@ -91,7 +92,6 @@ def _copy_tleap_safe_subset(
         atom2 = atom_map.get(bond.atom2)
         if atom1 is None or atom2 is None:
             continue
-        top_new.addBond(atom1, atom2)
         if (
             bond.atom1.name == "SG"
             and bond.atom2.name == "SG"
@@ -100,6 +100,8 @@ def _copy_tleap_safe_subset(
         ):
             pair = tuple(sorted((residue_order[bond.atom1.residue], residue_order[bond.atom2.residue])))
             disulfide_pairs.add(pair)
+            continue
+        top_new.addBond(atom1, atom2)
 
     if hasattr(positions, "unit"):
         pos_unit = positions.unit
@@ -266,6 +268,19 @@ def validate_mmgbsa_tools(
     return tuple(out)
 
 
+def _mmpbsa_command(mmpbsa_exe: str) -> list[str]:
+    exe_path = Path(str(mmpbsa_exe)).expanduser()
+    if not exe_path.exists():
+        resolved = shutil.which(str(mmpbsa_exe))
+        if resolved:
+            exe_path = Path(resolved)
+    amberhome = os.environ.get("AMBERHOME", "").strip()
+    amber_python = Path(amberhome) / "bin" / "python" if amberhome else None
+    if amber_python is not None and amber_python.exists():
+        return [str(amber_python), str(exe_path)]
+    return [str(exe_path)]
+
+
 def run_mmgbsa_delta_g_kcalmol(
     *,
     pdb_path: Path,
@@ -326,8 +341,8 @@ def run_mmgbsa_delta_g_kcalmol(
         interval=max(1, int(interval)),
     )
     _run_checked(
-        [
-            mmpbsa_exe,
+        _mmpbsa_command(mmpbsa_exe)
+        + [
             "-O",
             "-i",
             "mmpbsa.in",
