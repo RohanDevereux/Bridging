@@ -23,6 +23,13 @@ RESULT_COLUMNS = [
     "ligand_group",
     "receptor_group",
     "temperature_k",
+    "solvation_model",
+    "igb",
+    "saltcon",
+    "istrng",
+    "start_frame",
+    "end_frame",
+    "interval",
     "delta_g_kcal_mol",
     "status",
     "message",
@@ -54,7 +61,44 @@ def _load_existing(out_path: Path, dataset_path: Path) -> dict[int, dict]:
     return existing
 
 
-def _build_success_cache(records_by_row: dict[int, dict]) -> dict[str, float]:
+def _config_signature(
+    *,
+    solvation_model: str,
+    igb: int,
+    saltcon: float,
+    istrng: float,
+    start_frame: int,
+    end_frame: int | None,
+    interval: int,
+) -> tuple:
+    return (
+        str(solvation_model).strip().lower(),
+        int(igb),
+        round(float(saltcon), 6),
+        round(float(istrng), 6),
+        int(start_frame),
+        (None if end_frame is None else int(end_frame)),
+        int(interval),
+    )
+
+
+def _record_signature(record: dict) -> tuple:
+    return _config_signature(
+        solvation_model=str(record.get("solvation_model", "gb")),
+        igb=int(record.get("igb", 5) or 5),
+        saltcon=float(record.get("saltcon", 0.150) or 0.150),
+        istrng=float(record.get("istrng", 0.150) or 0.150),
+        start_frame=int(record.get("start_frame", 1) or 1),
+        end_frame=(
+            None
+            if record.get("end_frame") in (None, "", "None") or pd.isna(record.get("end_frame"))
+            else int(float(record.get("end_frame")))
+        ),
+        interval=int(record.get("interval", 1) or 1),
+    )
+
+
+def _build_success_cache(records_by_row: dict[int, dict]) -> dict[tuple[str, tuple], float]:
     cache = {}
     for record in records_by_row.values():
         if record.get("status") != "ok":
@@ -65,14 +109,21 @@ def _build_success_cache(records_by_row: dict[int, dict]) -> dict[str, float]:
         value = pd.to_numeric(pd.Series([record.get("delta_g_kcal_mol")]), errors="coerce").iloc[0]
         if pd.isna(value):
             continue
-        cache[str(key)] = float(value)
+        cache[(str(key), _record_signature(record))] = float(value)
     return cache
 
 
 def _record_from_request(
-    dataset_path: Path,
+    dataset_ref: Path,
     req: MMGBSARequest,
     *,
+    solvation_model: str,
+    igb: int,
+    saltcon: float,
+    istrng: float,
+    start_frame: int,
+    end_frame: int | None,
+    interval: int,
     delta_g: float | None,
     status: str,
     message: str = "",
@@ -81,13 +132,20 @@ def _record_from_request(
     work_dir: Path | None = None,
 ) -> dict:
     return {
-        "dataset": str(dataset_path),
+        "dataset": str(dataset_ref),
         "row_index": req.row_index,
         "cache_key": req.cache_key,
         "pdb_id": req.pdb_id,
         "ligand_group": req.ligand_group,
         "receptor_group": req.receptor_group,
         "temperature_k": req.temperature_k,
+        "solvation_model": str(solvation_model).strip().lower(),
+        "igb": int(igb),
+        "saltcon": float(saltcon),
+        "istrng": float(istrng),
+        "start_frame": int(start_frame),
+        "end_frame": (None if end_frame is None else int(end_frame)),
+        "interval": int(interval),
         "delta_g_kcal_mol": delta_g,
         "status": status,
         "message": message,
@@ -135,6 +193,7 @@ def _cache_key_to_dir(cache_key: str) -> str:
 
 def fetch_and_save_dataset_estimates(
     dataset_path: str | Path | None = None,
+    dataset_label: str | Path | None = None,
     out_path: str | Path | None = None,
     limit: int | None = None,
     refresh: bool = False,
@@ -144,14 +203,19 @@ def fetch_and_save_dataset_estimates(
     tleap_exe: str = "tleap",
     cpptraj_exe: str = "cpptraj",
     mmpbsa_exe: str = "MMPBSA.py",
+    solvation_model: str = "gb",
     igb: int = 5,
     saltcon: float = 0.150,
+    istrng: float = 0.150,
+    start_frame: int = 1,
+    end_frame: int | None = None,
     interval: int = 1,
 ) -> Path:
     validate_mmgbsa_tools(tleap_exe=tleap_exe, cpptraj_exe=cpptraj_exe, mmpbsa_exe=mmpbsa_exe)
     dataset_path = resolve_dataset(dataset_path, DATA_CSV)
     dataset_path = Path(dataset_path)
     out_path = Path(out_path) if out_path else default_results_path(dataset_path)
+    dataset_ref = Path(dataset_label) if dataset_label else dataset_path
     md_root_path = Path(md_root) if md_root else None
     work_root_path = Path(work_root) if work_root else MMGBSA_OUT_DIR / "_work" / dataset_path.stem
 
@@ -161,13 +225,26 @@ def fetch_and_save_dataset_estimates(
     rows = df.to_dict("records")
     total = len(rows)
 
-    print(f"[MMGBSA] dataset={dataset_path} rows={total} out={out_path}")
+    print(
+        f"[MMGBSA] dataset={dataset_path} dataset_label={dataset_ref} rows={total} out={out_path} "
+        f"model={str(solvation_model).lower()} start={int(start_frame)} "
+        f"end={('NA' if end_frame is None else int(end_frame))} interval={int(interval)}"
+    )
     if prefetch_pdbs:
         print("[MMGBSA] prefetching PDBs into local cache")
         prefetch_pdbs_for_dataset(dataset_path, limit=limit)
 
-    records_by_row = _load_existing(out_path, dataset_path)
+    records_by_row = _load_existing(out_path, dataset_ref)
     key_cache = _build_success_cache(records_by_row)
+    target_sig = _config_signature(
+        solvation_model=solvation_model,
+        igb=igb,
+        saltcon=saltcon,
+        istrng=istrng,
+        start_frame=start_frame,
+        end_frame=end_frame,
+        interval=interval,
+    )
 
     ok_count = 0
     fail_count = 0
@@ -181,13 +258,20 @@ def fetch_and_save_dataset_estimates(
             fail_count += 1
             print(f"[FAIL] {row_index + 1}/{total} parse error: {exc}")
             records_by_row[row_index] = {
-                "dataset": str(dataset_path),
+                "dataset": str(dataset_ref),
                 "row_index": row_index,
                 "cache_key": "",
                 "pdb_id": "",
                 "ligand_group": "",
                 "receptor_group": "",
                 "temperature_k": None,
+                "solvation_model": str(solvation_model).strip().lower(),
+                "igb": int(igb),
+                "saltcon": float(saltcon),
+                "istrng": float(istrng),
+                "start_frame": int(start_frame),
+                "end_frame": (None if end_frame is None else int(end_frame)),
+                "interval": int(interval),
                 "delta_g_kcal_mol": None,
                 "status": "parse_error",
                 "message": str(exc),
@@ -204,17 +288,26 @@ def fetch_and_save_dataset_estimates(
             and existing is not None
             and str(existing.get("cache_key", "")) == req.cache_key
             and existing.get("status") == "ok"
+            and _record_signature(existing) == target_sig
         ):
             skip_count += 1
             print(f"[SKIP] {row_index + 1}/{total} {req.pdb_id} already saved")
             continue
 
-        if not refresh and req.cache_key in key_cache:
-            delta_g = key_cache[req.cache_key]
+        cache_lookup = (req.cache_key, target_sig)
+        if not refresh and cache_lookup in key_cache:
+            delta_g = key_cache[cache_lookup]
             cached_count += 1
             records_by_row[req.row_index] = _record_from_request(
-                dataset_path,
+                dataset_ref,
                 req,
+                solvation_model=solvation_model,
+                igb=igb,
+                saltcon=saltcon,
+                istrng=istrng,
+                start_frame=start_frame,
+                end_frame=end_frame,
+                interval=interval,
                 delta_g=delta_g,
                 status="ok",
                 message="reused cached estimate",
@@ -240,15 +333,26 @@ def fetch_and_save_dataset_estimates(
                 tleap_exe=tleap_exe,
                 cpptraj_exe=cpptraj_exe,
                 mmpbsa_exe=mmpbsa_exe,
+                solvation_model=solvation_model,
                 igb=igb,
                 saltcon=saltcon,
+                istrng=istrng,
+                start_frame=start_frame,
+                end_frame=end_frame,
                 interval=interval,
             )
-            key_cache[req.cache_key] = delta_g
+            key_cache[cache_lookup] = delta_g
             ok_count += 1
             records_by_row[req.row_index] = _record_from_request(
-                dataset_path,
+                dataset_ref,
                 req,
+                solvation_model=solvation_model,
+                igb=igb,
+                saltcon=saltcon,
+                istrng=istrng,
+                start_frame=start_frame,
+                end_frame=end_frame,
+                interval=interval,
                 delta_g=delta_g,
                 status="ok",
                 source_pdb=source_pdb,
@@ -263,8 +367,15 @@ def fetch_and_save_dataset_estimates(
             fail_count += 1
             message = str(exc)
             records_by_row[req.row_index] = _record_from_request(
-                dataset_path,
+                dataset_ref,
                 req,
+                solvation_model=solvation_model,
+                igb=igb,
+                saltcon=saltcon,
+                istrng=istrng,
+                start_frame=start_frame,
+                end_frame=end_frame,
+                interval=interval,
                 delta_g=None,
                 status="fail",
                 message=message,
@@ -294,6 +405,7 @@ def main():
         description="Fetch and save MM/GBSA delta G estimates for each row in a dataset."
     )
     parser.add_argument("--dataset", help="CSV path to use (defaults to MD DATA_CSV)")
+    parser.add_argument("--dataset-label", help="Canonical dataset path to store in results (useful when processing shards).")
     parser.add_argument("--out", help="Output CSV path")
     parser.add_argument("--limit", type=int, help="Optional row limit")
     parser.add_argument("--refresh", action="store_true", help="Recompute even if cached")
@@ -313,14 +425,19 @@ def main():
     parser.add_argument("--tleap-exe", default="tleap")
     parser.add_argument("--cpptraj-exe", default="cpptraj")
     parser.add_argument("--mmpbsa-exe", default="MMPBSA.py")
+    parser.add_argument("--solvation-model", choices=["gb", "pb"], default="gb")
     parser.add_argument("--igb", type=int, default=5)
     parser.add_argument("--saltcon", type=float, default=0.150)
+    parser.add_argument("--istrng", type=float, default=0.150)
+    parser.add_argument("--start-frame", type=int, default=1)
+    parser.add_argument("--end-frame", type=int)
     parser.add_argument("--interval", type=int, default=1)
     args = parser.parse_args()
 
     try:
         fetch_and_save_dataset_estimates(
             dataset_path=args.dataset,
+            dataset_label=args.dataset_label,
             out_path=args.out,
             limit=args.limit,
             refresh=args.refresh,
@@ -330,8 +447,12 @@ def main():
             tleap_exe=args.tleap_exe,
             cpptraj_exe=args.cpptraj_exe,
             mmpbsa_exe=args.mmpbsa_exe,
+            solvation_model=args.solvation_model,
             igb=args.igb,
             saltcon=args.saltcon,
+            istrng=args.istrng,
+            start_frame=args.start_frame,
+            end_frame=args.end_frame,
             interval=args.interval,
         )
     except Exception as exc:

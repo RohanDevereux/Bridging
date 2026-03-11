@@ -66,6 +66,7 @@ def run_full_pipeline(
     vae_cv_folds: int,
     vae_cv_repeats: int,
     vae_cv_val_fraction: float,
+    mmgbsa_csv: Path | None,
     run_supervised: bool,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -182,6 +183,8 @@ def run_full_pipeline(
     reg_s = run_linear_probe(
         latents_csv=Path(train_s["latents_csv"]),
         out_dir=mode_s_dir,
+        dataset_csv=dataset,
+        mmgbsa_csv=mmgbsa_csv,
         alpha_grid=alpha_grid,
         bootstrap=bootstrap,
         ridge_cv_folds=ridge_cv_folds,
@@ -192,6 +195,8 @@ def run_full_pipeline(
     reg_sd = run_linear_probe(
         latents_csv=Path(train_sd["latents_csv"]),
         out_dir=mode_sd_dir,
+        dataset_csv=dataset,
+        mmgbsa_csv=mmgbsa_csv,
         alpha_grid=alpha_grid,
         bootstrap=bootstrap,
         ridge_cv_folds=ridge_cv_folds,
@@ -236,6 +241,8 @@ def run_full_pipeline(
             ridge_cv_folds=ridge_cv_folds,
             ridge_cv_repeats=ridge_cv_repeats,
             ridge_cv_inner_folds=ridge_cv_inner_folds,
+            dataset_csv=dataset,
+            mmgbsa_csv=mmgbsa_csv,
         )
         print(f"[PIPE] vae crossval done elapsed_s={time.perf_counter() - step_t0:.1f}")
     sup = {}
@@ -287,6 +294,7 @@ def run_full_pipeline(
         "mode_SD_regression": reg_sd,
         "vae_crossval": vae_cv,
         "supervised_baselines": sup,
+        "mmgbsa_csv": (None if mmgbsa_csv is None else str(mmgbsa_csv)),
         "primary_outcome": {
             "metric": "test_rmse (lower is better), test_r2 (higher is better)",
             "S_test_rmse": test_s["rmse"],
@@ -372,6 +380,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--vae-cv-folds", type=int, default=0, help="Full VAE+ridge outer K-fold training (0 disables).")
     parser.add_argument("--vae-cv-repeats", type=int, default=0, help="Random repeats for full VAE+ridge CV.")
     parser.add_argument("--vae-cv-val-fraction", type=float, default=0.15, help="Validation fraction from non-heldout data in each VAE CV fold.")
+    parser.add_argument("--mmgbsa-csv", help="Optional MMGBSA baseline CSV for evaluation and latent correction.")
     parser.add_argument("--run-supervised-baselines", action="store_true")
     return parser.parse_args()
 
@@ -428,6 +437,7 @@ def main() -> None:
         vae_cv_folds=int(args.vae_cv_folds),
         vae_cv_repeats=int(args.vae_cv_repeats),
         vae_cv_val_fraction=float(args.vae_cv_val_fraction),
+        mmgbsa_csv=(Path(args.mmgbsa_csv) if args.mmgbsa_csv else None),
         run_supervised=bool(args.run_supervised_baselines),
     )
     prim = out["primary_outcome"]

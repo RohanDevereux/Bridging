@@ -78,23 +78,50 @@ def _write_cpptraj_input(path: Path):
     )
 
 
-def _write_mmpbsa_input(path: Path, *, igb: int, saltcon: float, interval: int):
-    path.write_text(
-        "\n".join(
+def _write_mmpbsa_input(
+    path: Path,
+    *,
+    solvation_model: str,
+    igb: int,
+    saltcon: float,
+    istrng: float,
+    start_frame: int,
+    end_frame: int | None,
+    interval: int,
+):
+    model = str(solvation_model).strip().lower()
+    if model not in {"gb", "pb"}:
+        raise ValueError(f"Unsupported solvation_model={solvation_model!r}; expected 'gb' or 'pb'.")
+
+    lines = [
+        "&general",
+        f"  startframe={int(start_frame)},",
+        f"  interval={int(interval)},",
+        "  verbose=1,",
+    ]
+    if end_frame is not None and int(end_frame) >= int(start_frame):
+        lines.append(f"  endframe={int(end_frame)},")
+    lines.extend(["/"])
+
+    if model == "gb":
+        lines.extend(
             [
-                "&general",
-                f"  interval={int(interval)},",
-                "  verbose=1,",
-                "/",
                 "&gb",
                 f"  igb={int(igb)},",
                 f"  saltcon={float(saltcon):.3f},",
                 "/",
-                "",
             ]
-        ),
-        encoding="utf-8",
-    )
+        )
+    else:
+        lines.extend(
+            [
+                "&pb",
+                f"  istrng={float(istrng):.3f},",
+                "/",
+            ]
+        )
+    lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def _parse_final_results_delta_g(final_results: Path) -> float:
@@ -148,8 +175,12 @@ def run_mmgbsa_delta_g_kcalmol(
     tleap_exe: str = "tleap",
     cpptraj_exe: str = "cpptraj",
     mmpbsa_exe: str = "MMPBSA.py",
+    solvation_model: str = "gb",
     igb: int = 5,
     saltcon: float = 0.150,
+    istrng: float = 0.150,
+    start_frame: int = 1,
+    end_frame: int | None = None,
     interval: int = 1,
 ) -> float:
     tleap_exe, cpptraj_exe, mmpbsa_exe = validate_mmgbsa_tools(
@@ -178,7 +209,16 @@ def run_mmgbsa_delta_g_kcalmol(
     else:
         traj_path = Path(trajectory_path).resolve()
 
-    _write_mmpbsa_input(work_dir / "mmpbsa.in", igb=igb, saltcon=saltcon, interval=interval)
+    _write_mmpbsa_input(
+        work_dir / "mmpbsa.in",
+        solvation_model=solvation_model,
+        igb=igb,
+        saltcon=saltcon,
+        istrng=istrng,
+        start_frame=max(1, int(start_frame)),
+        end_frame=(None if end_frame is None else int(end_frame)),
+        interval=max(1, int(interval)),
+    )
     _run_checked(
         [
             mmpbsa_exe,
@@ -243,8 +283,12 @@ def get_mmgbsa_estimate(
     tleap_exe: str = "tleap",
     cpptraj_exe: str = "cpptraj",
     mmpbsa_exe: str = "MMPBSA.py",
+    solvation_model: str = "gb",
     igb: int = 5,
     saltcon: float = 0.150,
+    istrng: float = 0.150,
+    start_frame: int = 1,
+    end_frame: int | None = None,
     interval: int = 1,
 ) -> float:
     if prefer_prefetched and cache_path is not None:
@@ -272,7 +316,11 @@ def get_mmgbsa_estimate(
         tleap_exe=tleap_exe,
         cpptraj_exe=cpptraj_exe,
         mmpbsa_exe=mmpbsa_exe,
+        solvation_model=solvation_model,
         igb=igb,
         saltcon=saltcon,
+        istrng=istrng,
+        start_frame=start_frame,
+        end_frame=end_frame,
         interval=interval,
     )

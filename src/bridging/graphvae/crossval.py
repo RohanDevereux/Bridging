@@ -109,6 +109,8 @@ def run_vae_crossval(
     ridge_cv_folds: int,
     ridge_cv_repeats: int,
     ridge_cv_inner_folds: int,
+    dataset_csv: Path | None = None,
+    mmgbsa_csv: Path | None = None,
 ) -> dict:
     if n_splits < 2 or n_repeats < 1:
         return {}
@@ -188,6 +190,8 @@ def run_vae_crossval(
                 reg_summary = run_linear_probe(
                     latents_csv=Path(train_summary["latents_csv"]),
                     out_dir=mode_dir,
+                    dataset_csv=dataset_csv,
+                    mmgbsa_csv=mmgbsa_csv,
                     alpha_grid=alpha_grid,
                     bootstrap=bootstrap,
                     ridge_cv_folds=ridge_cv_folds,
@@ -196,6 +200,8 @@ def run_vae_crossval(
                     seed=mode_seed,
                 )
                 test = reg_summary["split_metrics"]["test"]
+                mmgbsa_test = ((reg_summary.get("mmgbsa") or {}).get("split_metrics_baseline") or {}).get("test") or {}
+                corr_test = ((reg_summary.get("mmgbsa") or {}).get("split_metrics_corrected") or {}).get("test") or {}
                 fold_rows.append(
                     {
                         "repeat": int(rep),
@@ -212,6 +218,12 @@ def run_vae_crossval(
                         "test_r2": float(test["r2"]),
                         "test_pearson_r": float(test["pearson_r"]),
                         "test_spearman_r": float(test["spearman_r"]),
+                        "mmgbsa_test_n": int(mmgbsa_test.get("n", 0) or 0),
+                        "mmgbsa_test_rmse": float(mmgbsa_test.get("rmse", float("nan"))),
+                        "mmgbsa_test_r2": float(mmgbsa_test.get("r2", float("nan"))),
+                        "corrected_mmgbsa_test_n": int(corr_test.get("n", 0) or 0),
+                        "corrected_mmgbsa_test_rmse": float(corr_test.get("rmse", float("nan"))),
+                        "corrected_mmgbsa_test_r2": float(corr_test.get("r2", float("nan"))),
                         "fold_dir": str(fold_dir),
                     }
                 )
@@ -220,7 +232,18 @@ def run_vae_crossval(
     fold_csv = out_dir / "vae_cv_fold_metrics.csv"
     fold_df.to_csv(fold_csv, index=False)
 
-    metrics = ["test_rmse", "test_mae", "test_r2", "test_pearson_r", "test_spearman_r", "best_val_recon"]
+    metrics = [
+        "test_rmse",
+        "test_mae",
+        "test_r2",
+        "test_pearson_r",
+        "test_spearman_r",
+        "best_val_recon",
+        "mmgbsa_test_rmse",
+        "mmgbsa_test_r2",
+        "corrected_mmgbsa_test_rmse",
+        "corrected_mmgbsa_test_r2",
+    ]
     mode_summary: dict[str, dict] = {}
     for mode in ("S", "SD"):
         sub = fold_df[fold_df["mode"] == mode]
@@ -258,4 +281,3 @@ def run_vae_crossval(
     summary_path = out_dir / "vae_cv_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     return summary
-

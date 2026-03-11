@@ -106,6 +106,9 @@ COMMON_ARGS=(
   --vae-cv-repeats "${VAE_CV_REPEATS:-0}"
   --vae-cv-val-fraction "${VAE_CV_VAL_FRACTION:-0.15}"
 )
+if [ -n "${MMGBSA_CSV:-}" ]; then
+  COMMON_ARGS+=(--mmgbsa-csv "$MMGBSA_CSV")
+fi
 if [ "${RUN_SUP_BASELINES:-0}" = "1" ]; then
   COMMON_ARGS+=(--run-supervised-baselines)
 fi
