@@ -7,10 +7,16 @@ from pathlib import Path
 
 import pandas as pd
 from openmm.app import PDBFile
+from openmm.app import Topology
 
 from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
-from bridging.MD.prepare_complex import select_chains
+from bridging.MD.prepare_complex import (
+    add_disulfide_bonds,
+    drop_non_protein_residues,
+    select_chains,
+    strip_hydrogens,
+)
 from bridging.utils.dataset_rows import parse_chain_group
 
 from .dataset import make_cache_key
@@ -43,35 +49,112 @@ def _parse_group(group: str) -> list[str]:
     return [c.upper() for c in parse_chain_group(group)]
 
 
-def _write_subset_pdb(in_pdb: Path, out_pdb: Path, chain_ids: list[str]):
+def _copy_tleap_safe_subset(
+    *,
+    topology,
+    positions,
+    out_pdb: Path,
+    disulfide_residues: set,
+) -> list[tuple[int, int]]:
+    top_new = Topology()
+    atom_map = {}
+    residue_order = {}
+    pos_new = []
+    residue_counter = 0
+
+    for chain in topology.chains():
+        residues = list(chain.residues())
+        if not residues:
+            continue
+        new_chain = top_new.addChain(chain.id)
+        for residue in residues:
+            residue_counter += 1
+            residue_order[residue] = residue_counter
+            residue_name = residue.name
+            if residue_name == "CYS" and residue in disulfide_residues:
+                residue_name = "CYX"
+            new_residue = top_new.addResidue(
+                residue_name,
+                new_chain,
+                residue.id,
+                getattr(residue, "insertionCode", ""),
+            )
+            for atom in residue.atoms():
+                new_atom = top_new.addAtom(atom.name, atom.element, new_residue, atom.id)
+                atom_map[atom] = new_atom
+                pos_new.append(positions[atom.index])
+
+    disulfide_pairs: set[tuple[int, int]] = set()
+    for bond in topology.bonds():
+        atom1 = atom_map.get(bond.atom1)
+        atom2 = atom_map.get(bond.atom2)
+        if atom1 is None or atom2 is None:
+            continue
+        top_new.addBond(atom1, atom2)
+        if (
+            bond.atom1.name == "SG"
+            and bond.atom2.name == "SG"
+            and bond.atom1.residue in residue_order
+            and bond.atom2.residue in residue_order
+        ):
+            pair = tuple(sorted((residue_order[bond.atom1.residue], residue_order[bond.atom2.residue])))
+            disulfide_pairs.add(pair)
+
+    with out_pdb.open("w", encoding="utf-8") as f:
+        PDBFile.writeFile(top_new, pos_new, f)
+    return sorted(disulfide_pairs)
+
+
+def _write_subset_pdb(in_pdb: Path, out_pdb: Path, chain_ids: list[str]) -> list[tuple[int, int]]:
     pdb = PDBFile(str(in_pdb))
     available = {c.id.upper() for c in pdb.topology.chains()}
     missing = [c for c in chain_ids if c.upper() not in available]
     if missing:
         raise RuntimeError(f"Missing chain(s) in {in_pdb.name}: {missing}; available={sorted(available)}")
     modeller = select_chains(pdb.topology, pdb.positions, chain_ids)
-    with out_pdb.open("w", encoding="utf-8") as f:
-        PDBFile.writeFile(modeller.topology, modeller.positions, f)
-
-
-def _write_leap_input(path: Path):
-    path.write_text(
-        "\n".join(
-            [
-                "source leaprc.protein.ff14SB",
-                "source leaprc.water.tip3p",
-                "rec = loadpdb rec.pdb",
-                "lig = loadpdb lig.pdb",
-                "com = loadpdb com.pdb",
-                "saveamberparm rec rec.prmtop rec.inpcrd",
-                "saveamberparm lig lig.prmtop lig.inpcrd",
-                "saveamberparm com com.prmtop com.inpcrd",
-                "quit",
-                "",
-            ]
-        ),
-        encoding="utf-8",
+    modeller = drop_non_protein_residues(modeller)
+    modeller = strip_hydrogens(modeller)
+    disulfide_residues = add_disulfide_bonds(modeller, pdb_path=in_pdb)
+    return _copy_tleap_safe_subset(
+        topology=modeller.topology,
+        positions=modeller.positions,
+        out_pdb=out_pdb,
+        disulfide_residues=disulfide_residues,
     )
+
+
+def _append_bond_lines(lines: list[str], unit_name: str, residue_pairs: list[tuple[int, int]]) -> None:
+    for res1, res2 in residue_pairs:
+        lines.append(f"bond {unit_name}.{int(res1)}.SG {unit_name}.{int(res2)}.SG")
+
+
+def _write_leap_input(
+    path: Path,
+    *,
+    rec_disulfides: list[tuple[int, int]],
+    lig_disulfides: list[tuple[int, int]],
+    com_disulfides: list[tuple[int, int]],
+):
+    lines = [
+        "source leaprc.protein.ff14SB",
+        "source leaprc.water.tip3p",
+        "rec = loadpdb rec.pdb",
+        "lig = loadpdb lig.pdb",
+        "com = loadpdb com.pdb",
+    ]
+    _append_bond_lines(lines, "rec", rec_disulfides)
+    _append_bond_lines(lines, "lig", lig_disulfides)
+    _append_bond_lines(lines, "com", com_disulfides)
+    lines.extend(
+        [
+            "saveamberparm rec rec.prmtop rec.inpcrd",
+            "saveamberparm lig lig.prmtop lig.inpcrd",
+            "saveamberparm com com.prmtop com.inpcrd",
+            "quit",
+            "",
+        ]
+    )
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def _write_cpptraj_input(path: Path):
@@ -206,11 +289,16 @@ def run_mmgbsa_delta_g_kcalmol(
         raise RuntimeError("Empty ligand/receptor chain groups.")
 
     work_dir.mkdir(parents=True, exist_ok=True)
-    _write_subset_pdb(Path(pdb_path), work_dir / "rec.pdb", rec_chains)
-    _write_subset_pdb(Path(pdb_path), work_dir / "lig.pdb", lig_chains)
-    _write_subset_pdb(Path(pdb_path), work_dir / "com.pdb", all_chains)
+    rec_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "rec.pdb", rec_chains)
+    lig_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "lig.pdb", lig_chains)
+    com_disulfides = _write_subset_pdb(Path(pdb_path), work_dir / "com.pdb", all_chains)
 
-    _write_leap_input(work_dir / "leap.in")
+    _write_leap_input(
+        work_dir / "leap.in",
+        rec_disulfides=rec_disulfides,
+        lig_disulfides=lig_disulfides,
+        com_disulfides=com_disulfides,
+    )
     _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
 
     if trajectory_path is None:
