@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 
 import pandas as pd
+from openmm import unit
 from openmm.app import PDBFile
 from openmm.app import Topology
 
@@ -99,6 +100,12 @@ def _copy_tleap_safe_subset(
         ):
             pair = tuple(sorted((residue_order[bond.atom1.residue], residue_order[bond.atom2.residue])))
             disulfide_pairs.add(pair)
+
+    if hasattr(positions, "unit"):
+        pos_unit = positions.unit
+        pos_new = unit.Quantity([p.value_in_unit(pos_unit) for p in pos_new], pos_unit)
+    else:
+        pos_new = unit.Quantity(pos_new, unit.nanometer)
 
     with out_pdb.open("w", encoding="utf-8") as f:
         PDBFile.writeFile(top_new, pos_new, f)

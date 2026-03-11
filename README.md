@@ -3,15 +3,49 @@
 
 Working on bridging simulation and experiment for protein-protein binding affinity calculations using deep neural networks
 
+## Environment Setup
+Use two environments.
+
+1. Project Python environment: runs the `bridging` codebase.
+2. AmberTools environment: provides external MM/GBSA executables only.
+
+Do not treat the AmberTools environment as the main project environment.
+
+### Project environment (`.venv`)
+Create `.venv` with Python 3.11 or 3.12, then install the repo from `pyproject.toml`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e .
+```
+
+Quick check:
+
+```bash
+source .venv/bin/activate
+python -c "from Bio.PDB import PDBParser; import h5py; import mdtraj; print('project env ok')"
+```
+
+Notes:
+- `pip install -e .` should be run in `.venv`, not in the AmberTools env.
+- If `.venv` predates dependency changes in `pyproject.toml`, rerun `python -m pip install -e .`.
+- `PYTHONPATH=src` is not required after a successful editable install, but it is harmless.
+
 ## AmberTools for MMGBSA
 MMGBSA in this repo uses external AmberTools executables:
 `tleap`, `cpptraj`, `MMPBSA.py`.
 
-Keep your project Python in `.venv`, and install AmberTools separately with conda:
+Keep your project Python in `.venv`, and install AmberTools separately with conda/micromamba:
 
 ```bash
 conda env create -f environment.ambertools.yml
 ```
+
+`environment.ambertools.yml` pins Python 3.12 to avoid landing in Python 3.13, which does not satisfy this repo's `pyproject.toml` requirement (`>=3.10,<3.13`).
+
+If Sonic provides a working AmberTools module, that is also acceptable. If the module is incompatible with worker-node CPUs, use a user-local micromamba/conda environment and expose only its binaries.
 
 Then, in `bash`, activate your project venv and expose AmberTools binaries on `PATH`:
 
@@ -24,6 +58,17 @@ conda deactivate
 export PATH="$AMBERTOOLS_BIN:$PATH"
 ```
 
+For a user-local micromamba install, the equivalent is:
+
+```bash
+source .venv/bin/activate
+export PYTHONNOUSERSITE=1
+export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
+export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
+export AMBERTOOLS_BIN="$AMBERHOME/bin"
+export PATH="$AMBERTOOLS_BIN:$PATH"
+```
+
 Quick check:
 
 ```bash
@@ -33,6 +78,11 @@ cpptraj -h >/dev/null && echo "cpptraj ok"
 MMPBSA.py -h >/dev/null && echo "MMPBSA.py ok"
 python -m bridging.MMGBSA.prefetch_dataset --help
 ```
+
+Important:
+- The Python used for `python -m bridging...` should still be `.venv/bin/python`.
+- The AmberTools env only needs to contribute `tleap`, `cpptraj`, and `MMPBSA.py` on `PATH`.
+- You generally should not run `pip install -e .` inside the AmberTools env.
 
 ## GraphVAE (S vs SD) Pipeline
 New pipeline in `src/bridging/graphvae/`:
