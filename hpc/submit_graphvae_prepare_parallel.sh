@@ -33,9 +33,8 @@ if [ "$TOTAL_CPUS" -gt 48 ]; then
   exit 1
 fi
 
-BASE_OUT_DIR="${BASE_OUT_DIR:-src/bridging/generatedData/graphvae/${DATASET_STEM}_idphys_v1}"
-BASE_CHECKPOINT_DIR="${BASE_CHECKPOINT_DIR:-$BASE_OUT_DIR/prepared/checkpoints}"
 PARALLEL_OUT_ROOT="${PARALLEL_OUT_ROOT:-src/bridging/generatedData/graphvae/${DATASET_STEM}_parallel_prepare}"
+BASE_CHECKPOINT_DIR="${BASE_CHECKPOINT_DIR:-$PARALLEL_OUT_ROOT/prepared/checkpoints}"
 SHARD_DIR="${SHARD_DIR:-tmp/graphvae_prepare_shards/$DATASET_STEM}"
 REMAINING_CSV="${REMAINING_CSV:-tmp/${DATASET_STEM}_remaining_for_prepare.csv}"
 
@@ -80,7 +79,7 @@ echo "[STEP] submit merge job after shard prepare"
 MERGE_JID=$(
   sbatch \
     --dependency="afterok:${PREP_JID}" \
-    --export=ALL,DATASET="$DATASET",BASE_CHECKPOINT_DIR="$BASE_CHECKPOINT_DIR",SHARD_ROOT="$PARALLEL_OUT_ROOT",MERGED_PREPARED_DIR="$PARALLEL_OUT_ROOT/merged/prepared" \
+    --export=ALL,DATASET="$DATASET",BASE_CHECKPOINT_DIR="$BASE_CHECKPOINT_DIR",SHARD_ROOT="$PARALLEL_OUT_ROOT",MERGED_PREPARED_DIR="$PARALLEL_OUT_ROOT/prepared" \
     hpc/graphvae_merge_prepared_cpu.sbatch \
     | awk '{print $4}'
 )
@@ -92,4 +91,4 @@ echo "  squeue -j ${PREP_JID},${MERGE_JID} -o '%.18i %.2t %.10M %.10l %.20R'"
 echo "  tail -f logs/graphvae_prep_shard_${PREP_JID}_*.out logs/graphvae_merge_prep_${MERGE_JID}.out"
 echo
 echo "Merged prepared output (for later GPU training):"
-echo "  $PARALLEL_OUT_ROOT/merged/prepared/graph_records.pt"
+echo "  $PARALLEL_OUT_ROOT/prepared/graph_records.pt"

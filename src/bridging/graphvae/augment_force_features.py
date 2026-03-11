@@ -16,7 +16,7 @@ from bridging.utils.dataset_rows import row_chain_groups, row_pdb_id
 from .config import FORCE_NODE_INPUT_FEATURES
 from .force_features import compute_node_interchain_force_features
 from .ids import canonical_complex_id
-from .md_dynamics import load_full_md_trajectory
+from .md_dynamics import load_protein_md_trajectory
 
 
 def _sorted_shards(checkpoint_dir: Path) -> list[Path]:
@@ -87,7 +87,7 @@ def _augment_records_list(
         "n_mapped_nodes": 0,
         "n_frames_total": 0,
         "fail_examples": [],
-        "source_mode": "full_traj_force_analysis",
+        "source_mode": "protein_traj_force_analysis",
     }
 
     for i, rec in enumerate(records, start=1):
@@ -110,14 +110,14 @@ def _augment_records_list(
         pdb_id = str(meta["pdb_id"]).strip()
         md_dir = md_root / pdb_id
         raw_pdb_path, _ = ensure_pdb_cached(pdb_id, cache_dir=pdb_cache_root)
-        full_topology_pdb = md_dir / "topology_full.pdb"
+        protein_topology_pdb = md_dir / "topology_protein.pdb"
 
         try:
             if pdb_id in traj_cache:
                 traj = traj_cache.pop(pdb_id)
                 traj_cache[pdb_id] = traj
             else:
-                traj = load_full_md_trajectory(md_dir, max_frames=max_frames)
+                traj = load_protein_md_trajectory(md_dir, max_frames=max_frames)
                 if cache_lim > 0:
                     traj_cache[pdb_id] = traj
                     if len(traj_cache) > cache_lim:
@@ -125,7 +125,7 @@ def _augment_records_list(
 
             force_arr, stats = compute_node_interchain_force_features(
                 traj=traj,
-                topology_pdb=full_topology_pdb,
+                topology_pdb=protein_topology_pdb,
                 raw_pdb_path=raw_pdb_path,
                 ligand_group=str(meta["ligand_group"]),
                 receptor_group=str(meta["receptor_group"]),
@@ -227,6 +227,11 @@ def main() -> None:
             traj_cache_size=int(args.traj_cache_size),
             progress_every=int(args.progress_every),
         )
+        if int(stats["n_failed"]) > 0:
+            raise RuntimeError(
+                f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
+                f"in {records_in}. Inspect the report and logs before merging."
+            )
         records_out.parent.mkdir(parents=True, exist_ok=True)
         torch.save(out, records_out)
         aggregate["parts"].append(
@@ -263,6 +268,11 @@ def main() -> None:
                 traj_cache_size=int(args.traj_cache_size),
                 progress_every=int(args.progress_every),
             )
+            if int(stats["n_failed"]) > 0:
+                raise RuntimeError(
+                    f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
+                    f"in {shard}. Inspect the logs before merging."
+                )
             out_path = ck_out / shard.name
             torch.save(out, out_path)
             aggregate["parts"].append(

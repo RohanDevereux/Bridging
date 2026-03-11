@@ -12,6 +12,7 @@ import pandas as pd
 import torch
 
 from bridging.MD.paths import PDB_CACHE_DIR
+from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.affinity import experimental_delta_g_kcalmol
 from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
@@ -20,9 +21,12 @@ from .config import (
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
     DYNAMIC_NODE_FEATURES,
+    DYNAMIC_NODE_INPUT_FEATURES,
+    FORCE_NODE_INPUT_FEATURES,
     NODE_IDENTITY_FEATURES,
     STATIC_EDGE_FEATURES,
     STATIC_NODE_FEATURES,
+    TORSION_NODE_INPUT_FEATURES,
 )
 from .chain_remap import build_raw_to_md_chain_map, load_chain_order, remap_query_pair
 from .deeprank_adapter import (
@@ -32,8 +36,14 @@ from .deeprank_adapter import (
     stage_query_pdbs,
     write_deeprank_index,
 )
+from .force_features import compute_node_interchain_force_features
 from .ids import canonical_complex_id, primary_chain, sanitize_filename_token
-from .md_dynamics import compute_dynamic_features, load_full_md_trajectory
+from .md_dynamics import (
+    compute_dynamic_features,
+    compute_node_torsion_sincos_features,
+    load_full_md_trajectory,
+    load_protein_md_trajectory,
+)
 from .splits import make_train_val_test_split
 
 
@@ -368,7 +378,7 @@ def build_prepared_dataset(
     )
 
     edge_dyn_names = list(DYNAMIC_EDGE_FEATURES_WITH_DIST if include_dynamic_dist_stats else DYNAMIC_EDGE_FEATURES_BASE)
-    node_feature_names = list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_FEATURES)
+    node_feature_names = list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_INPUT_FEATURES)
     edge_feature_names = list(STATIC_EDGE_FEATURES) + edge_dyn_names
 
     checkpoint_every = max(1, int(checkpoint_every))
@@ -405,6 +415,8 @@ def build_prepared_dataset(
     missing_md = []
     bad_md = []
     partial_node_coverage = []
+    torsion_feature_fallbacks = []
+    force_feature_fallbacks = []
     traj_cache: OrderedDict[str, object] = OrderedDict()
     traj_cache_size = max(0, int(traj_cache_size))
     total_entries = int(len(entries))
@@ -500,6 +512,43 @@ def build_prepared_dataset(
             bad_md.append({"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)})
             _log_progress()
             continue
+
+        torsion_features = torch.zeros(
+            (len(graph["node_chain_id"]), len(TORSION_NODE_INPUT_FEATURES)),
+            dtype=torch.float32,
+        )
+        try:
+            torsion_arr, _torsion_stats = compute_node_torsion_sincos_features(
+                traj=traj,
+                node_chain_id=graph["node_chain_id"],
+                node_position=graph["node_position"],
+            )
+            torsion_features = torch.as_tensor(torsion_arr, dtype=torch.float32)
+        except Exception as exc:
+            torsion_feature_fallbacks.append(
+                {"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)}
+            )
+
+        try:
+            traj_protein = load_protein_md_trajectory(md_dir, max_frames=frames_per_complex)
+            raw_pdb_path, _ = ensure_pdb_cached(str(pdb_id), cache_dir=pdb_cache_root)
+            force_arr, _force_stats = compute_node_interchain_force_features(
+                traj=traj_protein,
+                topology_pdb=md_dir / "topology_protein.pdb",
+                raw_pdb_path=raw_pdb_path,
+                ligand_group=str(rec["chains_1"]),
+                receptor_group=str(rec["chains_2"]),
+                node_chain_id=graph["node_chain_id"],
+                node_position=graph["node_position"],
+            )
+            force_features = torch.as_tensor(force_arr, dtype=torch.float32)
+        except Exception as exc:
+            bad_md.append(
+                {"complex_id": complex_id, "pdb_id": pdb_id, "error": f"force_feature_analysis_failed: {exc!r}"}
+            )
+            _log_progress()
+            continue
+
         graph_node_keys = {
             (str(c).strip().upper(), int(p))
             for c, p in zip(graph["node_chain_id"], graph["node_position"])
@@ -535,6 +584,8 @@ def build_prepared_dataset(
                     ),
                     pd.DataFrame(dyn["node_identity"], columns=list(NODE_IDENTITY_FEATURES)),
                     pd.DataFrame(dyn["node_dynamic"], columns=list(DYNAMIC_NODE_FEATURES)),
+                    pd.DataFrame(torsion_features.cpu().numpy(), columns=list(TORSION_NODE_INPUT_FEATURES)),
+                    pd.DataFrame(force_features.cpu().numpy(), columns=list(FORCE_NODE_INPUT_FEATURES)),
                 ],
                 axis=1,
             ).to_numpy(dtype="float32"),
@@ -612,10 +663,14 @@ def build_prepared_dataset(
         "n_missing_md": int(len(missing_md)),
         "n_bad_md": int(len(bad_md)),
         "n_partial_node_coverage": int(len(partial_node_coverage)),
+        "n_torsion_feature_fallbacks": int(len(torsion_feature_fallbacks)),
+        "n_force_feature_fallbacks": int(len(force_feature_fallbacks)),
         "missing_graph_complex_ids": missing_graph[:100],
         "missing_md_complex_ids": missing_md[:100],
         "bad_md": bad_md[:100],
         "partial_node_coverage": partial_node_coverage[:100],
+        "torsion_feature_fallbacks": torsion_feature_fallbacks[:100],
+        "force_feature_fallbacks": force_feature_fallbacks[:100],
         "node_feature_names": node_feature_names,
         "edge_feature_names": edge_feature_names,
         "split_counts": split_counts,
@@ -639,7 +694,8 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Prepare graph dataset for masked Graph-VAE experiments (S and SD) using "
-            "DeepRank2 static features and MD-derived dynamic features."
+            "DeepRank2 static features together with MD-derived dynamic, torsion, and "
+            "inter-chain force node features."
         )
     )
     parser.add_argument("--dataset", required=True, help="PPB-derived CSV with affinity labels/chains.")

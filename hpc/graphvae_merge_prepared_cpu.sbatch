@@ -36,7 +36,7 @@ DATASET_STEM="$(basename "$DATASET" .csv)"
 
 BASE_CHECKPOINT_DIR="${BASE_CHECKPOINT_DIR:-}"
 SHARD_ROOT="${SHARD_ROOT:-src/bridging/generatedData/graphvae/${DATASET_STEM}_parallel_prepare}"
-MERGED_PREPARED_DIR="${MERGED_PREPARED_DIR:-$SHARD_ROOT/merged/prepared}"
+MERGED_PREPARED_DIR="${MERGED_PREPARED_DIR:-$SHARD_ROOT/prepared}"
 
 ARGS=(
   --dataset "$DATASET"
