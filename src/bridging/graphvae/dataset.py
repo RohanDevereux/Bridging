@@ -76,11 +76,40 @@ def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
 
 
 class FeatureStandardizer:
-    def __init__(self, node_mean, node_std, edge_mean, edge_std):
+    def __init__(
+        self,
+        node_mean,
+        node_std,
+        edge_mean,
+        edge_std,
+        *,
+        node_lower=None,
+        node_upper=None,
+        edge_lower=None,
+        edge_upper=None,
+        z_clip: float = 8.0,
+    ):
         self.node_mean = np.asarray(node_mean, dtype=np.float32)
         self.node_std = np.asarray(node_std, dtype=np.float32)
         self.edge_mean = np.asarray(edge_mean, dtype=np.float32)
         self.edge_std = np.asarray(edge_std, dtype=np.float32)
+        self.node_lower = np.asarray(
+            self.node_mean if node_lower is None else node_lower,
+            dtype=np.float32,
+        )
+        self.node_upper = np.asarray(
+            self.node_mean if node_upper is None else node_upper,
+            dtype=np.float32,
+        )
+        self.edge_lower = np.asarray(
+            self.edge_mean if edge_lower is None else edge_lower,
+            dtype=np.float32,
+        )
+        self.edge_upper = np.asarray(
+            self.edge_mean if edge_upper is None else edge_upper,
+            dtype=np.float32,
+        )
+        self.z_clip = float(z_clip)
 
     @classmethod
     def fit(cls, records: list[dict], spec: FeatureSpec) -> "FeatureStandardizer":
@@ -101,16 +130,33 @@ class FeatureStandardizer:
         edge_mean = np.nanmean(edge_cat, axis=0)
         node_std = np.nanstd(node_cat, axis=0)
         edge_std = np.nanstd(edge_cat, axis=0)
+        node_lower = np.nanpercentile(node_cat, 0.5, axis=0)
+        node_upper = np.nanpercentile(node_cat, 99.5, axis=0)
+        edge_lower = np.nanpercentile(edge_cat, 0.5, axis=0)
+        edge_upper = np.nanpercentile(edge_cat, 99.5, axis=0)
         node_std[node_std < 1e-6] = 1.0
         edge_std[edge_std < 1e-6] = 1.0
-        return cls(node_mean=node_mean, node_std=node_std, edge_mean=edge_mean, edge_std=edge_std)
+        return cls(
+            node_mean=node_mean,
+            node_std=node_std,
+            edge_mean=edge_mean,
+            edge_std=edge_std,
+            node_lower=node_lower,
+            node_upper=node_upper,
+            edge_lower=edge_lower,
+            edge_upper=edge_upper,
+        )
 
     def transform_node(self, x: np.ndarray) -> np.ndarray:
-        z = (x - self.node_mean[None, :]) / self.node_std[None, :]
+        clipped = np.clip(x, self.node_lower[None, :], self.node_upper[None, :])
+        z = (clipped - self.node_mean[None, :]) / self.node_std[None, :]
+        z = np.clip(z, -self.z_clip, self.z_clip)
         return np.nan_to_num(z, nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32, copy=False)
 
     def transform_edge(self, x: np.ndarray) -> np.ndarray:
-        z = (x - self.edge_mean[None, :]) / self.edge_std[None, :]
+        clipped = np.clip(x, self.edge_lower[None, :], self.edge_upper[None, :])
+        z = (clipped - self.edge_mean[None, :]) / self.edge_std[None, :]
+        z = np.clip(z, -self.z_clip, self.z_clip)
         return np.nan_to_num(z, nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32, copy=False)
 
     def to_dict(self) -> dict:
@@ -119,6 +165,11 @@ class FeatureStandardizer:
             "node_std": self.node_std.tolist(),
             "edge_mean": self.edge_mean.tolist(),
             "edge_std": self.edge_std.tolist(),
+            "node_lower": self.node_lower.tolist(),
+            "node_upper": self.node_upper.tolist(),
+            "edge_lower": self.edge_lower.tolist(),
+            "edge_upper": self.edge_upper.tolist(),
+            "z_clip": float(self.z_clip),
         }
 
 

@@ -51,7 +51,16 @@ def _epoch_pass(
 ) -> dict[str, float]:
     train_mode = optimizer is not None
     model.train(train_mode)
-    totals = {"loss": 0.0, "recon": 0.0, "node_recon": 0.0, "edge_recon": 0.0, "kl": 0.0, "corr": 0.0, "n": 0}
+    totals = {
+        "loss": 0.0,
+        "recon": 0.0,
+        "node_recon": 0.0,
+        "edge_recon": 0.0,
+        "kl": 0.0,
+        "corr": 0.0,
+        "n": 0,
+        "skipped_batches": 0,
+    }
     for batch in loader:
         batch = batch.to(device)
         if train_mode:
@@ -62,16 +71,32 @@ def _epoch_pass(
             beta=beta,
             corr_weight=corr_weight,
         )
+        if not torch.isfinite(loss):
+            totals["skipped_batches"] += 1
+            if train_mode:
+                optimizer.zero_grad(set_to_none=True)
+            continue
         if train_mode:
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)
             optimizer.step()
         bs = int(batch.y.shape[0])
         totals["n"] += bs
         for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr"):
             totals[k] += parts[k] * bs
     if totals["n"] < 1:
-        return {k: 0.0 for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr")}
-    return {k: totals[k] / totals["n"] for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr")}
+        return {
+            "loss": float("nan"),
+            "recon": float("nan"),
+            "node_recon": float("nan"),
+            "edge_recon": float("nan"),
+            "kl": float("nan"),
+            "corr": float("nan"),
+            "skipped_batches": float(totals["skipped_batches"]),
+        }
+    out = {k: totals[k] / totals["n"] for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr")}
+    out["skipped_batches"] = float(totals["skipped_batches"])
+    return out
 
 
 def _collect_latents(
@@ -199,6 +224,8 @@ def train_masked_graph_vae(
                 "train_recon": train_metrics["recon"],
                 "val_loss": val_metrics["loss"],
                 "val_recon": val_metrics["recon"],
+                "train_skipped_batches": int(train_metrics["skipped_batches"]),
+                "val_skipped_batches": int(val_metrics["skipped_batches"]),
             }
         )
         epoch_s = time.perf_counter() - epoch_t0
@@ -211,10 +238,11 @@ def train_masked_graph_vae(
             f"[GVAE][{mode}] epoch={epoch:03d}/{max_epochs} beta={beta:.3f} "
             f"train_recon={train_metrics['recon']:.5f} val_recon={val_metrics['recon']:.5f} "
             f"best_val_recon={best_val if best_epoch > 0 else val_metrics['recon']:.5f} "
+            f"train_skip={int(train_metrics['skipped_batches'])} val_skip={int(val_metrics['skipped_batches'])} "
             f"epoch_s={epoch_s:.1f} elapsed={_fmt_seconds(elapsed_s)} eta={_fmt_seconds(eta_s)}"
         )
 
-        if val_metrics["recon"] < best_val:
+        if np.isfinite(val_metrics["recon"]) and val_metrics["recon"] < best_val:
             best_val = val_metrics["recon"]
             best_epoch = epoch
             best_state = {k: v.detach().cpu() for k, v in model.state_dict().items()}
@@ -278,7 +306,10 @@ def train_masked_graph_vae(
             )
 
     if best_state is None:
-        raise RuntimeError("Training did not produce a best model state.")
+        raise RuntimeError(
+            "Training did not produce a finite best model state. "
+            "This usually indicates numerical instability or extreme feature outliers."
+        )
     model.load_state_dict(best_state)
 
     latents_rows = []
