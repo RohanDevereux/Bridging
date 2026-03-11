@@ -1,18 +1,17 @@
 # Bridging
-(In Progress); Thesis Project Work
 
-Working on bridging simulation and experiment for protein-protein binding affinity calculations using deep neural networks
+Protein-protein binding affinity project built around:
+- OpenMM MD trajectories
+- DeepRank2-derived residue graphs
+- GraphVAE models for static (`S`) vs static+dynamics (`SD`)
+- optional MM/GBSA baselines and correction models
 
-## Environment Setup
-Use two environments.
+MD simulation and graph construction are the expensive stages. In practice they should be run on a supercomputer and can take days to weeks for large datasets.
 
-1. Project Python environment: runs the `bridging` codebase.
-2. AmberTools environment: provides external MM/GBSA executables only.
+## Quickstart
 
-Do not treat the AmberTools environment as the main project environment.
-
-### Project environment (`.venv`)
-Create `.venv` with Python 3.11 or 3.12, then install the repo from `pyproject.toml`:
+### 1. Project Python environment
+Create the main project environment in the repo root:
 
 ```bash
 python -m venv .venv
@@ -28,35 +27,18 @@ source .venv/bin/activate
 python -c "from Bio.PDB import PDBParser; import h5py; import mdtraj; print('project env ok')"
 ```
 
-Notes:
-- `pip install -e .` should be run in `.venv`, not in the AmberTools env.
-- If `.venv` predates dependency changes in `pyproject.toml`, rerun `python -m pip install -e .`.
-- `PYTHONPATH=src` is not required after a successful editable install, but it is harmless.
+### 2. AmberTools environment for MM/GBSA
+Keep AmberTools separate from `.venv`.
 
-## AmberTools for MMGBSA
-MMGBSA in this repo uses external AmberTools executables:
-`tleap`, `cpptraj`, `MMPBSA.py`.
-
-Keep your project Python in `.venv`, and install AmberTools separately with conda/micromamba:
+The repo includes:
 
 ```bash
-conda env create -f environment.ambertools.yml
+environment.ambertools.yml
 ```
 
-`environment.ambertools.yml` pins Python 3.12 to avoid landing in Python 3.13, which does not satisfy this repo's `pyproject.toml` requirement (`>=3.10,<3.13`).
-It also pins `numpy<2` because AmberTools / ParmEd still imports `numpy.compat`.
+Create that environment with conda or micromamba. On Sonic, a user-local micromamba install under `~/scratch` is the simplest path.
 
-If Sonic provides a working AmberTools module, that is also acceptable. If the module is incompatible with worker-node CPUs, use a user-local micromamba/conda environment and expose only its binaries.
-
-### Sonic: recommended AmberTools setup
-On Sonic, the most reliable setup is:
-
-1. use `.venv` for all `python -m bridging...` commands
-2. install AmberTools into a user-local micromamba env under `~/scratch`
-3. expose only the AmberTools binaries from that env on `PATH`
-4. do not `activate` the micromamba env in your shell
-
-If `conda` is not available on the login node, bootstrap micromamba once:
+Micromamba bootstrap on Sonic:
 
 ```bash
 cd ~/scratch
@@ -71,33 +53,14 @@ export PATH="$HOME/scratch/micromamba-bin:$PATH"
 micromamba env create -f ~/Bridging/environment.ambertools.yml
 ```
 
-The environment file creates:
-
-```bash
-$HOME/scratch/micromamba/envs/bridging-ambertools
-```
-
-Do not run `pip install -e .` inside that AmberTools env.
-That env is not the main project environment.
-
-Then, in `bash`, activate your project venv and expose AmberTools binaries on `PATH`:
-
-```bash
-source .venv/bin/activate
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate bridging-ambertools
-export AMBERTOOLS_BIN="$CONDA_PREFIX/bin"
-conda deactivate
-export PATH="$AMBERTOOLS_BIN:$PATH"
-```
-
-For a user-local micromamba install, the equivalent is:
+Expose AmberTools binaries in a shell that already has `.venv` active:
 
 ```bash
 source .venv/bin/activate
 export PYTHONNOUSERSITE=1
 module unload amber/ambertools25 2>/dev/null || true
 unset AMBERTOOLS_MODULE
+
 export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
 export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
 export AMBERTOOLS_BIN="$AMBERHOME/bin"
@@ -112,42 +75,91 @@ tleap -h >/dev/null && echo "tleap ok"
 cpptraj -h >/dev/null && echo "cpptraj ok"
 MMPBSA.py -h >/dev/null && echo "MMPBSA.py ok"
 "$AMBERHOME/bin/python" -c "import numpy, sys; print(sys.executable); print(numpy.__version__)"
-python -m bridging.MMGBSA.prefetch_dataset --help
 ```
 
-Important:
-- The Python used for `python -m bridging...` should still be `.venv/bin/python`.
-- The AmberTools env only needs to contribute `tleap`, `cpptraj`, and `MMPBSA.py` on `PATH`.
-- You generally should not run `pip install -e .` inside the AmberTools env.
-- If `MMPBSA.py` fails with `numpy.compat` import errors, the AmberTools env has NumPy 2.x. Reinstall `numpy<2` in that env.
-- If batch logs show `Loading amber/ambertools25`, the system module is still leaking into the job environment. Clear `AMBERTOOLS_MODULE` and use `AMBERTOOLS_BIN` instead.
-- On Sonic, the `amber/ambertools25` module may fail on some worker nodes due to CPU instruction-set mismatch. The user-local micromamba env avoids that.
-- The AmberTools env may contain a stale partial editable `bridging` install from earlier experiments. That does not matter as long as `.venv` is the Python actually running `bridging`.
+## Run Order
 
-### Repairing a broken AmberTools env
-If you accidentally created the AmberTools env with Python 3.13 or NumPy 2.x, either recreate it from `environment.ambertools.yml` or at minimum force NumPy back below 2:
+### 3. Run MD on Sonic
+The provided MD sbatch shards the dataset into two GPU array tasks.
 
 ```bash
-export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
-export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
-"$AMBERHOME/bin/python" -m pip install "numpy<2"
-"$AMBERHOME/bin/python" -c "import numpy; print(numpy.__version__)"
+cd ~/Bridging
+source .venv/bin/activate
+export PYTHONPATH=src
+
+export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
+export OUT_ROOT="$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20"
+
+sbatch hpc/md_run_dataset.sbatch
 ```
 
-### MMGBSA Sonic launch presets
-`hpc/submit_mmgbsa_parallel.sh` now accepts `MMGBSA_PRESET`:
+Outputs:
 
-- `balanced_gb`: production-only GB with frame stride 5
-- `full_gb`: production-only GB using every saved production frame
-- `pb_pilot`: production-only PB with frame stride 2
-- `full_pb`: production-only PB using every saved production frame
+```bash
+$HOME/scratch/MD_datasets/<dataset_stem>/<PDB>/
+```
+
+### 4. Build graph records after MD and DeepRank2 HDF5 are ready
+This is the CPU-bound prepare stage used in the current GraphVAE workflow.
+
+```bash
+cd ~/Bridging
+source .venv/bin/activate
+export PYTHONPATH=src
+
+export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
+export DEEPRANK_HDF5="$HOME/scratch/deeprank/PPB_Affinity_broad_pairuniq_train80_test20/graphs_fullcomplex_v1.hdf5"
+export N_SHARDS=3
+export CPUS_PER_SHARD=16
+
+bash hpc/submit_graphvae_prepare_parallel.sh
+```
+
+Merged prepared output:
+
+```bash
+src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_parallel_prepare/merged/prepared/graph_records.pt
+```
+
+### 5. Add torsion features
+This uses the resumable shard-based torsion augmentation path.
+
+```bash
+cd ~/Bridging
+source .venv/bin/activate
+export PYTHONPATH=src
+
+export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
+export MD_ROOT="$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20"
+export OUT_ROOT="src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1"
+
+bash hpc/submit_graphvae_torsions_parallel.sh
+```
+
+Merged torsion-prepared output:
+
+```bash
+src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1/prepared/graph_records.pt
+```
+
+### 6. Run MM/GBSA on Sonic
+The MM/GBSA launcher supports preset configurations:
+
+- `balanced_gb`
+- `full_gb`
+- `pb_pilot`
+- `full_pb`
+
+For the current project, `full_gb` is the main higher-fidelity setting.
 
 Example:
 
 ```bash
+cd ~/Bridging
 source .venv/bin/activate
 export PYTHONPATH=src
 export PYTHONNOUSERSITE=1
+
 module unload amber/ambertools25 2>/dev/null || true
 unset AMBERTOOLS_MODULE
 export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
@@ -164,12 +176,13 @@ export RUN_TAG=gb_full_done1458
 bash hpc/submit_mmgbsa_parallel.sh
 ```
 
-Notes:
-- `balanced_gb` is the cheap baseline.
-- `full_gb` is the main "better accuracy, slower" setting.
-- `pb_pilot` should be used before `full_pb`; do not launch a full PB campaign blind.
-- Each shard CSV is saved after every processed row. Partial results are therefore usable mid-run.
-- To build a live partial merged CSV while a run is still active:
+Merged MM/GBSA CSV:
+
+```bash
+src/bridging/generatedData/MMGBSA/PPB_Affinity_broad_pairuniq_train80_test20_<run_tag>/PPB_Affinity_broad_pairuniq_train80_test20_mmgbsa_estimates.csv
+```
+
+Live partial merge during a running MM/GBSA campaign:
 
 ```bash
 python -m bridging.MMGBSA.merge_sharded_results \
@@ -177,110 +190,88 @@ python -m bridging.MMGBSA.merge_sharded_results \
   --out "$OUT_ROOT/live_partial_mmgbsa.csv"
 ```
 
-### Resumable torsion augmentation on Sonic
-Avoid running `bridging.graphvae.augment_torsions --records-in ...` interactively on the merged file.
-That path only writes `graph_records.pt` at the end.
+### 7. Train and probe the GraphVAE
+The GPU wrapper runs:
+- preflight
+- `S` and `SD` training
+- latent export
+- ridge probe
+- optional MM/GBSA correction evaluation
 
-Use the sharded launcher instead:
+Without MM/GBSA:
 
 ```bash
+cd ~/Bridging
 source .venv/bin/activate
 export PYTHONPATH=src
 
 export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
-export MD_ROOT="$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20"
-export OUT_ROOT="src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1"
+export DATASET_STEM="$(basename "$DATASET" .csv)"
+export SCRATCH_ROOT="$HOME/scratch"
+export MD_ROOT="$SCRATCH_ROOT/MD_datasets/$DATASET_STEM"
+export PDB_CACHE_ROOT="$SCRATCH_ROOT/pdb_cache"
+export OUT_DIR="src/bridging/generatedData/graphvae/${DATASET_STEM}_torsion_input_v1"
+export DEEPRANK_HDF5="$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs_fullcomplex_v1.hdf5"
+export MSMS_BIN_DIR="$HOME/scratch/conda/msms/bin"
+export PATH="$MSMS_BIN_DIR:$PATH"
 
-bash hpc/submit_graphvae_torsions_parallel.sh
-```
+export REUSE_PREPARED=1
+export BUILD_DEEPRANK=0
+export DEVICE=cuda
+export RIDGE_CV_FOLDS=5
+export RIDGE_CV_REPEATS=2
+export RIDGE_CV_INNER_FOLDS=5
 
-This augments the base and parallel-prepare checkpoint shards separately and then merges them back into:
-
-```bash
-src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1/prepared/graph_records.pt
-```
-
-Notes:
-- This path is resumable at the checkpoint-directory level.
-- If a torsion array task is re-run and the output checkpoint count already matches the input checkpoint count, that part is skipped.
-- The merged `graph_records.pt` is only written after the dependency merge job completes.
-
-## GraphVAE (S vs SD) Pipeline
-New pipeline in `src/bridging/graphvae/`:
-- `S`: static structure features only
-- `SD`: static + MD dynamic features
-- shared 8-D masked Graph-VAE encoder, then linear Ridge probe on latent `mu_0..mu_7`
-
-Install extras:
-
-```bash
-pip install -e .
-```
-
-Notes:
-- `deeprank2` and `torch-geometric` are required dependencies for this pipeline.
-- Default DeepRank influence radius is set very large (`1e6`) to approximate whole-complex node coverage.
-- By default, prep fails if any protein residue (with CA) is missing from the DeepRank node set. Override with `--allow-partial-node-coverage`.
-- DeepRank2 upstream currently documents Python 3.10 support; if your main environment is Python 3.11, generate HDF5 in a Py3.10 env and train/probe with existing files.
-- Default `--graph-source` is `md_topology_protein` so DeepRank node IDs match the saved MD topology/trajectory ID space.
-- Prep logs include progress/ETA; tune frequency with `--progress-every` (`prepare`) or `--prepare-progress-every` (`run_full`).
-
-Prepare records:
-
-```bash
-python -m bridging.graphvae.prepare \
-  --dataset src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
-  --md-root "$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20" \
-  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared \
-  --graph-source md_topology_protein \
-  --deep-rank-hdf5 /path/to/deeprank_graphs.hdf5
-```
-
-Train mode `S` and export latents:
-
-```bash
-python -m bridging.graphvae.train \
-  --records src/bridging/generatedData/graphvae/ppb_broad_prepared/graph_records.pt \
-  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S \
-  --mode S \
-  --latent-dim 8 \
-  --device cpu
-```
-
-Linear probe:
-
-```bash
-python -m bridging.graphvae.regress \
-  --latents-csv src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S/latents_S.csv \
-  --out-dir src/bridging/generatedData/graphvae/ppb_broad_prepared/mode_S
-```
-
-Full end-to-end run (S + SD + compare):
-
-```bash
-python -m bridging.graphvae.run_full \
-  --dataset src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
-  --md-root "$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20" \
-  --out-dir src/bridging/generatedData/graphvae/ppb_broad_full \
-  --graph-source md_topology_protein \
-  --deep-rank-hdf5 /path/to/deeprank_graphs.hdf5 \
-  --latent-dim 8 \
-  --device cuda
-```
-
-GPU sbatch wrapper:
-
-```bash
-DATASET=src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv \
-MD_ROOT=$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20 \
-DEEPRANK_HDF5="/path/to/deeprank_graphs.hdf5" \
 sbatch hpc/graphvae_full_gpu.sbatch
 ```
 
-Dynamic feature variation report (after prepare/full run):
+With MM/GBSA correction:
 
 ```bash
-python -m bridging.graphvae.analyze_dynamic_variation \
-  --records src/bridging/generatedData/graphvae/ppb_broad_full/prepared/graph_records.pt \
-  --out-dir src/bridging/generatedData/graphvae/ppb_broad_full/dynamic_variation
+cd ~/Bridging
+source .venv/bin/activate
+export PYTHONPATH=src
+
+export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
+export DATASET_STEM="$(basename "$DATASET" .csv)"
+export SCRATCH_ROOT="$HOME/scratch"
+export MD_ROOT="$SCRATCH_ROOT/MD_datasets/$DATASET_STEM"
+export PDB_CACHE_ROOT="$SCRATCH_ROOT/pdb_cache"
+export OUT_DIR="src/bridging/generatedData/graphvae/${DATASET_STEM}_torsion_input_v1"
+export DEEPRANK_HDF5="$SCRATCH_ROOT/deeprank/$DATASET_STEM/graphs_fullcomplex_v1.hdf5"
+export MSMS_BIN_DIR="$HOME/scratch/conda/msms/bin"
+export PATH="$MSMS_BIN_DIR:$PATH"
+export MMGBSA_CSV="src/bridging/generatedData/MMGBSA/${DATASET_STEM}_gb_full_done1458/PPB_Affinity_broad_pairuniq_train80_test20_mmgbsa_estimates.csv"
+
+export REUSE_PREPARED=1
+export BUILD_DEEPRANK=0
+export DEVICE=cuda
+export RIDGE_CV_FOLDS=5
+export RIDGE_CV_REPEATS=2
+export RIDGE_CV_INNER_FOLDS=5
+
+sbatch hpc/graphvae_full_gpu.sbatch
+```
+
+## Main outputs
+
+Prepared graphs:
+
+```bash
+src/bridging/generatedData/graphvae/<dataset_stem>_parallel_prepare/merged/prepared/graph_records.pt
+src/bridging/generatedData/graphvae/<dataset_stem>_torsion_input_v1/prepared/graph_records.pt
+```
+
+GraphVAE results:
+
+```bash
+src/bridging/generatedData/graphvae/<dataset_stem>_torsion_input_v1/mode_S/
+src/bridging/generatedData/graphvae/<dataset_stem>_torsion_input_v1/mode_SD/
+src/bridging/generatedData/graphvae/<dataset_stem>_torsion_input_v1/compare_S_vs_SD.json
+```
+
+MM/GBSA results:
+
+```bash
+src/bridging/generatedData/MMGBSA/<dataset_stem>_<run_tag>/
 ```
