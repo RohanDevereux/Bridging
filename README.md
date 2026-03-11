@@ -84,6 +84,57 @@ Important:
 - The AmberTools env only needs to contribute `tleap`, `cpptraj`, and `MMPBSA.py` on `PATH`.
 - You generally should not run `pip install -e .` inside the AmberTools env.
 
+### MMGBSA Sonic launch presets
+`hpc/submit_mmgbsa_parallel.sh` now accepts `MMGBSA_PRESET`:
+
+- `balanced_gb`: production-only GB with frame stride 5
+- `full_gb`: production-only GB using every saved production frame
+- `pb_pilot`: production-only PB with frame stride 2
+- `full_pb`: production-only PB using every saved production frame
+
+Example:
+
+```bash
+source .venv/bin/activate
+export PYTHONPATH=src
+export PYTHONNOUSERSITE=1
+export MAMBA_ROOT_PREFIX="$HOME/scratch/micromamba"
+export AMBERHOME="$MAMBA_ROOT_PREFIX/envs/bridging-ambertools"
+export AMBERTOOLS_BIN="$AMBERHOME/bin"
+export PATH="$AMBERTOOLS_BIN:$PATH"
+
+export DATASET="tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv"
+export N_SHARDS=48
+export CPUS_PER_SHARD=1
+export MMGBSA_PRESET=full_gb
+export RUN_TAG=gb_full_done1458
+
+bash hpc/submit_mmgbsa_parallel.sh
+```
+
+### Resumable torsion augmentation on Sonic
+Avoid running `bridging.graphvae.augment_torsions --records-in ...` interactively on the merged file.
+That path only writes `graph_records.pt` at the end.
+
+Use the sharded launcher instead:
+
+```bash
+source .venv/bin/activate
+export PYTHONPATH=src
+
+export DATASET="src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv"
+export MD_ROOT="$HOME/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20"
+export OUT_ROOT="src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1"
+
+bash hpc/submit_graphvae_torsions_parallel.sh
+```
+
+This augments the base and parallel-prepare checkpoint shards separately and then merges them back into:
+
+```bash
+src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_torsion_input_v1/prepared/graph_records.pt
+```
+
 ## GraphVAE (S vs SD) Pipeline
 New pipeline in `src/bridging/graphvae/`:
 - `S`: static structure features only

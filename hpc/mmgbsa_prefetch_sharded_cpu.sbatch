@@ -32,12 +32,17 @@ echo "[ENV] host=$(hostname)"
 echo "[ENV] python=$PYTHON"
 "$PYTHON" -V
 
+if [ -n "${AMBERTOOLS_BIN:-}" ]; then
+  unset AMBERTOOLS_MODULE
+fi
 if [ -n "${AMBERTOOLS_MODULE:-}" ]; then
   module load "$AMBERTOOLS_MODULE"
 fi
 if [ -n "${AMBERTOOLS_BIN:-}" ]; then
   export PATH="${AMBERTOOLS_BIN}:$PATH"
 fi
+echo "[ENV] amberhome=${AMBERHOME:-}"
+echo "[ENV] ambertools_bin=${AMBERTOOLS_BIN:-}"
 for exe in tleap cpptraj MMPBSA.py; do
   if ! command -v "$exe" >/dev/null 2>&1; then
     echo "[FAIL] missing AmberTools executable: $exe"

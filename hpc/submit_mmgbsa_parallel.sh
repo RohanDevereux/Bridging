@@ -32,13 +32,48 @@ if [ "$TOTAL_CPUS" -gt 48 ]; then
   exit 1
 fi
 
-SOLVATION_MODEL="${SOLVATION_MODEL:-gb}"
-START_FRAME="${START_FRAME:-21}"
-INTERVAL="${INTERVAL:-5}"
+MMGBSA_PRESET="${MMGBSA_PRESET:-balanced_gb}"
+case "$MMGBSA_PRESET" in
+  balanced_gb)
+    : "${SOLVATION_MODEL:=gb}"
+    : "${START_FRAME:=21}"
+    : "${INTERVAL:=5}"
+    : "${IGB:=5}"
+    : "${SALTCON:=0.150}"
+    : "${ISTRNG:=0.150}"
+    ;;
+  full_gb)
+    : "${SOLVATION_MODEL:=gb}"
+    : "${START_FRAME:=21}"
+    : "${INTERVAL:=1}"
+    : "${IGB:=5}"
+    : "${SALTCON:=0.150}"
+    : "${ISTRNG:=0.150}"
+    ;;
+  pb_pilot)
+    : "${SOLVATION_MODEL:=pb}"
+    : "${START_FRAME:=21}"
+    : "${INTERVAL:=2}"
+    : "${IGB:=5}"
+    : "${SALTCON:=0.150}"
+    : "${ISTRNG:=0.150}"
+    ;;
+  full_pb)
+    : "${SOLVATION_MODEL:=pb}"
+    : "${START_FRAME:=21}"
+    : "${INTERVAL:=1}"
+    : "${IGB:=5}"
+    : "${SALTCON:=0.150}"
+    : "${ISTRNG:=0.150}"
+    ;;
+  *)
+    echo "[FAIL] unsupported MMGBSA_PRESET=$MMGBSA_PRESET"
+    echo "[HINT] use one of: balanced_gb, full_gb, pb_pilot, full_pb"
+    exit 1
+    ;;
+esac
+
 END_FRAME="${END_FRAME:-}"
-IGB="${IGB:-5}"
-SALTCON="${SALTCON:-0.150}"
-ISTRNG="${ISTRNG:-0.150}"
 
 RUN_TAG="${RUN_TAG:-${SOLVATION_MODEL}_sf${START_FRAME}_int${INTERVAL}}"
 SHARD_DIR="${SHARD_DIR:-tmp/mmgbsa_shards/${DATASET_STEM}_${RUN_TAG}}"
@@ -79,6 +114,8 @@ MMGBSA_JID=$(
     | awk '{print $4}'
 )
 echo "[SUBMIT] MMGBSA_JID=$MMGBSA_JID"
+
+echo "[MMGBSA] preset=$MMGBSA_PRESET model=$SOLVATION_MODEL start=$START_FRAME end=${END_FRAME:-NA} interval=$INTERVAL igb=$IGB saltcon=$SALTCON istrng=$ISTRNG"
 
 echo "[STEP] submit merge job"
 MERGE_JID=$(
