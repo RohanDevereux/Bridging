@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import signal
 from collections import Counter
 from pathlib import Path
 
@@ -10,6 +12,31 @@ from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 
 from .force_features import assess_force_query_compatibility
 from .prepare import _select_complex_entries
+
+
+class RowAuditTimeout(RuntimeError):
+    pass
+
+
+@contextlib.contextmanager
+def _row_timeout(seconds: float):
+    if seconds <= 0:
+        yield
+        return
+    if not hasattr(signal, "SIGALRM") or not hasattr(signal, "setitimer"):
+        yield
+        return
+
+    def _handler(signum, frame):
+        raise RowAuditTimeout(f"row audit timed out after {seconds:.1f}s")
+
+    old_handler = signal.signal(signal.SIGALRM, _handler)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, old_handler)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -25,6 +52,12 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--out-json", help="Optional JSON report path.")
     p.add_argument("--limit", type=int, default=0, help="Optional limit on selected complexes for debugging.")
     p.add_argument("--progress-every", type=int, default=50, help="Progress print interval.")
+    p.add_argument(
+        "--per-row-timeout-sec",
+        type=float,
+        default=0.0,
+        help="Optional per-row timeout in seconds for pathological topology rows.",
+    )
     return p.parse_args()
 
 
@@ -50,8 +83,10 @@ def main() -> None:
         "n_missing_topology_full": 0,
         "n_compatible": 0,
         "n_incompatible": 0,
+        "n_timed_out": 0,
         "compatibility_reason_counts": {},
         "incompatible_examples": [],
+        "timed_out_examples": [],
     }
     reason_counts: Counter[str] = Counter()
 
@@ -71,16 +106,40 @@ def main() -> None:
         if not full_top.exists():
             totals["n_missing_topology_full"] += 1
 
-        raw_pdb_path, _ = ensure_pdb_cached(pdb_id, cache_dir=pdb_cache_root)
-        totals["n_done_with_topology"] += 1
+        try:
+            with _row_timeout(float(args.per_row_timeout_sec)):
+                raw_pdb_path, _ = ensure_pdb_cached(pdb_id, cache_dir=pdb_cache_root)
+                compat = assess_force_query_compatibility(
+                    raw_pdb_path=raw_pdb_path,
+                    protein_topology_pdb=protein_top,
+                    full_topology_pdb=full_top if full_top.exists() else None,
+                    ligand_group=str(rec["chains_1"]),
+                    receptor_group=str(rec["chains_2"]),
+                )
+        except RowAuditTimeout:
+            totals["n_done_with_topology"] += 1
+            totals["n_incompatible"] += 1
+            totals["n_timed_out"] += 1
+            reason_counts["timeout"] += 1
+            if len(totals["timed_out_examples"]) < 100:
+                totals["timed_out_examples"].append(
+                    {
+                        "complex_id": str(rec["complex_id"]),
+                        "pdb_id": pdb_id,
+                        "reason": "timeout",
+                        "timeout_sec": float(args.per_row_timeout_sec),
+                    }
+                )
+            if args.progress_every > 0 and (i % int(args.progress_every) == 0 or i == total):
+                print(
+                    f"[AUDIT] {i}/{total} compatible={totals['n_compatible']} "
+                    f"incompatible={totals['n_incompatible']} missing_md={totals['n_missing_md_dir']} "
+                    f"missing_topology_protein={totals['n_missing_topology_protein']}",
+                    flush=True,
+                )
+            continue
 
-        compat = assess_force_query_compatibility(
-            raw_pdb_path=raw_pdb_path,
-            protein_topology_pdb=protein_top,
-            full_topology_pdb=full_top if full_top.exists() else None,
-            ligand_group=str(rec["chains_1"]),
-            receptor_group=str(rec["chains_2"]),
-        )
+        totals["n_done_with_topology"] += 1
 
         if bool(compat.get("compatible", False)):
             totals["n_compatible"] += 1
@@ -123,6 +182,7 @@ def main() -> None:
             "n_missing_topology_protein": totals["n_missing_topology_protein"],
             "n_missing_topology_full": totals["n_missing_topology_full"],
             "compatibility_reason_counts": totals["compatibility_reason_counts"],
+            "n_timed_out": totals["n_timed_out"],
         },
         indent=2,
     ))
