@@ -40,7 +40,7 @@ if [ -z "${RECORDS:-}" ]; then
 fi
 
 OUT_DIR="${OUT_DIR:-src/bridging/generatedData/graphvae/sweeps/default}"
-MODE="${MODE:-SD}"
+MODES="${MODES:-${MODE:-S,SD}}"
 LATENT_DIMS="${LATENT_DIMS:-8,16,32,64}"
 SUPERVISION_MODES="${SUPERVISION_MODES:-unsupervised,semi_supervised}"
 AFFINITY_WEIGHT="${AFFINITY_WEIGHT:-1.0}"
@@ -48,7 +48,7 @@ AFFINITY_WEIGHT="${AFFINITY_WEIGHT:-1.0}"
 ARGS=(
   --records "$RECORDS"
   --out-dir "$OUT_DIR"
-  --mode "$MODE"
+  --modes "$MODES"
   --latent-dims "$LATENT_DIMS"
   --supervision-modes "$SUPERVISION_MODES"
   --affinity-weight "$AFFINITY_WEIGHT"

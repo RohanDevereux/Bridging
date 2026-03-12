@@ -60,12 +60,27 @@ def _safe_cv_metric(summary: dict, metric: str) -> float:
     return float(pooled.get(metric, float("nan")))
 
 
+def _parse_feature_modes(raw: str) -> list[str]:
+    allowed = {"S", "SD"}
+    out = []
+    for part in str(raw).split(","):
+        token = part.strip()
+        if not token:
+            continue
+        if token not in allowed:
+            raise ValueError(f"Unsupported feature mode: {token}")
+        out.append(token)
+    if not out:
+        raise ValueError("Expected at least one feature mode.")
+    return out
+
+
 def _config_name(*, mode: str, latent_dim: int, supervision_mode: str) -> str:
     short = "semi" if supervision_mode == "semi_supervised" else "unsup"
     return f"{mode}_z{int(latent_dim):02d}_{short}"
 
 
-def _markdown_report(*, rows: list[dict], records_path: Path, out_dir: Path, mode: str, affinity_weight: float) -> str:
+def _markdown_report(*, rows: list[dict], records_path: Path, out_dir: Path, modes: list[str], affinity_weight: float) -> str:
     if not rows:
         return "# GraphVAE Sweep\n\nNo runs completed.\n"
     df = pd.DataFrame(rows).sort_values(["test_rmse", "val_rmse"], na_position="last").reset_index(drop=True)
@@ -74,13 +89,14 @@ def _markdown_report(*, rows: list[dict], records_path: Path, out_dir: Path, mod
         "# GraphVAE Sweep",
         "",
         f"- Records: `{records_path}`",
-        f"- Mode: `{mode}`",
+        f"- Feature modes: `{','.join(modes)}`",
         f"- Configs: `{len(df)}`",
         f"- Semi-supervised affinity weight: `{affinity_weight:.3f}`",
         "",
         "## Best By Test RMSE",
         "",
         f"- Experiment: `{best['experiment']}`",
+        f"- Feature mode: `{best['mode']}`",
         f"- Latent dim: `{int(best['latent_dim'])}`",
         f"- Supervision: `{best['supervision_mode']}`",
         f"- Test RMSE: `{best['test_rmse']:.4f}`",
@@ -89,13 +105,14 @@ def _markdown_report(*, rows: list[dict], records_path: Path, out_dir: Path, mod
         "",
         "## Summary",
         "",
-        "| Experiment | z | Supervision | Train RMSE | Val RMSE | Test RMSE | Test R2 | Test r | CV RMSE |",
-        "| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| Experiment | Mode | z | Supervision | Train RMSE | Val RMSE | Test RMSE | Test R2 | Test r | CV RMSE |",
+        "| --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in df.to_dict("records"):
         lines.append(
             "| "
             + f"{row['experiment']} | "
+            + f"{row['mode']} | "
             + f"{int(row['latent_dim'])} | "
             + f"{row['supervision_mode']} | "
             + f"{row['train_rmse']:.4f} | "
@@ -112,7 +129,7 @@ def run_saved_graph_sweep(
     *,
     records_path: Path,
     out_dir: Path,
-    mode: str,
+    modes: list[str],
     latent_dims: list[int],
     supervision_modes: list[str],
     affinity_weight: float,
@@ -143,98 +160,99 @@ def run_saved_graph_sweep(
     out_dir.mkdir(parents=True, exist_ok=True)
     rows: list[dict] = []
     run_t0 = time.perf_counter()
-    total_configs = len(latent_dims) * len(supervision_modes)
+    total_configs = len(modes) * len(latent_dims) * len(supervision_modes)
     config_idx = 0
 
-    for latent_dim in latent_dims:
-        for supervision_mode in supervision_modes:
-            config_idx += 1
-            config_affinity_weight = float(affinity_weight) if supervision_mode == "semi_supervised" else 0.0
-            experiment = _config_name(mode=mode, latent_dim=latent_dim, supervision_mode=supervision_mode)
-            experiment_dir = out_dir / experiment
-            print(
-                f"[SWEEP] config {config_idx}/{total_configs} experiment={experiment} "
-                f"latent_dim={latent_dim} supervision={supervision_mode} "
-                f"affinity_weight={config_affinity_weight:.3f}"
-            )
-            train_summary = train_masked_graph_vae(
-                records_path=records_path,
-                out_dir=experiment_dir,
-                mode=mode,
-                device=device,
-                latent_dim=int(latent_dim),
-                hidden_dim=hidden_dim,
-                num_layers=num_layers,
-                mask_ratio=mask_ratio,
-                lr=lr,
-                weight_decay=weight_decay,
-                batch_size=batch_size,
-                max_epochs=max_epochs,
-                patience=patience,
-                beta_start=beta_start,
-                beta_end=beta_end,
-                beta_anneal_fraction=beta_anneal_fraction,
-                corr_weight=corr_weight,
-                affinity_weight=config_affinity_weight,
-                seed=seed,
-                num_workers=num_workers,
-                checkpoint_every=checkpoint_every,
-            )
-            reg_summary = run_linear_probe(
-                latents_csv=Path(train_summary["latents_csv"]),
-                out_dir=experiment_dir,
-                dataset_csv=dataset_csv,
-                mmgbsa_csv=mmgbsa_csv,
-                alpha_grid=alpha_grid,
-                bootstrap=bootstrap,
-                ridge_cv_folds=ridge_cv_folds,
-                ridge_cv_repeats=ridge_cv_repeats,
-                ridge_cv_inner_folds=ridge_cv_inner_folds,
-                seed=seed,
-            )
-            row = {
-                "experiment": experiment,
-                "experiment_dir": str(experiment_dir),
-                "mode": mode,
-                "latent_dim": int(latent_dim),
-                "supervision_mode": supervision_mode,
-                "affinity_weight": float(config_affinity_weight),
-                "best_epoch": int(train_summary["best_epoch"]),
-                "best_val_recon": float(train_summary["best_val_recon"]),
-                "best_val_objective": float(train_summary["best_val_objective"]),
-                "ridge_alpha": float(reg_summary["alpha"]),
-                "train_rmse": _safe_metric(reg_summary, "train", "rmse"),
-                "train_mae": _safe_metric(reg_summary, "train", "mae"),
-                "train_r2": _safe_metric(reg_summary, "train", "r2"),
-                "train_pearson_r": _safe_metric(reg_summary, "train", "pearson_r"),
-                "val_rmse": _safe_metric(reg_summary, "val", "rmse"),
-                "val_mae": _safe_metric(reg_summary, "val", "mae"),
-                "val_r2": _safe_metric(reg_summary, "val", "r2"),
-                "val_pearson_r": _safe_metric(reg_summary, "val", "pearson_r"),
-                "test_rmse": _safe_metric(reg_summary, "test", "rmse"),
-                "test_mae": _safe_metric(reg_summary, "test", "mae"),
-                "test_r2": _safe_metric(reg_summary, "test", "r2"),
-                "test_pearson_r": _safe_metric(reg_summary, "test", "pearson_r"),
-                "cv_pooled_rmse": _safe_cv_metric(reg_summary, "rmse"),
-                "cv_pooled_r2": _safe_cv_metric(reg_summary, "r2"),
-                "cv_pooled_pearson_r": _safe_cv_metric(reg_summary, "pearson_r"),
-                "train_val_rmse_gap": _safe_metric(reg_summary, "val", "rmse") - _safe_metric(reg_summary, "train", "rmse"),
-                "test_train_rmse_gap": _safe_metric(reg_summary, "test", "rmse") - _safe_metric(reg_summary, "train", "rmse"),
-                "head_train_rmse": _safe_head_metric(train_summary, "train", "rmse"),
-                "head_val_rmse": _safe_head_metric(train_summary, "val", "rmse"),
-                "head_test_rmse": _safe_head_metric(train_summary, "test", "rmse"),
-                "head_train_r2": _safe_head_metric(train_summary, "train", "r2"),
-                "head_val_r2": _safe_head_metric(train_summary, "val", "r2"),
-                "head_test_r2": _safe_head_metric(train_summary, "test", "r2"),
-                "train_summary_json": str(experiment_dir / f"train_summary_{mode}.json"),
-                "ridge_summary_json": str(experiment_dir / "latent_ridge_summary.json"),
-            }
-            rows.append(row)
-            elapsed = time.perf_counter() - run_t0
-            print(
-                f"[SWEEP] done experiment={experiment} test_rmse={row['test_rmse']:.4f} "
-                f"test_r2={row['test_r2']:.4f} elapsed={_fmt_seconds(elapsed)}"
-            )
+    for mode in modes:
+        for latent_dim in latent_dims:
+            for supervision_mode in supervision_modes:
+                config_idx += 1
+                config_affinity_weight = float(affinity_weight) if supervision_mode == "semi_supervised" else 0.0
+                experiment = _config_name(mode=mode, latent_dim=latent_dim, supervision_mode=supervision_mode)
+                experiment_dir = out_dir / experiment
+                print(
+                    f"[SWEEP] config {config_idx}/{total_configs} experiment={experiment} "
+                    f"mode={mode} latent_dim={latent_dim} supervision={supervision_mode} "
+                    f"affinity_weight={config_affinity_weight:.3f}"
+                )
+                train_summary = train_masked_graph_vae(
+                    records_path=records_path,
+                    out_dir=experiment_dir,
+                    mode=mode,
+                    device=device,
+                    latent_dim=int(latent_dim),
+                    hidden_dim=hidden_dim,
+                    num_layers=num_layers,
+                    mask_ratio=mask_ratio,
+                    lr=lr,
+                    weight_decay=weight_decay,
+                    batch_size=batch_size,
+                    max_epochs=max_epochs,
+                    patience=patience,
+                    beta_start=beta_start,
+                    beta_end=beta_end,
+                    beta_anneal_fraction=beta_anneal_fraction,
+                    corr_weight=corr_weight,
+                    affinity_weight=config_affinity_weight,
+                    seed=seed,
+                    num_workers=num_workers,
+                    checkpoint_every=checkpoint_every,
+                )
+                reg_summary = run_linear_probe(
+                    latents_csv=Path(train_summary["latents_csv"]),
+                    out_dir=experiment_dir,
+                    dataset_csv=dataset_csv,
+                    mmgbsa_csv=mmgbsa_csv,
+                    alpha_grid=alpha_grid,
+                    bootstrap=bootstrap,
+                    ridge_cv_folds=ridge_cv_folds,
+                    ridge_cv_repeats=ridge_cv_repeats,
+                    ridge_cv_inner_folds=ridge_cv_inner_folds,
+                    seed=seed,
+                )
+                row = {
+                    "experiment": experiment,
+                    "experiment_dir": str(experiment_dir),
+                    "mode": mode,
+                    "latent_dim": int(latent_dim),
+                    "supervision_mode": supervision_mode,
+                    "affinity_weight": float(config_affinity_weight),
+                    "best_epoch": int(train_summary["best_epoch"]),
+                    "best_val_recon": float(train_summary["best_val_recon"]),
+                    "best_val_objective": float(train_summary["best_val_objective"]),
+                    "ridge_alpha": float(reg_summary["alpha"]),
+                    "train_rmse": _safe_metric(reg_summary, "train", "rmse"),
+                    "train_mae": _safe_metric(reg_summary, "train", "mae"),
+                    "train_r2": _safe_metric(reg_summary, "train", "r2"),
+                    "train_pearson_r": _safe_metric(reg_summary, "train", "pearson_r"),
+                    "val_rmse": _safe_metric(reg_summary, "val", "rmse"),
+                    "val_mae": _safe_metric(reg_summary, "val", "mae"),
+                    "val_r2": _safe_metric(reg_summary, "val", "r2"),
+                    "val_pearson_r": _safe_metric(reg_summary, "val", "pearson_r"),
+                    "test_rmse": _safe_metric(reg_summary, "test", "rmse"),
+                    "test_mae": _safe_metric(reg_summary, "test", "mae"),
+                    "test_r2": _safe_metric(reg_summary, "test", "r2"),
+                    "test_pearson_r": _safe_metric(reg_summary, "test", "pearson_r"),
+                    "cv_pooled_rmse": _safe_cv_metric(reg_summary, "rmse"),
+                    "cv_pooled_r2": _safe_cv_metric(reg_summary, "r2"),
+                    "cv_pooled_pearson_r": _safe_cv_metric(reg_summary, "pearson_r"),
+                    "train_val_rmse_gap": _safe_metric(reg_summary, "val", "rmse") - _safe_metric(reg_summary, "train", "rmse"),
+                    "test_train_rmse_gap": _safe_metric(reg_summary, "test", "rmse") - _safe_metric(reg_summary, "train", "rmse"),
+                    "head_train_rmse": _safe_head_metric(train_summary, "train", "rmse"),
+                    "head_val_rmse": _safe_head_metric(train_summary, "val", "rmse"),
+                    "head_test_rmse": _safe_head_metric(train_summary, "test", "rmse"),
+                    "head_train_r2": _safe_head_metric(train_summary, "train", "r2"),
+                    "head_val_r2": _safe_head_metric(train_summary, "val", "r2"),
+                    "head_test_r2": _safe_head_metric(train_summary, "test", "r2"),
+                    "train_summary_json": str(experiment_dir / f"train_summary_{mode}.json"),
+                    "ridge_summary_json": str(experiment_dir / "latent_ridge_summary.json"),
+                }
+                rows.append(row)
+                elapsed = time.perf_counter() - run_t0
+                print(
+                    f"[SWEEP] done experiment={experiment} test_rmse={row['test_rmse']:.4f} "
+                    f"test_r2={row['test_r2']:.4f} elapsed={_fmt_seconds(elapsed)}"
+                )
 
     results_df = pd.DataFrame(rows).sort_values(["test_rmse", "val_rmse"], na_position="last").reset_index(drop=True)
     summary_csv = out_dir / "sweep_summary.csv"
@@ -245,7 +263,7 @@ def run_saved_graph_sweep(
     summary = {
         "records_path": str(records_path),
         "out_dir": str(out_dir),
-        "mode": mode,
+        "modes": list(modes),
         "latent_dims": [int(x) for x in latent_dims],
         "supervision_modes": list(supervision_modes),
         "affinity_weight": float(affinity_weight),
@@ -262,7 +280,7 @@ def run_saved_graph_sweep(
             rows=rows,
             records_path=records_path,
             out_dir=out_dir,
-            mode=mode,
+            modes=modes,
             affinity_weight=affinity_weight,
         ),
         encoding="utf-8",
@@ -274,7 +292,8 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run latent-dimension and supervision sweep on saved GraphVAE records.")
     parser.add_argument("--records", required=True, help="Prepared graph_records.pt path.")
     parser.add_argument("--out-dir", required=True)
-    parser.add_argument("--mode", choices=["S", "SD"], default="SD")
+    parser.add_argument("--modes", default="S,SD")
+    parser.add_argument("--mode", choices=["S", "SD"], help="Backward-compatible alias for a single feature mode.")
     parser.add_argument("--latent-dims", default="8,16,32,64")
     parser.add_argument("--supervision-modes", default="unsupervised,semi_supervised")
     parser.add_argument("--affinity-weight", type=float, default=1.0)
@@ -310,7 +329,7 @@ def main() -> None:
     summary = run_saved_graph_sweep(
         records_path=Path(args.records),
         out_dir=Path(args.out_dir),
-        mode=str(args.mode),
+        modes=([str(args.mode)] if args.mode else _parse_feature_modes(args.modes)),
         latent_dims=_parse_int_list(args.latent_dims),
         supervision_modes=_parse_supervision_modes(args.supervision_modes),
         affinity_weight=float(args.affinity_weight),
