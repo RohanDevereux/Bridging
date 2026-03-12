@@ -38,9 +38,20 @@ def remap_chain_groups_to_md(
 ) -> tuple[list[str], list[str], dict]:
     raw_lig = _ordered_unique(parse_chain_group(ligand_group))
     raw_rec = _ordered_unique(parse_chain_group(receptor_group))
-    chain_map, md_chain_order, report = build_raw_to_md_chain_map(raw_pdb_path, md_topology_pdb)
-    md_lig = _ordered_unique([chain_map.get(c, c) for c in raw_lig])
-    md_rec = _ordered_unique([chain_map.get(c, c) for c in raw_rec])
+    query_chains = _ordered_unique(raw_lig + raw_rec)
+    chain_map, md_chain_order, report = build_raw_to_md_chain_map(
+        raw_pdb_path,
+        md_topology_pdb,
+        query_chains=query_chains,
+    )
+    unresolved = [c for c in query_chains if c not in chain_map]
+    if unresolved:
+        raise RuntimeError(
+            f"Could not remap query chains {unresolved}; available_md={md_chain_order} "
+            f"query_map={report.get('query_mapped', {})}"
+        )
+    md_lig = _ordered_unique([chain_map[c] for c in raw_lig])
+    md_rec = _ordered_unique([chain_map[c] for c in raw_rec])
     report = {
         **report,
         "raw_ligand_group": raw_lig,

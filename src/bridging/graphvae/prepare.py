@@ -170,11 +170,12 @@ def _resolve_hdf5_paths(
         "n_md_topology_missing": 0,
         "n_query_chain_remapped": 0,
         "n_query_chain_fallback": 0,
+        "n_query_chain_unresolved": 0,
         "n_stage_skipped_not_done": 0,
         "n_stage_skipped_missing_source_pdb": 0,
         "chain_remap_examples": [],
     }
-    chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
+    chain_map_cache: dict[tuple[str, str, str], tuple[dict[str, str], list[str], dict]] = {}
 
     total_entries = int(len(entries))
     for i, rec in enumerate(entries, start=1):
@@ -207,10 +208,17 @@ def _resolve_hdf5_paths(
             source_report["n_md_topology_missing"] += 1
             continue
 
+        q1_old = str(rec["query_chain_1"]).strip().upper()
+        q2_old = str(rec["query_chain_2"]).strip().upper()
+
         if raw_exists:
-            cache_key = str(rec["pdb_id"])
+            cache_key = (str(rec["pdb_id"]), q1_old, q2_old)
             if cache_key not in chain_map_cache:
-                chain_map_cache[cache_key] = build_raw_to_md_chain_map(raw_pdb_path, md_pdb_path)
+                chain_map_cache[cache_key] = build_raw_to_md_chain_map(
+                    raw_pdb_path,
+                    md_pdb_path,
+                    query_chains=[q1_old, q2_old],
+                )
             chain_map, _md_chain_order, map_report = chain_map_cache[cache_key]
         else:
             chain_map = {}
@@ -223,14 +231,36 @@ def _resolve_hdf5_paths(
                 "note": "raw_pdb_missing_used_md_chain_fallback",
             }
 
-        q1_old = str(rec["query_chain_1"]).strip().upper()
-        q2_old = str(rec["query_chain_2"]).strip().upper()
-        q1_new, q2_new = remap_query_pair(
-            query_chain_1=q1_old,
-            query_chain_2=q2_old,
-            chain_map=chain_map,
-            md_chain_order=md_chain_order,
-        )
+        try:
+            q1_new, q2_new = remap_query_pair(
+                query_chain_1=q1_old,
+                query_chain_2=q2_old,
+                chain_map=chain_map,
+                md_chain_order=md_chain_order,
+                strict=raw_exists,
+            )
+        except Exception:
+            source_report["n_query_chain_unresolved"] += 1
+            source_report["n_query_chain_fallback"] += 1
+            if len(source_report["chain_remap_examples"]) < 30:
+                source_report["chain_remap_examples"].append(
+                    {
+                        "complex_id": rec["complex_id"],
+                        "query_old": [q1_old, q2_old],
+                        "query_new": None,
+                        "map_report": map_report,
+                    }
+                )
+            if progress_every > 0 and (i % progress_every == 0 or i == total_entries):
+                print(
+                    f"[PREP] source_resolve {i}/{total_entries} "
+                    f"md_sources={source_report['n_md_topology_sources']} "
+                    f"md_missing={source_report['n_md_topology_missing']} "
+                    f"remapped={source_report['n_query_chain_remapped']} "
+                    f"fallback={source_report['n_query_chain_fallback']}",
+                    flush=True,
+                )
+            continue
         rec["query_chain_1"] = q1_new
         rec["query_chain_2"] = q2_new
         if q1_new != q1_old or q2_new != q2_old:
