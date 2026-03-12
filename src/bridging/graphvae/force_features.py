@@ -52,8 +52,21 @@ def remap_chain_groups_to_md(
     return md_lig, md_rec, report
 
 
-def _load_analysis_system(topology_pdb: Path) -> tuple[PDBFile, System]:
+def _box_vectors_from_nm(box_nm: np.ndarray) -> tuple[Vec3, Vec3, Vec3]:
+    box = np.asarray(box_nm, dtype=np.float64)
+    if box.shape != (3, 3):
+        raise ValueError(f"Expected box vectors shape (3, 3), got {box.shape}")
+    return (
+        Vec3(*box[0]) * unit.nanometer,
+        Vec3(*box[1]) * unit.nanometer,
+        Vec3(*box[2]) * unit.nanometer,
+    )
+
+
+def _load_analysis_system(topology_pdb: Path, box_vectors_nm: np.ndarray | None = None) -> tuple[PDBFile, System]:
     pdb = PDBFile(str(topology_pdb))
+    if pdb.topology.getPeriodicBoxVectors() is None and box_vectors_nm is not None:
+        pdb.topology.setPeriodicBoxVectors(_box_vectors_from_nm(box_vectors_nm))
     modeller = Modeller(pdb.topology, pdb.positions)
     forcefield = ForceField(*FORCEFIELD_FILES)
     system = build_system(forcefield, modeller, allow_ignore_external_bonds=False)
@@ -154,10 +167,11 @@ def build_interchain_force_system(
 def _context_for_force_analysis(
     *,
     topology_pdb: Path,
+    box_vectors_nm: np.ndarray | None,
     ligand_chain_ids: list[str],
     receptor_chain_ids: list[str],
 ) -> tuple[Context, PDBFile]:
-    pdb, source_system = _load_analysis_system(topology_pdb)
+    pdb, source_system = _load_analysis_system(topology_pdb, box_vectors_nm=box_vectors_nm)
     analysis_system, coul_group, lj_group = build_interchain_force_system(
         source_system=source_system,
         source_topology=pdb.topology,
@@ -200,6 +214,7 @@ def compute_node_interchain_force_features(
 
     context, pdb = _context_for_force_analysis(
         topology_pdb=topology_pdb,
+        box_vectors_nm=None if traj.unitcell_vectors is None else traj.unitcell_vectors[0],
         ligand_chain_ids=md_lig,
         receptor_chain_ids=md_rec,
     )
