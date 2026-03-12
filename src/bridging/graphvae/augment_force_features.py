@@ -190,6 +190,42 @@ def _parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+def _finalize_report(aggregate: dict, report_out: Path) -> None:
+    n_records = sum(int(p.get("n_records", 0)) for p in aggregate["parts"])
+    n_augmented = sum(int(p.get("n_augmented", 0)) for p in aggregate["parts"])
+    n_failed = sum(int(p.get("n_failed", 0)) for p in aggregate["parts"])
+    n_nodes = sum(int(p.get("n_nodes", 0)) for p in aggregate["parts"])
+    n_mapped = sum(int(p.get("n_mapped_nodes", 0)) for p in aggregate["parts"])
+    frames_total = sum(int(p.get("n_frames_total", 0)) for p in aggregate["parts"])
+    aggregate["summary"] = {
+        "n_parts": int(len(aggregate["parts"])),
+        "n_records": int(n_records),
+        "n_augmented": int(n_augmented),
+        "n_failed": int(n_failed),
+        "n_nodes": int(n_nodes),
+        "n_mapped_nodes": int(n_mapped),
+        "mapping_coverage_pct": _fmt_pct(n_mapped, n_nodes),
+        "mean_frames_per_record": float(frames_total) / float(max(1, n_augmented)),
+    }
+    report_out.write_text(json.dumps(aggregate, indent=2), encoding="utf-8")
+    print(f"[FORCE] report={report_out}", flush=True)
+    print(
+        f"[FORCE] summary records={n_augmented}/{n_records} "
+        f"mapping={aggregate['summary']['mapping_coverage_pct']:.2f}% "
+        f"frames_per_record={aggregate['summary']['mean_frames_per_record']:.1f}",
+        flush=True,
+    )
+
+
+def _log_fail_examples(stats: dict, limit: int = 5) -> None:
+    examples = list(stats.get("fail_examples", []))[: max(0, int(limit))]
+    if not examples:
+        return
+    print("[FORCE] fail_examples:", flush=True)
+    for ex in examples:
+        print(f"[FORCE]   {json.dumps(ex, sort_keys=True)}", flush=True)
+
+
 def main() -> None:
     args = _parse_args()
     dataset_lookup = _dataset_lookup(Path(args.dataset))
@@ -246,6 +282,13 @@ def main() -> None:
             f"mapping={stats['mapping_coverage_pct']:.2f}% frames_per_record={stats['mean_frames_per_record']:.1f}",
             flush=True,
         )
+        _finalize_report(aggregate, report_out)
+        if int(stats["n_failed"]) > 0:
+            _log_fail_examples(stats)
+            raise RuntimeError(
+                f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
+                f"in {records_in}. Inspect the report and logs before merging."
+            )
     else:
         if not args.checkpoint_dir_out:
             raise ValueError("--checkpoint-dir-out is required with --checkpoint-dir-in")
@@ -282,36 +325,20 @@ def main() -> None:
                     **stats,
                 }
             )
+            if int(stats["n_failed"]) > 0:
+                _finalize_report(aggregate, report_out)
+                _log_fail_examples(stats)
+                raise RuntimeError(
+                    f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
+                    f"in {shard}. Inspect the report and logs before merging."
+                )
             print(
                 f"[FORCE] shard={shard.name} augmented={stats['n_augmented']}/{stats['n_records']} "
                 f"mapping={stats['mapping_coverage_pct']:.2f}%",
                 flush=True,
             )
 
-    n_records = sum(int(p.get("n_records", 0)) for p in aggregate["parts"])
-    n_augmented = sum(int(p.get("n_augmented", 0)) for p in aggregate["parts"])
-    n_failed = sum(int(p.get("n_failed", 0)) for p in aggregate["parts"])
-    n_nodes = sum(int(p.get("n_nodes", 0)) for p in aggregate["parts"])
-    n_mapped = sum(int(p.get("n_mapped_nodes", 0)) for p in aggregate["parts"])
-    frames_total = sum(int(p.get("n_frames_total", 0)) for p in aggregate["parts"])
-    aggregate["summary"] = {
-        "n_parts": int(len(aggregate["parts"])),
-        "n_records": int(n_records),
-        "n_augmented": int(n_augmented),
-        "n_failed": int(n_failed),
-        "n_nodes": int(n_nodes),
-        "n_mapped_nodes": int(n_mapped),
-        "mapping_coverage_pct": _fmt_pct(n_mapped, n_nodes),
-        "mean_frames_per_record": float(frames_total) / float(max(1, n_augmented)),
-    }
-    report_out.write_text(json.dumps(aggregate, indent=2), encoding="utf-8")
-    print(f"[FORCE] report={report_out}", flush=True)
-    print(
-        f"[FORCE] summary records={n_augmented}/{n_records} "
-        f"mapping={aggregate['summary']['mapping_coverage_pct']:.2f}% "
-        f"frames_per_record={aggregate['summary']['mean_frames_per_record']:.1f}",
-        flush=True,
-    )
+    _finalize_report(aggregate, report_out)
 
 
 if __name__ == "__main__":
