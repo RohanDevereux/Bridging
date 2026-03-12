@@ -259,17 +259,10 @@ def main() -> None:
             dataset_lookup=dataset_lookup,
             md_root=md_root,
             pdb_cache_root=pdb_cache_root,
-            max_frames=int(args.max_frames),
-            traj_cache_size=int(args.traj_cache_size),
-            progress_every=int(args.progress_every),
-        )
-        if int(stats["n_failed"]) > 0:
-            raise RuntimeError(
-                f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
-                f"in {records_in}. Inspect the report and logs before merging."
+                max_frames=int(args.max_frames),
+                traj_cache_size=int(args.traj_cache_size),
+                progress_every=int(args.progress_every),
             )
-        records_out.parent.mkdir(parents=True, exist_ok=True)
-        torch.save(out, records_out)
         aggregate["parts"].append(
             {
                 "input": str(records_in),
@@ -277,18 +270,21 @@ def main() -> None:
                 **stats,
             }
         )
+        if int(stats["n_failed"]) > 0:
+            _finalize_report(aggregate, report_out)
+            _log_fail_examples(stats)
+            raise RuntimeError(
+                f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
+                f"in {records_in}. Inspect the report and logs before merging."
+            )
+        records_out.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(out, records_out)
         print(
             f"[FORCE] records augmented={stats['n_augmented']}/{stats['n_records']} "
             f"mapping={stats['mapping_coverage_pct']:.2f}% frames_per_record={stats['mean_frames_per_record']:.1f}",
             flush=True,
         )
         _finalize_report(aggregate, report_out)
-        if int(stats["n_failed"]) > 0:
-            _log_fail_examples(stats)
-            raise RuntimeError(
-                f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
-                f"in {records_in}. Inspect the report and logs before merging."
-            )
     else:
         if not args.checkpoint_dir_out:
             raise ValueError("--checkpoint-dir-out is required with --checkpoint-dir-in")
@@ -311,17 +307,10 @@ def main() -> None:
                 traj_cache_size=int(args.traj_cache_size),
                 progress_every=int(args.progress_every),
             )
-            if int(stats["n_failed"]) > 0:
-                raise RuntimeError(
-                    f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
-                    f"in {shard}. Inspect the logs before merging."
-                )
-            out_path = ck_out / shard.name
-            torch.save(out, out_path)
             aggregate["parts"].append(
                 {
                     "input": str(shard),
-                    "output": str(out_path),
+                    "output": str(ck_out / shard.name),
                     **stats,
                 }
             )
@@ -330,8 +319,11 @@ def main() -> None:
                 _log_fail_examples(stats)
                 raise RuntimeError(
                     f"Force feature augmentation failed for {stats['n_failed']}/{stats['n_records']} records "
-                    f"in {shard}. Inspect the report and logs before merging."
+                    f"in {shard}. Inspect the logs before merging."
                 )
+            out_path = ck_out / shard.name
+            torch.save(out, out_path)
+            aggregate["parts"][-1]["output"] = str(out_path)
             print(
                 f"[FORCE] shard={shard.name} augmented={stats['n_augmented']}/{stats['n_records']} "
                 f"mapping={stats['mapping_coverage_pct']:.2f}%",

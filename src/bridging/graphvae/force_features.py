@@ -9,7 +9,7 @@ from openmm.app import ForceField, Modeller, PDBFile
 
 from bridging.MD.config import FORCEFIELD_FILES
 from bridging.MD.simulate import build_system
-from bridging.graphvae.chain_remap import build_raw_to_md_chain_map
+from bridging.graphvae.chain_remap import _load_chain_sequences, build_raw_to_md_chain_map
 from bridging.utils.dataset_rows import parse_chain_group
 
 from .config import FORCE_NODE_INPUT_FEATURES
@@ -61,6 +61,77 @@ def remap_chain_groups_to_md(
         "md_chain_order": md_chain_order,
     }
     return md_lig, md_rec, report
+
+
+def assess_force_query_compatibility(
+    *,
+    raw_pdb_path: Path,
+    protein_topology_pdb: Path,
+    ligand_group: str,
+    receptor_group: str,
+    full_topology_pdb: Path | None = None,
+) -> dict:
+    raw_lig = _ordered_unique(parse_chain_group(ligand_group))
+    raw_rec = _ordered_unique(parse_chain_group(receptor_group))
+    query_chains = _ordered_unique(raw_lig + raw_rec)
+
+    raw_info = _load_chain_sequences(raw_pdb_path)
+    protein_info = _load_chain_sequences(protein_topology_pdb)
+    full_info = None
+    if full_topology_pdb is not None and full_topology_pdb.exists():
+        full_info = _load_chain_sequences(full_topology_pdb)
+
+    def _missing(order: list[str], query: list[str]) -> list[str]:
+        present = {str(x).strip().upper() for x in order}
+        return [c for c in query if c not in present]
+
+    raw_overlap = sorted(set(raw_lig).intersection(raw_rec))
+    report = {
+        "raw_ligand_group": raw_lig,
+        "raw_receptor_group": raw_rec,
+        "raw_query_chains": query_chains,
+        "raw_chain_order": list(raw_info.order),
+        "protein_chain_order": list(protein_info.order),
+        "full_chain_order": [] if full_info is None else list(full_info.order),
+        "missing_in_raw": _missing(list(raw_info.order), query_chains),
+        "missing_in_protein": _missing(list(protein_info.order), query_chains),
+        "missing_in_full": [] if full_info is None else _missing(list(full_info.order), query_chains),
+        "raw_query_overlap": raw_overlap,
+        "compatible": False,
+        "compatibility_reason": "",
+    }
+    if raw_overlap:
+        report["compatibility_reason"] = "raw_query_overlap"
+        return report
+
+    try:
+        md_lig, md_rec, remap_report = remap_chain_groups_to_md(
+            raw_pdb_path=raw_pdb_path,
+            md_topology_pdb=protein_topology_pdb,
+            ligand_group=ligand_group,
+            receptor_group=receptor_group,
+        )
+    except Exception as exc:
+        report["compatibility_reason"] = "query_remap_failed"
+        report["error"] = repr(exc)
+        return report
+
+    overlap_after_remap = sorted(set(md_lig).intersection(md_rec))
+    report.update(
+        {
+            "md_ligand_group": md_lig,
+            "md_receptor_group": md_rec,
+            "remap_report": remap_report,
+            "overlap_after_remap": overlap_after_remap,
+        }
+    )
+    if overlap_after_remap:
+        report["compatibility_reason"] = "overlap_after_remap"
+        return report
+
+    report["compatible"] = True
+    report["compatibility_reason"] = "compatible"
+    return report
 
 
 def _box_vectors_from_nm(box_nm: np.ndarray) -> tuple[Vec3, Vec3, Vec3]:

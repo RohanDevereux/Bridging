@@ -36,7 +36,7 @@ from .deeprank_adapter import (
     stage_query_pdbs,
     write_deeprank_index,
 )
-from .force_features import compute_node_interchain_force_features
+from .force_features import assess_force_query_compatibility, compute_node_interchain_force_features
 from .ids import canonical_complex_id, primary_chain, sanitize_filename_token
 from .md_dynamics import (
     compute_dynamic_features,
@@ -447,6 +447,7 @@ def build_prepared_dataset(
     partial_node_coverage = []
     torsion_feature_fallbacks = []
     force_feature_fallbacks = []
+    force_query_incompatible = []
     traj_cache: OrderedDict[str, object] = OrderedDict()
     traj_cache_size = max(0, int(traj_cache_size))
     total_entries = int(len(entries))
@@ -559,9 +560,34 @@ def build_prepared_dataset(
                 {"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)}
             )
 
+        raw_pdb_path = _cached_raw_pdb_path(str(pdb_id), pdb_cache_root)
+        if not raw_pdb_path.exists():
+            raw_pdb_path, _ = ensure_pdb_cached(str(pdb_id), cache_dir=pdb_cache_root)
+
+        compat = assess_force_query_compatibility(
+            raw_pdb_path=raw_pdb_path,
+            protein_topology_pdb=md_dir / "topology_protein.pdb",
+            full_topology_pdb=md_dir / "topology_full.pdb",
+            ligand_group=str(rec["chains_1"]),
+            receptor_group=str(rec["chains_2"]),
+        )
+        if not bool(compat.get("compatible", False)):
+            force_query_incompatible.append(
+                {
+                    "complex_id": complex_id,
+                    "pdb_id": pdb_id,
+                    "reason": str(compat.get("compatibility_reason", "")),
+                    "missing_in_raw": list(compat.get("missing_in_raw", [])),
+                    "missing_in_full": list(compat.get("missing_in_full", [])),
+                    "missing_in_protein": list(compat.get("missing_in_protein", [])),
+                    "raw_query_overlap": list(compat.get("raw_query_overlap", [])),
+                }
+            )
+            _log_progress()
+            continue
+
         try:
             traj_protein = load_protein_md_trajectory(md_dir, max_frames=frames_per_complex)
-            raw_pdb_path, _ = ensure_pdb_cached(str(pdb_id), cache_dir=pdb_cache_root)
             force_arr, _force_stats = compute_node_interchain_force_features(
                 traj=traj_protein,
                 topology_pdb=md_dir / "topology_protein.pdb",
@@ -573,8 +599,12 @@ def build_prepared_dataset(
             )
             force_features = torch.as_tensor(force_arr, dtype=torch.float32)
         except Exception as exc:
-            bad_md.append(
-                {"complex_id": complex_id, "pdb_id": pdb_id, "error": f"force_feature_analysis_failed: {exc!r}"}
+            force_feature_fallbacks.append(
+                {
+                    "complex_id": complex_id,
+                    "pdb_id": pdb_id,
+                    "error": repr(exc),
+                }
             )
             _log_progress()
             continue
@@ -694,12 +724,14 @@ def build_prepared_dataset(
         "n_bad_md": int(len(bad_md)),
         "n_partial_node_coverage": int(len(partial_node_coverage)),
         "n_torsion_feature_fallbacks": int(len(torsion_feature_fallbacks)),
+        "n_force_query_incompatible": int(len(force_query_incompatible)),
         "n_force_feature_fallbacks": int(len(force_feature_fallbacks)),
         "missing_graph_complex_ids": missing_graph[:100],
         "missing_md_complex_ids": missing_md[:100],
         "bad_md": bad_md[:100],
         "partial_node_coverage": partial_node_coverage[:100],
         "torsion_feature_fallbacks": torsion_feature_fallbacks[:100],
+        "force_query_incompatible": force_query_incompatible[:100],
         "force_feature_fallbacks": force_feature_fallbacks[:100],
         "node_feature_names": node_feature_names,
         "edge_feature_names": edge_feature_names,
