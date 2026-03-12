@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -25,6 +27,8 @@ class MaskedGraphVAE(nn.Module):
         latent_dim: int = 8,
         hidden_dim: int = 128,
         num_layers: int = 3,
+        affinity_target_mean: float = 0.0,
+        affinity_target_std: float = 1.0,
     ):
         super().__init__()
         self.node_in_dim = int(node_in_dim)
@@ -49,6 +53,7 @@ class MaskedGraphVAE(nn.Module):
         )
         self.mu_head = nn.Linear(2 * hidden_dim, latent_dim)
         self.logvar_head = nn.Linear(2 * hidden_dim, latent_dim)
+        self.affinity_head = _make_mlp(latent_dim, hidden_dim, 1)
 
         node_dec_in = latent_dim + len(self.node_static_idx) + 2 * self.node_target_dim
         edge_dec_in = latent_dim + len(self.edge_static_idx) + 2 * self.edge_target_dim
@@ -59,6 +64,17 @@ class MaskedGraphVAE(nn.Module):
         self.register_buffer("_edge_target_idx_tensor", torch.tensor(self.edge_target_idx, dtype=torch.long))
         self.register_buffer("_node_static_idx_tensor", torch.tensor(self.node_static_idx, dtype=torch.long))
         self.register_buffer("_edge_static_idx_tensor", torch.tensor(self.edge_static_idx, dtype=torch.long))
+        self.register_buffer("_affinity_target_mean", torch.tensor(float(affinity_target_mean), dtype=torch.float32))
+        self.register_buffer(
+            "_affinity_target_std",
+            torch.tensor(max(float(affinity_target_std), 1e-6), dtype=torch.float32),
+        )
+
+    def _normalize_affinity(self, y: torch.Tensor) -> torch.Tensor:
+        return (y - self._affinity_target_mean) / self._affinity_target_std
+
+    def _denormalize_affinity(self, y_norm: torch.Tensor) -> torch.Tensor:
+        return y_norm * self._affinity_target_std + self._affinity_target_mean
 
     def _apply_masks(self, x: torch.Tensor, edge_attr: torch.Tensor, mask_ratio: float) -> tuple[torch.Tensor, ...]:
         node_target = x.index_select(dim=1, index=self._node_target_idx_tensor)
@@ -111,6 +127,10 @@ class MaskedGraphVAE(nn.Module):
         offdiag = cov - torch.diag(torch.diag(cov))
         return torch.mean(offdiag * offdiag)
 
+    def predict_affinity_from_mu(self, mu: torch.Tensor) -> torch.Tensor:
+        pred_norm = self.affinity_head(mu).reshape(-1)
+        return self._denormalize_affinity(pred_norm)
+
     def compute_loss(
         self,
         data,
@@ -118,7 +138,8 @@ class MaskedGraphVAE(nn.Module):
         mask_ratio: float,
         beta: float,
         corr_weight: float,
-    ) -> tuple[torch.Tensor, dict[str, float], torch.Tensor]:
+        affinity_weight: float = 0.0,
+    ) -> tuple[torch.Tensor, dict[str, float], torch.Tensor, torch.Tensor | None]:
         x = data.x
         edge_attr = data.edge_attr
         edge_index = data.edge_index
@@ -159,7 +180,14 @@ class MaskedGraphVAE(nn.Module):
         recon = node_recon + edge_recon
         kl = self._kl(mu, logvar)
         corr = self._corr_penalty(mu)
-        total = recon + float(beta) * kl + float(corr_weight) * corr
+        affinity_pred: torch.Tensor | None = None
+        affinity_loss = recon.new_zeros(())
+        if float(affinity_weight) > 0.0 and hasattr(data, "y") and data.y is not None and data.y.numel() > 0:
+            y = data.y.reshape(-1).float()
+            pred_norm = self.affinity_head(mu).reshape(-1)
+            affinity_pred = self._denormalize_affinity(pred_norm)
+            affinity_loss = F.mse_loss(pred_norm, self._normalize_affinity(y))
+        total = recon + float(beta) * kl + float(corr_weight) * corr + float(affinity_weight) * affinity_loss
 
         parts = {
             "loss": float(total.detach().cpu()),
@@ -168,8 +196,9 @@ class MaskedGraphVAE(nn.Module):
             "edge_recon": float(edge_recon.detach().cpu()),
             "kl": float(kl.detach().cpu()),
             "corr": float(corr.detach().cpu()),
+            "affinity_loss": float(affinity_loss.detach().cpu()) if math.isfinite(float(affinity_loss.detach().cpu())) else float("nan"),
         }
-        return total, parts, mu
+        return total, parts, mu, affinity_pred
 
     def encode_mu(self, data) -> torch.Tensor:
         x = data.x
@@ -184,3 +213,7 @@ class MaskedGraphVAE(nn.Module):
         edge_enc = torch.cat([edge_attr, edge_mask], dim=1)
         mu, _ = self._encode(x_enc, edge_index, edge_enc, batch=batch)
         return mu
+
+    def predict_affinity(self, data) -> torch.Tensor:
+        mu = self.encode_mu(data)
+        return self.predict_affinity_from_mu(mu)

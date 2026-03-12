@@ -39,6 +39,44 @@ def _beta_for_epoch(epoch: int, max_epochs: int, beta_start: float, beta_end: fl
     return float(beta_start + t * (beta_end - beta_start))
 
 
+def _pearson(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    if y_true.size < 2:
+        return float("nan")
+    return float(np.corrcoef(y_true, y_pred)[0, 1])
+
+
+def _regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
+    y_true = np.asarray(y_true, dtype=np.float64).reshape(-1)
+    y_pred = np.asarray(y_pred, dtype=np.float64).reshape(-1)
+    if y_true.size < 1:
+        return {
+            "n": 0,
+            "rmse": float("nan"),
+            "mae": float("nan"),
+            "r2": float("nan"),
+            "pearson_r": float("nan"),
+            "mean_error": float("nan"),
+        }
+    err = y_pred - y_true
+    sse = float(np.sum(err * err))
+    rmse = float(np.sqrt(sse / y_true.size))
+    mae = float(np.mean(np.abs(err)))
+    if y_true.size < 2:
+        r2 = float("nan")
+    else:
+        centered = y_true - float(np.mean(y_true))
+        sst = float(np.sum(centered * centered))
+        r2 = float(1.0 - sse / sst) if sst > 0 else float("nan")
+    return {
+        "n": int(y_true.size),
+        "rmse": rmse,
+        "mae": mae,
+        "r2": r2,
+        "pearson_r": _pearson(y_true, y_pred),
+        "mean_error": float(np.mean(err)),
+    }
+
+
 def _epoch_pass(
     model: MaskedGraphVAE,
     loader: DataLoader,
@@ -48,6 +86,7 @@ def _epoch_pass(
     mask_ratio: float,
     beta: float,
     corr_weight: float,
+    affinity_weight: float,
 ) -> dict[str, float]:
     train_mode = optimizer is not None
     model.train(train_mode)
@@ -58,18 +97,23 @@ def _epoch_pass(
         "edge_recon": 0.0,
         "kl": 0.0,
         "corr": 0.0,
+        "affinity_loss": 0.0,
         "n": 0,
         "skipped_batches": 0,
     }
+    affinity_true_chunks: list[np.ndarray] = []
+    affinity_pred_chunks: list[np.ndarray] = []
+
     for batch in loader:
         batch = batch.to(device)
         if train_mode:
             optimizer.zero_grad(set_to_none=True)
-        loss, parts, _ = model.compute_loss(
+        loss, parts, _mu, affinity_pred = model.compute_loss(
             batch,
             mask_ratio=mask_ratio,
             beta=beta,
             corr_weight=corr_weight,
+            affinity_weight=affinity_weight,
         )
         if not torch.isfinite(loss):
             totals["skipped_batches"] += 1
@@ -82,8 +126,12 @@ def _epoch_pass(
             optimizer.step()
         bs = int(batch.y.shape[0])
         totals["n"] += bs
-        for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr"):
-            totals[k] += parts[k] * bs
+        for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr", "affinity_loss"):
+            totals[k] += float(parts[k]) * bs
+        if affinity_pred is not None and hasattr(batch, "y") and batch.y is not None:
+            affinity_true_chunks.append(batch.y.detach().cpu().numpy().reshape(-1))
+            affinity_pred_chunks.append(affinity_pred.detach().cpu().numpy().reshape(-1))
+
     if totals["n"] < 1:
         return {
             "loss": float("nan"),
@@ -92,9 +140,42 @@ def _epoch_pass(
             "edge_recon": float("nan"),
             "kl": float("nan"),
             "corr": float("nan"),
+            "affinity_loss": float("nan"),
+            "affinity_rmse": float("nan"),
+            "affinity_mae": float("nan"),
+            "affinity_r2": float("nan"),
+            "affinity_pearson_r": float("nan"),
+            "affinity_mean_error": float("nan"),
             "skipped_batches": float(totals["skipped_batches"]),
         }
-    out = {k: totals[k] / totals["n"] for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr")}
+
+    out = {
+        k: totals[k] / totals["n"]
+        for k in ("loss", "recon", "node_recon", "edge_recon", "kl", "corr", "affinity_loss")
+    }
+    if affinity_true_chunks:
+        affinity_true = np.concatenate(affinity_true_chunks, axis=0)
+        affinity_pred = np.concatenate(affinity_pred_chunks, axis=0)
+        affinity_metrics = _regression_metrics(affinity_true, affinity_pred)
+        out.update(
+            {
+                "affinity_rmse": affinity_metrics["rmse"],
+                "affinity_mae": affinity_metrics["mae"],
+                "affinity_r2": affinity_metrics["r2"],
+                "affinity_pearson_r": affinity_metrics["pearson_r"],
+                "affinity_mean_error": affinity_metrics["mean_error"],
+            }
+        )
+    else:
+        out.update(
+            {
+                "affinity_rmse": float("nan"),
+                "affinity_mae": float("nan"),
+                "affinity_r2": float("nan"),
+                "affinity_pearson_r": float("nan"),
+                "affinity_mean_error": float("nan"),
+            }
+        )
     out["skipped_batches"] = float(totals["skipped_batches"])
     return out
 
@@ -126,6 +207,48 @@ def _collect_latents(
     return rows
 
 
+def _collect_affinity_predictions(
+    model: MaskedGraphVAE,
+    loader: DataLoader,
+    *,
+    device: torch.device,
+    split: str,
+) -> tuple[list[dict], dict[str, float]]:
+    model.eval()
+    rows = []
+    y_true_chunks: list[np.ndarray] = []
+    y_pred_chunks: list[np.ndarray] = []
+    with torch.no_grad():
+        for batch in loader:
+            batch = batch.to(device)
+            pred = model.predict_affinity(batch).detach().cpu().numpy().reshape(-1)
+            y = batch.y.detach().cpu().numpy().reshape(-1)
+            cid = getattr(batch, "complex_id", None)
+            if isinstance(cid, str):
+                cids = [cid]
+            else:
+                cids = list(cid) if cid is not None else [f"graph_{i}" for i in range(pred.shape[0])]
+            for i in range(pred.shape[0]):
+                rows.append(
+                    {
+                        "complex_id": cids[i],
+                        "split": split,
+                        "dG": float(y[i]),
+                        "dG_pred_head": float(pred[i]),
+                        "error": float(pred[i] - y[i]),
+                    }
+                )
+            y_true_chunks.append(y)
+            y_pred_chunks.append(pred)
+    if not y_true_chunks:
+        return rows, _regression_metrics(np.asarray([], dtype=np.float64), np.asarray([], dtype=np.float64))
+    metrics = _regression_metrics(
+        np.concatenate(y_true_chunks, axis=0),
+        np.concatenate(y_pred_chunks, axis=0),
+    )
+    return rows, metrics
+
+
 def train_masked_graph_vae(
     *,
     records_path: Path,
@@ -148,12 +271,21 @@ def train_masked_graph_vae(
     seed: int,
     num_workers: int,
     checkpoint_every: int = 1,
+    affinity_weight: float = 0.0,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_every = max(1, int(checkpoint_every))
     _seed_all(seed)
 
     records = torch.load(records_path, map_location="cpu")
+    train_targets = np.asarray([float(r["dG"]) for r in records if str(r.get("split")) == "train"], dtype=np.float64)
+    if train_targets.size < 1:
+        raise ValueError("No train targets found in prepared records.")
+    affinity_target_mean = float(np.mean(train_targets))
+    affinity_target_std = float(np.std(train_targets))
+    if not np.isfinite(affinity_target_std) or affinity_target_std < 1e-6:
+        affinity_target_std = 1.0
+
     spec = build_feature_spec(records, mode=mode)
     scaler = FeatureStandardizer.fit(records, spec)
 
@@ -167,11 +299,13 @@ def train_masked_graph_vae(
     test_loader = DataLoader(ds_test, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
     dev = torch.device(device)
+    supervision_mode = "semi_supervised" if float(affinity_weight) > 0.0 else "unsupervised"
     print(
-        f"[GVAE][{mode}] start device={dev} train_graphs={len(ds_train)} "
+        f"[GVAE][{mode}][{supervision_mode}] start device={dev} train_graphs={len(ds_train)} "
         f"val_graphs={len(ds_val)} test_graphs={len(ds_test)} "
         f"train_batches={len(train_loader)} val_batches={len(val_loader)} "
-        f"batch_size={batch_size} max_epochs={max_epochs}"
+        f"batch_size={batch_size} max_epochs={max_epochs} latent_dim={latent_dim} "
+        f"affinity_weight={float(affinity_weight):.3f}"
     )
     model = MaskedGraphVAE(
         node_in_dim=len(spec.node_input_names),
@@ -181,11 +315,14 @@ def train_masked_graph_vae(
         latent_dim=latent_dim,
         hidden_dim=hidden_dim,
         num_layers=num_layers,
+        affinity_target_mean=affinity_target_mean,
+        affinity_target_std=affinity_target_std,
     ).to(dev)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 
     best_state = None
-    best_val = float("inf")
+    best_val_objective = float("inf")
+    best_val_recon = float("inf")
     best_epoch = -1
     bad_epochs = 0
     history = []
@@ -206,6 +343,7 @@ def train_masked_graph_vae(
             mask_ratio=mask_ratio,
             beta=beta,
             corr_weight=corr_weight,
+            affinity_weight=affinity_weight,
         )
         val_metrics = _epoch_pass(
             model,
@@ -215,15 +353,40 @@ def train_masked_graph_vae(
             mask_ratio=mask_ratio,
             beta=beta,
             corr_weight=corr_weight,
+            affinity_weight=affinity_weight,
         )
+        val_objective = float(val_metrics["recon"])
+        if float(affinity_weight) > 0.0 and np.isfinite(val_metrics["affinity_loss"]):
+            val_objective += float(affinity_weight) * float(val_metrics["affinity_loss"])
         history.append(
             {
                 "epoch": epoch,
                 "beta": beta,
+                "supervision_mode": supervision_mode,
+                "affinity_weight": float(affinity_weight),
                 "train_loss": train_metrics["loss"],
                 "train_recon": train_metrics["recon"],
+                "train_node_recon": train_metrics["node_recon"],
+                "train_edge_recon": train_metrics["edge_recon"],
+                "train_kl": train_metrics["kl"],
+                "train_corr": train_metrics["corr"],
+                "train_affinity_loss": train_metrics["affinity_loss"],
+                "train_affinity_rmse": train_metrics["affinity_rmse"],
+                "train_affinity_mae": train_metrics["affinity_mae"],
+                "train_affinity_r2": train_metrics["affinity_r2"],
+                "train_affinity_pearson_r": train_metrics["affinity_pearson_r"],
                 "val_loss": val_metrics["loss"],
                 "val_recon": val_metrics["recon"],
+                "val_node_recon": val_metrics["node_recon"],
+                "val_edge_recon": val_metrics["edge_recon"],
+                "val_kl": val_metrics["kl"],
+                "val_corr": val_metrics["corr"],
+                "val_affinity_loss": val_metrics["affinity_loss"],
+                "val_affinity_rmse": val_metrics["affinity_rmse"],
+                "val_affinity_mae": val_metrics["affinity_mae"],
+                "val_affinity_r2": val_metrics["affinity_r2"],
+                "val_affinity_pearson_r": val_metrics["affinity_pearson_r"],
+                "val_objective": val_objective,
                 "train_skipped_batches": int(train_metrics["skipped_batches"]),
                 "val_skipped_batches": int(val_metrics["skipped_batches"]),
             }
@@ -234,16 +397,23 @@ def train_masked_graph_vae(
         mean_epoch_s = float(np.mean(epoch_times))
         remaining_epochs = max_epochs - epoch
         eta_s = remaining_epochs * mean_epoch_s
-        print(
-            f"[GVAE][{mode}] epoch={epoch:03d}/{max_epochs} beta={beta:.3f} "
+        line = (
+            f"[GVAE][{mode}][{supervision_mode}] epoch={epoch:03d}/{max_epochs} beta={beta:.3f} "
             f"train_recon={train_metrics['recon']:.5f} val_recon={val_metrics['recon']:.5f} "
-            f"best_val_recon={best_val if best_epoch > 0 else val_metrics['recon']:.5f} "
+            f"best_val_obj={best_val_objective if best_epoch > 0 else val_objective:.5f} "
             f"train_skip={int(train_metrics['skipped_batches'])} val_skip={int(val_metrics['skipped_batches'])} "
             f"epoch_s={epoch_s:.1f} elapsed={_fmt_seconds(elapsed_s)} eta={_fmt_seconds(eta_s)}"
         )
+        if float(affinity_weight) > 0.0:
+            line += (
+                f" train_aff_rmse={train_metrics['affinity_rmse']:.4f} "
+                f"val_aff_rmse={val_metrics['affinity_rmse']:.4f}"
+            )
+        print(line)
 
-        if np.isfinite(val_metrics["recon"]) and val_metrics["recon"] < best_val:
-            best_val = val_metrics["recon"]
+        if np.isfinite(val_objective) and val_objective < best_val_objective:
+            best_val_objective = val_objective
+            best_val_recon = float(val_metrics["recon"])
             best_epoch = epoch
             best_state = {k: v.detach().cpu() for k, v in model.state_dict().items()}
             bad_epochs = 0
@@ -252,6 +422,8 @@ def train_masked_graph_vae(
                     "mode": mode,
                     "kind": "best",
                     "epoch": int(epoch),
+                    "supervision_mode": supervision_mode,
+                    "affinity_weight": float(affinity_weight),
                     "model_state_dict": best_state,
                     "feature_spec": {
                         "node_input_names": spec.node_input_names,
@@ -277,17 +449,21 @@ def train_masked_graph_vae(
                         "beta_anneal_fraction": beta_anneal_fraction,
                         "corr_weight": corr_weight,
                         "seed": seed,
+                        "affinity_weight": float(affinity_weight),
+                        "affinity_target_mean": affinity_target_mean,
+                        "affinity_target_std": affinity_target_std,
                     },
                     "records_path": str(records_path),
                     "best_epoch": int(best_epoch),
-                    "best_val_recon": float(best_val),
+                    "best_val_recon": float(best_val_recon),
+                    "best_val_objective": float(best_val_objective),
                 },
                 best_ckpt_path,
             )
         else:
             bad_epochs += 1
             if bad_epochs >= patience:
-                print(f"[GVAE][{mode}] early stopping at epoch={epoch}")
+                print(f"[GVAE][{mode}][{supervision_mode}] early stopping at epoch={epoch}")
                 break
 
         if epoch % checkpoint_every == 0 or epoch == max_epochs:
@@ -297,10 +473,13 @@ def train_masked_graph_vae(
                     "mode": mode,
                     "kind": "last",
                     "epoch": int(epoch),
+                    "supervision_mode": supervision_mode,
+                    "affinity_weight": float(affinity_weight),
                     "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
                     "optimizer_state_dict": optimizer.state_dict(),
                     "best_epoch": int(best_epoch),
-                    "best_val_recon": float(best_val),
+                    "best_val_recon": float(best_val_recon),
+                    "best_val_objective": float(best_val_objective),
                 },
                 last_ckpt_path,
             )
@@ -320,6 +499,26 @@ def train_masked_graph_vae(
     latents_path = out_dir / f"latents_{mode}.csv"
     latents_df.to_csv(latents_path, index=False)
 
+    affinity_predictions_path: str | None = None
+    affinity_split_metrics: dict[str, dict[str, float]] = {}
+    if float(affinity_weight) > 0.0:
+        pred_rows = []
+        split_rows, split_metrics = _collect_affinity_predictions(model, train_eval_loader, device=dev, split="train")
+        pred_rows.extend(split_rows)
+        affinity_split_metrics["train"] = split_metrics
+        split_rows, split_metrics = _collect_affinity_predictions(model, val_loader, device=dev, split="val")
+        pred_rows.extend(split_rows)
+        affinity_split_metrics["val"] = split_metrics
+        split_rows, split_metrics = _collect_affinity_predictions(model, test_loader, device=dev, split="test")
+        pred_rows.extend(split_rows)
+        affinity_split_metrics["test"] = split_metrics
+        pred_df = pd.DataFrame(pred_rows)
+        pred_path = out_dir / f"affinity_head_predictions_{mode}.csv"
+        pred_df.to_csv(pred_path, index=False)
+        affinity_predictions_path = str(pred_path)
+        affinity_summary_path = out_dir / f"affinity_head_summary_{mode}.json"
+        affinity_summary_path.write_text(json.dumps({"split_metrics": affinity_split_metrics}, indent=2), encoding="utf-8")
+
     history_df = pd.DataFrame(history)
     history_df.to_csv(history_path, index=False)
 
@@ -327,6 +526,8 @@ def train_masked_graph_vae(
     torch.save(
         {
             "mode": mode,
+            "supervision_mode": supervision_mode,
+            "affinity_weight": float(affinity_weight),
             "model_state_dict": best_state,
             "feature_spec": {
                 "node_input_names": spec.node_input_names,
@@ -352,10 +553,14 @@ def train_masked_graph_vae(
                 "beta_anneal_fraction": beta_anneal_fraction,
                 "corr_weight": corr_weight,
                 "seed": seed,
+                "affinity_weight": float(affinity_weight),
+                "affinity_target_mean": affinity_target_mean,
+                "affinity_target_std": affinity_target_std,
             },
             "records_path": str(records_path),
             "best_epoch": best_epoch,
-            "best_val_recon": best_val,
+            "best_val_recon": best_val_recon,
+            "best_val_objective": best_val_objective,
             "best_checkpoint_path": str(best_ckpt_path),
             "last_checkpoint_path": str(last_ckpt_path),
         },
@@ -364,15 +569,20 @@ def train_masked_graph_vae(
 
     summary = {
         "mode": mode,
+        "supervision_mode": supervision_mode,
+        "affinity_weight": float(affinity_weight),
         "records_path": str(records_path),
         "model_path": str(ckpt_path),
         "latents_csv": str(latents_path),
         "history_csv": str(history_path),
         "best_epoch": int(best_epoch),
-        "best_val_recon": float(best_val),
+        "best_val_recon": float(best_val_recon),
+        "best_val_objective": float(best_val_objective),
         "n_train_graphs": len(ds_train),
         "n_val_graphs": len(ds_val),
         "n_test_graphs": len(ds_test),
+        "affinity_head_predictions_csv": affinity_predictions_path,
+        "affinity_head_split_metrics": affinity_split_metrics,
     }
     summary_path = out_dir / f"train_summary_{mode}.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -398,6 +608,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--beta-end", type=float, default=1.0)
     parser.add_argument("--beta-anneal-fraction", type=float, default=0.30)
     parser.add_argument("--corr-weight", type=float, default=0.01)
+    parser.add_argument("--affinity-weight", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--checkpoint-every", type=int, default=1)
@@ -424,11 +635,15 @@ def main() -> None:
         beta_end=float(args.beta_end),
         beta_anneal_fraction=float(args.beta_anneal_fraction),
         corr_weight=float(args.corr_weight),
+        affinity_weight=float(args.affinity_weight),
         seed=int(args.seed),
         num_workers=int(args.num_workers),
         checkpoint_every=int(args.checkpoint_every),
     )
-    print(f"[GVAE] mode={summary['mode']} best_val_recon={summary['best_val_recon']:.6f} best_epoch={summary['best_epoch']}")
+    print(
+        f"[GVAE] mode={summary['mode']} supervision={summary['supervision_mode']} "
+        f"best_val_recon={summary['best_val_recon']:.6f} best_epoch={summary['best_epoch']}"
+    )
     print(f"[GVAE] latents_csv={summary['latents_csv']}")
 
 
