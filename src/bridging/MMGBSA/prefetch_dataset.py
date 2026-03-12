@@ -192,7 +192,7 @@ def _resolve_source(
     req: MMGBSARequest,
     md_root: Path | None,
     *,
-    chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] | None = None,
+    chain_map_cache: dict[tuple[str, tuple[str, ...]], tuple[dict[str, str], list[str], dict]] | None = None,
     source_mode: str = "protein_traj",
 ) -> tuple[Path, str, Path | None, str, str, str]:
     raw_lig = [c.upper() for c in parse_chain_group(req.ligand_group)]
@@ -226,17 +226,33 @@ def _resolve_source(
 
             raw_pdb, _ = ensure_pdb_cached(req.pdb_id)
             if raw_pdb.exists():
-                cache_key = str(req.pdb_id).strip().upper()
+                query_key = tuple(c for c in needed_chains if c.strip())
+                cache_key = (str(req.pdb_id).strip().upper(), query_key)
                 if chain_map_cache is not None and cache_key in chain_map_cache:
                     chain_map, md_chain_order, _ = chain_map_cache[cache_key]
                 else:
-                    chain_map, md_chain_order, report = build_raw_to_md_chain_map(raw_pdb, remap_pdb)
+                    chain_map, md_chain_order, report = build_raw_to_md_chain_map(
+                        raw_pdb,
+                        remap_pdb,
+                        query_chains=query_key,
+                    )
                     if chain_map_cache is not None:
                         chain_map_cache[cache_key] = (chain_map, md_chain_order, report)
-                remapped_lig = [chain_map.get(c, c) for c in raw_lig]
-                remapped_rec = [chain_map.get(c, c) for c in raw_rec]
+                unresolved = [c for c in query_key if c not in chain_map]
+                if unresolved:
+                    raise RuntimeError(
+                        f"Could not remap query chains {sorted(unresolved)} for {req.pdb_id}; "
+                        f"available_md={md_chain_order}"
+                    )
+                remapped_lig = [chain_map[c] for c in raw_lig]
+                remapped_rec = [chain_map[c] for c in raw_rec]
                 remapped_needed = [c for c in (remapped_lig + remapped_rec) if c.strip()]
-                if remapped_needed and pdb_has_chains(remap_pdb, remapped_needed):
+                if remapped_needed and not pdb_has_chains(remap_pdb, remapped_needed):
+                    raise RuntimeError(
+                        f"Remapped chains {sorted(set(remapped_needed))} not present in {remap_pdb.name} "
+                        f"for {req.pdb_id}."
+                    )
+                if remapped_needed:
                     used_lig = remapped_lig
                     used_rec = remapped_rec
                     source_kind = f"{source_kind}_remapped"
@@ -354,7 +370,7 @@ def fetch_and_save_dataset_estimates(
 
     records_by_row = _load_existing(out_path, dataset_ref)
     key_cache = _build_success_cache(records_by_row)
-    chain_map_cache: dict[str, tuple[dict[str, str], list[str], dict]] = {}
+    chain_map_cache: dict[tuple[str, tuple[str, ...]], tuple[dict[str, str], list[str], dict]] = {}
     target_sig = _config_signature(
         solvation_model=solvation_model,
         igb=igb,
