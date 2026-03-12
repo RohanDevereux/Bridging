@@ -13,6 +13,7 @@ from sklearn.model_selection import KFold
 from bridging.regression.dataset import load_mmgbsa_map
 
 from .ids import canonical_complex_id
+from .record_views import SUBGROUP_ORDER, load_complex_metadata, subgroup_map_from_metadata
 
 
 def _pearson(y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -149,6 +150,86 @@ def _compute_split_metrics_from_column(df: pd.DataFrame, value_col: str) -> dict
             part[value_col].to_numpy(dtype=np.float64),
         )
     return out
+
+
+def _compute_split_metrics_by_subgroup(df: pd.DataFrame, value_col: str) -> dict[str, dict]:
+    out: dict[str, dict] = {}
+    for subgroup in SUBGROUP_ORDER:
+        sub = df[df["subgroup"] == subgroup].copy()
+        out[subgroup] = _compute_split_metrics_from_column(sub, value_col)
+    return out
+
+
+def _run_subgroup_specific_models(
+    *,
+    df: pd.DataFrame,
+    mu_cols: list[str],
+    alpha_grid: list[float],
+    inner_folds: int,
+    out_dir: Path,
+) -> dict:
+    pred_rows: list[pd.DataFrame] = []
+    summary: dict[str, dict] = {}
+
+    for subgroup in SUBGROUP_ORDER:
+        train_df = df[(df["split"] == "train") & (df["subgroup"] == subgroup)].copy()
+        subgroup_summary = {
+            "n_train": int(len(train_df)),
+            "n_val": int(len(df[(df["split"] == "val") & (df["subgroup"] == subgroup)])),
+            "n_test": int(len(df[(df["split"] == "test") & (df["subgroup"] == subgroup)])),
+        }
+        if train_df.empty:
+            subgroup_summary["skipped"] = True
+            subgroup_summary["reason"] = "no_train_samples"
+            subgroup_summary["split_metrics"] = _compute_split_metrics_from_column(
+                df[df["subgroup"] == subgroup].assign(dG_pred_subgroup_model=np.nan),
+                "dG_pred_subgroup_model",
+            )
+            summary[subgroup] = subgroup_summary
+            continue
+
+        X_train = train_df[mu_cols].to_numpy(dtype=np.float64)
+        y_train = train_df["dG"].to_numpy(dtype=np.float64)
+        model, alpha = _fit_ridge(
+            X=X_train,
+            y=y_train,
+            alpha_grid=alpha_grid,
+            inner_folds=inner_folds,
+        )
+        subgroup_summary["skipped"] = False
+        subgroup_summary["alpha"] = float(alpha)
+        pred_parts = []
+        split_metrics = {}
+        for split_name in ("train", "val", "test"):
+            split_df = df[(df["split"] == split_name) & (df["subgroup"] == subgroup)].copy()
+            if split_df.empty:
+                split_metrics[split_name] = {
+                    "n": 0,
+                    "rmse": float("nan"),
+                    "mae": float("nan"),
+                    "r2": float("nan"),
+                    "pearson_r": float("nan"),
+                    "spearman_r": float("nan"),
+                    "mean_error": float("nan"),
+                }
+                continue
+            X = split_df[mu_cols].to_numpy(dtype=np.float64)
+            y = split_df["dG"].to_numpy(dtype=np.float64)
+            y_pred = model.predict(X)
+            split_metrics[split_name] = _metrics(y, y_pred)
+            pred_df = split_df[["complex_id", "split", "subgroup", "dG"]].copy()
+            pred_df["dG_pred_subgroup_model"] = y_pred
+            pred_parts.append(pred_df)
+        subgroup_summary["split_metrics"] = split_metrics
+        summary[subgroup] = subgroup_summary
+        if pred_parts:
+            pred_rows.append(pd.concat(pred_parts, ignore_index=True))
+
+    pred_path = out_dir / "latent_ridge_subgroup_model_predictions.csv"
+    if pred_rows:
+        pd.concat(pred_rows, ignore_index=True).to_csv(pred_path, index=False)
+    summary["predictions_csv"] = str(pred_path)
+    return summary
 
 
 def _repeated_kfold_probe(
@@ -377,6 +458,20 @@ def run_linear_probe(
     if mmgbsa_csv is not None and dataset_csv is None:
         raise ValueError("--mmgbsa requires --dataset so complex_id values can be matched back to dataset rows.")
 
+    subgroup_meta = {}
+    if dataset_csv is not None:
+        metadata = load_complex_metadata(dataset_csv)
+        subgroup_map = subgroup_map_from_metadata(metadata)
+        df["subgroup"] = df["complex_id"].map(subgroup_map).fillna("other")
+        subgroup_meta = {
+            "dataset_csv": str(dataset_csv),
+            "subgroup_counts": {
+                subgroup: int((df["subgroup"] == subgroup).sum()) for subgroup in SUBGROUP_ORDER
+            },
+        }
+    else:
+        df["subgroup"] = "other"
+
     baseline_meta = {}
     if dataset_csv is not None and mmgbsa_csv is not None:
         mmgbsa_map, baseline_meta = _load_mmgbsa_by_complex_id(dataset_csv=dataset_csv, mmgbsa_csv=mmgbsa_csv)
@@ -405,12 +500,20 @@ def run_linear_probe(
         y_pred = model.predict(X)
         m = _metrics(y, y_pred)
         split_metrics[split_name] = m
-        pred_df = split_df[["complex_id", "split", "dG", "mmgbsa_estimate"]].copy()
+        pred_df = split_df[["complex_id", "split", "subgroup", "dG", "mmgbsa_estimate"]].copy()
         pred_df["row_order"] = split_df.index.to_numpy(dtype=np.int64)
         pred_df["dG_pred"] = y_pred
         pred_frames.append(pred_df)
 
     pred_out = pd.concat(pred_frames, ignore_index=True)
+    subgroup_metrics = _compute_split_metrics_by_subgroup(pred_out, "dG_pred")
+    subgroup_model_summary = _run_subgroup_specific_models(
+        df=df,
+        mu_cols=mu_cols,
+        alpha_grid=alpha_grid,
+        inner_folds=ridge_cv_inner_folds,
+        out_dir=out_dir,
+    )
 
     coef_df = pd.DataFrame({"feature": mu_cols, "coef": model.coef_})
     coef_path = out_dir / "latent_ridge_coefficients.csv"
@@ -524,6 +627,11 @@ def run_linear_probe(
         "alpha": float(alpha),
         "intercept": float(model.intercept_),
         "split_metrics": split_metrics,
+        "subgroups": {
+            "meta": subgroup_meta,
+            "overall_model_split_metrics": subgroup_metrics,
+            "subgroup_specific_models": subgroup_model_summary,
+        },
         "bootstrap": boot,
         "repeated_kfold": {
             k: v

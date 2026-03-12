@@ -1,5 +1,6 @@
 __all__ = [
     "chain_remap",
+    "record_views",
     "prepare",
     "train",
     "sweep",
