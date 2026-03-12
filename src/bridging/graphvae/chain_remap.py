@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from pathlib import Path
+import re
 from typing import Iterable
 
 from Bio.PDB import PDBParser
@@ -47,6 +48,25 @@ def _load_chain_sequences(pdb_path: Path) -> ChainSeqs:
     order: list[str] = []
     seqs: dict[str, str] = {}
     residue_numbers: dict[str, tuple[int, ...]] = {}
+
+    def _coerce_resseq(value) -> int | None:
+        if isinstance(value, int):
+            return int(value)
+        text = str(value).strip()
+        if not text:
+            return None
+        try:
+            return int(text)
+        except Exception:
+            pass
+        matches = re.findall(r"-?\d+", text)
+        if not matches:
+            return None
+        try:
+            return int(matches[-1])
+        except Exception:
+            return None
+
     for chain in model.get_chains():
         chain_id = str(chain.id).strip().upper()
         chars: list[str] = []
@@ -59,14 +79,17 @@ def _load_chain_sequences(pdb_path: Path) -> ChainSeqs:
             aa = AA3_TO_AA1.get(resname)
             if aa is not None:
                 chars.append(aa)
-                try:
-                    resids.append(int(residue.id[1]))
-                except Exception:
-                    continue
+                resid = _coerce_resseq(residue.id[1])
+                if resid is not None:
+                    resids.append(resid)
         if chars:
-            order.append(chain_id)
-            seqs[chain_id] = "".join(chars)
-            residue_numbers[chain_id] = tuple(resids)
+            if chain_id not in seqs:
+                order.append(chain_id)
+                seqs[chain_id] = "".join(chars)
+                residue_numbers[chain_id] = tuple(resids)
+            else:
+                seqs[chain_id] = seqs[chain_id] + "".join(chars)
+                residue_numbers[chain_id] = residue_numbers[chain_id] + tuple(resids)
     return ChainSeqs(order=order, seqs=seqs, residue_numbers=residue_numbers)
 
 
