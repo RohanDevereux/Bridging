@@ -6,8 +6,6 @@ from pathlib import Path
 import re
 from typing import Iterable
 
-from Bio.PDB import PDBParser
-
 
 AA3_TO_AA1 = {
     "ALA": "A",
@@ -40,56 +38,69 @@ class ChainSeqs:
     residue_numbers: dict[str, tuple[int, ...]]
 
 
-def _load_chain_sequences(pdb_path: Path) -> ChainSeqs:
-    parser = PDBParser(QUIET=True)
-    structure = parser.get_structure(str(pdb_path.stem), str(pdb_path))
-    model = next(structure.get_models())
+def _coerce_resseq(value) -> int | None:
+    if isinstance(value, int):
+        return int(value)
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return int(text)
+    except Exception:
+        pass
+    matches = re.findall(r"-?\d+", text)
+    if not matches:
+        return None
+    try:
+        return int(matches[-1])
+    except Exception:
+        return None
 
+
+def _line_chain_id(line: str) -> str:
+    chain_id = ""
+    if len(line) > 21:
+        chain_id = str(line[21]).strip().upper()
+    if chain_id:
+        return chain_id
+    resseq_token = line[22:27].strip() if len(line) >= 27 else line[22:].strip()
+    if re.fullmatch(r"[A-Za-z][A-Za-z0-9-]*", resseq_token):
+        return resseq_token[0].upper()
+    return ""
+
+
+def _load_chain_sequences(pdb_path: Path) -> ChainSeqs:
     order: list[str] = []
     seqs: dict[str, str] = {}
     residue_numbers: dict[str, tuple[int, ...]] = {}
+    seen_residues: set[tuple[str, str, str, str]] = set()
 
-    def _coerce_resseq(value) -> int | None:
-        if isinstance(value, int):
-            return int(value)
-        text = str(value).strip()
-        if not text:
-            return None
-        try:
-            return int(text)
-        except Exception:
-            pass
-        matches = re.findall(r"-?\d+", text)
-        if not matches:
-            return None
-        try:
-            return int(matches[-1])
-        except Exception:
-            return None
-
-    for chain in model.get_chains():
-        chain_id = str(chain.id).strip().upper()
-        chars: list[str] = []
-        resids: list[int] = []
-        for residue in chain.get_residues():
-            hetflag = str(residue.id[0]).strip()
-            if hetflag not in ("", " "):
+    with pdb_path.open("r", encoding="utf-8", errors="ignore") as handle:
+        for line in handle:
+            record = line[0:6].strip().upper()
+            if record not in {"ATOM", "HETATM"}:
                 continue
-            resname = str(residue.resname).strip().upper()
+            resname = line[17:20].strip().upper() if len(line) >= 20 else ""
             aa = AA3_TO_AA1.get(resname)
-            if aa is not None:
-                chars.append(aa)
-                resid = _coerce_resseq(residue.id[1])
-                if resid is not None:
-                    resids.append(resid)
-        if chars:
+            if aa is None:
+                continue
+            chain_id = _line_chain_id(line)
+            if not chain_id:
+                continue
+            resseq_token = line[22:27].strip() if len(line) >= 27 else line[22:].strip()
+            icode = line[26].strip() if len(line) > 26 else ""
+            residue_key = (chain_id, resseq_token, icode, resname)
+            if residue_key in seen_residues:
+                continue
+            seen_residues.add(residue_key)
             if chain_id not in seqs:
                 order.append(chain_id)
-                seqs[chain_id] = "".join(chars)
-                residue_numbers[chain_id] = tuple(resids)
-            else:
-                seqs[chain_id] = seqs[chain_id] + "".join(chars)
-                residue_numbers[chain_id] = residue_numbers[chain_id] + tuple(resids)
+                seqs[chain_id] = ""
+                residue_numbers[chain_id] = ()
+            seqs[chain_id] = seqs[chain_id] + aa
+            resid = _coerce_resseq(resseq_token)
+            if resid is not None:
+                residue_numbers[chain_id] = residue_numbers[chain_id] + (resid,)
     return ChainSeqs(order=order, seqs=seqs, residue_numbers=residue_numbers)
 
 
