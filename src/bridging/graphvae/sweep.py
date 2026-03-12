@@ -77,9 +77,10 @@ def _safe_subgroup_model_metric(summary: dict, subgroup: str, split: str, metric
     )
 
 
-def _config_name(*, graph_view: str, mode: str, latent_dim: int, supervision_mode: str) -> str:
+def _config_name(*, graph_view: str, mode: str, latent_dim: int, supervision_mode: str, target_policy: str) -> str:
     short = "semi" if supervision_mode == "semi_supervised" else "unsup"
-    return f"{graph_view}_{mode}_z{int(latent_dim):02d}_{short}"
+    policy = "shared" if target_policy == "shared_static" else "modespec"
+    return f"{graph_view}_{mode}_z{int(latent_dim):02d}_{short}_{policy}"
 
 
 def _markdown_report(
@@ -89,10 +90,11 @@ def _markdown_report(
     graph_views: list[str],
     modes: list[str],
     affinity_weight: float,
+    target_policy: str,
 ) -> str:
     if not rows:
         return "# GraphVAE Sweep\n\nNo runs completed.\n"
-    df = pd.DataFrame(rows).sort_values(["test_rmse", "val_rmse"], na_position="last").reset_index(drop=True)
+    df = pd.DataFrame(rows).sort_values(["is_stable", "test_rmse", "val_rmse"], ascending=[False, True, True], na_position="last").reset_index(drop=True)
     best = df.iloc[0]
     lines = [
         "# GraphVAE Sweep",
@@ -102,6 +104,7 @@ def _markdown_report(
         f"- Feature modes: `{','.join(modes)}`",
         f"- Configs: `{len(df)}`",
         f"- Semi-supervised affinity weight: `{affinity_weight:.3f}`",
+        f"- Target policy: `{target_policy}`",
         "",
         "## Best By Test RMSE",
         "",
@@ -110,14 +113,15 @@ def _markdown_report(
         f"- Feature mode: `{best['mode']}`",
         f"- Latent dim: `{int(best['latent_dim'])}`",
         f"- Supervision: `{best['supervision_mode']}`",
+        f"- Stable: `{bool(best['is_stable'])}`",
         f"- Test RMSE: `{best['test_rmse']:.4f}`",
         f"- Test R2: `{best['test_r2']:.4f}`",
         f"- Test Pearson r: `{best['test_pearson_r']:.4f}`",
         "",
         "## Summary",
         "",
-        "| Experiment | View | Mode | z | Supervision | Train RMSE | Val RMSE | Test RMSE | Test R2 | Test r |",
-        "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+        "| Experiment | View | Mode | z | Supervision | Stable | Train RMSE | Val RMSE | Test RMSE | Test R2 | Test r |",
+        "| --- | --- | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in df.to_dict("records"):
         lines.append(
@@ -127,6 +131,7 @@ def _markdown_report(
             + f"{row['mode']} | "
             + f"{int(row['latent_dim'])} | "
             + f"{row['supervision_mode']} | "
+            + f"{bool(row['is_stable'])} | "
             + f"{row['train_rmse']:.4f} | "
             + f"{row['val_rmse']:.4f} | "
             + f"{row['test_rmse']:.4f} | "
@@ -168,6 +173,7 @@ def run_saved_graph_sweep(
     ridge_cv_folds: int,
     ridge_cv_repeats: int,
     ridge_cv_inner_folds: int,
+    target_policy: str,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     if any(view != "full" for view in graph_views) and dataset_csv is None:
@@ -203,12 +209,14 @@ def run_saved_graph_sweep(
                         mode=mode,
                         latent_dim=latent_dim,
                         supervision_mode=supervision_mode,
+                        target_policy=target_policy,
                     )
                     experiment_dir = out_dir / experiment
                     print(
                         f"[SWEEP] config {config_idx}/{total_configs} experiment={experiment} "
                         f"graph_view={graph_view} mode={mode} latent_dim={latent_dim} "
-                        f"supervision={supervision_mode} affinity_weight={config_affinity_weight:.3f}"
+                        f"supervision={supervision_mode} affinity_weight={config_affinity_weight:.3f} "
+                        f"target_policy={target_policy}"
                     )
                     train_summary = train_masked_graph_vae(
                         records_path=view_records,
@@ -229,6 +237,7 @@ def run_saved_graph_sweep(
                         beta_anneal_fraction=beta_anneal_fraction,
                         corr_weight=corr_weight,
                         affinity_weight=config_affinity_weight,
+                        target_policy=target_policy,
                         seed=seed,
                         num_workers=num_workers,
                         checkpoint_every=checkpoint_every,
@@ -253,9 +262,13 @@ def run_saved_graph_sweep(
                         "latent_dim": int(latent_dim),
                         "supervision_mode": supervision_mode,
                         "affinity_weight": float(config_affinity_weight),
+                        "target_policy": target_policy,
                         "best_epoch": int(train_summary["best_epoch"]),
                         "best_val_recon": float(train_summary["best_val_recon"]),
                         "best_val_objective": float(train_summary["best_val_objective"]),
+                        "is_stable": bool(train_summary.get("is_stable", True)),
+                        "n_epochs_with_skipped_batches": int(train_summary.get("n_epochs_with_skipped_batches", 0)),
+                        "unstable_reason": train_summary.get("unstable_reason"),
                         "ridge_alpha": float(reg_summary["alpha"]),
                         "train_rmse": _safe_metric(reg_summary, "train", "rmse"),
                         "train_mae": _safe_metric(reg_summary, "train", "mae"),
@@ -301,11 +314,12 @@ def run_saved_graph_sweep(
                     rows.append(row)
                     elapsed = time.perf_counter() - run_t0
                     print(
-                        f"[SWEEP] done experiment={experiment} test_rmse={row['test_rmse']:.4f} "
-                        f"test_r2={row['test_r2']:.4f} elapsed={_fmt_seconds(elapsed)}"
+                        f"[SWEEP] done experiment={experiment} stable={row['is_stable']} "
+                        f"test_rmse={row['test_rmse']:.4f} test_r2={row['test_r2']:.4f} "
+                        f"elapsed={_fmt_seconds(elapsed)}"
                     )
 
-    results_df = pd.DataFrame(rows).sort_values(["test_rmse", "val_rmse"], na_position="last").reset_index(drop=True)
+    results_df = pd.DataFrame(rows).sort_values(["is_stable", "test_rmse", "val_rmse"], ascending=[False, True, True], na_position="last").reset_index(drop=True)
     summary_csv = out_dir / "sweep_summary.csv"
     summary_json = out_dir / "sweep_summary.json"
     report_md = out_dir / "sweep_report.md"
@@ -319,6 +333,7 @@ def run_saved_graph_sweep(
         "latent_dims": [int(x) for x in latent_dims],
         "supervision_modes": list(supervision_modes),
         "affinity_weight": float(affinity_weight),
+        "target_policy": target_policy,
         "n_configs": int(len(rows)),
         "summary_csv": str(summary_csv),
         "summary_json": str(summary_json),
@@ -335,6 +350,7 @@ def run_saved_graph_sweep(
             graph_views=graph_views,
             modes=modes,
             affinity_weight=affinity_weight,
+            target_policy=target_policy,
         ),
         encoding="utf-8",
     )
@@ -351,6 +367,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--latent-dims", default="8,16,32,64")
     parser.add_argument("--supervision-modes", default="unsupervised,semi_supervised")
     parser.add_argument("--affinity-weight", type=float, default=1.0)
+    parser.add_argument("--target-policy", choices=["shared_static", "mode_specific"], default="shared_static")
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--hidden-dim", type=int, default=128)
     parser.add_argument("--num-layers", type=int, default=3)
@@ -415,6 +432,7 @@ def main() -> None:
         ridge_cv_folds=int(args.ridge_cv_folds),
         ridge_cv_repeats=int(args.ridge_cv_repeats),
         ridge_cv_inner_folds=int(args.ridge_cv_inner_folds),
+        target_policy=str(args.target_policy),
     )
     best = summary.get("best_by_test_rmse") or {}
     if best:

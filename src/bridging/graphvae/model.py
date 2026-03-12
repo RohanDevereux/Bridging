@@ -29,10 +29,13 @@ class MaskedGraphVAE(nn.Module):
         num_layers: int = 3,
         affinity_target_mean: float = 0.0,
         affinity_target_std: float = 1.0,
+        logvar_clip: float = 8.0,
     ):
         super().__init__()
         self.node_in_dim = int(node_in_dim)
         self.edge_in_dim = int(edge_in_dim)
+        self.latent_dim = int(latent_dim)
+        self.logvar_clip = float(max(logvar_clip, 1.0))
         self.node_target_idx = sorted(int(i) for i in node_target_idx)
         self.edge_target_idx = sorted(int(i) for i in edge_target_idx)
         self.node_static_idx = [i for i in range(self.node_in_dim) if i not in self.node_target_idx]
@@ -98,9 +101,8 @@ class MaskedGraphVAE(nn.Module):
         pooled = torch.cat([global_mean_pool(h, batch), global_max_pool(h, batch)], dim=1)
         return self.mu_head(pooled), self.logvar_head(pooled)
 
-    @staticmethod
-    def _sample(mu: torch.Tensor, logvar: torch.Tensor) -> torch.Tensor:
-        if torch.is_grad_enabled():
+    def _sample(self, mu: torch.Tensor, logvar: torch.Tensor) -> torch.Tensor:
+        if self.training:
             eps = torch.randn_like(mu)
             return mu + eps * torch.exp(0.5 * logvar)
         return mu
@@ -116,7 +118,8 @@ class MaskedGraphVAE(nn.Module):
 
     @staticmethod
     def _kl(mu: torch.Tensor, logvar: torch.Tensor) -> torch.Tensor:
-        return torch.mean(-0.5 * torch.sum(1.0 + logvar - mu * mu - torch.exp(logvar), dim=1))
+        per_dim = -0.5 * (1.0 + logvar - mu * mu - torch.exp(logvar))
+        return torch.mean(torch.mean(per_dim, dim=1))
 
     @staticmethod
     def _corr_penalty(mu: torch.Tensor) -> torch.Tensor:
@@ -161,6 +164,7 @@ class MaskedGraphVAE(nn.Module):
         x_enc = torch.cat([x_masked, node_mask.float()], dim=1)
         edge_enc = torch.cat([edge_masked, edge_mask.float()], dim=1)
         mu, logvar = self._encode(x_enc, edge_index, edge_enc, batch=batch)
+        logvar = torch.clamp(logvar, min=-self.logvar_clip, max=self.logvar_clip)
         z = self._sample(mu, logvar)
 
         z_node = z[batch]

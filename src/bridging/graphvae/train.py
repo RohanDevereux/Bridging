@@ -108,13 +108,14 @@ def _epoch_pass(
         batch = batch.to(device)
         if train_mode:
             optimizer.zero_grad(set_to_none=True)
-        loss, parts, _mu, affinity_pred = model.compute_loss(
-            batch,
-            mask_ratio=mask_ratio,
-            beta=beta,
-            corr_weight=corr_weight,
-            affinity_weight=affinity_weight,
-        )
+        with torch.set_grad_enabled(train_mode):
+            loss, parts, _mu, affinity_pred = model.compute_loss(
+                batch,
+                mask_ratio=mask_ratio,
+                beta=beta,
+                corr_weight=corr_weight,
+                affinity_weight=affinity_weight,
+            )
         if not torch.isfinite(loss):
             totals["skipped_batches"] += 1
             if train_mode:
@@ -272,6 +273,7 @@ def train_masked_graph_vae(
     num_workers: int,
     checkpoint_every: int = 1,
     affinity_weight: float = 0.0,
+    target_policy: str = "shared_static",
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_every = max(1, int(checkpoint_every))
@@ -286,7 +288,7 @@ def train_masked_graph_vae(
     if not np.isfinite(affinity_target_std) or affinity_target_std < 1e-6:
         affinity_target_std = 1.0
 
-    spec = build_feature_spec(records, mode=mode)
+    spec = build_feature_spec(records, mode=mode, target_policy=target_policy)
     scaler = FeatureStandardizer.fit(records, spec)
 
     ds_train = PreparedGraphDataset(records, split="train", spec=spec, scaler=scaler)
@@ -305,7 +307,7 @@ def train_masked_graph_vae(
         f"val_graphs={len(ds_val)} test_graphs={len(ds_test)} "
         f"train_batches={len(train_loader)} val_batches={len(val_loader)} "
         f"batch_size={batch_size} max_epochs={max_epochs} latent_dim={latent_dim} "
-        f"affinity_weight={float(affinity_weight):.3f}"
+        f"affinity_weight={float(affinity_weight):.3f} target_policy={target_policy}"
     )
     model = MaskedGraphVAE(
         node_in_dim=len(spec.node_input_names),
@@ -331,6 +333,8 @@ def train_masked_graph_vae(
     history_path = out_dir / f"train_history_{mode}.csv"
     best_ckpt_path = out_dir / f"masked_graph_vae_{mode}_best.pt"
     last_ckpt_path = out_dir / f"masked_graph_vae_{mode}_last.pt"
+    n_epochs_with_skipped_batches = 0
+    unstable_reason: str | None = None
 
     for epoch in range(1, max_epochs + 1):
         epoch_t0 = time.perf_counter()
@@ -358,12 +362,18 @@ def train_masked_graph_vae(
         val_objective = float(val_metrics["recon"])
         if float(affinity_weight) > 0.0 and np.isfinite(val_metrics["affinity_loss"]):
             val_objective += float(affinity_weight) * float(val_metrics["affinity_loss"])
+        epoch_skipped = int(train_metrics["skipped_batches"]) + int(val_metrics["skipped_batches"])
+        if epoch_skipped > 0:
+            n_epochs_with_skipped_batches += 1
+            if unstable_reason is None:
+                unstable_reason = "nonfinite_batches_detected"
         history.append(
             {
                 "epoch": epoch,
                 "beta": beta,
                 "supervision_mode": supervision_mode,
                 "affinity_weight": float(affinity_weight),
+                "target_policy": target_policy,
                 "train_loss": train_metrics["loss"],
                 "train_recon": train_metrics["recon"],
                 "train_node_recon": train_metrics["node_recon"],
@@ -411,6 +421,10 @@ def train_masked_graph_vae(
             )
         print(line)
 
+        if int(train_metrics["skipped_batches"]) >= len(train_loader) or int(val_metrics["skipped_batches"]) >= len(val_loader):
+            print(f"[GVAE][{mode}][{supervision_mode}] stopping at epoch={epoch} due to all-batch non-finite collapse")
+            break
+
         if np.isfinite(val_objective) and val_objective < best_val_objective:
             best_val_objective = val_objective
             best_val_recon = float(val_metrics["recon"])
@@ -424,8 +438,10 @@ def train_masked_graph_vae(
                     "epoch": int(epoch),
                     "supervision_mode": supervision_mode,
                     "affinity_weight": float(affinity_weight),
+                    "target_policy": target_policy,
                     "model_state_dict": best_state,
                     "feature_spec": {
+                        "target_policy": spec.target_policy,
                         "node_input_names": spec.node_input_names,
                         "edge_input_names": spec.edge_input_names,
                         "node_target_names": spec.node_target_names,
@@ -450,6 +466,7 @@ def train_masked_graph_vae(
                         "corr_weight": corr_weight,
                         "seed": seed,
                         "affinity_weight": float(affinity_weight),
+                        "target_policy": target_policy,
                         "affinity_target_mean": affinity_target_mean,
                         "affinity_target_std": affinity_target_std,
                     },
@@ -475,6 +492,7 @@ def train_masked_graph_vae(
                     "epoch": int(epoch),
                     "supervision_mode": supervision_mode,
                     "affinity_weight": float(affinity_weight),
+                    "target_policy": target_policy,
                     "model_state_dict": {k: v.detach().cpu() for k, v in model.state_dict().items()},
                     "optimizer_state_dict": optimizer.state_dict(),
                     "best_epoch": int(best_epoch),
@@ -528,8 +546,10 @@ def train_masked_graph_vae(
             "mode": mode,
             "supervision_mode": supervision_mode,
             "affinity_weight": float(affinity_weight),
+            "target_policy": target_policy,
             "model_state_dict": best_state,
             "feature_spec": {
+                "target_policy": spec.target_policy,
                 "node_input_names": spec.node_input_names,
                 "edge_input_names": spec.edge_input_names,
                 "node_target_names": spec.node_target_names,
@@ -554,6 +574,7 @@ def train_masked_graph_vae(
                 "corr_weight": corr_weight,
                 "seed": seed,
                 "affinity_weight": float(affinity_weight),
+                "target_policy": target_policy,
                 "affinity_target_mean": affinity_target_mean,
                 "affinity_target_std": affinity_target_std,
             },
@@ -571,6 +592,7 @@ def train_masked_graph_vae(
         "mode": mode,
         "supervision_mode": supervision_mode,
         "affinity_weight": float(affinity_weight),
+        "target_policy": target_policy,
         "records_path": str(records_path),
         "model_path": str(ckpt_path),
         "latents_csv": str(latents_path),
@@ -581,6 +603,9 @@ def train_masked_graph_vae(
         "n_train_graphs": len(ds_train),
         "n_val_graphs": len(ds_val),
         "n_test_graphs": len(ds_test),
+        "is_stable": bool(n_epochs_with_skipped_batches == 0),
+        "n_epochs_with_skipped_batches": int(n_epochs_with_skipped_batches),
+        "unstable_reason": unstable_reason,
         "affinity_head_predictions_csv": affinity_predictions_path,
         "affinity_head_split_metrics": affinity_split_metrics,
     }
@@ -609,6 +634,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--beta-anneal-fraction", type=float, default=0.30)
     parser.add_argument("--corr-weight", type=float, default=0.01)
     parser.add_argument("--affinity-weight", type=float, default=0.0)
+    parser.add_argument("--target-policy", choices=["shared_static", "mode_specific"], default="shared_static")
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--checkpoint-every", type=int, default=1)
@@ -636,6 +662,7 @@ def main() -> None:
         beta_anneal_fraction=float(args.beta_anneal_fraction),
         corr_weight=float(args.corr_weight),
         affinity_weight=float(args.affinity_weight),
+        target_policy=str(args.target_policy),
         seed=int(args.seed),
         num_workers=int(args.num_workers),
         checkpoint_every=int(args.checkpoint_every),

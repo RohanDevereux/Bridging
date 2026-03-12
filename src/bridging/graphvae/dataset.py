@@ -23,6 +23,7 @@ from .config import (
 @dataclass(frozen=True)
 class FeatureSpec:
     mode: str
+    target_policy: str
     node_input_names: list[str]
     edge_input_names: list[str]
     node_target_names: list[str]
@@ -39,9 +40,11 @@ def _idx(names: list[str], wanted: list[str]) -> list[int]:
     return out
 
 
-def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
+def build_feature_spec(records: list[dict], mode: str, target_policy: str = "shared_static") -> FeatureSpec:
     if mode not in {"S", "SD"}:
         raise ValueError("mode must be S or SD")
+    if target_policy not in {"shared_static", "mode_specific"}:
+        raise ValueError("target_policy must be shared_static or mode_specific")
     if not records:
         raise ValueError("No records found.")
 
@@ -51,14 +54,20 @@ def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
     if mode == "S":
         node_input_names = [n for n in STATIC_NODE_FEATURES if n in node_names_all]
         edge_input_names = [n for n in STATIC_EDGE_FEATURES if n in edge_names_all]
-        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
-        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
     else:
         dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_WITH_DIST if n in edge_names_all]
         if not dyn_edge:
             dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_BASE if n in edge_names_all]
         node_input_names = [n for n in (list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_INPUT_FEATURES)) if n in node_names_all]
         edge_input_names = [n for n in (list(STATIC_EDGE_FEATURES) + dyn_edge) if n in edge_names_all]
+
+    if target_policy == "shared_static":
+        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
+        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
+    elif mode == "S":
+        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
+        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
+    else:
         node_target_names = [n for n in DYNAMIC_NODE_MASK_TARGETS if n in node_input_names]
         edge_target_names = [n for n in dyn_edge if n in edge_input_names]
 
@@ -66,6 +75,7 @@ def build_feature_spec(records: list[dict], mode: str) -> FeatureSpec:
     edge_target_idx = _idx(edge_input_names, edge_target_names)
     return FeatureSpec(
         mode=mode,
+        target_policy=target_policy,
         node_input_names=node_input_names,
         edge_input_names=edge_input_names,
         node_target_names=node_target_names,

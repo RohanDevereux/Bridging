@@ -45,6 +45,7 @@ MODES="${MODES:-${MODE:-S,SD}}"
 LATENT_DIMS="${LATENT_DIMS:-8,16,32,64}"
 SUPERVISION_MODES="${SUPERVISION_MODES:-unsupervised,semi_supervised}"
 AFFINITY_WEIGHT="${AFFINITY_WEIGHT:-1.0}"
+TARGET_POLICY="${TARGET_POLICY:-shared_static}"
 
 ARGS=(
   --records "$RECORDS"
@@ -54,6 +55,7 @@ ARGS=(
   --latent-dims "$LATENT_DIMS"
   --supervision-modes "$SUPERVISION_MODES"
   --affinity-weight "$AFFINITY_WEIGHT"
+  --target-policy "$TARGET_POLICY"
   --device "${DEVICE:-cuda}"
   --hidden-dim "${HIDDEN_DIM:-128}"
   --num-layers "${NUM_LAYERS:-3}"
