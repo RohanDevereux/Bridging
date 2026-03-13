@@ -41,21 +41,23 @@ fi
 
 OUT_DIR="${OUT_DIR:-src/bridging/generatedData/graphvae/sweeps/default}"
 GRAPH_VIEWS="${GRAPH_VIEWS:-full}"
+INTERFACE_POLICIES="${INTERFACE_POLICIES:-closest_pair_patch}"
 MODES="${MODES:-${MODE:-S,SD}}"
 LATENT_DIMS="${LATENT_DIMS:-8,16,32,64}"
 SUPERVISION_MODES="${SUPERVISION_MODES:-unsupervised,semi_supervised}"
 AFFINITY_WEIGHT="${AFFINITY_WEIGHT:-1.0}"
-TARGET_POLICY="${TARGET_POLICY:-shared_static}"
+TARGET_POLICIES="${TARGET_POLICIES:-${TARGET_POLICY:-shared_static}}"
 
 ARGS=(
   --records "$RECORDS"
   --out-dir "$OUT_DIR"
   --graph-views "$GRAPH_VIEWS"
+  --interface-policies "$INTERFACE_POLICIES"
   --modes "$MODES"
   --latent-dims "$LATENT_DIMS"
   --supervision-modes "$SUPERVISION_MODES"
   --affinity-weight "$AFFINITY_WEIGHT"
-  --target-policy "$TARGET_POLICY"
+  --target-policies "$TARGET_POLICIES"
   --device "${DEVICE:-cuda}"
   --hidden-dim "${HIDDEN_DIM:-128}"
   --num-layers "${NUM_LAYERS:-3}"
@@ -77,10 +79,29 @@ ARGS=(
   --ridge-cv-folds "${RIDGE_CV_FOLDS:-5}"
   --ridge-cv-repeats "${RIDGE_CV_REPEATS:-3}"
   --ridge-cv-inner-folds "${RIDGE_CV_INNER_FOLDS:-5}"
+  --baseline-hidden-dims "${BASELINE_HIDDEN_DIMS:-128,256}"
+  --baseline-num-layers-list "${BASELINE_NUM_LAYERS_LIST:-3,4}"
+  --baseline-lr "${BASELINE_LR:-3e-4}"
+  --baseline-weight-decay "${BASELINE_WEIGHT_DECAY:-1e-5}"
 )
+
+if [ "${MATCH_INTERFACE_SUBSET:-true}" = "true" ]; then
+  ARGS+=(--match-interface-subset)
+else
+  ARGS+=(--no-match-interface-subset)
+fi
+
+if [ "${INCLUDE_SUPERVISED_BASELINE:-false}" = "true" ]; then
+  ARGS+=(--include-supervised-baseline)
+else
+  ARGS+=(--no-include-supervised-baseline)
+fi
 
 if [ -n "${DATASET:-}" ]; then
   ARGS+=(--dataset "$DATASET")
+fi
+if [ -n "${PDB_CACHE_ROOT:-}" ]; then
+  ARGS+=(--pdb-cache-root "$PDB_CACHE_ROOT")
 fi
 if [ -n "${MMGBSA_CSV:-}" ]; then
   ARGS+=(--mmgbsa "$MMGBSA_CSV")

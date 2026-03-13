@@ -11,7 +11,7 @@ import pandas as pd
 import torch
 from torch_geometric.loader import DataLoader
 
-from .dataset import FeatureStandardizer, PreparedGraphDataset, build_feature_spec
+from .dataset import FeatureStandardizer, PreparedGraphDataset, SUPPORTED_TARGET_POLICIES, build_feature_spec
 from .model import MaskedGraphVAE
 
 
@@ -634,7 +634,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--beta-anneal-fraction", type=float, default=0.30)
     parser.add_argument("--corr-weight", type=float, default=0.01)
     parser.add_argument("--affinity-weight", type=float, default=0.0)
-    parser.add_argument("--target-policy", choices=["shared_static", "mode_specific"], default="shared_static")
+    parser.add_argument("--target-policy", choices=list(SUPPORTED_TARGET_POLICIES), default="shared_static")
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--checkpoint-every", type=int, default=1)

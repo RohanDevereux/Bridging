@@ -115,6 +115,9 @@ COMMON_ARGS=(
   --vae-cv-repeats "${VAE_CV_REPEATS:-0}"
   --vae-cv-val-fraction "${VAE_CV_VAL_FRACTION:-0.15}"
 )
+if [ -n "${MAX_EDGE_LENGTH:-}" ]; then
+  COMMON_ARGS+=(--max-edge-length "$MAX_EDGE_LENGTH")
+fi
 if [ -n "${MMGBSA_CSV:-}" ]; then
   COMMON_ARGS+=(--mmgbsa-csv "$MMGBSA_CSV")
 fi

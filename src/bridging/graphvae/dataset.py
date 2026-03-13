@@ -13,11 +13,25 @@ from .config import (
     DYNAMIC_NODE_INPUT_FEATURES,
     DYNAMIC_NODE_MASK_TARGETS,
     DYNAMIC_NODE_FEATURES,
+    NODE_IDENTITY_FEATURES,
     STATIC_EDGE_MASK_TARGETS,
     STATIC_EDGE_FEATURES,
     STATIC_NODE_MASK_TARGETS,
     STATIC_NODE_FEATURES,
 )
+
+SUPPORTED_TARGET_POLICIES = (
+    "shared_static",
+    "shared_all",
+    "all_inputs",
+    "all_nonidentity",
+    "mode_specific",
+    "sd_dynamic_all",
+    "sd_static_plus_dynamic_all",
+    "sd_static_plus_dynamic_nodes",
+    "sd_static_plus_dynamic_edges",
+)
+TRIVIAL_EDGE_TARGET_EXCLUDE = {"same_chain"}
 
 
 @dataclass(frozen=True)
@@ -40,11 +54,74 @@ def _idx(names: list[str], wanted: list[str]) -> list[int]:
     return out
 
 
+def _available(all_names: list[str], wanted: list[str] | tuple[str, ...]) -> list[str]:
+    return [name for name in wanted if name in all_names]
+
+
+def _dedupe(names: list[str]) -> list[str]:
+    return list(dict.fromkeys(names))
+
+
+def _all_nonidentity_node_targets(node_input_names: list[str]) -> list[str]:
+    return [name for name in node_input_names if name not in NODE_IDENTITY_FEATURES]
+
+
+def _all_nontrivial_edge_targets(edge_input_names: list[str]) -> list[str]:
+    return [name for name in edge_input_names if name not in TRIVIAL_EDGE_TARGET_EXCLUDE]
+
+
+def _resolve_target_names(
+    *,
+    mode: str,
+    target_policy: str,
+    node_input_names: list[str],
+    edge_input_names: list[str],
+    dynamic_edge_names: list[str],
+) -> tuple[list[str], list[str]]:
+    static_node_subset = _available(node_input_names, STATIC_NODE_MASK_TARGETS)
+    static_edge_subset = _available(edge_input_names, STATIC_EDGE_MASK_TARGETS)
+    static_node_all = _available(node_input_names, STATIC_NODE_FEATURES)
+    static_edge_all = _available(edge_input_names, STATIC_EDGE_FEATURES)
+    dynamic_node_observed = _available(node_input_names, DYNAMIC_NODE_MASK_TARGETS)
+    dynamic_node_all = _available(node_input_names, DYNAMIC_NODE_INPUT_FEATURES)
+    dynamic_edge_all = list(dynamic_edge_names)
+
+    if target_policy == "shared_static":
+        return static_node_subset, static_edge_subset
+    if target_policy == "shared_all":
+        return static_node_all, static_edge_all
+    if target_policy == "all_inputs":
+        return list(node_input_names), list(edge_input_names)
+    if target_policy == "all_nonidentity":
+        return _all_nonidentity_node_targets(node_input_names), _all_nontrivial_edge_targets(edge_input_names)
+    if target_policy == "mode_specific":
+        if mode == "S":
+            return static_node_subset, static_edge_subset
+        return dynamic_node_observed, dynamic_edge_all
+    if target_policy == "sd_dynamic_all":
+        if mode == "S":
+            return static_node_subset, static_edge_subset
+        return dynamic_node_all, dynamic_edge_all
+    if target_policy == "sd_static_plus_dynamic_all":
+        if mode == "S":
+            return static_node_subset, static_edge_subset
+        return _dedupe(static_node_subset + dynamic_node_all), _dedupe(static_edge_subset + dynamic_edge_all)
+    if target_policy == "sd_static_plus_dynamic_nodes":
+        if mode == "S":
+            return static_node_subset, static_edge_subset
+        return _dedupe(static_node_subset + dynamic_node_all), static_edge_subset
+    if target_policy == "sd_static_plus_dynamic_edges":
+        if mode == "S":
+            return static_node_subset, static_edge_subset
+        return static_node_subset, _dedupe(static_edge_subset + dynamic_edge_all)
+    raise ValueError(f"Unsupported target_policy={target_policy}")
+
+
 def build_feature_spec(records: list[dict], mode: str, target_policy: str = "shared_static") -> FeatureSpec:
     if mode not in {"S", "SD"}:
         raise ValueError("mode must be S or SD")
-    if target_policy not in {"shared_static", "mode_specific"}:
-        raise ValueError("target_policy must be shared_static or mode_specific")
+    if target_policy not in SUPPORTED_TARGET_POLICIES:
+        raise ValueError(f"Unsupported target_policy={target_policy}")
     if not records:
         raise ValueError("No records found.")
 
@@ -54,6 +131,7 @@ def build_feature_spec(records: list[dict], mode: str, target_policy: str = "sha
     if mode == "S":
         node_input_names = [n for n in STATIC_NODE_FEATURES if n in node_names_all]
         edge_input_names = [n for n in STATIC_EDGE_FEATURES if n in edge_names_all]
+        dyn_edge = []
     else:
         dyn_edge = [n for n in DYNAMIC_EDGE_FEATURES_WITH_DIST if n in edge_names_all]
         if not dyn_edge:
@@ -61,15 +139,13 @@ def build_feature_spec(records: list[dict], mode: str, target_policy: str = "sha
         node_input_names = [n for n in (list(STATIC_NODE_FEATURES) + list(DYNAMIC_NODE_INPUT_FEATURES)) if n in node_names_all]
         edge_input_names = [n for n in (list(STATIC_EDGE_FEATURES) + dyn_edge) if n in edge_names_all]
 
-    if target_policy == "shared_static":
-        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
-        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
-    elif mode == "S":
-        node_target_names = [n for n in STATIC_NODE_MASK_TARGETS if n in node_input_names]
-        edge_target_names = [n for n in STATIC_EDGE_MASK_TARGETS if n in edge_input_names]
-    else:
-        node_target_names = [n for n in DYNAMIC_NODE_MASK_TARGETS if n in node_input_names]
-        edge_target_names = [n for n in dyn_edge if n in edge_input_names]
+    node_target_names, edge_target_names = _resolve_target_names(
+        mode=mode,
+        target_policy=target_policy,
+        node_input_names=node_input_names,
+        edge_input_names=edge_input_names,
+        dynamic_edge_names=dyn_edge,
+    )
 
     node_target_idx = _idx(node_input_names, node_target_names)
     edge_target_idx = _idx(edge_input_names, edge_target_names)

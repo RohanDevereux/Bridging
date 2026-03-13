@@ -88,6 +88,9 @@ fi
 if [ "${ALLOW_PARTIAL_NODE_COVERAGE:-0}" = "1" ]; then
   ARGS+=(--allow-partial-node-coverage)
 fi
+if [ -n "${MAX_EDGE_LENGTH:-}" ]; then
+  ARGS+=(--max-edge-length "$MAX_EDGE_LENGTH")
+fi
 
 "$PYTHON" -m bridging.graphvae.prepare "${ARGS[@]}"
 
