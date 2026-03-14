@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 
 import numpy as np
@@ -19,6 +20,14 @@ PPB_INTERFACE_CA_CUTOFF_ANGSTROM = 10.0
 PPB_INTERFACE_PATCH_SIZE = 128
 SUPPORTED_INTERFACE_POLICIES = ("ppb10_patch", "closest_pair_patch", "md_ppb10_patch", "md_closest_pair_patch")
 DEFAULT_INTERFACE_POLICY = "closest_pair_patch"
+
+
+def _fmt_seconds(seconds: float) -> str:
+    total = max(0, int(round(float(seconds))))
+    hours = total // 3600
+    minutes = (total % 3600) // 60
+    secs = total % 60
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
 
 def normalize_subgroup_label(value) -> str:
@@ -801,6 +810,8 @@ def materialize_graph_view_records(
     md_root: Path | None = None,
     allowed_complex_ids: set[str] | None = None,
     interface_policy: str = DEFAULT_INTERFACE_POLICY,
+    progress_every: int = 25,
+    log_prefix: str = "[VIEW]",
 ) -> tuple[Path, dict]:
     out_dir.mkdir(parents=True, exist_ok=True)
     metadata = load_complex_metadata(dataset_csv)
@@ -809,27 +820,44 @@ def materialize_graph_view_records(
     report_rows: list[dict] = []
     missing_meta: list[str] = []
     skipped_by_subset = 0
+    t0 = time.perf_counter()
+    total_records = int(len(records))
 
-    for record in records:
+    print(
+        f"{log_prefix} start graph_view={graph_view} interface_policy={interface_policy} "
+        f"records={total_records} allowed_subset={len(allowed_complex_ids) if allowed_complex_ids is not None else 'all'} "
+        f"out_dir={out_dir}"
+    )
+
+    for idx, record in enumerate(records, start=1):
         complex_id = str(record.get("complex_id"))
         if allowed_complex_ids is not None and complex_id not in allowed_complex_ids:
             skipped_by_subset += 1
-            continue
-        meta = metadata.get(complex_id)
-        if meta is None:
-            missing_meta.append(complex_id)
-            continue
-        viewed, row = build_graph_view_record(
-            record,
-            meta=meta,
-            graph_view=graph_view,
-            pdb_cache_root=pdb_cache_root,
-            md_root=md_root,
-            interface_policy=interface_policy,
-        )
-        report_rows.append(row)
-        if viewed is not None:
-            transformed.append(viewed)
+        else:
+            meta = metadata.get(complex_id)
+            if meta is None:
+                missing_meta.append(complex_id)
+            else:
+                viewed, row = build_graph_view_record(
+                    record,
+                    meta=meta,
+                    graph_view=graph_view,
+                    pdb_cache_root=pdb_cache_root,
+                    md_root=md_root,
+                    interface_policy=interface_policy,
+                )
+                report_rows.append(row)
+                if viewed is not None:
+                    transformed.append(viewed)
+
+        if progress_every > 0 and (idx % progress_every == 0 or idx == total_records):
+            failed = int(sum(1 for row in report_rows if row.get("status") != "ok"))
+            elapsed = time.perf_counter() - t0
+            print(
+                f"{log_prefix} progress scanned={idx}/{total_records} "
+                f"kept={len(transformed)} failed={failed} missing_meta={len(missing_meta)} "
+                f"skipped_subset={skipped_by_subset} elapsed={_fmt_seconds(elapsed)}"
+            )
 
     out_path = out_dir / f"graph_records_{graph_view}.pt"
     report_path = out_dir / f"graph_view_{graph_view}_report.json"
@@ -855,6 +883,116 @@ def materialize_graph_view_records(
         "n_report_rows_total": int(len(report_rows)),
         "n_report_rows_sampled": int(min(len(report_rows), 200)),
         "report_rows": report_rows[:200],
+        "elapsed_seconds": float(time.perf_counter() - t0),
     }
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    print(
+        f"{log_prefix} done graph_view={graph_view} interface_policy={interface_policy} "
+        f"records_out={len(transformed)} n_failed_view={report['n_failed_view']} "
+        f"elapsed={_fmt_seconds(report['elapsed_seconds'])}"
+    )
     return out_path, report
+
+
+def load_materialized_graph_view_records(
+    *,
+    view_dir: Path,
+    graph_view: str,
+) -> tuple[Path, dict]:
+    out_path = view_dir / f"graph_records_{graph_view}.pt"
+    report_path = view_dir / f"graph_view_{graph_view}_report.json"
+    if not out_path.exists():
+        raise FileNotFoundError(f"Missing materialized graph view records: {out_path}")
+    if not report_path.exists():
+        raise FileNotFoundError(f"Missing materialized graph view report: {report_path}")
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    return out_path, report
+
+
+def resolve_graph_view_variants(
+    *,
+    records_path: Path,
+    dataset_csv: Path | None,
+    graph_views: list[str],
+    interface_policies: list[str],
+    view_root: Path,
+    pdb_cache_root: Path | None = None,
+    md_root: Path | None = None,
+    match_interface_subset: bool = True,
+    reuse_existing: bool = False,
+    progress_every: int = 25,
+    log_prefix: str = "[VIEW]",
+) -> tuple[list[dict], dict[str, dict]]:
+    view_variants: list[dict] = []
+    view_reports: dict[str, dict] = {}
+
+    if "interface" not in graph_views:
+        view_variants.append({"interface_policy": None, "paths": {"full": records_path}, "reports": {}})
+        view_reports["default"] = {}
+        return view_variants, view_reports
+
+    if dataset_csv is None:
+        raise ValueError("dataset_csv is required when resolving interface graph views.")
+    if not interface_policies:
+        raise ValueError("At least one interface policy is required when using interface graph views.")
+
+    for interface_policy in interface_policies:
+        view_dir = view_root / interface_policy
+        if reuse_existing:
+            print(f"{log_prefix} reuse interface_policy={interface_policy} view_dir={view_dir}")
+            interface_path, interface_report = load_materialized_graph_view_records(
+                view_dir=view_dir,
+                graph_view="interface",
+            )
+        else:
+            interface_path, interface_report = materialize_graph_view_records(
+                records_path=records_path,
+                dataset_csv=dataset_csv,
+                graph_view="interface",
+                out_dir=view_dir,
+                pdb_cache_root=pdb_cache_root,
+                md_root=md_root,
+                interface_policy=interface_policy,
+                progress_every=progress_every,
+                log_prefix=f"{log_prefix}[{interface_policy}:interface]",
+            )
+
+        variant_paths: dict[str, Path] = {"interface": interface_path}
+        variant_reports: dict[str, dict] = {"interface": interface_report}
+        interface_ids = {str(x) for x in interface_report.get("retained_complex_ids", [])}
+
+        if "full" in graph_views:
+            if match_interface_subset:
+                if reuse_existing:
+                    full_path, full_report = load_materialized_graph_view_records(
+                        view_dir=view_dir,
+                        graph_view="full",
+                    )
+                else:
+                    full_path, full_report = materialize_graph_view_records(
+                        records_path=records_path,
+                        dataset_csv=dataset_csv,
+                        graph_view="full",
+                        out_dir=view_dir,
+                        pdb_cache_root=pdb_cache_root,
+                        md_root=md_root,
+                        allowed_complex_ids=interface_ids,
+                        interface_policy=interface_policy,
+                        progress_every=progress_every,
+                        log_prefix=f"{log_prefix}[{interface_policy}:full]",
+                    )
+                variant_paths["full"] = full_path
+                variant_reports["full"] = full_report
+            else:
+                variant_paths["full"] = records_path
+
+        view_variants.append(
+            {
+                "interface_policy": interface_policy,
+                "paths": variant_paths,
+                "reports": variant_reports,
+            }
+        )
+        view_reports[interface_policy] = variant_reports
+
+    return view_variants, view_reports

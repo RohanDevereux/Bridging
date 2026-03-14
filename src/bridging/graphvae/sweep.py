@@ -14,7 +14,7 @@ from .record_views import (
     SUBGROUP_ORDER,
     SUPPORTED_INTERFACE_POLICIES,
     load_complex_metadata,
-    materialize_graph_view_records,
+    resolve_graph_view_variants,
     subgroup_map_from_metadata,
 )
 from .regress import run_linear_probe
@@ -265,6 +265,7 @@ def run_saved_graph_sweep(
     dataset_csv: Path | None,
     pdb_cache_root: Path | None,
     md_root: Path | None,
+    prebuilt_view_root: Path | None,
     mmgbsa_csv: Path | None,
     alpha_grid: list[float],
     bootstrap: int,
@@ -286,52 +287,22 @@ def run_saved_graph_sweep(
     if dataset_csv is not None:
         subgroup_by_complex = subgroup_map_from_metadata(load_complex_metadata(Path(dataset_csv)))
 
-    view_variants: list[dict] = []
-    view_reports: dict[str, dict] = {}
-    if "interface" in graph_views:
-        if not interface_policies:
-            raise ValueError("At least one interface policy is required when using interface graph views.")
-        for interface_policy in interface_policies:
-            view_dir = out_dir / "record_views" / interface_policy
-            interface_path, interface_report = materialize_graph_view_records(
-                records_path=records_path,
-                dataset_csv=Path(dataset_csv),
-                graph_view="interface",
-                out_dir=view_dir,
-                pdb_cache_root=pdb_cache_root,
-                md_root=md_root,
-                interface_policy=interface_policy,
-            )
-            variant_paths: dict[str, Path] = {"interface": interface_path}
-            variant_reports: dict[str, dict] = {"interface": interface_report}
-            interface_ids = {str(x) for x in interface_report.get("retained_complex_ids", [])}
-            if "full" in graph_views:
-                if match_interface_subset:
-                    full_path, full_report = materialize_graph_view_records(
-                        records_path=records_path,
-                        dataset_csv=Path(dataset_csv),
-                        graph_view="full",
-                        out_dir=view_dir,
-                        pdb_cache_root=pdb_cache_root,
-                        md_root=md_root,
-                        allowed_complex_ids=interface_ids,
-                        interface_policy=interface_policy,
-                    )
-                    variant_paths["full"] = full_path
-                    variant_reports["full"] = full_report
-                else:
-                    variant_paths["full"] = records_path
-            view_variants.append(
-                {
-                    "interface_policy": interface_policy,
-                    "paths": variant_paths,
-                    "reports": variant_reports,
-                }
-            )
-            view_reports[interface_policy] = variant_reports
-    else:
-        view_variants.append({"interface_policy": None, "paths": {"full": records_path}, "reports": {}})
-        view_reports["default"] = {}
+    view_root = prebuilt_view_root if prebuilt_view_root is not None else (out_dir / "record_views")
+    if prebuilt_view_root is not None:
+        print(f"[SWEEP] using prebuilt view root={view_root}")
+    view_variants, view_reports = resolve_graph_view_variants(
+        records_path=records_path,
+        dataset_csv=dataset_csv,
+        graph_views=graph_views,
+        interface_policies=interface_policies,
+        view_root=view_root,
+        pdb_cache_root=pdb_cache_root,
+        md_root=md_root,
+        match_interface_subset=match_interface_subset,
+        reuse_existing=(prebuilt_view_root is not None),
+        progress_every=25,
+        log_prefix="[VIEW]",
+    )
 
     rows: list[dict] = []
     run_t0 = time.perf_counter()
@@ -594,6 +565,8 @@ def run_saved_graph_sweep(
         "out_dir": str(out_dir),
         "graph_views": list(graph_views),
         "interface_policies": list(interface_policies),
+        "view_root": str(view_root),
+        "used_prebuilt_views": bool(prebuilt_view_root is not None),
         "modes": list(modes),
         "latent_dims": [int(x) for x in latent_dims],
         "supervision_modes": list(supervision_modes),
@@ -671,6 +644,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset")
     parser.add_argument("--pdb-cache-root")
     parser.add_argument("--md-root")
+    parser.add_argument("--prebuilt-view-root")
     parser.add_argument("--mmgbsa")
     parser.add_argument("--alpha-grid", default="1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100")
     parser.add_argument("--bootstrap", type=int, default=0)
@@ -737,6 +711,7 @@ def main() -> None:
         dataset_csv=(Path(args.dataset) if args.dataset else None),
         pdb_cache_root=(Path(args.pdb_cache_root) if args.pdb_cache_root else None),
         md_root=(Path(args.md_root) if args.md_root else None),
+        prebuilt_view_root=(Path(args.prebuilt_view_root) if args.prebuilt_view_root else None),
         mmgbsa_csv=(Path(args.mmgbsa) if args.mmgbsa else None),
         alpha_grid=alphas,
         bootstrap=int(args.bootstrap),

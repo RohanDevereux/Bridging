@@ -82,6 +82,8 @@ def load_full_md_trajectory(md_dir: Path, max_frames: int | None = None) -> md.T
     top_path = md_dir / "topology_full.pdb"
     if not traj_path.exists() or not top_path.exists():
         raise FileNotFoundError(f"Missing full trajectory files in {md_dir}")
+    if max_frames == 1:
+        return md.load_frame(str(traj_path), 0, top=str(top_path))
     traj = md.load(str(traj_path), top=str(top_path))
     idx = _sample_frame_indices(int(traj.n_frames), max_frames)
     return traj[idx]
@@ -92,6 +94,8 @@ def load_protein_md_trajectory(md_dir: Path, max_frames: int | None = None) -> m
     top_path = md_dir / "topology_protein.pdb"
     if not traj_path.exists() or not top_path.exists():
         raise FileNotFoundError(f"Missing protein trajectory files in {md_dir}")
+    if max_frames == 1:
+        return md.load_frame(str(traj_path), 0, top=str(top_path))
     traj = md.load(str(traj_path), top=str(top_path))
     idx = _sample_frame_indices(int(traj.n_frames), max_frames)
     return traj[idx]

@@ -106,6 +106,9 @@ fi
 if [ -n "${MD_ROOT:-}" ]; then
   ARGS+=(--md-root "$MD_ROOT")
 fi
+if [ -n "${PREBUILT_VIEW_ROOT:-}" ]; then
+  ARGS+=(--prebuilt-view-root "$PREBUILT_VIEW_ROOT")
+fi
 if [ -n "${MMGBSA_CSV:-}" ]; then
   ARGS+=(--mmgbsa "$MMGBSA_CSV")
 fi
