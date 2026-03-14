@@ -80,6 +80,7 @@ ARGS=(
   --traj-cache-size "${PREP_TRAJ_CACHE_SIZE:-1}"
   --checkpoint-every "${PREP_CHECKPOINT_EVERY:-25}"
   --progress-every "${PREP_PROGRESS_EVERY:-25}"
+  --per-complex-timeout-minutes "${PREP_COMPLEX_TIMEOUT_MINUTES:-30}"
   --split-seed "${SPLIT_SEED:-42}"
 )
 if [ "${INCLUDE_DYNAMIC_DIST_STATS:-1}" = "0" ]; then

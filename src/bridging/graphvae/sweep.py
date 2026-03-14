@@ -264,6 +264,7 @@ def run_saved_graph_sweep(
     checkpoint_every: int,
     dataset_csv: Path | None,
     pdb_cache_root: Path | None,
+    md_root: Path | None,
     mmgbsa_csv: Path | None,
     alpha_grid: list[float],
     bootstrap: int,
@@ -298,6 +299,7 @@ def run_saved_graph_sweep(
                 graph_view="interface",
                 out_dir=view_dir,
                 pdb_cache_root=pdb_cache_root,
+                md_root=md_root,
                 interface_policy=interface_policy,
             )
             variant_paths: dict[str, Path] = {"interface": interface_path}
@@ -311,6 +313,7 @@ def run_saved_graph_sweep(
                         graph_view="full",
                         out_dir=view_dir,
                         pdb_cache_root=pdb_cache_root,
+                        md_root=md_root,
                         allowed_complex_ids=interface_ids,
                         interface_policy=interface_policy,
                     )
@@ -603,6 +606,7 @@ def run_saved_graph_sweep(
         "baseline_lr": float(baseline_lr),
         "baseline_weight_decay": float(baseline_weight_decay),
         "pdb_cache_root": (None if pdb_cache_root is None else str(pdb_cache_root)),
+        "md_root": (None if md_root is None else str(md_root)),
         "n_configs": int(len(rows)),
         "summary_csv": str(summary_csv),
         "summary_json": str(summary_json),
@@ -666,6 +670,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint-every", type=int, default=1)
     parser.add_argument("--dataset")
     parser.add_argument("--pdb-cache-root")
+    parser.add_argument("--md-root")
     parser.add_argument("--mmgbsa")
     parser.add_argument("--alpha-grid", default="1e-4,3e-4,1e-3,3e-3,1e-2,3e-2,1e-1,3e-1,1,3,10,30,100")
     parser.add_argument("--bootstrap", type=int, default=0)
@@ -731,6 +736,7 @@ def main() -> None:
         checkpoint_every=int(args.checkpoint_every),
         dataset_csv=(Path(args.dataset) if args.dataset else None),
         pdb_cache_root=(Path(args.pdb_cache_root) if args.pdb_cache_root else None),
+        md_root=(Path(args.md_root) if args.md_root else None),
         mmgbsa_csv=(Path(args.mmgbsa) if args.mmgbsa else None),
         alpha_grid=alphas,
         bootstrap=int(args.bootstrap),

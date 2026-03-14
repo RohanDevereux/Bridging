@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 from collections import OrderedDict
 import json
+import os
 import re
+import signal
 import shutil
 import time
 from pathlib import Path
@@ -52,6 +55,36 @@ def _fmt_seconds(seconds: float) -> str:
     h, rem = divmod(s, 3600)
     m, sec = divmod(rem, 60)
     return f"{h:02d}:{m:02d}:{sec:02d}"
+
+
+class ComplexProcessingTimeoutError(TimeoutError):
+    pass
+
+
+@contextlib.contextmanager
+def _complex_timeout(timeout_seconds: float) -> None:
+    timeout_seconds = float(timeout_seconds)
+    if timeout_seconds <= 0:
+        yield
+        return
+    if os.name == "nt" or not hasattr(signal, "SIGALRM") or not hasattr(signal, "setitimer"):
+        yield
+        return
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def _handle_timeout(signum, frame):
+        raise ComplexProcessingTimeoutError(
+            f"Timed out after {timeout_seconds:.1f} seconds while preparing complex."
+        )
+
+    signal.signal(signal.SIGALRM, _handle_timeout)
+    signal.setitimer(signal.ITIMER_REAL, timeout_seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, previous_handler)
 
 
 def _checkpoint_index_from_name(path: Path) -> int:
@@ -365,6 +398,7 @@ def build_prepared_dataset(
     require_all_protein_nodes: bool,
     overwrite: bool,
     progress_every: int = 25,
+    per_complex_timeout_minutes: float = 30.0,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     records_path = out_dir / "graph_records.pt"
@@ -448,8 +482,11 @@ def build_prepared_dataset(
     torsion_feature_fallbacks = []
     force_feature_fallbacks = []
     force_query_incompatible = []
+    complex_timeouts = []
     traj_cache: OrderedDict[str, object] = OrderedDict()
     traj_cache_size = max(0, int(traj_cache_size))
+    per_complex_timeout_minutes = max(0.0, float(per_complex_timeout_minutes))
+    per_complex_timeout_seconds = per_complex_timeout_minutes * 60.0
     total_entries = int(len(entries))
     processed = 0
     loop_t0 = time.perf_counter()
@@ -458,7 +495,8 @@ def build_prepared_dataset(
         f"[PREP] start total_entries={total_entries} graph_source={graph_source} "
         f"frames_per_complex={frames_per_complex} progress_every={progress_every} "
         f"checkpoint_every={checkpoint_every} checkpoint_dir={checkpoint_dir} "
-        f"traj_cache_size={traj_cache_size}"
+        f"traj_cache_size={traj_cache_size} "
+        f"per_complex_timeout_minutes={per_complex_timeout_minutes:.1f}"
     )
 
     def _flush_records_buffer() -> None:
@@ -488,7 +526,7 @@ def build_prepared_dataset(
             f"[PREP] progress {processed}/{total_entries} ({pct:.1f}%) "
             f"records={resumed_records + records_new_count} missing_md={len(missing_md)} "
             f"missing_graph={len(missing_graph)} bad_md={len(bad_md)} "
-            f"partial={len(partial_node_coverage)} "
+            f"partial={len(partial_node_coverage)} timed_out={len(complex_timeouts)} "
             f"elapsed={_fmt_seconds(elapsed)} eta={_fmt_seconds(eta)} "
             f"rate={rate*3600:.1f}/h"
         )
@@ -515,153 +553,182 @@ def build_prepared_dataset(
             _log_progress()
             continue
 
-        graph = load_deeprank_graph(
-            hdf5_path=Path(graph_ref["hdf5_path"]),
-            entry_name=graph_ref["entry_name"],
-            node_feature_names=list(DEEPRANK_NODE_FEATURES),
-            edge_feature_names=list(STATIC_EDGE_FEATURES),
-        )
-
+        current_step = "load_deeprank_graph"
         try:
-            if pdb_id in traj_cache:
-                traj = traj_cache.pop(pdb_id)
-                traj_cache[pdb_id] = traj
-            else:
-                traj = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
-                if traj_cache_size > 0:
-                    traj_cache[pdb_id] = traj
-                    if len(traj_cache) > traj_cache_size:
-                        traj_cache.popitem(last=False)
-            dyn = compute_dynamic_features(
-                traj=traj,
-                node_chain_id=graph["node_chain_id"],
-                node_position=graph["node_position"],
-                edge_index=graph["edge_index"],
-                include_distance_stats=include_dynamic_dist_stats,
-            )
-        except Exception as exc:
-            bad_md.append({"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)})
-            _log_progress()
-            continue
+            with _complex_timeout(per_complex_timeout_seconds):
+                graph = load_deeprank_graph(
+                    hdf5_path=Path(graph_ref["hdf5_path"]),
+                    entry_name=graph_ref["entry_name"],
+                    node_feature_names=list(DEEPRANK_NODE_FEATURES),
+                    edge_feature_names=list(STATIC_EDGE_FEATURES),
+                )
 
-        torsion_features = torch.zeros(
-            (len(graph["node_chain_id"]), len(TORSION_NODE_INPUT_FEATURES)),
-            dtype=torch.float32,
-        )
-        try:
-            torsion_arr, _torsion_stats = compute_node_torsion_sincos_features(
-                traj=traj,
-                node_chain_id=graph["node_chain_id"],
-                node_position=graph["node_position"],
-            )
-            torsion_features = torch.as_tensor(torsion_arr, dtype=torch.float32)
-        except Exception as exc:
-            torsion_feature_fallbacks.append(
-                {"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)}
-            )
+                current_step = "load_full_md_trajectory"
+                try:
+                    if pdb_id in traj_cache:
+                        traj = traj_cache.pop(pdb_id)
+                        traj_cache[pdb_id] = traj
+                    else:
+                        traj = load_full_md_trajectory(md_dir, max_frames=frames_per_complex)
+                        if traj_cache_size > 0:
+                            traj_cache[pdb_id] = traj
+                            if len(traj_cache) > traj_cache_size:
+                                traj_cache.popitem(last=False)
+                    current_step = "compute_dynamic_features"
+                    dyn = compute_dynamic_features(
+                        traj=traj,
+                        node_chain_id=graph["node_chain_id"],
+                        node_position=graph["node_position"],
+                        edge_index=graph["edge_index"],
+                        include_distance_stats=include_dynamic_dist_stats,
+                    )
+                except Exception as exc:
+                    bad_md.append({"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)})
+                    _log_progress()
+                    continue
 
-        raw_pdb_path = _cached_raw_pdb_path(str(pdb_id), pdb_cache_root)
-        if not raw_pdb_path.exists():
-            raw_pdb_path, _ = ensure_pdb_cached(str(pdb_id), cache_dir=pdb_cache_root)
+                torsion_features = torch.zeros(
+                    (len(graph["node_chain_id"]), len(TORSION_NODE_INPUT_FEATURES)),
+                    dtype=torch.float32,
+                )
+                current_step = "compute_torsion_features"
+                try:
+                    torsion_arr, _torsion_stats = compute_node_torsion_sincos_features(
+                        traj=traj,
+                        node_chain_id=graph["node_chain_id"],
+                        node_position=graph["node_position"],
+                    )
+                    torsion_features = torch.as_tensor(torsion_arr, dtype=torch.float32)
+                except Exception as exc:
+                    torsion_feature_fallbacks.append(
+                        {"complex_id": complex_id, "pdb_id": pdb_id, "error": repr(exc)}
+                    )
 
-        compat = assess_force_query_compatibility(
-            raw_pdb_path=raw_pdb_path,
-            protein_topology_pdb=md_dir / "topology_protein.pdb",
-            full_topology_pdb=md_dir / "topology_full.pdb",
-            ligand_group=str(rec["chains_1"]),
-            receptor_group=str(rec["chains_2"]),
-        )
-        if not bool(compat.get("compatible", False)):
-            force_query_incompatible.append(
-                {
-                    "complex_id": complex_id,
-                    "pdb_id": pdb_id,
-                    "reason": str(compat.get("compatibility_reason", "")),
-                    "missing_in_raw": list(compat.get("missing_in_raw", [])),
-                    "missing_in_full": list(compat.get("missing_in_full", [])),
-                    "missing_in_protein": list(compat.get("missing_in_protein", [])),
-                    "raw_query_overlap": list(compat.get("raw_query_overlap", [])),
+                current_step = "ensure_raw_pdb"
+                raw_pdb_path = _cached_raw_pdb_path(str(pdb_id), pdb_cache_root)
+                if not raw_pdb_path.exists():
+                    raw_pdb_path, _ = ensure_pdb_cached(str(pdb_id), cache_dir=pdb_cache_root)
+
+                current_step = "assess_force_query_compatibility"
+                compat = assess_force_query_compatibility(
+                    raw_pdb_path=raw_pdb_path,
+                    protein_topology_pdb=md_dir / "topology_protein.pdb",
+                    full_topology_pdb=md_dir / "topology_full.pdb",
+                    ligand_group=str(rec["chains_1"]),
+                    receptor_group=str(rec["chains_2"]),
+                )
+                if not bool(compat.get("compatible", False)):
+                    force_query_incompatible.append(
+                        {
+                            "complex_id": complex_id,
+                            "pdb_id": pdb_id,
+                            "reason": str(compat.get("compatibility_reason", "")),
+                            "missing_in_raw": list(compat.get("missing_in_raw", [])),
+                            "missing_in_full": list(compat.get("missing_in_full", [])),
+                            "missing_in_protein": list(compat.get("missing_in_protein", [])),
+                            "raw_query_overlap": list(compat.get("raw_query_overlap", [])),
+                        }
+                    )
+                    _log_progress()
+                    continue
+
+                current_step = "load_protein_md_trajectory"
+                try:
+                    traj_protein = load_protein_md_trajectory(md_dir, max_frames=frames_per_complex)
+                    current_step = "compute_force_features"
+                    force_arr, _force_stats = compute_node_interchain_force_features(
+                        traj=traj_protein,
+                        topology_pdb=md_dir / "topology_protein.pdb",
+                        raw_pdb_path=raw_pdb_path,
+                        ligand_group=str(rec["chains_1"]),
+                        receptor_group=str(rec["chains_2"]),
+                        node_chain_id=graph["node_chain_id"],
+                        node_position=graph["node_position"],
+                    )
+                    force_features = torch.as_tensor(force_arr, dtype=torch.float32)
+                except Exception as exc:
+                    force_feature_fallbacks.append(
+                        {
+                            "complex_id": complex_id,
+                            "pdb_id": pdb_id,
+                            "error": repr(exc),
+                        }
+                    )
+                    _log_progress()
+                    continue
+
+                current_step = "validate_node_coverage"
+                graph_node_keys = {
+                    (str(c).strip().upper(), int(p))
+                    for c, p in zip(graph["node_chain_id"], graph["node_position"])
                 }
-            )
-            _log_progress()
-            continue
+                protein_node_keys = set(dyn["protein_residue_keys"])
+                missing_nodes = sorted(protein_node_keys - graph_node_keys)
+                if missing_nodes:
+                    partial_node_coverage.append(
+                        {
+                            "complex_id": complex_id,
+                            "missing_count": int(len(missing_nodes)),
+                            "missing_sample": [
+                                {"chain": c, "resseq": int(p)}
+                                for c, p in missing_nodes[:20]
+                            ],
+                        }
+                    )
+                    if require_all_protein_nodes:
+                        raise RuntimeError(
+                            f"Graph missing protein residues for {complex_id}: "
+                            f"missing={len(missing_nodes)}. "
+                            "Increase influence radius / adjust DeepRank query or pass "
+                            "--allow-partial-node-coverage."
+                        )
 
-        try:
-            traj_protein = load_protein_md_trajectory(md_dir, max_frames=frames_per_complex)
-            force_arr, _force_stats = compute_node_interchain_force_features(
-                traj=traj_protein,
-                topology_pdb=md_dir / "topology_protein.pdb",
-                raw_pdb_path=raw_pdb_path,
-                ligand_group=str(rec["chains_1"]),
-                receptor_group=str(rec["chains_2"]),
-                node_chain_id=graph["node_chain_id"],
-                node_position=graph["node_position"],
-            )
-            force_features = torch.as_tensor(force_arr, dtype=torch.float32)
-        except Exception as exc:
-            force_feature_fallbacks.append(
+                current_step = "assemble_features"
+                node_features = torch.as_tensor(
+                    pd.concat(
+                        [
+                            pd.DataFrame(graph["node_features"], columns=list(DEEPRANK_NODE_FEATURES)),
+                            pd.DataFrame(
+                                dyn["node_structural_context"],
+                                columns=["n_same_chain_8A", "n_other_chain_8A"],
+                            ),
+                            pd.DataFrame(dyn["node_identity"], columns=list(NODE_IDENTITY_FEATURES)),
+                            pd.DataFrame(dyn["node_dynamic"], columns=list(DYNAMIC_NODE_FEATURES)),
+                            pd.DataFrame(torsion_features.cpu().numpy(), columns=list(TORSION_NODE_INPUT_FEATURES)),
+                            pd.DataFrame(force_features.cpu().numpy(), columns=list(FORCE_NODE_INPUT_FEATURES)),
+                        ],
+                        axis=1,
+                    ).to_numpy(dtype="float32"),
+                    dtype=torch.float32,
+                )
+                edge_features = torch.as_tensor(
+                    pd.concat(
+                        [
+                            pd.DataFrame(graph["edge_features"], columns=list(STATIC_EDGE_FEATURES)),
+                            pd.DataFrame(dyn["edge_dynamic"], columns=edge_dyn_names),
+                        ],
+                        axis=1,
+                    ).to_numpy(dtype="float32"),
+                    dtype=torch.float32,
+                )
+                edge_index = torch.as_tensor(graph["edge_index"], dtype=torch.long)
+        except ComplexProcessingTimeoutError as exc:
+            complex_timeouts.append(
                 {
                     "complex_id": complex_id,
                     "pdb_id": pdb_id,
+                    "timeout_minutes": float(per_complex_timeout_minutes),
+                    "step": current_step,
                     "error": repr(exc),
                 }
             )
+            print(
+                f"[PREP] timeout complex_id={complex_id} pdb_id={pdb_id} "
+                f"step={current_step} timeout_minutes={per_complex_timeout_minutes:.1f}",
+                flush=True,
+            )
             _log_progress()
             continue
-
-        graph_node_keys = {
-            (str(c).strip().upper(), int(p))
-            for c, p in zip(graph["node_chain_id"], graph["node_position"])
-        }
-        protein_node_keys = set(dyn["protein_residue_keys"])
-        missing_nodes = sorted(protein_node_keys - graph_node_keys)
-        if missing_nodes:
-            partial_node_coverage.append(
-                {
-                    "complex_id": complex_id,
-                    "missing_count": int(len(missing_nodes)),
-                    "missing_sample": [
-                        {"chain": c, "resseq": int(p)}
-                        for c, p in missing_nodes[:20]
-                    ],
-                }
-            )
-            if require_all_protein_nodes:
-                raise RuntimeError(
-                    f"Graph missing protein residues for {complex_id}: "
-                    f"missing={len(missing_nodes)}. "
-                    "Increase influence radius / adjust DeepRank query or pass "
-                    "--allow-partial-node-coverage."
-                )
-
-        node_features = torch.as_tensor(
-            pd.concat(
-                [
-                    pd.DataFrame(graph["node_features"], columns=list(DEEPRANK_NODE_FEATURES)),
-                    pd.DataFrame(
-                        dyn["node_structural_context"],
-                        columns=["n_same_chain_8A", "n_other_chain_8A"],
-                    ),
-                    pd.DataFrame(dyn["node_identity"], columns=list(NODE_IDENTITY_FEATURES)),
-                    pd.DataFrame(dyn["node_dynamic"], columns=list(DYNAMIC_NODE_FEATURES)),
-                    pd.DataFrame(torsion_features.cpu().numpy(), columns=list(TORSION_NODE_INPUT_FEATURES)),
-                    pd.DataFrame(force_features.cpu().numpy(), columns=list(FORCE_NODE_INPUT_FEATURES)),
-                ],
-                axis=1,
-            ).to_numpy(dtype="float32"),
-            dtype=torch.float32,
-        )
-        edge_features = torch.as_tensor(
-            pd.concat(
-                [
-                    pd.DataFrame(graph["edge_features"], columns=list(STATIC_EDGE_FEATURES)),
-                    pd.DataFrame(dyn["edge_dynamic"], columns=edge_dyn_names),
-                ],
-                axis=1,
-            ).to_numpy(dtype="float32"),
-            dtype=torch.float32,
-        )
-        edge_index = torch.as_tensor(graph["edge_index"], dtype=torch.long)
 
         records_buffer.append(
             {
@@ -709,6 +776,7 @@ def build_prepared_dataset(
         "graph_source": graph_source,
         "progress_every": int(progress_every),
         "checkpoint_every": int(checkpoint_every),
+        "per_complex_timeout_minutes": float(per_complex_timeout_minutes),
         "checkpoint_dir": str(checkpoint_dir),
         "records_path": str(records_path),
         "splits_path": str(split_path),
@@ -726,6 +794,7 @@ def build_prepared_dataset(
         "n_torsion_feature_fallbacks": int(len(torsion_feature_fallbacks)),
         "n_force_query_incompatible": int(len(force_query_incompatible)),
         "n_force_feature_fallbacks": int(len(force_feature_fallbacks)),
+        "n_complex_timeouts": int(len(complex_timeouts)),
         "missing_graph_complex_ids": missing_graph[:100],
         "missing_md_complex_ids": missing_md[:100],
         "bad_md": bad_md[:100],
@@ -733,6 +802,7 @@ def build_prepared_dataset(
         "torsion_feature_fallbacks": torsion_feature_fallbacks[:100],
         "force_query_incompatible": force_query_incompatible[:100],
         "force_feature_fallbacks": force_feature_fallbacks[:100],
+        "complex_timeouts": complex_timeouts[:100],
         "node_feature_names": node_feature_names,
         "edge_feature_names": edge_feature_names,
         "split_counts": split_counts,
@@ -815,6 +885,12 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--allow-partial-node-coverage", action="store_true")
     parser.add_argument("--progress-every", type=int, default=25, help="Print progress every N processed complexes.")
+    parser.add_argument(
+        "--per-complex-timeout-minutes",
+        type=float,
+        default=30.0,
+        help="Abort and skip any individual complex that takes longer than this many minutes. Use 0 to disable.",
+    )
     parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
 
@@ -844,6 +920,7 @@ def main() -> None:
         require_all_protein_nodes=not bool(args.allow_partial_node_coverage),
         overwrite=bool(args.overwrite),
         progress_every=int(args.progress_every),
+        per_complex_timeout_minutes=float(args.per_complex_timeout_minutes),
     )
     print(f"[PREP] records={report['n_records']} train={report['split_counts']['train']} val={report['split_counts']['val']} test={report['split_counts']['test']}")
     print(f"[PREP] report={Path(args.out_dir) / 'prepare_report.json'}")

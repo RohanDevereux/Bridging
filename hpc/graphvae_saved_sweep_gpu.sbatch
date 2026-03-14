@@ -103,6 +103,9 @@ fi
 if [ -n "${PDB_CACHE_ROOT:-}" ]; then
   ARGS+=(--pdb-cache-root "$PDB_CACHE_ROOT")
 fi
+if [ -n "${MD_ROOT:-}" ]; then
+  ARGS+=(--md-root "$MD_ROOT")
+fi
 if [ -n "${MMGBSA_CSV:-}" ]; then
   ARGS+=(--mmgbsa "$MMGBSA_CSV")
 fi
