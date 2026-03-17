@@ -113,6 +113,6 @@ if [ -n "${MMGBSA_CSV:-}" ]; then
   ARGS+=(--mmgbsa "$MMGBSA_CSV")
 fi
 
-"$PYTHON" -m bridging.graphvae.sweep "${ARGS[@]}"
+"$PYTHON" -m bridging.graphvae.runners.sweep "${ARGS[@]}"
 
 echo "[DONE] sweep summary: $OUT_DIR/sweep_summary.json"

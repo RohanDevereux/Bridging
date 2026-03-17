@@ -66,6 +66,6 @@ if [ -n "${MD_ROOT:-}" ]; then
   ARGS+=(--md-root "$MD_ROOT")
 fi
 
-"$PYTHON" -m bridging.graphvae.materialize_views "${ARGS[@]}"
+"$PYTHON" -m bridging.graphvae.runners.materialize_views "${ARGS[@]}"
 
 echo "[DONE] view materialization summary: $OUT_DIR/view_materialization_summary.json"

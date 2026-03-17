@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from .config import TORSION_NODE_INPUT_FEATURES
-from .md_dynamics import compute_node_torsion_sincos_features, load_full_md_trajectory
+from ..common.config import TORSION_NODE_INPUT_FEATURES
+from ..prep.md_dynamics import compute_node_torsion_sincos_features, load_full_md_trajectory
 
 
 def _sorted_shards(checkpoint_dir: Path) -> list[Path]:

@@ -11,8 +11,8 @@ import torch
 from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups
 
-from .chain_remap import build_raw_to_md_chain_map
-from .ids import canonical_complex_id
+from ..common.chain_remap import build_raw_to_md_chain_map
+from ..common.ids import canonical_complex_id
 from .md_dynamics import _build_residue_maps, _chain_id, load_protein_md_trajectory
 
 SUBGROUP_ORDER = ("antibody_antigen", "tcr_pmhc", "other")

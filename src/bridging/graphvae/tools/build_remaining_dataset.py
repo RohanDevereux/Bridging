@@ -9,7 +9,7 @@ import torch
 
 from bridging.utils.dataset_rows import row_pdb_id
 
-from .ids import canonical_complex_id, sanitize_filename_token
+from ..common.ids import canonical_complex_id, sanitize_filename_token
 
 
 def _load_done_complex_ids(checkpoint_dir: Path) -> set[str]:

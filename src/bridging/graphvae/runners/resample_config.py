@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 import torch
 
-from .crossval import _kfold_partitions, _split_train_val_test
-from .regress import run_linear_probe
-from .supervised_baseline import run_supervised_baseline
-from .train import train_masked_graph_vae
+from ..ml.crossval import _kfold_partitions, _split_train_val_test
+from ..ml.regress import run_linear_probe
+from ..ml.supervised_baseline import run_supervised_baseline
+from ..ml.train import train_masked_graph_vae
 
 
 def _summary_stats(values: list[float]) -> dict[str, float]:

@@ -9,10 +9,10 @@ from openmm.app import ForceField, Modeller, PDBFile
 
 from bridging.MD.config import FORCEFIELD_FILES
 from bridging.MD.simulate import build_system
-from bridging.graphvae.chain_remap import _load_chain_sequences, build_raw_to_md_chain_map
+from bridging.graphvae.common.chain_remap import _load_chain_sequences, build_raw_to_md_chain_map
 from bridging.utils.dataset_rows import parse_chain_group
 
-from .config import FORCE_NODE_INPUT_FEATURES
+from ..common.config import FORCE_NODE_INPUT_FEATURES
 from .md_dynamics import _build_residue_maps
 
 

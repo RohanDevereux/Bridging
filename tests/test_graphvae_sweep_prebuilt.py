@@ -3,8 +3,8 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from bridging.graphvae import md_dynamics
-from bridging.graphvae.record_views import resolve_graph_view_variants
+from bridging.graphvae.prep import md_dynamics
+from bridging.graphvae.prep.record_views import resolve_graph_view_variants
 
 
 def test_load_protein_md_trajectory_uses_single_frame_loader(monkeypatch, tmp_path: Path) -> None:
@@ -75,7 +75,7 @@ def test_resolve_graph_view_variants_reuses_prebuilt_views(monkeypatch, tmp_path
     def fail_materialize(*args, **kwargs):
         raise AssertionError("materialize_graph_view_records should not run when prebuilt views are provided")
 
-    monkeypatch.setattr("bridging.graphvae.record_views.materialize_graph_view_records", fail_materialize)
+    monkeypatch.setattr("bridging.graphvae.prep.record_views.materialize_graph_view_records", fail_materialize)
 
     view_variants, view_reports = resolve_graph_view_variants(
         records_path=records_path,

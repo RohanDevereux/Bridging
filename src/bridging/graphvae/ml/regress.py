@@ -10,9 +10,9 @@ from sklearn.linear_model import Ridge, RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import KFold
 
-from .baselines import load_mmgbsa_map
-from .ids import canonical_complex_id
-from .record_views import SUBGROUP_ORDER, load_complex_metadata, subgroup_map_from_metadata
+from ..common.baselines import load_mmgbsa_map
+from ..common.ids import canonical_complex_id
+from ..prep.record_views import SUBGROUP_ORDER, load_complex_metadata, subgroup_map_from_metadata
 
 
 def _pearson(y_true: np.ndarray, y_pred: np.ndarray) -> float:

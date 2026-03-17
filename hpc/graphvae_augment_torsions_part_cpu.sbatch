@@ -63,7 +63,7 @@ if [ "${REFRESH_TORSIONS:-0}" != "1" ] && [ "$IN_COUNT" -gt 0 ] && [ "$OUT_COUNT
   exit 0
 fi
 
-"$PYTHON" -m bridging.graphvae.augment_torsions \
+"$PYTHON" -m bridging.graphvae.tools.augment_torsions \
   --md-root "$MD_ROOT" \
   --checkpoint-dir-in "$CK_IN" \
   --checkpoint-dir-out "$CK_OUT" \

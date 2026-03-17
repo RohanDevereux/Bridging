@@ -101,5 +101,5 @@ if [ "$MODEL_FAMILY" = "vae_ridge" ]; then
 fi
 
 echo "[RUN] tag=$TAG model_family=$MODEL_FAMILY mode=$MODE supervision=$SUPERVISION_MODE target=$TARGET_POLICY latent_dim=$LATENT_DIM"
-"$PYTHON" -m bridging.graphvae.resample_config "${ARGS[@]}"
+"$PYTHON" -m bridging.graphvae.runners.resample_config "${ARGS[@]}"
 echo "[DONE] tag=$TAG summary=$OUT_DIR/resample_summary.json"

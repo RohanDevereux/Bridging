@@ -13,10 +13,10 @@ from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.dataset_rows import row_chain_groups, row_pdb_id
 
-from .config import FORCE_NODE_INPUT_FEATURES
-from .force_features import compute_node_interchain_force_features
-from .ids import canonical_complex_id
-from .md_dynamics import load_protein_md_trajectory
+from ..common.config import FORCE_NODE_INPUT_FEATURES
+from ..prep.force_features import compute_node_interchain_force_features
+from ..common.ids import canonical_complex_id
+from ..prep.md_dynamics import load_protein_md_trajectory
 
 
 def _sorted_shards(checkpoint_dir: Path) -> list[Path]:

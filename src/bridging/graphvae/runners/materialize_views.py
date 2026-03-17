@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .record_views import (
+from ..prep.record_views import (
     DEFAULT_INTERFACE_POLICY,
     SUPPORTED_INTERFACE_POLICIES,
     resolve_graph_view_variants,

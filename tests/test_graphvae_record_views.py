@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 import torch
 
-from bridging.graphvae.record_views import materialize_graph_view_records
+from bridging.graphvae.prep.record_views import materialize_graph_view_records
 
 
 def _write_pdb(path: Path, *, chain_1: str = "A", chain_2: str = "B", close: bool = True) -> None:

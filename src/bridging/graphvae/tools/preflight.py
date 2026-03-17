@@ -13,9 +13,9 @@ import h5py
 import mdtraj as md
 import pandas as pd
 
-from .config import DEEPRANK_NODE_FEATURES, STATIC_EDGE_FEATURES
-from .deeprank_adapter import load_deeprank_graph
-from .ids import canonical_complex_id, sanitize_filename_token
+from ..common.config import DEEPRANK_NODE_FEATURES, STATIC_EDGE_FEATURES
+from ..prep.deeprank_adapter import load_deeprank_graph
+from ..common.ids import canonical_complex_id, sanitize_filename_token
 
 
 def _check_deeprank2(expected_version: str) -> str:

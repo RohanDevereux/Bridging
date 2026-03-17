@@ -10,8 +10,8 @@ from pathlib import Path
 from bridging.MD.paths import PDB_CACHE_DIR
 from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 
-from .force_features import assess_force_query_compatibility
-from .prepare import _select_complex_entries
+from ..prep.force_features import assess_force_query_compatibility
+from ..prep.prepare import _select_complex_entries
 
 
 class RowAuditTimeout(RuntimeError):

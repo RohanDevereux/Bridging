@@ -6,7 +6,7 @@ from pathlib import Path
 
 import torch
 
-from .splits import make_train_val_test_split
+from ..common.splits import make_train_val_test_split
 
 
 def _iter_shards(checkpoint_dir: Path) -> list[Path]:

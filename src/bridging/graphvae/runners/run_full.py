@@ -9,11 +9,11 @@ import torch
 
 from bridging.MD.paths import PDB_CACHE_DIR
 
-from .prepare import build_prepared_dataset
-from .regress import run_linear_probe
-from .supervised_baseline import run_supervised_baseline
-from .train import train_masked_graph_vae
-from .crossval import run_vae_crossval
+from ..prep.prepare import build_prepared_dataset
+from ..ml.regress import run_linear_probe
+from ..ml.supervised_baseline import run_supervised_baseline
+from ..ml.train import train_masked_graph_vae
+from ..ml.crossval import run_vae_crossval
 
 
 def run_full_pipeline(

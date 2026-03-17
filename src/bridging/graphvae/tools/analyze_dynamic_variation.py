@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from .config import DYNAMIC_EDGE_FEATURES_WITH_DIST, DYNAMIC_NODE_FEATURES
+from ..common.config import DYNAMIC_EDGE_FEATURES_WITH_DIST, DYNAMIC_NODE_FEATURES
 
 
 def _as_numpy(x) -> np.ndarray:

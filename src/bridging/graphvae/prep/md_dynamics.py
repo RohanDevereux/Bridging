@@ -5,7 +5,7 @@ from pathlib import Path
 import mdtraj as md
 import numpy as np
 
-from .config import AA_CODES, NODE_IDENTITY_FEATURES, TORSION_NODE_INPUT_FEATURES
+from ..common.config import AA_CODES, NODE_IDENTITY_FEATURES, TORSION_NODE_INPUT_FEATURES
 
 
 AA3_TO_AA1 = {

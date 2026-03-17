@@ -7,7 +7,7 @@ import torch
 from torch.utils.data import Dataset
 from torch_geometric.data import Data
 
-from .config import (
+from ..common.config import (
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
     DYNAMIC_NODE_INPUT_FEATURES,

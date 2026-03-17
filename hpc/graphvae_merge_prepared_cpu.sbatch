@@ -50,6 +50,6 @@ if [ -n "$BASE_CHECKPOINT_DIR" ]; then
   ARGS+=(--base-checkpoint-dir "$BASE_CHECKPOINT_DIR")
 fi
 
-"$PYTHON" -m bridging.graphvae.merge_prepared_shards "${ARGS[@]}"
+"$PYTHON" -m bridging.graphvae.tools.merge_prepared_shards "${ARGS[@]}"
 
 echo "[DONE] merged_prepared_dir=$MERGED_PREPARED_DIR"

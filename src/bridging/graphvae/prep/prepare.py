@@ -19,7 +19,7 @@ from bridging.MD.prefetch_pdbs import ensure_pdb_cached
 from bridging.utils.affinity import experimental_delta_g_kcalmol
 from bridging.utils.dataset_rows import parse_chain_group, row_chain_groups, row_pdb_id
 
-from .config import (
+from ..common.config import (
     DEEPRANK_NODE_FEATURES,
     DYNAMIC_EDGE_FEATURES_BASE,
     DYNAMIC_EDGE_FEATURES_WITH_DIST,
@@ -31,7 +31,7 @@ from .config import (
     STATIC_NODE_FEATURES,
     TORSION_NODE_INPUT_FEATURES,
 )
-from .chain_remap import build_raw_to_md_chain_map, load_chain_order, remap_query_pair
+from ..common.chain_remap import build_raw_to_md_chain_map, load_chain_order, remap_query_pair
 from .deeprank_adapter import (
     build_deeprank_hdf5,
     index_hdf5_entries,
@@ -40,14 +40,14 @@ from .deeprank_adapter import (
     write_deeprank_index,
 )
 from .force_features import assess_force_query_compatibility, compute_node_interchain_force_features
-from .ids import canonical_complex_id, primary_chain, sanitize_filename_token
+from ..common.ids import canonical_complex_id, primary_chain, sanitize_filename_token
 from .md_dynamics import (
     compute_dynamic_features,
     compute_node_torsion_sincos_features,
     load_full_md_trajectory,
     load_protein_md_trajectory,
 )
-from .splits import make_train_val_test_split
+from ..common.splits import make_train_val_test_split
 
 
 def _fmt_seconds(seconds: float) -> str:

@@ -63,7 +63,7 @@ if [ "${REFRESH_FORCE_FEATURES:-0}" != "1" ] && [ "$IN_COUNT" -gt 0 ] && [ "$OUT
   exit 0
 fi
 
-"$PYTHON" -m bridging.graphvae.augment_force_features \
+"$PYTHON" -m bridging.graphvae.tools.augment_force_features \
   --dataset "$DATASET" \
   --md-root "$MD_ROOT" \
   --pdb-cache-root "${PDB_CACHE_ROOT:-$HOME/scratch/pdb_cache}" \

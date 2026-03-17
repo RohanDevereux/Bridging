@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .dataset import SUPPORTED_TARGET_POLICIES
-from .record_views import (
+from ..ml.dataset import SUPPORTED_TARGET_POLICIES
+from ..prep.record_views import (
     DEFAULT_INTERFACE_POLICY,
     SUBGROUP_ORDER,
     SUPPORTED_INTERFACE_POLICIES,
@@ -17,9 +17,9 @@ from .record_views import (
     resolve_graph_view_variants,
     subgroup_map_from_metadata,
 )
-from .regress import run_linear_probe
-from .supervised_baseline import run_supervised_baseline
-from .train import train_masked_graph_vae
+from ..ml.regress import run_linear_probe
+from ..ml.supervised_baseline import run_supervised_baseline
+from ..ml.train import train_masked_graph_vae
 
 
 def _fmt_seconds(seconds: float) -> str:

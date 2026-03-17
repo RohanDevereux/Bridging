@@ -68,7 +68,7 @@ if [ "$BUILD_DEEPRANK" = "0" ] && [ -n "$DEEPRANK_HDF5" ]; then
   PREFLIGHT_ARGS+=(--deep-rank-hdf5 "${H5_LIST[@]}")
 fi
 
-"$PYTHON" -m bridging.graphvae.preflight \
+"$PYTHON" -m bridging.graphvae.tools.preflight \
   --dataset "$DATASET" \
   --md-root "$MD_ROOT" \
   --expected-deeprank2-version "${DEEPRANK2_VERSION:-3.1.0}" \
@@ -132,11 +132,11 @@ if [ "${INCLUDE_DYNAMIC_DIST_STATS:-1}" = "0" ]; then
 fi
 
 if [ "$REUSE_PREPARED" = "1" ]; then
-  "$PYTHON" -m bridging.graphvae.run_full \
+  "$PYTHON" -m bridging.graphvae.runners.run_full \
     "${COMMON_ARGS[@]}" \
     --reuse-prepared
 elif [ "$BUILD_DEEPRANK" = "1" ]; then
-  "$PYTHON" -m bridging.graphvae.run_full \
+  "$PYTHON" -m bridging.graphvae.runners.run_full \
     "${COMMON_ARGS[@]}" \
     --build-deeprank \
     --deeprank-prefix "$DEEPRANK_PREFIX"
@@ -150,7 +150,7 @@ else
     # shellcheck disable=SC2206
     H5_LIST=( $DEEPRANK_HDF5 )
   fi
-  "$PYTHON" -m bridging.graphvae.run_full \
+  "$PYTHON" -m bridging.graphvae.runners.run_full \
     "${COMMON_ARGS[@]}" \
     --deep-rank-hdf5 "${H5_LIST[@]}"
 fi

@@ -49,7 +49,7 @@ if [ -n "${CANCEL_JOBID:-}" ]; then
 fi
 
 echo "[STEP] build remaining CSV (preserve checkpointed progress)"
-"$PYTHON" -m bridging.graphvae.build_remaining_dataset \
+"$PYTHON" -m bridging.graphvae.tools.build_remaining_dataset \
   --dataset "$DATASET" \
   --md-root "$MD_ROOT" \
   --deep-rank-hdf5 "$DEEPRANK_HDF5" \

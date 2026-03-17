@@ -93,6 +93,6 @@ if [ -n "${MAX_EDGE_LENGTH:-}" ]; then
   ARGS+=(--max-edge-length "$MAX_EDGE_LENGTH")
 fi
 
-"$PYTHON" -m bridging.graphvae.prepare "${ARGS[@]}"
+"$PYTHON" -m bridging.graphvae.prep.prepare "${ARGS[@]}"
 
 echo "[DONE] prepare shard_id=$SHARD_ID out=$OUT_DIR"

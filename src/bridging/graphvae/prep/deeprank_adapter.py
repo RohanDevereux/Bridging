@@ -15,7 +15,7 @@ from deeprank2.utils.buildgraph import get_structure
 from deeprank2.utils.graph import Graph
 from pdb2sql import pdb2sql as pdb2sql_object
 
-from .ids import sanitize_filename_token
+from ..common.ids import sanitize_filename_token
 
 
 def _as_path_list(paths: Any) -> list[Path]:
