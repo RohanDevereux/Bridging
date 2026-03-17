@@ -16,3 +16,9 @@ logs/
 /graphvae_force_v3_results.tgz
 /graphvae_resample_matrix_v1_summaries/
 /graphvae_resample_matrix_v1_summaries.tgz
+
+/rcsb_lengths_cache.json
+/src/bridging/processedData/_tmp_*
+/src/bridging/processedData/_analysis_*
+/src/bridging/processedData/_grid_*
+/src/bridging/processedData/shards/
