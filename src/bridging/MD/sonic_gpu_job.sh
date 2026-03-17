@@ -6,7 +6,7 @@ source .venv/bin/activate
 
 export PYTHONPATH=src
 
-DATASET="${DATASET:-src/bridging/processedData/PRODIGY_Data.csv}"
+DATASET="${DATASET:-src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv}"
 OUT_ROOT="${OUT_ROOT:-src/bridging/generatedData/MD_datasets/$(basename "$DATASET" .csv)}"
 
 python -m bridging.MD.run_dataset --dataset "$DATASET" --out "$OUT_ROOT"

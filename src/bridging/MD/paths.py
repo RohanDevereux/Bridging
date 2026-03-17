@@ -3,7 +3,8 @@ from pathlib import Path
 
 PACKAGE_DIR = Path(__file__).resolve().parents[1]
 
-DATA_CSV = PACKAGE_DIR / "processedData" / "PRODIGY_Data.csv"
+PPB_DATA_CSV = PACKAGE_DIR / "processedData" / "PPB_Affinity_broad_pairuniq_train80_test20.csv"
+DATA_CSV = PPB_DATA_CSV
 
 GENERATED_DIR = PACKAGE_DIR / "generatedData"
 MD_OUT_DIR = GENERATED_DIR / "MD"

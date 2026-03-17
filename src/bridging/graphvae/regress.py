@@ -10,8 +10,7 @@ from sklearn.linear_model import Ridge, RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import KFold
 
-from bridging.regression.dataset import load_mmgbsa_map
-
+from .baselines import load_mmgbsa_map
 from .ids import canonical_complex_id
 from .record_views import SUBGROUP_ORDER, load_complex_metadata, subgroup_map_from_metadata
 

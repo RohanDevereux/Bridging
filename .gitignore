@@ -9,3 +9,10 @@ __pycache__/
 src/bridging/generatedData/
 bridging_md_*.out
 logs/
+
+# Local analysis artifacts
+/bridging-main.bundle
+/graphvae_force_v3_results/
+/graphvae_force_v3_results.tgz
+/graphvae_resample_matrix_v1_summaries/
+/graphvae_resample_matrix_v1_summaries.tgz
