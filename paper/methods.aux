@@ -1,36 +1,38 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
 \citation{Liu2024PPBAffinity}
-\citation{PDBFixerSoftware}
-\citation{Eastman2024OpenMM8}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Methods}{8}{chapter.4}\protected@file@percent }
+\citation{Liu2024PPBAffinity}
+\citation{PDBFixerSoftware,Eastman2024OpenMM8}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Methods}{5}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:methods}{{4}{8}{Methods}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Dataset curation and affinity labels}{8}{section.4.1}\protected@file@percent }
+\newlabel{chap:methods}{{3}{5}{Methods}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Dataset and target}{5}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Molecular-dynamics preparation and simulation}{5}{section.3.2}\protected@file@percent }
 \citation{Maier2015ff14SB,Wang2014WaterModels}
 \citation{Eastman2024OpenMM8}
 \citation{Crocioni2024DeepRank2}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Molecular dynamics system preparation}{9}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Molecular dynamics protocol}{9}{section.4.3}\protected@file@percent }
 \citation{McGibbon2015MDTraj}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Residue-graph construction}{10}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Molecular dynamics-derived node and edge features}{10}{section.4.5}\protected@file@percent }
 \citation{Eastman2024OpenMM8}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Approximate inter-chain force features}{11}{section.4.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Graph views and matched analysis subset}{11}{section.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Residue-graph construction and features}{6}{section.3.3}\protected@file@percent }
+\citation{Liu2024PPBAffinity}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Feature groups used in the residue-graph pipeline. The static mode $S$ used only the static block. The dynamic mode $SD$ used the union of the static and dynamic blocks.}}{7}{table.3.1}\protected@file@percent }
+\newlabel{tab:feature-groups}{{3.1}{7}{Feature groups used in the residue-graph pipeline. The static mode $S$ used only the static block. The dynamic mode $SD$ used the union of the static and dynamic blocks}{table.3.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Graph views, analysis subset, and preprocessing}{7}{section.3.4}\protected@file@percent }
 \citation{Fey2019PyG}
-\citation{Hu2020Pretraining}
-\@writefile{toc}{\contentsline {section}{\numberline {4.8}Feature modes and preprocessing}{12}{section.4.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.9}Masked graph variational autoencoder}{12}{section.4.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.10}Direct supervised baseline}{13}{section.4.10}\protected@file@percent }
+\citation{Xu2019GIN,Hu2020Pretraining}
+\citation{Kingma2014VAE}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Models}{8}{section.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Direct supervised baseline}{8}{subsection.3.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Masked GraphVAE}{8}{subsection.3.5.2}\protected@file@percent }
 \citation{Pedregosa2011Scikit}
-\@writefile{toc}{\contentsline {section}{\numberline {4.11}Latent-space regression and final VAE evaluation}{14}{section.4.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.12}Repeated outer resampling and model matrix}{14}{section.4.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.13}Evaluation metrics}{15}{section.4.13}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Masked reconstruction targets used by the GraphVAE. All $S$ runs used \texttt  {shared\_static}. All $SD$ runs used \texttt  {shared\_static}, \texttt  {sd\_dynamic\_all}, or \texttt  {sd\_static\_plus\_dynamic\_all}.}}{9}{table.3.2}\protected@file@percent }
+\newlabel{tab:target-policies}{{3.2}{9}{Masked reconstruction targets used by the GraphVAE. All $S$ runs used \texttt {shared\_static}. All $SD$ runs used \texttt {shared\_static}, \texttt {sd\_dynamic\_all}, or \texttt {sd\_static\_plus\_dynamic\_all}}{table.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Latent-space ridge probe}{9}{subsection.3.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Repeated outer evaluation}{9}{section.3.6}\protected@file@percent }
 \@setckpt{methods}{
-\setcounter{page}{16}
-\setcounter{equation}{7}
+\setcounter{page}{11}
+\setcounter{equation}{2}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
@@ -38,14 +40,14 @@
 \setcounter{footnote}{0}
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
-\setcounter{chapter}{4}
-\setcounter{section}{13}
+\setcounter{chapter}{3}
+\setcounter{section}{6}
 \setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{0}
-\setcounter{table}{0}
+\setcounter{table}{2}
 \setcounter{NAT@ctr}{0}
 \setcounter{lstnumber}{1}
 \setcounter{AM@survey}{0}
@@ -55,6 +57,6 @@
 \setcounter{section@level}{1}
 \setcounter{Item}{0}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{31}
+\setcounter{bookmark@seq@number}{17}
 \setcounter{lstlisting}{0}
 }

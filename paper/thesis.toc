@@ -1,63 +1,33 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Problem and motivation}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Research questions and scope}{1}{section.1.2}%
-\contentsline {section}{\numberline {1.3}What the thesis contributes}{2}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Thesis structure}{2}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Literature Review}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Protein--protein affinity prediction}{3}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Physics-based and empirical approaches}{3}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Why the protein--ligand comparison matters}{4}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Why use a variational graph model}{4}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Where this thesis fits}{4}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Background and Theoretical Context}{5}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Affinity as the target quantity}{5}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Molecular dynamics as a source of descriptors}{5}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Residue graphs and message passing}{6}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Variational graph representation learning}{6}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Why repeated held-out evaluation matters}{7}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Methods}{8}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Dataset curation and affinity labels}{8}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Molecular dynamics system preparation}{9}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Molecular dynamics protocol}{9}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Residue-graph construction}{10}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Molecular dynamics-derived node and edge features}{10}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Approximate inter-chain force features}{11}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Graph views and matched analysis subset}{11}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Feature modes and preprocessing}{12}{section.4.8}%
-\contentsline {section}{\numberline {4.9}Masked graph variational autoencoder}{12}{section.4.9}%
-\contentsline {section}{\numberline {4.10}Direct supervised baseline}{13}{section.4.10}%
-\contentsline {section}{\numberline {4.11}Latent-space regression and final VAE evaluation}{14}{section.4.11}%
-\contentsline {section}{\numberline {4.12}Repeated outer resampling and model matrix}{14}{section.4.12}%
-\contentsline {section}{\numberline {4.13}Evaluation metrics}{15}{section.4.13}%
-\contentsline {chapter}{\numberline {5}Results}{16}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Headline model performance}{16}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Effect of graph view: full versus interface}{17}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Effect of dynamic features: $S$ versus $SD$}{18}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Effect of supervision}{18}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Effect of reconstruction target policy}{19}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Overfitting and train--validation--test behaviour}{19}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Summary of empirical conclusions}{21}{section.5.7}%
-\contentsline {chapter}{\numberline {6}Discussion and Conclusions}{22}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Main findings}{22}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Interpreting the full-versus-interface result}{22}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Interpreting the negative dynamic result}{23}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Why the supervised baseline won}{23}{section.6.4}%
-\contentsline {section}{\numberline {6.5}What the train--test gaps show}{23}{section.6.5}%
-\contentsline {section}{\numberline {6.6}Limitations}{23}{section.6.6}%
-\contentsline {section}{\numberline {6.7}Conclusion}{24}{section.6.7}%
-\contentsline {chapter}{\numberline {A}Supplementary Technical Background}{25}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Molecular dynamics in plain terms}{25}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Residue graphs and graph neural networks in plain terms}{26}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Variational autoencoders in plain terms}{26}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Why use ridge regression on the latent space}{27}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Why repeated outer resampling matters in practical terms}{27}{section.A.5}%
-\contentsline {chapter}{\numberline {B}Archived Approaches and Project Evolution}{29}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Correction learning around fast affinity baselines}{29}{section.B.1}%
-\contentsline {subsection}{\numberline {B.1.1}PRODIGY}{29}{subsection.B.1.1}%
-\contentsline {subsection}{\numberline {B.1.2}MM/GBSA}{30}{subsection.B.1.2}%
-\contentsline {section}{\numberline {B.2}The C$\alpha $ contact-map branch}{30}{section.B.2}%
-\contentsline {section}{\numberline {B.3}The PPB-inspired augmentation and spatiotemporal branch}{31}{section.B.3}%
-\contentsline {section}{\numberline {B.4}Exploratory dataset curation utilities}{31}{section.B.4}%
-\contentsline {section}{\numberline {B.5}What the archived branches contributed}{31}{section.B.5}%
-\contentsline {chapter}{\numberline {C}Complete Model Matrix}{33}{appendix.C}%
-\contentsline {chapter}{\numberline {D}Repository and Implementation Availability}{36}{appendix.D}%
+\contentsline {chapter}{\numberline {2}Literature Review}{2}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Protein--protein affinity prediction as a benchmark problem}{2}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Physics-based, empirical, and learned approaches}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Generalization and evaluation}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Why use a variational model}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Position of this thesis}{4}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Methods}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Dataset and target}{5}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Molecular-dynamics preparation and simulation}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Residue-graph construction and features}{6}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Graph views, analysis subset, and preprocessing}{7}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Models}{8}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Direct supervised baseline}{8}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Masked GraphVAE}{8}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Latent-space ridge probe}{9}{subsection.3.5.3}%
+\contentsline {section}{\numberline {3.6}Repeated outer evaluation}{9}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Results}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Headline models}{11}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Factor comparisons}{11}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Family-level train, validation, and test behaviour}{12}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Performance by interaction class}{12}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Summary}{13}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Discussion and Conclusions}{14}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Archived Approaches and Project Evolution}{16}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Correction learning around fast affinity baselines}{16}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}PRODIGY}{16}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}MM/GBSA}{17}{subsection.A.1.2}%
+\contentsline {section}{\numberline {A.2}The C$\alpha $ contact-map branch}{17}{section.A.2}%
+\contentsline {section}{\numberline {A.3}The PPB-inspired augmentation and spatiotemporal branch}{19}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Exploratory dataset curation utilities}{19}{section.A.4}%
+\contentsline {chapter}{\numberline {B}Complete Model Matrix}{20}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Repository Layout}{23}{appendix.C}%

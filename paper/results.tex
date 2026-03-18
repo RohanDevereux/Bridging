@@ -1,125 +1,115 @@
 \chapter{Results}
 \label{ch:results}
 
-This chapter reports the final evaluation described in Chapter~\ref{chap:methods}. The analysis was restricted to the matched 1437-complex subset for which both the full and interface graph views were available after molecular-dynamics processing, force-feature construction, and interface materialization. The final model matrix comprised 52 configurations: 48 GraphVAE-based representation models and 4 direct supervised baselines. Each configuration was evaluated across 10 outer held-out fits obtained from 5 folds and 2 repeats. If $m_{c,t}$ denotes a metric for configuration $c$ on outer fit $t \in \{1,\dots,10\}$, the reported configuration-level summary is
-\begin{equation}
-\bar{m}_{c} = \frac{1}{10}\sum_{t=1}^{10} m_{c,t}.
-\end{equation}
-All rankings and factor comparisons below are based on these configuration-level means. For matched design comparisons, the chapter reports the mean paired effect size together with the number of pairings favoring one design over the other. The complete 52-model table is given in Appendix~\ref{ch:appendix_matrix}.
+The final evaluation used the 1437-complex analysis subset for which paired full and interface-restricted graph views were available. The model matrix contained 52 configurations: 48 GraphVAE configurations and 4 direct supervised baselines. Every reported metric is the mean over 10 outer held-out fits from 5 folds and 2 repeats. The complete 52-model table is given in Appendix~\ref{ch:appendix_matrix}.
 
-\section{Headline model performance}
+\section{Headline models}
 
-Table~\ref{tab:headline-models} lists the strongest configurations from the final matrix. The best overall model was the direct supervised baseline on the full static graph, \texttt{full\_base\_S}, with mean test RMSE 2.3379, mean test Pearson correlation 0.5064, and mean test $R^2$ 0.2146. The best GraphVAE configuration was \texttt{full\_S\_semi\_shared\_static\_z32}, with mean test RMSE 2.4292, mean test Pearson correlation 0.4649, and mean test $R^2$ 0.1537. The best static-plus-dynamic GraphVAE configuration was \texttt{full\_SD\_semi\_shared\_static\_z8}, with mean test RMSE 2.4364 and mean test Pearson correlation 0.4749. The strongest interface baseline, \texttt{iface\_base\_S}, achieved mean test RMSE 2.5782, while the best interface GraphVAE, \texttt{iface\_S\_semi\_shared\_static\_z8}, achieved mean test RMSE 2.6041.
+Table~\ref{tab:headline-models} lists the strongest models in the final matrix. The best overall model was the direct supervised baseline on the full static graph. The best GraphVAE was the full static semi-supervised model with latent dimension 32. The best interface model was the static supervised baseline.
 
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{|p{6.2cm}|c|c|c|c|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{5.1cm}|c|c|c|c|}
 \hline
-Configuration & Test RMSE & Test $r$ & Test $R^2$ & Test$-$Train RMSE gap \\
+Model & Test RMSE & Test $r$ & Test $R^2$ & Test$-$Train RMSE \\
 \hline
-\texttt{full\_base\_S} & 2.3379 & 0.5064 & 0.2146 & 0.8021 \\
-\texttt{full\_base\_SD} & 2.4073 & 0.4802 & 0.1685 & 0.8414 \\
-\texttt{full\_S\_semi\_shared\_static\_z32} & 2.4292 & 0.4649 & 0.1537 & 0.7451 \\
-\texttt{full\_SD\_semi\_shared\_static\_z8} & 2.4364 & 0.4749 & 0.1478 & 1.1303 \\
-\texttt{iface\_base\_S} & 2.5782 & 0.3451 & 0.0470 & 0.8090 \\
-\texttt{iface\_S\_semi\_shared\_static\_z8} & 2.6041 & 0.3402 & 0.0282 & 0.8018 \\
-\texttt{iface\_SD\_semi\_sd\_static\_plus\_dynamic\_all\_z16} & 2.6238 & 0.3252 & 0.0146 & 0.7597 \\
+Full baseline, $S$ & 2.3379 & 0.5064 & 0.2146 & 0.8021 \\
+Full baseline, $SD$ & 2.4073 & 0.4802 & 0.1685 & 0.8414 \\
+Full GraphVAE, $S$, semi, $z=32$ & 2.4292 & 0.4649 & 0.1537 & 0.7451 \\
+Full GraphVAE, $SD$, semi, shared static, $z=8$ & 2.4364 & 0.4749 & 0.1478 & 1.1303 \\
+Interface baseline, $S$ & 2.5782 & 0.3451 & 0.0470 & 0.8090 \\
+Interface GraphVAE, $S$, semi, $z=8$ & 2.6041 & 0.3402 & 0.0282 & 0.8018 \\
 \hline
 \end{tabular}
-\caption{Selected headline models from the final 52-configuration evaluation matrix. Metrics are means over 10 outer held-out fits on the matched 1437-complex set. For GraphVAE models, the reported predictive metrics come from the downstream ridge probe on latent means rather than solely from the neural affinity head.}
+}
+\caption{Best-performing models in the final matrix. GraphVAE metrics are those of the downstream ridge probe on latent means.}
 \label{tab:headline-models}
 \end{table}
 
-The best direct supervised baseline outperformed the best GraphVAE by 0.0913 RMSE units and by 0.0415 Pearson-correlation units on average. Within the $SD$ family, the best model was again a full-graph method rather than an interface method: \texttt{full\_base\_SD} reached mean test RMSE 2.4073 and mean test $r=0.4802$, while the best $SD$ GraphVAE reached mean test RMSE 2.4364 and mean test $r=0.4749$. The final evaluation therefore did not support a claim that the variational objective outperformed a direct supervised graph regressor on the present dataset and feature set.
+The best supervised baseline outperformed the best GraphVAE by 0.0913 RMSE units and 0.0415 Pearson-correlation units.
 
-\section{Effect of graph view: full versus interface}
+\section{Factor comparisons}
 
-The largest factor effect in the matrix was the advantage of the full graph view over the interface graph view. There were 24 matched GraphVAE configuration pairs differing only in whether the model was trained on \texttt{full} or \texttt{interface} records. In all 24 of these paired comparisons, the full graph achieved a lower mean test RMSE than the corresponding interface graph. Defining the paired RMSE penalty for the interface representation as
-\begin{equation}
-\Delta_{\mathrm{RMSE}}^{\mathrm{iface-full}} = \bar{\mathrm{RMSE}}_{\mathrm{iface}} - \bar{\mathrm{RMSE}}_{\mathrm{full}},
-\end{equation}
-the mean paired penalty was 0.1005 RMSE units. If the corresponding Pearson-correlation advantage is defined as
-\begin{equation}
-\Delta_{r}^{\mathrm{full-iface}} = \bar{r}_{\mathrm{full}} - \bar{r}_{\mathrm{iface}},
-\end{equation}
-the mean full-graph advantage was 0.0993.
-
-The same direction held at the family level. Averaging over all 24 full-graph GraphVAE configurations gave mean test RMSE 2.5494 and mean test Pearson correlation 0.2883. Averaging over all 24 interface GraphVAE configurations gave mean test RMSE 2.6498 and mean test Pearson correlation 0.1890. The direct supervised baselines showed the same pattern. The best full baseline, \texttt{full\_base\_S}, achieved mean test RMSE 2.3379, whereas the best interface baseline, \texttt{iface\_base\_S}, achieved mean test RMSE 2.5782. This confirms that the superiority of the full representation was not specific to the variational model family.
-
-This pattern was uniform enough that the main view-level conclusion is not sensitive to model-selection details. On the matched subset used here, with the residue-graph definitions and interface-patch construction described in Chapter~\ref{chap:methods}, the full-graph representation was consistently more predictive than the interface-only representation.
-
-\section{Effect of dynamic features: $S$ versus $SD$}
-
-The second main question was whether augmenting the static graph with molecular-dynamics-derived features improved predictive performance. The cleanest comparison for this purpose is between matched $S$ and $SD$ configurations under the \texttt{shared\_static} reconstruction target, because both models are then trained under the same target policy and differ only in whether the dynamic channels are included as inputs. There were 12 such matched GraphVAE pairs in the final matrix. In 11 of the 12 pairs, the $S$ model achieved a lower mean test RMSE than the corresponding $SD$ model.
-
-Defining the paired dynamic-feature penalty as
-\begin{equation}
-\Delta_{\mathrm{RMSE}}^{\mathrm{SD-S}} = \bar{\mathrm{RMSE}}_{\mathrm{SD}} - \bar{\mathrm{RMSE}}_{\mathrm{S}},
-\end{equation}
-the mean penalty was 0.0254 RMSE units. The corresponding Pearson-correlation difference,
-\begin{equation}
-\Delta_{r}^{\mathrm{S-SD}} = \bar{r}_{\mathrm{S}} - \bar{r}_{\mathrm{SD}},
-\end{equation}
-favored the static-only representation by 0.0215 on average. The direct supervised baselines were consistent with the same conclusion: \texttt{full\_base\_SD} was worse than \texttt{full\_base\_S} by 0.0694 RMSE units, and \texttt{iface\_base\_SD} was not better than \texttt{iface\_base\_S}.
-
-This effect was modest. The best $SD$ GraphVAE, \texttt{full\_SD\_semi\_shared\_static\_z8}, was only 0.0072 RMSE units worse than the best $S$ GraphVAE, \texttt{full\_S\_semi\_shared\_static\_z32}, and it had a slightly higher test Pearson correlation (0.4749 versus 0.4649). The result is therefore not that dynamic features are uniformly harmful. It is that, across the full evaluation matrix, the dynamic augmentation does not yield a robust and repeatable generalization gain over the static representation.
-
-\section{Effect of supervision}
-
-The influence of semi-supervision depended strongly on graph view. Within the full graph view, semi-supervision helped consistently. For the static mode, all 3 of the 3 matched full-graph pairs favored semi-supervision over the corresponding unsupervised model, with a mean test-RMSE gain of 0.1640. For the static-plus-dynamic mode, all 9 of the 9 matched full-graph pairs favored semi-supervision, with a mean test-RMSE gain of 0.1604. The strongest full-graph models therefore all came from the semi-supervised branch of the matrix.
-
-The interface results were weaker and less coherent. In the static mode, semi-supervision still helped in all 3 of the 3 matched interface pairs, but the mean gain was only 0.0290 RMSE units. In the dynamic mode, semi-supervision did not produce a robust benefit. Across the 9 matched interface $SD$ pairs, the mean semi-supervised gain was $-0.0081$ RMSE units and only 3 of the 9 pairs favored the semi-supervised model. The interpretation is therefore not simply that supervision helps universally. Rather, supervision helps when the graph representation contains sufficient predictive structure, which appears to be true for the full graphs and only marginally true for the interface graphs.
-
-\section{Effect of reconstruction target policy}
-
-Within the $SD$ GraphVAE branch, the final evaluation also tested whether the decoder should reconstruct only static targets, only dynamic targets, or both. The most informative regime for this comparison is the full-graph semi-supervised $SD$ family, because this was the only dynamic branch that approached competitive held-out performance. Averaging over the three latent dimensionalities gave mean test RMSE 2.4434 for \texttt{shared\_static}, 2.4795 for \texttt{sd\_static\_plus\_dynamic\_all}, and 2.5150 for \texttt{sd\_dynamic\_all}. The corresponding mean test Pearson correlations were 0.4682, 0.4335, and 0.4221, respectively.
-
-Pairwise comparisons by latent dimensionality showed that reconstructing only dynamic targets was consistently worse than reconstructing the shared static targets. Across the three matched latent-dimensionality pairs, the mean RMSE penalty of \texttt{sd\_dynamic\_all} relative to \texttt{shared\_static} was 0.0716. The mean Pearson-correlation loss was 0.0461. The \texttt{sd\_static\_plus\_dynamic\_all} target policy was intermediate. Its mean RMSE penalty relative to \texttt{shared\_static} was 0.0360, and the corresponding mean Pearson-correlation loss was 0.0347.
-
-These results indicate that, in the only dynamic regime that was even moderately competitive, asking the decoder to reconstruct dynamic targets did not improve held-out predictive quality. The strongest dynamic models were obtained when the dynamic channels were present as inputs but the reconstruction objective remained focused on the shared static targets.
-
-\section{Overfitting and train--validation--test behaviour}
-
-The train--validation--test metrics also showed a consistent generalization pattern. To quantify overfitting, define the train--test RMSE gap and train--test correlation gap for configuration $c$ as
-\begin{equation}
-g_{\mathrm{RMSE}}(c) = \bar{\mathrm{RMSE}}_{\mathrm{test},c} - \bar{\mathrm{RMSE}}_{\mathrm{train},c},
-\end{equation}
-and
-\begin{equation}
-g_{r}(c) = \bar{r}_{\mathrm{train},c} - \bar{r}_{\mathrm{test},c}.
-\end{equation}
-Large positive values of either quantity indicate stronger train-to-test divergence.
-
-The unsupervised GraphVAE families were characterized primarily by underfitting rather than by severe overfitting. For example, the mean train, validation, and test Pearson correlations for the full unsupervised static family were 0.2486, 0.1897, and 0.2055, respectively, with a mean train--test RMSE gap of only 0.0276. The corresponding full unsupervised dynamic family had mean train, validation, and test correlations of 0.1809, 0.0967, and 0.1074. These small train--test gaps do not indicate strong robustness; they indicate that the unsupervised models did not learn much affinity signal even on their training sets.
-
-The overfitting story emerges in the semi-supervised families. The full semi-supervised static family had mean train, validation, and test Pearson correlations of 0.7494, 0.4666, and 0.4551, respectively, with a mean train--test RMSE gap of 0.6984. This is a moderate and credible generalization gap. The full semi-supervised dynamic family fit the training data substantially more strongly, with mean train correlation 0.8218, but it did not improve held-out performance; its mean test correlation was only 0.4413 and its mean train--test RMSE gap increased to 1.0049. The interface semi-supervised dynamic family exhibited the strongest divergence of all major families, with mean train, validation, and test correlations of 0.7685, 0.3231, and 0.3189, respectively, and a mean train--test RMSE gap of 1.0140.
-
-Table~\ref{tab:family-overfit} summarizes these family-level patterns. The best direct supervised baseline, \texttt{full\_base\_S}, combined the highest held-out performance with a more controlled generalization gap than the semi-supervised dynamic families. Its mean train, validation, and test correlations were 0.8225, 0.5337, and 0.5064, respectively, and its mean train--test RMSE gap was 0.8021. This gap is smaller than those of the dynamic semi-supervised VAE families while producing better held-out accuracy.
+Table~\ref{tab:factor-summary} summarizes the main matched comparisons in the GraphVAE matrix. The dominant effect was graph view: the full graph outperformed the interface-restricted graph in all 24 matched GraphVAE comparisons. Under the \texttt{shared\_static} target policy, the static representation outperformed the static-plus-dynamic representation in 11 of 12 matched GraphVAE comparisons. Semi-supervision helped consistently for the full-graph runs and the interface static runs, but not for the interface dynamic runs.
 
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{|l|c|c|c|c|c|c|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{5.2cm}|c|c|c|c|}
+\hline
+Comparison & Pairs & Mean RMSE gain for first option & Mean Pearson $r$ gain for first option & Pair wins for first option \\
+\hline
+Full over interface & 24 & 0.1005 & 0.0993 & 24 / 24 \\
+$S$ over $SD$ (shared static) & 12 & 0.0254 & 0.0215 & 11 / 12 \\
+Semi over unsup, full $S$ & 3 & 0.1640 & 0.2497 & 3 / 3 \\
+Semi over unsup, full $SD$ & 9 & 0.1604 & 0.3339 & 9 / 9 \\
+Semi over unsup, interface $S$ & 3 & 0.0290 & 0.2436 & 3 / 3 \\
+Semi over unsup, interface $SD$ & 9 & -0.0081 & 0.2766 & 3 / 9 \\
+\hline
+\end{tabular}
+}
+\caption{Matched GraphVAE comparisons. A positive RMSE gain means the first-named option has lower mean test RMSE.}
+\label{tab:factor-summary}
+\end{table}
+
+Within the full semi-supervised $SD$ family, the reconstruction target also mattered. Averaged over latent dimensions 8, 16, and 32, the mean test RMSE was 2.4434 for \texttt{shared\_static}, 2.4795 for \texttt{sd\_static\_plus\_dynamic\_all}, and 2.5150 for \texttt{sd\_dynamic\_all}. The corresponding mean test Pearson correlations were 0.4682, 0.4335, and 0.4221.
+
+\section{Family-level train, validation, and test behaviour}
+
+Table~\ref{tab:family-overfit} summarizes the main model families. The unsupervised VAE families had small train--test gaps but weak correlations on all splits. The semi-supervised families fit the training set more strongly. The strongest held-out result remained the full static supervised baseline.
+
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{3.8cm}|c|c|c|c|c|c|}
 \hline
 Family & Train $r$ & Val $r$ & Test $r$ & $g_r$ & Train RMSE & Test RMSE \\
 \hline
 Full baseline $S$ & 0.8225 & 0.5337 & 0.5064 & 0.3161 & 1.5358 & 2.3379 \\
 Full baseline $SD$ & 0.8077 & 0.5191 & 0.4802 & 0.3275 & 1.5659 & 2.4073 \\
-Full semi-supervised VAE $S$ & 0.7494 & 0.4666 & 0.4551 & 0.2942 & 1.7385 & 2.4369 \\
-Full semi-supervised VAE $SD$ & 0.8218 & 0.4580 & 0.4413 & 0.3805 & 1.4744 & 2.4793 \\
-Interface semi-supervised VAE $S$ & 0.7083 & 0.3356 & 0.3361 & 0.3722 & 1.8467 & 2.6112 \\
-Interface semi-supervised VAE $SD$ & 0.7685 & 0.3231 & 0.3189 & 0.4496 & 1.6479 & 2.6620 \\
+Full VAE unsup $S$ & 0.2486 & 0.1897 & 0.2055 & 0.0431 & 2.5734 & 2.6009 \\
+Full VAE unsup $SD$ & 0.1809 & 0.0967 & 0.1074 & 0.0736 & 2.6062 & 2.6398 \\
+Full VAE semi $S$ & 0.7494 & 0.4666 & 0.4551 & 0.2942 & 1.7385 & 2.4369 \\
+Full VAE semi $SD$ & 0.8218 & 0.4580 & 0.4413 & 0.3805 & 1.4744 & 2.4793 \\
+Interface VAE unsup $S$ & 0.1495 & 0.0794 & 0.0925 & 0.0570 & 2.6289 & 2.6402 \\
+Interface VAE unsup $SD$ & 0.1261 & 0.0382 & 0.0424 & 0.0838 & 2.6324 & 2.6538 \\
+Interface VAE semi $S$ & 0.7083 & 0.3356 & 0.3361 & 0.3722 & 1.8467 & 2.6112 \\
+Interface VAE semi $SD$ & 0.7685 & 0.3231 & 0.3189 & 0.4496 & 1.6479 & 2.6620 \\
 \hline
 \end{tabular}
-\caption{Family-level train/validation/test behaviour. Each row is the arithmetic mean over all configurations in that family, using the configuration-level means from the 10 outer held-out fits. Here $g_r = \bar{r}_{\mathrm{train}} - \bar{r}_{\mathrm{test}}$.}
+}
+\caption{Family-level mean train, validation, and test behaviour. Here $g_r = r_{\mathrm{train}} - r_{\mathrm{test}}$. Each row is averaged over all configurations in that family.}
 \label{tab:family-overfit}
 \end{table}
 
-The worst individual overfitting case in the semi-supervised GraphVAE matrix was \texttt{iface\_SD\_semi\_shared\_static\_z32}. This model reached mean train Pearson correlation 0.8213 but only mean test Pearson correlation 0.3185, giving a train--test correlation gap of 0.5028. Its mean train RMSE was 1.4239, while its mean test RMSE was 2.6705. This specific result reinforces the broader pattern seen at the family level: adding dynamic channels, especially on the interface representation, increased training-set fit more than it increased robust held-out predictive signal.
+\section{Performance by interaction class}
 
-\section{Summary of empirical conclusions}
+The matched 1437-complex analysis set contained 966 complexes in the broad \emph{other} class, 366 antibody--antigen complexes, and 105 TCR-pMHC complexes. For subgroup analysis, the outer-test predictions were pooled over all 10 fits, so each complex contributes two held-out predictions, one from each repeat.
 
-The final evaluation supports four main empirical conclusions. First, the full graph view was consistently stronger than the interface graph view for the present problem setup. Second, the molecular-dynamics-derived feature construction used here did not provide a robust generalization advantage over the static representation. Third, within the dynamic GraphVAE branch, reconstruction objectives focused on dynamic targets were not helpful. Fourth, the strongest overall model was the direct supervised baseline on the full static graph, not the variational model.
+Table~\ref{tab:subgroup-headline} shows the subgroup behaviour of the main headline models. The full static baseline remained the strongest of these models in all three interaction classes. The full static GraphVAE remained second, and the interface baseline remained weaker in every subgroup.
 
-These conclusions are more stable than the corresponding conclusions from earlier single-split experiments because they are based on repeated outer held-out evaluation over 52 configurations and 520 total fits. At the same time, the results remain specific to the implementation choices used here: short explicit-solvent trajectories, static residue graphs with time-aggregated annotations, a 128-node interface patch, and approximate protein-only inter-chain force proxies. The negative result for the molecular-dynamics-derived encoding should therefore be interpreted as a result about this particular representation strategy rather than as a universal statement that protein dynamics are irrelevant for affinity prediction.
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+Subgroup & $n$ & Full baseline RMSE & Full baseline $r$ & Full GraphVAE RMSE & Full GraphVAE $r$ & Interface baseline RMSE & Interface baseline $r$ \\
+\hline
+Antibody--antigen & 366 & 2.048 & 0.292 & 2.134 & 0.193 & 2.356 & 0.089 \\
+Other & 966 & 2.501 & 0.430 & 2.584 & 0.394 & 2.675 & 0.312 \\
+TCR-pMHC & 105 & 1.663 & 0.466 & 1.879 & 0.406 & 2.440 & 0.333 \\
+\hline
+\end{tabular}
+}
+\caption{Pooled outer-test subgroup metrics for the best overall model (\texttt{full\_base\_S}), the best GraphVAE (\texttt{full\_S\_semi\_shared\_static\_z32}), and the best interface model (\texttt{iface\_base\_S}).}
+\label{tab:subgroup-headline}
+\end{table}
+
+\section{Summary}
+
+Four results dominate the final matrix. First, the full graph was better than the interface-restricted representation. Second, the dynamic summaries did not improve held-out performance over the static representation. Third, the strongest model was the direct supervised baseline on the full static graph. Fourth, the same model ordering remained in the antibody--antigen, TCR-pMHC, and other interaction classes.

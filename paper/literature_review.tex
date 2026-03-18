@@ -1,28 +1,56 @@
 \chapter{Literature Review}
 \label{ch:litreview}
 
-\section{Protein--protein affinity prediction}
+\section{Protein--protein affinity prediction as a benchmark problem}
 
-Protein--protein affinity prediction remains less standardized than several neighbouring tasks in structural bioinformatics \citep{Guo2022PPBAReview,Liu2024PPBAffinity}. Much of the older supervised literature focused on mutation-induced changes in binding energy, supported by resources such as SKEMPI 2.0, rather than on direct prediction of absolute binding affinity for heterogeneous wild-type complexes \citep{Jankauskaite2019SKEMPI}. Absolute-affinity benchmarks do exist, including the structure-based benchmark assembled by Kastritis and coworkers, but they are small by current deep-learning standards \citep{Kastritis2011Benchmark}. PPB-Affinity is therefore an important recent development because it was assembled specifically for direct protein--protein affinity prediction at larger scale \citep{Liu2024PPBAffinity}.
+Absolute protein--protein affinity prediction is a smaller and less standardized literature than protein--ligand scoring. Protein--ligand benchmarking has had a shared structural resource since PDBbind \citep{Wang2004PDBbind}, whereas curated protein--protein benchmarks for absolute affinity remained much smaller for many years \citep{Kastritis2011Benchmark}. PPB-Affinity is a recent dataset built specifically for machine-learning work on direct protein--protein affinity prediction at larger scale \citep{Liu2024PPBAffinity}. Reviews of the field still describe limited labelled data, broad interface heterogeneity, and conformational change as central obstacles \citep{Siebenmorgen2020PPIReview,Guo2022PPBAReview,Liu2024PPBAffinity}.
 
-This task is difficult for straightforward physical reasons. The target is thermodynamic, but the input is usually a single experimentally observed structure. Reviews of the field emphasize that limited labelled data, structural heterogeneity, and the gap between one structure and an underlying binding ensemble remain major obstacles \citep{Guo2022PPBAReview,Liu2024PPBAffinity}.
+Single-structure scoring is particularly restrictive for protein--protein complexes. In the Kastritis benchmark, only a minority of complexes were close to rigid-body association, and large or moderate interface rearrangements were common \citep{Kastritis2011Benchmark}. Moal et al. likewise emphasized that flexible complexes and diverse functional classes make the task harder than the narrow enzyme--inhibitor benchmarks used by much of the older literature \citep{Moal2011AffinityPrediction}. The literature is correspondingly more fragmented than the protein--ligand literature.
 
-\section{Physics-based and empirical approaches}
+PPB-Affinity also makes the subtype heterogeneity explicit. Its benchmark model reached Pearson $r=0.701$ on the full test set, but the subgroup plots were weaker for both antibody--antigen and TCR-pMHC \citep{Liu2024PPBAffinity}. The paper attributes the TCR-pMHC difficulty to strong interface similarity within that class and notes that both subgroups contain a higher proportion of mutant samples than the full dataset \citep{Liu2024PPBAffinity}. Subgroup-specific models have appeared for the same reason. Yang et al. developed antibody--antigen-specific affinity regressors and argued that general protein--protein affinity predictors do not transfer to antibody--antigen complexes with comparable accuracy \citep{Yang2023AntibodyAffinity}.
 
-One response is to estimate affinity directly from simulation. Umbrella sampling and alchemical free-energy methods are established routes to free-energy estimation, but they are computationally expensive and sensitive to protocol design \citep{Torrie1977Umbrella,Cournia2017RBFE}. At lower cost, MM/PBSA and MM/GBSA provide widely used endpoint approximations, although their performance depends strongly on solvent treatment, entropy approximations, and state averaging \citep{Genheden2015MMGBSA}. This literature motivates taking molecular dynamics seriously, but it does not make full free-energy calculation the only practical option.
+\section{Physics-based, empirical, and learned approaches}
 
-Another response is to predict affinity directly from structure. PRODIGY is a representative example of a fast empirical model built from interfacial contact descriptors \citep{Vangone2015Contacts}. Other earlier approaches similarly relied on engineered structural features and conventional regressors \citep{Moal2011AffinityPrediction}. More recent work has moved toward learned structural representations. The PPB-Affinity paper includes a benchmark deep model on the new dataset \citep{Liu2024PPBAffinity}, and recent studies such as PPI-Graphomer have explored pretrained and graph-based models for direct affinity prediction \citep{Xie2025PPIGraphomer}.
+Physics-based affinity estimation remains the reference point. Umbrella sampling and alchemical free-energy methods target the binding free energy more directly, but they are expensive and sensitive to protocol design \citep{Torrie1977Umbrella,Cournia2017RBFE}. MM/PBSA and MM/GBSA are cheaper endpoint approximations and are therefore attractive as practical baselines, but they remain approximate and system-dependent \citep{Massova2000MMPBSA,Genheden2015MMGBSA}. Fast empirical estimators occupy the other extreme. PRODIGY predicts affinity from interfacial contact counts and non-interacting surface descriptors \citep{Vangone2015Contacts}, while descriptor-based regressors such as the model of Moal et al.\ use engineered structural summaries of the complex \citep{Moal2011AffinityPrediction}.
 
-\section{Why the protein--ligand comparison matters}
+More recent work has moved toward learned structural representations. In protein--protein affinity prediction, the common pattern is still interface-centered learning: hand-designed interface descriptors, interface-derived descriptor vectors, or interface-focused geometric deep learning \citep{Liu2024PPBAffinity,RomeroMolina2022PPIAffinity,Xie2025PPIGraphomer}. In protein--ligand affinity prediction, the literature is broader and older, spanning binding-site voxel CNNs such as Pafnucy \citep{Stepniewska2018Pafnucy} and MD-aware spatio-temporal models such as Timenucy and Videonucy \citep{Libouban2025Spatiotemporal}.
 
-The protein--ligand literature provides a useful contrast. Datasets such as PDBbind have given that field a longer and more standardized benchmark tradition \citep{Wang2004PDBbind}. This has supported a broad range of learned structural models, including voxelized approaches such as Pafnucy \citep{Stepniewska2018Pafnucy} and more recent trajectory-aware models trained on MD-derived data \citep{Libouban2025Spatiotemporal}. The protein--ligand literature therefore provides concrete examples of successful geometric and trajectory-aware affinity models.
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{1.6cm}|p{2.8cm}|p{3.8cm}|p{3.0cm}|p{5.0cm}|}
+\hline
+Domain & Method & Representation / scope & Model class & Reported result \\
+\hline
+Protein--protein & PRODIGY \citep{Vangone2015Contacts,RomeroMolina2022PPIAffinity} & Interfacial contacts and non-interacting surface descriptors; interface-only & Empirical regression & Benchmark set of 79 complexes: $r=0.74$, MAE $1.4$ kcal mol$^{-1}$; external 90-complex set reported later by PPI-Affinity: $r=0.31$, MAE $2.5$ kcal mol$^{-1}$ \\
+\hline
+Protein--protein & PPI-Affinity \citep{RomeroMolina2022PPIAffinity} & Structure-derived descriptor vector; whole-complex descriptors & Ensemble regressor & Vangone--Bonvin benchmark: $r=0.62$, MAE $1.8$ kcal mol$^{-1}$; external 90-complex hold-out: $r=0.50$, MAE $1.8$ kcal mol$^{-1}$ \\
+\hline
+Protein--protein & PPB-Affinity benchmark model \citep{Liu2024PPBAffinity} & 128 interface residues and pair geometry; interface-restricted & IPA-based geometric deep learning & Whole-dataset benchmark: Pearson $r=0.701$, Spearman $\rho=0.691$ \\
+\hline
+Protein--protein & PPI-Graphomer \citep{Xie2025PPIGraphomer} & Pretrained sequence/structure features with interface-aware bias; interface-focused & Graph transformer & Two external test sets: PCC $0.641$ and $0.625$ \\
+\hline
+Protein--ligand & Pafnucy \citep{Stepniewska2018Pafnucy} & 3D voxelized binding-site tensor; pocket-restricted & 3D CNN & PDBbind v2016 core-set scoring power: Pearson $r=0.78$ \\
+\hline
+Protein--ligand & Timenucy / Videonucy \citep{Libouban2025Spatiotemporal} & MD trajectories of protein--ligand complexes; pocket-region time series & Spatio-temporal neural networks & MDbind test set: Pearson $r=0.78$ for Timenucy and $r=0.84$ for Videonucy \\
+\hline
+\end{tabular}
+}
+\caption{Representative reported results from the protein--protein and protein--ligand affinity literature. Reported correlations are taken from the original papers; the datasets differ across rows.}
+\label{tab:lit-comparison}
+\end{table}
 
-Protein--protein complexes make the representation question less obvious. A ligand naturally defines a local binding object inside a pocket; a protein--protein complex does not. Even before model choice, one must decide whether the relevant representation is the whole complex, the interface only, or some local patch around the interface. That is a central design question in this thesis.
+\section{Generalization and evaluation}
 
-\section{Why use a variational graph model}
+External-test-set behavior already exposed weak generalization in this literature. PPI-Affinity reported that PRODIGY fell from $r=0.74$ on the original benchmark of Vangone and Bonvin to $r=0.31$ on a separate 90-complex hold-out set, and interpreted that drop as evidence of overfitting to the earlier benchmark \citep{RomeroMolina2022PPIAffinity}. Moal et al.\ had already tried to guard against the same problem by removing homologous complexes so that leave-one-out evaluation would not benefit from near-duplicate training examples \citep{Moal2011AffinityPrediction}. In protein--ligand scoring, Graber et al.\ later showed directly that structural overlap between PDBbind and CASF had inflated apparent benchmark performance, and that retraining on leakage-reduced splits caused marked performance drops for previously strong models \citep{Graber2025DataBias}. External or family-disjoint evaluation is necessary when reported accuracy is interpreted.
 
-Variational autoencoders are well established in molecular representation learning as a way to combine reconstruction with latent-space regularization \citep{Kingma2014VAE,GomezBombarelli2018MolecularVAE,Kipf2016VGAE,Simonovsky2018GraphVAE}. They are not the default standard in direct protein--protein affinity prediction, where supervised regression remains more common \citep{Guo2022PPBAReview,Xie2025PPIGraphomer}. They are still relevant here because the thesis asks not only which predictor is strongest, but also whether a reconstruction-based latent representation can capture useful structure in residue graphs enriched with molecular-dynamics-derived features.
+\section{Why use a variational model}
 
-\section{Where this thesis fits}
+Variational autoencoders were introduced as latent-variable models that combine reconstruction with a regularized latent distribution \citep{Kingma2014VAE}. Variational graph autoencoders extended the same idea to graph data \citep{Kipf2016VGAE}. That is not yet a standard route for endpoint protein--protein affinity prediction, but it is relevant as a representation-learning strategy when the input is high-dimensional and only part of the signal is likely to be affinity-relevant.
 
-The literature suggests a clear gap. Rigorous free-energy methods are principled but expensive. Fast empirical scorers are cheap but compressed. Learned structural models are becoming more capable, but direct protein--protein affinity prediction still lacks a single settled representation or modelling strategy. This thesis therefore asks a focused question: starting from a residue-graph representation of a protein complex, do short explicit-solvent molecular-dynamics summaries improve held-out affinity prediction, and does that answer depend on graph view or model family?
+The specific motivation comes from molecular simulation. Tian et al.\ showed that a VAE trained on protein MD trajectories could learn a latent space that generated unsampled but physically plausible conformations and helped explore hidden regions of the conformational landscape \citep{Tian2021ProteinVAE}. The role of the GraphVAE in this thesis is analogous. It is not used as a generic graph generator; it is used to compress residue graphs built from static structure and short MD-derived summaries into a latent representation that can then be tested for affinity prediction.
+
+\section{Position of this thesis}
+
+This thesis sits between fast structure-based scoring and expensive free-energy calculation. It does not attempt rigorous binding free-energy estimation, and it does not rely on a small hand-designed interface score alone. The central question is whether short explicit-solvent MD can improve a residue-graph representation for direct protein--protein affinity prediction, and whether that answer changes with graph view or model family.

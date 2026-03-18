@@ -1,44 +1,16 @@
 \chapter{Discussion and Conclusions}
 \label{ch:discussion}
 
-\section{Main findings}
+On the 1437-complex evaluation set, the strongest model was the direct supervised baseline on the full static residue graph. The full view outperformed the interface-restricted view consistently, the molecular-dynamics-derived summaries did not improve held-out performance over the static feature set, and the direct supervised baseline outperformed the best GraphVAE configuration.
 
-The final evaluation supports three main conclusions. First, the full residue graph is consistently stronger than the interface-only graph for the present pipeline. Second, the molecular-dynamics-derived feature set used here does not provide a robust held-out improvement over the static representation. Third, the strongest overall model is the direct supervised baseline on the full static graph rather than the GraphVAE.
+The graph-view comparison is unambiguous. The full graph won all 24 matched GraphVAE comparisons and both supervised baseline comparisons. In this implementation, the interface-restricted view removed useful context.
 
-These conclusions are stronger than the corresponding conclusions from the earlier exploratory runs because they are based on a matched 1437-complex subset, 52 model configurations, and 520 outer held-out fits. The main value of this design is that the factor-level conclusions do not depend on a single split.
+The dynamic comparison is specific to the implemented feature set: hydration summaries, C$\alpha$ RMSF, torsion summaries, contact frequencies, distance summaries, and approximate inter-chain force proxies attached to a static residue graph. Under that encoding, the dynamic channels did not produce a held-out gain.
 
-\section{Interpreting the full-versus-interface result}
+The GraphVAE learned usable latent representations, but the best predictive model was still the supervised baseline. On this dataset and with this encoder backbone, masked reconstruction and latent regularization did not yield the strongest held-out predictor.
 
-The full-versus-interface result is the strongest finding in the thesis. Every matched variational comparison favored the full graph, and the same direction held for the direct supervised baselines. The simplest interpretation is that the interface view is too restrictive in its current form. In the final retained set, 97.1\% of interface graphs hit the hard cap of 128 nodes, so the interface representation was usually being truncated rather than simply focused.
+The main limitations are the short trajectory length, the static graph topology, the use of time-aggregated dynamic features rather than an explicitly temporal model, and evaluation on one dataset family. A practical limitation is dataset scale: the processed broad table contained 2818 curated complexes, but the full MD and repeated-resampling study was run on a smaller compute-bounded analysis subset. PPB-Affinity reported better benchmark performance as the training fraction increased, so this restricted study size matters \citep{Liu2024PPBAffinity}. A second limitation is the split itself. The resampling was repeated, but it was not family-disjoint. Earlier protein--protein work explicitly removed homologous complexes to avoid optimistic evaluation, and protein--ligand studies have shown that structural overlap between training and test sets can inflate reported affinity-prediction performance \citep{Moal2011AffinityPrediction,Graber2025DataBias}. Natural extensions are therefore larger MD-backed study sets, longer simulations, models that operate directly on temporal graph sequences, and stricter split definitions.
 
-This does not show that interface modelling is inherently weak. It shows that the specific interface construction used here was too information-limited to compete with the full graph on the matched PPB-Affinity subset.
+Subtype heterogeneity also remained visible in the final sweep. On pooled outer-test predictions, the best overall model (\texttt{full\_base\_S}) gave Pearson $r=0.292$ on antibody--antigen, $r=0.430$ on the broad other class, and $r=0.466$ on TCR-pMHC. The full static baseline remained the strongest configuration in all three interaction classes, and the interface-restricted models remained weaker in all three.
 
-\section{Interpreting the negative dynamic result}
-
-The dynamic result needs narrower wording. The thesis does not show that dynamics are unimportant for protein--protein affinity. It shows that the specific dynamic encoding used here does not improve held-out prediction over a strong static graph.
-
-That outcome is plausible given the implementation. The trajectories are short, the dynamic channels are aggressively summarized, temporal order is discarded, and the force features are approximate protein-only inter-chain proxies rather than exact decompositions from the original solvated simulation. The preparation pipeline also makes simplifying choices that matter for interpretation: missing residues are not rebuilt, non-protein components are removed before simulation, equilibration frames remain in the saved trajectories, and pH and temperature fall back to defaults when metadata are unavailable.
-
-Taken together, these choices describe a coarse dynamic summary layer rather than a rich temporal representation. The negative result is therefore informative, but it is a result about this representation strategy, not about dynamics in general.
-
-\section{Why the supervised baseline won}
-
-The direct supervised baseline outperformed the best GraphVAE by a modest but consistent margin. The baseline spends all of its capacity on affinity prediction, whereas the GraphVAE must divide capacity between reconstruction, latent regularization, and optional supervision. On the present dataset, that trade-off did not pay off in held-out accuracy.
-
-This does not make the GraphVAE useless. It still provides a structured latent representation and a clear route for future representation-learning work. It does mean that, for the present thesis question, the simpler model gives the stronger empirical answer.
-
-\section{What the train--test gaps show}
-
-The train--validation--test behaviour helps interpret the dynamic result. The unsupervised GraphVAE families mostly underfit. The semi-supervised dynamic families fit the training data more strongly, but they do not improve held-out performance and they show larger train--test gaps than the corresponding static families. The extra dynamic channels therefore look more like additional flexibility than additional robust signal.
-
-\section{Limitations}
-
-The final study uses a retained matched subset of 1437 complexes rather than the entire curated dataset of 2818 complexes. The simulations are short and simplified. The graph topology is static. The interface representation is capped aggressively. The dynamic features are summary statistics rather than learned temporal representations. The evaluation is stronger than a single split, but it is still internal validation on one dataset family rather than an external benchmark.
-
-These limitations do not invalidate the main conclusions, but they do narrow their scope. The thesis provides evidence about a specific and fully described MD-to-graph pipeline. It does not provide the final word on whether richer uses of molecular dynamics could help protein--protein affinity prediction.
-
-\section{Conclusion}
-
-The thesis asked whether short explicit-solvent molecular dynamics could improve residue-graph prediction of protein--protein binding affinity. For the implemented pipeline, the answer is no. The full graph is better than the interface patch, the present dynamic feature set does not improve robust held-out performance over the static graph, and the strongest overall model is the direct supervised baseline on the full static graph.
-
-This is still a useful result. It replaces optimistic single-split impressions with a cleaner conclusion and points to the next technical questions: better dynamic representations, longer simulations, and less restrictive interface definitions.
+Within the implemented pipeline, short explicit-solvent molecular-dynamics summaries did not improve protein--protein binding affinity prediction over a static residue graph, and the strongest overall model was the direct supervised baseline on the full static graph.
