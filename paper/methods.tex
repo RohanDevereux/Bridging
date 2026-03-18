@@ -1,0 +1,124 @@
+\chapter{Methods}
+\label{chap:methods}
+
+\section{Dataset curation and affinity labels}
+
+All experiments were based on the PPB-Affinity resource, a large protein--protein binding affinity dataset assembled for machine-learning applications in macromolecular drug discovery \citep{Liu2024PPBAffinity}. The active dataset used in this study was a locally curated broad subset that retained all major PPB-Affinity subgroups while enforcing a single annotated ligand--receptor pairing per complex. Complexes were retained only if a Protein Data Bank (PDB) structure, an interpretable ligand and receptor chain assignment, and an affinity measurement sufficient to derive a binding free energy were all available. Mutant complexes were excluded so that the final learning problem remained a wild-type structure-to-affinity mapping. Duplicate entries were removed by requiring both a unique PDB identifier and a unique ordered ligand/receptor chain-group definition. The resulting curated CSV contained 2818 complexes.
+
+Each complex was assigned a canonical identifier of the form \texttt{PDB\_\_ligandChains\_\_receptorChains}. Experimental affinity was represented as the standard Gibbs free energy of binding, $\Delta G$, in kcal mol$^{-1}$. When a free energy value was not already present in the source table, it was computed from the reported dissociation constant $K_D$ using
+\begin{equation}
+\Delta G = RT \ln K_D,
+\end{equation}
+where $R = 0.00198720425864083$ kcal mol$^{-1}$ K$^{-1}$ and $T$ is the experimental temperature in kelvin. If a complex-specific temperature was not available, $T=298.15$ K was used. This conversion was applied uniformly during dataset normalization so that all downstream models were trained against a single continuous thermodynamic target.
+
+\section{Molecular dynamics system preparation}
+
+Protein complexes were prepared from their PDB coordinate files using PDBFixer \citep{PDBFixerSoftware} and the OpenMM application layer \citep{Eastman2024OpenMM8}. The annotated ligand and receptor chains were first extracted from the source complex. Missing residues were detected during preprocessing but were not rebuilt; this choice preserved the experimentally deposited backbone definition rather than introducing modeled insertions. Nonstandard residues were converted when PDBFixer provided a standard mapping, heterogens were removed, missing heavy atoms were added, and hydrogens were assigned before solvation. Only protein residues were retained in the final simulation system prior to solvent addition.
+
+Prepared complexes were solvated explicitly with a cubic water shell extending 1.0 nm beyond the solute and with an ionic strength of 0.15 M. The force-field stack used throughout the active pipeline was \texttt{amber14-all.xml} for the protein and \texttt{amber14/tip3pfb.xml} for the solvent, corresponding to the Amber14 protein force field and the TIP3P-FB water model \citep{Maier2015ff14SB,Wang2014WaterModels}. Protonation-state preparation used the per-complex experimental pH when available and otherwise defaulted to pH 7.0. In the final retained analysis set, experimental pH metadata were not available and the default pH was therefore used uniformly.
+
+\section{Molecular dynamics protocol}
+
+All simulations were carried out in OpenMM \citep{Eastman2024OpenMM8}. The molecular mechanics system was built with particle-mesh Ewald electrostatics, a 1.0 nm real-space nonbonded cutoff, constraints on bonds involving hydrogen, rigid water, and an Ewald error tolerance of $10^{-4}$. Pressure was controlled at 1 atm using a Monte Carlo barostat and temperature was controlled with a Langevin middle integrator using a friction coefficient of 1 ps$^{-1}$ and a 2 fs time step. Each system was energy-minimized for up to 1000 iterations, equilibrated for 100{,}000 steps, and then propagated for a 500{,}000-step production run. At a 2 fs step size, these settings correspond to 0.2 ns of equilibration followed by 1.0 ns of additional simulation.
+
+Trajectory and state reporters were written every 5000 integration steps, corresponding to 10 ps between saved frames. Two NetCDF trajectories were written for each complex: a full-system trajectory containing protein, solvent, and ions, and a second protein-only trajectory written in the same coordinate frame. Because the reporters were attached before equilibration began, all saved frames from both the equilibration and production phases were available to downstream feature extraction. The stored outputs for each complex therefore comprised 120 saved frames over a total simulated duration of 1.2 ns. Complex-specific temperatures from the source dataset were used when available; otherwise a default temperature of 298.15 K was used.
+
+\section{Residue-graph construction}
+
+Residue-level graphs were generated with DeepRank2 \citep{Crocioni2024DeepRank2}. To avoid restricting the graph to a predefined interface only, the active preparation pipeline used DeepRank2 in a full-complex query mode with an effectively unbounded influence radius of $10^6$ \AA, which ensured that all protein residues in the prepared topology were represented in the resulting graph. DeepRank2 feature modules \texttt{components}, \texttt{contact}, \texttt{exposure}, and \texttt{surfacearea} were applied to the protein-only topology written from the molecular dynamics preparation stage. This yielded per-residue structural descriptors including buried surface area, solvent-accessible surface area, residue depth, and half-sphere exposure features, together with pairwise edge descriptors including residue distance, same-chain identity, electrostatic interaction, and van der Waals interaction.
+
+These DeepRank2 features were augmented with two additional categories of node attributes. First, residue identity was encoded using a 20-way amino-acid one-hot representation together with coarse physicochemical indicators and scalar descriptors of charge, hydropathy, mass, aromaticity, and hydrogen-bonding tendency. Second, a local structural-context count was computed for each residue on the first saved protein frame by counting residues within 8 \AA\ on the same chain and on the partner chain. These context counts were concatenated with the DeepRank2 node features and treated as static inputs in all downstream models.
+
+\section{Molecular dynamics-derived node and edge features}
+
+Dynamic graph attributes were computed from the saved trajectories using MDTraj \citep{McGibbon2015MDTraj}. For each complex, at most 120 frames were used during feature extraction; given the reporting schedule above, this corresponded to using all saved frames from the 1.2 ns trajectory. Dynamic node features comprised hydration, flexibility, backbone torsional state, and inter-chain force-proxy summaries. Dynamic edge features comprised contact frequency and distance statistics evaluated on the fixed edge set of the static graph.
+
+Hydration was quantified from the full solvated trajectory. For each residue and frame, all unique water oxygen residues within 5 \AA\ of any heavy atom of that residue were counted. The stored features were $\log(1+\bar{w}_i)$, where $\bar{w}_i$ is the mean water count for residue $i$ across frames, and the standard deviation of the framewise water counts. Conformational flexibility was represented by the C$\alpha$ root-mean-square fluctuation (RMSF) computed after least-squares superposition of the trajectory onto itself using C$\alpha$ atoms. Backbone torsional state was summarized by computing $\phi$ and $\psi$ angles for all residues with defined dihedrals and storing the frame-averaged values of $\sin \phi$, $\cos \phi$, $\sin \psi$, and $\cos \psi$.
+
+Dynamic edge features were computed only for residue pairs connected by an existing static graph edge. For each such pair, MDTraj's closest-heavy-atom distance was evaluated in every saved frame. The dynamic contact frequency for edge $(i,j)$ was then defined as the fraction of frames in which the closest-heavy distance was at most 8 \AA. When distance statistics were enabled, the mean and standard deviation of the closest-heavy distance across frames were also stored as dynamic edge attributes. This representation should therefore be interpreted as a static graph with time-aggregated edge annotations rather than as a fully time-varying graph.
+
+\section{Approximate inter-chain force features}
+
+In addition to hydration and conformational descriptors, each residue was assigned an approximate inter-chain nonbonded force summary. These features were derived from the protein-only trajectory and a reconstructed OpenMM analysis system built from the saved protein topology using the same force-field files as the original simulation. To isolate direct ligand--receptor interactions, the original OpenMM \texttt{NonbondedForce} parameters were copied into two separate \texttt{CustomNonbondedForce} objects, one representing a Coulomb term and one representing a Lennard--Jones term, and each custom force was restricted to ligand-atom versus receptor-atom interaction groups using OpenMM interaction-group semantics \citep{Eastman2024OpenMM8}. The custom analysis system used periodic cutoffs and excluded the original exception pairs; long-range correction was disabled for the custom forces.
+
+For each saved frame, per-atom forces from the Coulomb and Lennard--Jones custom terms were accumulated over all atoms belonging to the same residue. The Euclidean norm of the resulting residue-level force vector was then taken, and the mean and standard deviation of these norms across frames were stored separately for the Coulomb and Lennard--Jones channels. Because these quantities were computed on reconstructed protein-only systems with direct ligand--receptor interaction groups rather than extracted directly from the full solvated PME simulation context, they should be interpreted as approximate inter-chain nonbonded force proxies rather than exact total molecular dynamics forces.
+
+\section{Graph views and matched analysis subset}
+
+Two graph views were evaluated. The \emph{full} view retained the complete residue graph for each complex. The \emph{interface} view retained only a fixed-size local patch intended to emphasize the interaction region while keeping the input size approximately constant across complexes. For the final confirmatory experiments, the interface policy was \texttt{md\_closest\_pair\_patch}. Under this policy, mapped C$\alpha$ coordinates from the molecular dynamics trajectory were used to identify the ligand residue and receptor residue with the minimum inter-chain C$\alpha$ distance. These two residues formed the interface core, and the final node set was obtained by expanding locally around this core under a hard cap of 128 residues. The corresponding edge set was induced from the original graph.
+
+To support a fair comparison between the full and interface representations, both views were restricted to the same retained complex subset. Specifically, the interface materialization stage was run in a matched-subset mode so that any complex without a valid interface patch was removed from both views. The final confirmatory analysis therefore used 1437 matched complexes, each represented once as a full graph and once as an interface graph derived from the same prepared record.
+
+\section{Feature modes and preprocessing}
+
+Two input modes were considered. In the \emph{static} mode, denoted $S$, model inputs consisted only of the static node and edge features described above. In the \emph{static-plus-dynamic} mode, denoted $SD$, the input feature vector was augmented with the dynamic node features, torsion summaries, force-proxy summaries, and dynamic edge features. The edge feature \texttt{same\_chain} was retained as an input feature in both modes but was excluded from reconstruction targets because it is topologically trivial once the graph has been constructed.
+
+Feature scaling was fit exclusively on the training split of each run. For every numeric feature, the training distribution was first clipped to its 0.5th and 99.5th percentiles, then standardized to zero mean and unit variance, and finally clipped again to the interval $[-8,8]$. The same transformation was then applied unchanged to the corresponding validation and test splits. This preprocessing was identical for the GraphVAE and the direct supervised baseline, ensuring that any performance differences were attributable to model design rather than to differences in feature normalization.
+
+\section{Masked graph variational autoencoder}
+
+The unsupervised and semi-supervised graph representation models were implemented as masked graph variational autoencoders using PyTorch Geometric \citep{Fey2019PyG}. Both node and edge inputs were projected linearly to a hidden dimension of 128 and passed through three graph isomorphism network with edge features (GINE) convolution layers \citep{Hu2020Pretraining}. Graph-level embeddings were obtained by concatenating global mean pooling and global max pooling. Two linear heads then produced the latent mean vector $\mu$ and log-variance vector $\log \sigma^2$. The latent dimensionality was varied over $d_z \in \{8,16,32\}$ in the final model matrix.
+
+The decoder reconstructed selected feature subsets rather than the full input tensor. For each batch, target node and edge entries were independently masked with probability 0.30. Decoder inputs then consisted of the sampled latent vector together with the unmasked graph inputs, the partially masked target features, and explicit binary mask indicators. Three target policies were used in the confirmatory experiments. The \texttt{shared\_static} policy reconstructed static residue descriptors and the nontrivial static edge distance feature. The \texttt{sd\_dynamic\_all} policy reconstructed only dynamic node and dynamic edge attributes. The \texttt{sd\_static\_plus\_dynamic\_all} policy reconstructed the union of static and dynamic targets. Only the \texttt{shared\_static} policy was used for $S$ runs, whereas all three policies were used for $SD$ runs.
+
+For a batch of graphs, the total GraphVAE objective was
+\begin{equation}
+\mathcal{L}
+= \mathcal{L}_{\mathrm{node}}^{\mathrm{recon}}
++ \mathcal{L}_{\mathrm{edge}}^{\mathrm{recon}}
++ \beta \mathcal{L}_{\mathrm{KL}}
++ \lambda_{\mathrm{corr}} \mathcal{L}_{\mathrm{corr}}
++ \lambda_{\mathrm{aff}} \mathcal{L}_{\mathrm{aff}},
+\end{equation}
+where the node and edge reconstruction terms were masked mean-squared errors over the selected target entries, the Kullback--Leibler term was
+\begin{equation}
+\mathcal{L}_{\mathrm{KL}}
+= \frac{1}{Bd_z} \sum_{b=1}^{B} \sum_{k=1}^{d_z}
+\left[-\frac{1}{2}\left(1 + \log \sigma_{bk}^{2} - \mu_{bk}^{2} - \sigma_{bk}^{2}\right)\right],
+\end{equation}
+and $\mathcal{L}_{\mathrm{corr}}$ penalized the squared off-diagonal elements of the latent covariance matrix to discourage redundant latent dimensions. In semi-supervised runs, $\mathcal{L}_{\mathrm{aff}}$ was a mean-squared error between the normalized affinity prediction from a latent MLP head and the normalized experimental target. The exact confirmatory settings were $\lambda_{\mathrm{corr}}=0.01$, $\lambda_{\mathrm{aff}}=1.0$ for semi-supervised runs and 0 otherwise, $\beta_{\mathrm{start}}=0$, $\beta_{\mathrm{end}}=1$, and a linear $\beta$ warm-up over the first 30\% of training epochs. With a maximum of 120 epochs, the KL weight therefore increased linearly over the first 36 epochs and remained at 1.0 thereafter.
+
+All GraphVAE models were optimized with AdamW using a learning rate of $10^{-4}$, weight decay of $10^{-5}$, batch size 16, and gradient clipping at a global norm of 5. Training used a maximum of 120 epochs with early stopping patience of 20 epochs. Checkpoint selection was based on the validation reconstruction loss, plus the weighted validation affinity loss in semi-supervised runs. The KL and correlation terms regularized training but did not directly determine which checkpoint was retained as the best model.
+
+\section{Direct supervised baseline}
+
+To separate the value of the graph representation from the value of the variational objective, each graph view and feature mode was also evaluated with a direct supervised baseline. This model used the same input feature definitions, the same hidden dimension of 128, the same three GINE layers, and the same mean-plus-max graph pooling strategy as the GraphVAE encoder. The difference was that the pooled graph embedding was passed directly to a multilayer perceptron regressor trained to predict $\Delta G$ with a mean-squared-error loss. The supervised baseline was optimized with AdamW using the same learning rate, weight decay, batch size, and maximum epoch count as the GraphVAE runs. Early stopping was based on validation mean squared error, with patience fixed to 20 epochs for the final confirmatory matrix.
+
+\section{Latent-space regression and final VAE evaluation}
+
+Final GraphVAE performance was not reported solely from the neural affinity head. Instead, each retained checkpoint was treated as a representation learner, and its graph-level latent mean vectors were exported for the train, validation, and test splits. A ridge regressor was then fit on the training latent vectors only,
+\begin{equation}
+\hat{\mathbf{w}}
+= \arg\min_{\mathbf{w}}
+\left\|
+\mathbf{y}_{\mathrm{train}} - \mathbf{X}_{\mathrm{train}}\mathbf{w}
+\right\|_2^2
++ \alpha \|\mathbf{w}\|_2^2,
+\end{equation}
+and evaluated on the held-out validation and test splits. The regularization parameter was selected with \texttt{RidgeCV} from scikit-learn \citep{Pedregosa2011Scikit} over the grid
+\[
+\alpha \in \{10^{-4}, 3 \times 10^{-4}, 10^{-3}, 3 \times 10^{-3}, 10^{-2}, 3 \times 10^{-2}, 10^{-1}, 3 \times 10^{-1}, 1, 3, 10, 30, 100\},
+\]
+using five-fold inner cross-validation on the training split only. No additional repeated cross-validation was performed inside this probe during the final resampling study. The headline GraphVAE metrics reported in the confirmatory results therefore quantify the predictive quality of the learned latent representation under a simple regularized linear readout, rather than the performance of the end-to-end neural affinity head alone.
+
+\section{Repeated outer resampling and model matrix}
+
+The confirmatory analysis used repeated outer resampling on the matched 1437-complex set. Unique complex identifiers, rather than individual graphs or trajectory frames, were the unit of resampling. For each of two repeats, complexes were randomly permuted with seed 2026 and partitioned into five outer folds. One fold was held out as the test set and the remaining four folds were split into training and validation subsets using a validation fraction of 0.1875 of the train-plus-validation pool, which yields the intended overall 70/15/15 proportion within each outer fit. In practice, each fit therefore contained approximately 934 training complexes, 215--216 validation complexes, and 287--288 test complexes. All preprocessing, model fitting, checkpoint selection, and ridge fitting were repeated independently within each outer split.
+
+The final matrix contained 52 configurations. Forty-eight of these were GraphVAE runs spanning two graph views (full and interface), two input modes ($S$ and $SD$), two supervision settings (unsupervised and semi-supervised), and three latent dimensionalities ($8$, $16$, and $32$). For $SD$ runs, three target policies were evaluated; for $S$ runs, only \texttt{shared\_static} was evaluated because the dynamic target policies are not distinct when dynamic inputs are absent. Four additional runs were direct supervised baselines corresponding to the Cartesian product of graph view and feature mode. All models used the same hidden dimension (128), number of GINE layers (3), learning rate ($10^{-4}$), weight decay ($10^{-5}$), batch size (16), maximum epochs (120), and early-stopping patience (20) in the final confirmatory matrix.
+
+\section{Evaluation metrics}
+
+For every outer fit, predictive performance was summarized on the held-out test set using root-mean-square error (RMSE), coefficient of determination ($R^2$), and Pearson correlation coefficient. For $n$ test complexes with observed affinities $y_i$ and predictions $\hat{y}_i$, these were computed as
+\begin{equation}
+\mathrm{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2},
+\end{equation}
+\begin{equation}
+R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}{\sum_{i=1}^{n}(y_i-\bar{y})^2},
+\end{equation}
+and
+\begin{equation}
+r = \frac{\sum_{i=1}^{n}(y_i-\bar{y})(\hat{y}_i-\bar{\hat{y}})}
+{\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}\sqrt{\sum_{i=1}^{n}(\hat{y}_i-\bar{\hat{y}})^2}}.
+\end{equation}
+For the final report, metrics were aggregated across the 10 outer fits per configuration and summarized by their mean, standard deviation, minimum, and maximum. This repeated held-out evaluation formed the basis of all factor-level conclusions about graph view, feature mode, supervision, target policy, and latent dimensionality.

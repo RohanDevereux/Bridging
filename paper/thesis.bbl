@@ -1,0 +1,254 @@
+\begin{thebibliography}{24}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname bibnamefont\endcsname\relax
+  \def\bibnamefont#1{#1}\fi
+\expandafter\ifx\csname bibfnamefont\endcsname\relax
+  \def\bibfnamefont#1{#1}\fi
+\expandafter\ifx\csname citenamefont\endcsname\relax
+  \def\citenamefont#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{\citenamefont{Liu et~al.}(2024)\citenamefont{Liu, Chen, Zhai, Huo,
+  Zhou, Han, and Fan}}]{Liu2024PPBAffinity}
+\bibinfo{author}{\bibfnamefont{H.}~\bibnamefont{Liu}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Chen}},
+  \bibinfo{author}{\bibfnamefont{X.}~\bibnamefont{Zhai}},
+  \bibinfo{author}{\bibfnamefont{K.-G.} \bibnamefont{Huo}},
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Zhou}},
+  \bibinfo{author}{\bibfnamefont{L.}~\bibnamefont{Han}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Fan}},
+  \bibinfo{journal}{Scientific Data} \textbf{\bibinfo{volume}{11}},
+  \bibinfo{pages}{1316} (\bibinfo{year}{2024}).
+
+\bibitem[{\citenamefont{Crocioni et~al.}(2024)\citenamefont{Crocioni, Bodor,
+  Baakman, Parizi, Rademaker, Ramakrishnan, van~der Burg, Marzella, Teixeira,
+  and Xue}}]{Crocioni2024DeepRank2}
+\bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Crocioni}},
+  \bibinfo{author}{\bibfnamefont{D.~L.} \bibnamefont{Bodor}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Baakman}},
+  \bibinfo{author}{\bibfnamefont{F.~M.} \bibnamefont{Parizi}},
+  \bibinfo{author}{\bibfnamefont{D.-T.} \bibnamefont{Rademaker}},
+  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Ramakrishnan}},
+  \bibinfo{author}{\bibfnamefont{S.~A.} \bibnamefont{van~der Burg}},
+  \bibinfo{author}{\bibfnamefont{D.~F.} \bibnamefont{Marzella}},
+  \bibinfo{author}{\bibfnamefont{J.~M.~C.} \bibnamefont{Teixeira}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{L.~C.} \bibnamefont{Xue}},
+  \bibinfo{journal}{Journal of Open Source Software}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{5983} (\bibinfo{year}{2024}).
+
+\bibitem[{\citenamefont{Xu et~al.}(2019)\citenamefont{Xu, Hu, Leskovec, and
+  Jegelka}}]{Xu2019GIN}
+\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Xu}},
+  \bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Jegelka}}, in
+  \emph{\bibinfo{booktitle}{International Conference on Learning
+  Representations}} (\bibinfo{year}{2019}),
+  \urlprefix\url{https://openreview.net/forum?id=ryGs6iA5Km}.
+
+\bibitem[{\citenamefont{Hu et~al.}(2020)\citenamefont{Hu, Liu, Gomes, Zitnik,
+  Liang, Pande, and Leskovec}}]{Hu2020Pretraining}
+\bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Liu}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Gomes}},
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Zitnik}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Liang}},
+  \bibinfo{author}{\bibfnamefont{V.}~\bibnamefont{Pande}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}},
+  \bibinfo{journal}{International Conference on Learning Representations}
+  (\bibinfo{year}{2020}),
+  \urlprefix\url{https://openreview.net/forum?id=HJlWWJSFDH}.
+
+\bibitem[{\citenamefont{Fey and Lenssen}(2019)}]{Fey2019PyG}
+\bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Fey}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.~E.} \bibnamefont{Lenssen}},
+  \bibinfo{journal}{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}  (\bibinfo{year}{2019}),
+  \urlprefix\url{https://arxiv.org/abs/1903.02428}.
+
+\bibitem[{\citenamefont{Henzler-Wildman and
+  Kern}(2007)}]{HenzlerWildman2007Dynamic}
+\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Henzler-Wildman}}
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Kern}},
+  \bibinfo{journal}{Nature} \textbf{\bibinfo{volume}{450}},
+  \bibinfo{pages}{964} (\bibinfo{year}{2007}).
+
+\bibitem[{\citenamefont{Eastman et~al.}(2024)\citenamefont{Eastman, Galvelis,
+  Pel{\'a}ez, Abreu, Farr, Gallicchio et~al.}}]{Eastman2024OpenMM8}
+\bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Eastman}},
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Galvelis}},
+  \bibinfo{author}{\bibfnamefont{R.~P.} \bibnamefont{Pel{\'a}ez}},
+  \bibinfo{author}{\bibfnamefont{C.~R.~A.} \bibnamefont{Abreu}},
+  \bibinfo{author}{\bibfnamefont{S.~E.} \bibnamefont{Farr}},
+  \bibinfo{author}{\bibfnamefont{E.}~\bibnamefont{Gallicchio}},
+  \bibnamefont{et~al.}, \bibinfo{journal}{The Journal of Physical Chemistry B}
+  \textbf{\bibinfo{volume}{128}} (\bibinfo{year}{2024}).
+
+\bibitem[{\citenamefont{McGibbon et~al.}(2015)\citenamefont{McGibbon,
+  Beauchamp, Harrigan, Klein, Swails, Hern{\'a}ndez, Schwantes, Wang, Lane, and
+  Pande}}]{McGibbon2015MDTraj}
+\bibinfo{author}{\bibfnamefont{R.~T.} \bibnamefont{McGibbon}},
+  \bibinfo{author}{\bibfnamefont{K.~A.} \bibnamefont{Beauchamp}},
+  \bibinfo{author}{\bibfnamefont{M.~P.} \bibnamefont{Harrigan}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Klein}},
+  \bibinfo{author}{\bibfnamefont{J.~M.} \bibnamefont{Swails}},
+  \bibinfo{author}{\bibfnamefont{C.~X.} \bibnamefont{Hern{\'a}ndez}},
+  \bibinfo{author}{\bibfnamefont{C.~R.} \bibnamefont{Schwantes}},
+  \bibinfo{author}{\bibfnamefont{L.-P.} \bibnamefont{Wang}},
+  \bibinfo{author}{\bibfnamefont{T.~J.} \bibnamefont{Lane}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{V.~S.} \bibnamefont{Pande}},
+  \bibinfo{journal}{Biophysical Journal} \textbf{\bibinfo{volume}{109}},
+  \bibinfo{pages}{1528} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Jankauskait{\.e}
+  et~al.}(2019)\citenamefont{Jankauskait{\.e}, Jim{\'e}nez-Garc{\'i}a,
+  Dapk{\=u}nas, Fern{\'a}ndez-Recio, and Moal}}]{Jankauskaite2019SKEMPI}
+\bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Jankauskait{\.e}}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Jim{\'e}nez-Garc{\'i}a}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Dapk{\=u}nas}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Fern{\'a}ndez-Recio}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{I.~H.} \bibnamefont{Moal}},
+  \bibinfo{journal}{Bioinformatics} \textbf{\bibinfo{volume}{35}},
+  \bibinfo{pages}{462} (\bibinfo{year}{2019}).
+
+\bibitem[{\citenamefont{Torrie and Valleau}(1977)}]{Torrie1977Umbrella}
+\bibinfo{author}{\bibfnamefont{G.~M.} \bibnamefont{Torrie}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.~P.} \bibnamefont{Valleau}},
+  \bibinfo{journal}{Journal of Computational Physics}
+  \textbf{\bibinfo{volume}{23}}, \bibinfo{pages}{187} (\bibinfo{year}{1977}).
+
+\bibitem[{\citenamefont{Cournia et~al.}(2017)\citenamefont{Cournia, Allen, and
+  Sherman}}]{Cournia2017RBFE}
+\bibinfo{author}{\bibfnamefont{Z.}~\bibnamefont{Cournia}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Allen}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Sherman}},
+  \bibinfo{journal}{Journal of Chemical Information and Modeling}
+  \textbf{\bibinfo{volume}{57}}, \bibinfo{pages}{2911} (\bibinfo{year}{2017}).
+
+\bibitem[{\citenamefont{Genheden and Ryde}(2015)}]{Genheden2015MMGBSA}
+\bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Genheden}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{U.}~\bibnamefont{Ryde}},
+  \bibinfo{journal}{Expert Opinion on Drug Discovery}
+  \textbf{\bibinfo{volume}{10}}, \bibinfo{pages}{449} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Vangone and Bonvin}(2015)}]{Vangone2015Contacts}
+\bibinfo{author}{\bibfnamefont{A.}~\bibnamefont{Vangone}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{A.~M. J.~J.} \bibnamefont{Bonvin}},
+  \bibinfo{journal}{eLife} \textbf{\bibinfo{volume}{4}},
+  \bibinfo{pages}{e07454} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Wang et~al.}(2004)\citenamefont{Wang, Fang, Lu, and
+  Wang}}]{Wang2004PDBbind}
+\bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Wang}},
+  \bibinfo{author}{\bibfnamefont{X.}~\bibnamefont{Fang}},
+  \bibinfo{author}{\bibfnamefont{Y.}~\bibnamefont{Lu}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Wang}},
+  \bibinfo{journal}{Journal of Medicinal Chemistry}
+  \textbf{\bibinfo{volume}{47}}, \bibinfo{pages}{2977} (\bibinfo{year}{2004}).
+
+\bibitem[{\citenamefont{Stepniewska-Dziubinska
+  et~al.}(2018)\citenamefont{Stepniewska-Dziubinska, Zielenkiewicz, and
+  Siedlecki}}]{Stepniewska2018Pafnucy}
+\bibinfo{author}{\bibfnamefont{M.~M.} \bibnamefont{Stepniewska-Dziubinska}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Zielenkiewicz}},
+  \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Siedlecki}},
+  \bibinfo{journal}{Bioinformatics} \textbf{\bibinfo{volume}{34}},
+  \bibinfo{pages}{3666} (\bibinfo{year}{2018}).
+
+\bibitem[{\citenamefont{Libouban et~al.}(2025)\citenamefont{Libouban, Parisel,
+  Song, Aci-S{\`e}che, G{\'o}mez-Tamayo, Tresadern, and
+  Bonnet}}]{Libouban2025Spatiotemporal}
+\bibinfo{author}{\bibfnamefont{P.-Y.} \bibnamefont{Libouban}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Parisel}},
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Song}},
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Aci-S{\`e}che}},
+  \bibinfo{author}{\bibfnamefont{J.~C.} \bibnamefont{G{\'o}mez-Tamayo}},
+  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Tresadern}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Bonnet}},
+  \bibinfo{journal}{Bioinformatics} \textbf{\bibinfo{volume}{41}},
+  \bibinfo{pages}{btaf429} (\bibinfo{year}{2025}).
+
+\bibitem[{\citenamefont{Kingma and Welling}(2014)}]{Kingma2014VAE}
+\bibinfo{author}{\bibfnamefont{D.~P.} \bibnamefont{Kingma}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Welling}},
+  \emph{\bibinfo{title}{Auto-encoding variational bayes}},
+  \bibinfo{howpublished}{arXiv preprint arXiv:1312.6114}
+  (\bibinfo{year}{2014}), \urlprefix\url{https://arxiv.org/abs/1312.6114}.
+
+\bibitem[{\citenamefont{G{\'o}mez-Bombarelli
+  et~al.}(2018)\citenamefont{G{\'o}mez-Bombarelli, Wei, Duvenaud,
+  Hern{\'a}ndez-Lobato, S{\'a}nchez-Lengeling, Sheberla, Aguilera-Iparraguirre,
+  Hirzel, Adams, and Aspuru-Guzik}}]{GomezBombarelli2018MolecularVAE}
+\bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{G{\'o}mez-Bombarelli}},
+  \bibinfo{author}{\bibfnamefont{J.~N.} \bibnamefont{Wei}},
+  \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Duvenaud}},
+  \bibinfo{author}{\bibfnamefont{J.~M.} \bibnamefont{Hern{\'a}ndez-Lobato}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{S{\'a}nchez-Lengeling}},
+  \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Sheberla}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Aguilera-Iparraguirre}},
+  \bibinfo{author}{\bibfnamefont{T.~D.} \bibnamefont{Hirzel}},
+  \bibinfo{author}{\bibfnamefont{R.~P.} \bibnamefont{Adams}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{A.}~\bibnamefont{Aspuru-Guzik}},
+  \bibinfo{journal}{ACS Central Science} \textbf{\bibinfo{volume}{4}},
+  \bibinfo{pages}{268} (\bibinfo{year}{2018}).
+
+\bibitem[{\citenamefont{Kipf and Welling}(2016)}]{Kipf2016VGAE}
+\bibinfo{author}{\bibfnamefont{T.~N.} \bibnamefont{Kipf}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Welling}},
+  \bibinfo{journal}{arXiv preprint arXiv:1611.07308}  (\bibinfo{year}{2016}),
+  \urlprefix\url{https://arxiv.org/abs/1611.07308}.
+
+\bibitem[{\citenamefont{Simonovsky and
+  Komodakis}(2018)}]{Simonovsky2018GraphVAE}
+\bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Simonovsky}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{N.}~\bibnamefont{Komodakis}},
+  \bibinfo{journal}{International Conference on Artificial Neural Networks} pp.
+  \bibinfo{pages}{412--422} (\bibinfo{year}{2018}).
+
+\bibitem[{\citenamefont{{OpenMM Developers}}(2026)}]{PDBFixerSoftware}
+\bibinfo{author}{\bibnamefont{{OpenMM Developers}}},
+  \emph{\bibinfo{title}{Pdbfixer}},
+  \bibinfo{howpublished}{\url{https://github.com/openmm/pdbfixer}}
+  (\bibinfo{year}{2026}), \bibinfo{note}{accessed 2026-03-17}.
+
+\bibitem[{\citenamefont{Maier et~al.}(2015)\citenamefont{Maier, Martinez,
+  Kasavajhala, Wickstrom, Hauser, and Simmerling}}]{Maier2015ff14SB}
+\bibinfo{author}{\bibfnamefont{J.~A.} \bibnamefont{Maier}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Martinez}},
+  \bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Kasavajhala}},
+  \bibinfo{author}{\bibfnamefont{L.}~\bibnamefont{Wickstrom}},
+  \bibinfo{author}{\bibfnamefont{K.~E.} \bibnamefont{Hauser}},
+  \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Simmerling}},
+  \bibinfo{journal}{Journal of Chemical Theory and Computation}
+  \textbf{\bibinfo{volume}{11}}, \bibinfo{pages}{3696} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Wang and Martinez}(2014)}]{Wang2014WaterModels}
+\bibinfo{author}{\bibfnamefont{L.-P.} \bibnamefont{Wang}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{T.~J.} \bibnamefont{Martinez}},
+  \bibinfo{journal}{The Journal of Physical Chemistry Letters}
+  \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{1885} (\bibinfo{year}{2014}).
+
+\bibitem[{\citenamefont{Pedregosa et~al.}(2011)\citenamefont{Pedregosa,
+  Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss,
+  Dubourg et~al.}}]{Pedregosa2011Scikit}
+\bibinfo{author}{\bibfnamefont{F.}~\bibnamefont{Pedregosa}},
+  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Varoquaux}},
+  \bibinfo{author}{\bibfnamefont{A.}~\bibnamefont{Gramfort}},
+  \bibinfo{author}{\bibfnamefont{V.}~\bibnamefont{Michel}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Thirion}},
+  \bibinfo{author}{\bibfnamefont{O.}~\bibnamefont{Grisel}},
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Blondel}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Prettenhofer}},
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Weiss}},
+  \bibinfo{author}{\bibfnamefont{V.}~\bibnamefont{Dubourg}},
+  \bibnamefont{et~al.}, \bibinfo{journal}{Journal of Machine Learning Research}
+  \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{2825} (\bibinfo{year}{2011}),
+  \urlprefix\url{https://jmlr.org/papers/v12/pedregosa11a.html}.
+
+\end{thebibliography}

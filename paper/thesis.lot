@@ -1,0 +1,11 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Selected headline models from the final 52-configuration confirmatory matrix. Metrics are means over 10 outer held-out fits on the matched 1437-complex set. For GraphVAE models, the reported predictive metrics come from the downstream ridge probe on latent means rather than solely from the neural affinity head.}}{23}{table.5.1}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Family-level train/validation/test behaviour. Each row is the arithmetic mean over all configurations in that family, using the configuration-level means from the 10 outer held-out fits. Here $g_r = \bar {r}_{\mathrm {train}} - \bar {r}_{\mathrm {test}}$.}}{27}{table.5.2}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

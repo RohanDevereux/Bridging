@@ -1,0 +1,56 @@
+ACM 40980: R ESEARCH P ROJECT
+J.G. Herterich
+
+1
+
+Minor thesis
+
+1.0.1
+
+Preparation of the minor thesis
+
+The following are some guidelines for preparing the minor thesis:
+• Uphold UCD’s principles with regard to the Student Code, academic integrity, and
+plagiarism. The importance of these to a research project cannot be understated.
+More on these topics will be said to students as they begin their projects, and we
+encourage a discussion between students and supervisors.
+• The thesis, in electronic form, should appear on A4 paper with a left-hand margin of
+30mm. Other margins should be not less than 20 mm. One-and-a-half line spacing
+should be used, with the exception of indented quotations and footnotes, where
+single spacing may be used.
+• Pages should be numbered consecutively throughout the substantive text of the thesis, including appendices. Prefacing pages should also be numbered consecutively,
+but utilising the Roman numeral format (i, ii, iii, iv, v, etc.). Page numbers should be
+right justified at the bottom of the page.
+• The cover/title page should describe the content of the thesis accurately and concisely. It should give the following information in the order listed:
+– The full title of the thesis and subtitle, if any
+– The full name of the author (followed, if desired, by any qualifications)
+– The statement “The thesis is submitted to University College Dublin in part
+fulfilment of the requirements for the degree of BSc in Applied and Computational Mathematics”
+– The School(s) in which the research was conducted. This should be the School
+of Mathematics and Statistics, plus any other School in which the project supervisor may be located.
+– The name of the supervisor of the research
+– The month and year of submission
+1
+
+– The UCD crest
+• Relevant computer output must be included (both electronically and in an appendix).
+• Computer programs, data etc. should be in an appendix.
+• The thesis in PDF format should be prepared. A LATEX template will be provided.
+Alternatives may be used but only a final PDF version is to be submitted.
+• The following format is highly recommended:
+– Title page
+– Table of Contents
+– List of Figures
+– List of Tables
+– Abstract (approx 300 words)
+– Introduction
+– Theory and methods
+– Results
+– Discussion and conclusions
+– References
+– Appendices
+– Code listings
+
+2
+
+

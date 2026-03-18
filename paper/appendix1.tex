@@ -1,0 +1,74 @@
+\chapter{Supplementary Technical Background}
+\label{ch:appendix1}
+
+\section{Molecular dynamics in plain terms}
+
+The core idea of molecular dynamics is simple: atoms are treated as particles whose positions change over time according to forces derived from a potential-energy function. If $\mathbf{r}_i$ is the position of atom $i$, then the force on that atom is
+\begin{equation}
+\mathbf{F}_i = -\nabla_{\mathbf{r}_i} U,
+\end{equation}
+where $U$ is the total potential energy of the system. In a biomolecular force field, this total energy is usually decomposed into bonded and nonbonded terms,
+\begin{equation}
+U = U_{\mathrm{bond}} + U_{\mathrm{angle}} + U_{\mathrm{dihedral}} + U_{\mathrm{elec}} + U_{\mathrm{vdW}}.
+\end{equation}
+The bonded terms maintain local covalent geometry, while the electrostatic and van der Waals terms model longer-range interactions between atoms that are not directly bonded.
+
+In explicit-solvent simulation, water molecules and ions are included as ordinary particles in the simulation box. This is important because solvation contributes substantially to protein behaviour. The thermostat controls temperature, the barostat controls pressure, and periodic boundary conditions prevent the finite simulation box from behaving like an isolated vacuum droplet. Particle-mesh Ewald electrostatics are used because direct electrostatic summation over all periodic images would otherwise be too expensive for realistic systems.
+
+For the present thesis, the goal of MD is not to compute a rigorous free energy of binding. Instead, short trajectories are used as a source of physically motivated descriptors. The intuition is that even a relatively short trajectory may reveal useful information about which residues remain hydrated, which contacts persist, and which parts of the interface fluctuate more strongly. This is why the trajectory outputs are later reduced to residue- and edge-level summary statistics.
+
+\section{Residue graphs and graph neural networks in plain terms}
+
+A residue graph replaces thousands of atoms with a smaller and more interpretable set of residues. Each residue becomes a node, and edges connect residue pairs that are spatially close or interact strongly. This creates a graph that is small enough for efficient learning but still rich enough to preserve important structural context.
+
+A graph neural network updates each node by repeatedly combining its current representation with information from neighbouring nodes. The general pattern is
+\begin{equation}
+\mathbf{h}_i^{(\ell+1)}
+=
+\phi^{(\ell)}
+\left(
+\mathbf{h}_i^{(\ell)},
+\sum_{j\in \mathcal{N}(i)}
+\psi^{(\ell)}(\mathbf{h}_i^{(\ell)}, \mathbf{h}_j^{(\ell)}, \mathbf{e}_{ij})
+\right).
+\end{equation}
+The message function $\psi^{(\ell)}$ says how much node $j$ should influence node $i$, the update function $\phi^{(\ell)}$ combines that information with the current state of node $i$, and the edge features $\mathbf{e}_{ij}$ allow the strength or type of connection to matter. After several layers, the node states are pooled to form a graph-level vector that can be used for prediction.
+
+The specific convolution used in this thesis is GINE, which extends the graph isomorphism network family to edge-feature-aware message passing \citep{Xu2019GIN,Hu2020Pretraining}. Intuitively, this makes it possible for the model to distinguish not just \emph{which} residues are neighbours, but \emph{how} they are related through distance, interaction type, or trajectory-derived contact statistics.
+
+\section{Variational autoencoders in plain terms}
+
+A standard autoencoder learns two maps. The encoder compresses an input into a low-dimensional latent code, and the decoder tries to reconstruct the input from that code. A variational autoencoder goes one step further: instead of producing a single latent vector, the encoder produces the parameters of a probability distribution over latent vectors, usually a Gaussian with mean $\mu$ and variance $\sigma^2$. A latent vector is then sampled as
+\begin{equation}
+\mathbf{z} = \mu + \sigma \odot \epsilon,
+\qquad
+\epsilon \sim \mathcal{N}(0,I),
+\end{equation}
+which is the reparameterization trick introduced by \citet{Kingma2014VAE}. This trick allows the model to remain differentiable during training.
+
+The VAE objective contains two parts. The reconstruction term says that the latent variable should preserve information needed to reconstruct the input. The Kullback--Leibler term says that the latent distribution should remain close to a simple prior, usually a standard normal distribution. If the KL term is too weak, the latent space can become irregular and hard to interpret. If it is too strong, the latent code can collapse and become uninformative. In practice, one often increases the KL weight gradually during training so that the model first learns to reconstruct and then learns to regularize its latent space.
+
+In this thesis, the VAE is used as a representation-learning model on graphs. The encoder produces a graph-level latent code, and the decoder reconstructs masked node and edge features. The model is therefore not being asked to generate full protein complexes from scratch. Instead, it is being asked to learn a latent representation that is useful for reconstructing selected graph attributes and, in the semi-supervised setting, also useful for affinity prediction.
+
+\section{Why use ridge regression on the latent space}
+
+The final GraphVAE evaluation is performed with a ridge regressor on the exported latent means rather than with the neural affinity head alone. The reason is interpretability. If a very flexible nonlinear regressor were used after the latent space, it would be difficult to know whether good performance reflected a strong latent representation or simply a strong downstream regressor. Ridge regression is much simpler. It learns a linear mapping from latent space to affinity while penalizing large coefficients:
+\begin{equation}
+\hat{\mathbf{w}}
+=
+\arg\min_{\mathbf{w}}
+\left\|
+\mathbf{y} - \mathbf{X}\mathbf{w}
+\right\|_2^2
+++
+\alpha \|\mathbf{w}\|_2^2.
+\end{equation}
+If the latent space is genuinely informative, even this simple model should perform well. If it does not, then the representation itself is probably not strong enough.
+
+This evaluation choice also makes comparisons cleaner. The direct supervised baseline answers the question ``how well can affinity be predicted directly from the graph?'' The ridge probe answers the question ``how predictive is the representation learned by the VAE?'' These are related but not identical questions, and it is useful to keep them separate.
+
+\section{Why repeated outer resampling matters in practical terms}
+
+Suppose two model configurations differ by only a small amount. On one convenient train/test split, one of them may look clearly better simply by chance. If the project stopped there, the resulting scientific story could be misleading. Repeated outer resampling reduces that risk. Each configuration is retrained from scratch on multiple distinct train/validation/test partitions, and conclusions are based on the aggregate pattern across those runs.
+
+In practical terms, this means that the thesis does not rely on one best-looking experiment. Instead, it asks whether a design choice such as using the full graph, using dynamic features, or using a variational objective remains beneficial across many retrainings and many held-out subsets. This is why some results that looked promising in earlier one-split experiments no longer looked compelling in the final confirmatory matrix.
