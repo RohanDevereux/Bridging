@@ -5,7 +5,7 @@ This chapter reports the final confirmatory evaluation described in Chapter~\ref
 \begin{equation}
 \bar{m}_{c} = \frac{1}{10}\sum_{t=1}^{10} m_{c,t}.
 \end{equation}
-All rankings and factor comparisons below are based on these configuration-level means. For paired factor comparisons, descriptive 95\% intervals over paired configuration deltas are reported as $\bar{\Delta} \pm 1.96\, s_{\Delta}/\sqrt{n}$, where $n$ is the number of paired configurations. These intervals are included to show the stability of the direction and magnitude of the observed effect; they are not formal hypothesis tests.
+All rankings and factor comparisons below are based on these configuration-level means. For matched design comparisons, the chapter reports the mean paired effect size together with the number of pairings favoring one design over the other.
 
 \section{Headline model performance}
 
@@ -39,11 +39,11 @@ The clearest factor effect in the matrix was the advantage of the full graph vie
 \begin{equation}
 \Delta_{\mathrm{RMSE}}^{\mathrm{iface-full}} = \bar{\mathrm{RMSE}}_{\mathrm{iface}} - \bar{\mathrm{RMSE}}_{\mathrm{full}},
 \end{equation}
-the mean paired penalty was 0.1005 RMSE units, with a descriptive 95\% interval of [0.0653, 0.1356]. If the corresponding Pearson-correlation advantage is defined as
+the mean paired penalty was 0.1005 RMSE units. If the corresponding Pearson-correlation advantage is defined as
 \begin{equation}
 \Delta_{r}^{\mathrm{full-iface}} = \bar{r}_{\mathrm{full}} - \bar{r}_{\mathrm{iface}},
 \end{equation}
-the mean full-graph advantage was 0.0993, with a descriptive 95\% interval of [0.0847, 0.1138].
+the mean full-graph advantage was 0.0993.
 
 The same direction held at the family level. Averaging over all 24 full-graph GraphVAE configurations gave mean test RMSE 2.5494 and mean test Pearson correlation 0.2883. Averaging over all 24 interface GraphVAE configurations gave mean test RMSE 2.6498 and mean test Pearson correlation 0.1890. The direct supervised baselines showed the same pattern. The best full baseline, \texttt{full\_base\_S}, achieved mean test RMSE 2.3379, whereas the best interface baseline, \texttt{iface\_base\_S}, achieved mean test RMSE 2.5782. This confirms that the superiority of the full representation was not specific to the variational model family.
 
@@ -57,11 +57,11 @@ Defining the paired dynamic-feature penalty as
 \begin{equation}
 \Delta_{\mathrm{RMSE}}^{\mathrm{SD-S}} = \bar{\mathrm{RMSE}}_{\mathrm{SD}} - \bar{\mathrm{RMSE}}_{\mathrm{S}},
 \end{equation}
-the mean penalty was 0.0254 RMSE units, with a descriptive 95\% interval of [0.0134, 0.0375]. The corresponding Pearson-correlation difference,
+the mean penalty was 0.0254 RMSE units. The corresponding Pearson-correlation difference,
 \begin{equation}
 \Delta_{r}^{\mathrm{S-SD}} = \bar{r}_{\mathrm{S}} - \bar{r}_{\mathrm{SD}},
 \end{equation}
-favored the static-only representation by 0.0215 on average, with a descriptive 95\% interval of [0.0043, 0.0387]. The direct supervised baselines were consistent with the same conclusion: \texttt{full\_base\_SD} was worse than \texttt{full\_base\_S} by 0.0694 RMSE units, and \texttt{iface\_base\_SD} was not better than \texttt{iface\_base\_S}.
+favored the static-only representation by 0.0215 on average. The direct supervised baselines were consistent with the same conclusion: \texttt{full\_base\_SD} was worse than \texttt{full\_base\_S} by 0.0694 RMSE units, and \texttt{iface\_base\_SD} was not better than \texttt{iface\_base\_S}.
 
 This effect was small rather than catastrophic. The best $SD$ GraphVAE, \texttt{full\_SD\_semi\_shared\_static\_z8}, was only 0.0072 RMSE units worse than the best $S$ GraphVAE, \texttt{full\_S\_semi\_shared\_static\_z32}, and it had a slightly higher test Pearson correlation (0.4749 versus 0.4649). The problem is therefore not that the dynamic features always destroy performance. The problem is that, across the full confirmatory matrix, the dynamic augmentation does not yield a robust and repeatable generalization gain over the static representation.
 
@@ -75,7 +75,7 @@ The interface results were weaker and less coherent. In the static mode, semi-su
 
 Within the $SD$ GraphVAE branch, the confirmatory matrix also tested whether the decoder should reconstruct only static targets, only dynamic targets, or both. The clearest regime in which to examine this question is the full-graph semi-supervised $SD$ family, because this was the only dynamic branch that approached competitive held-out performance. Averaging over the three latent dimensionalities gave mean test RMSE 2.4434 for \texttt{shared\_static}, 2.4795 for \texttt{sd\_static\_plus\_dynamic\_all}, and 2.5150 for \texttt{sd\_dynamic\_all}. The corresponding mean test Pearson correlations were 0.4682, 0.4335, and 0.4221, respectively.
 
-Pairwise comparisons by latent dimensionality showed that reconstructing only dynamic targets was consistently worse than reconstructing the shared static targets. Across the three matched latent-dimensionality pairs, the mean RMSE penalty of \texttt{sd\_dynamic\_all} relative to \texttt{shared\_static} was 0.0716, with a descriptive 95\% interval of [0.0305, 0.1127]. The mean Pearson-correlation loss was 0.0461, with a descriptive 95\% interval of [0.0158, 0.0764]. The \texttt{sd\_static\_plus\_dynamic\_all} target policy was intermediate. Its mean RMSE penalty relative to \texttt{shared\_static} was 0.0360, although this comparison was less stable across latent dimensionality because only three matched pairs were available. The corresponding mean Pearson-correlation loss was still positive at 0.0347.
+Pairwise comparisons by latent dimensionality showed that reconstructing only dynamic targets was consistently worse than reconstructing the shared static targets. Across the three matched latent-dimensionality pairs, the mean RMSE penalty of \texttt{sd\_dynamic\_all} relative to \texttt{shared\_static} was 0.0716. The mean Pearson-correlation loss was 0.0461. The \texttt{sd\_static\_plus\_dynamic\_all} target policy was intermediate. Its mean RMSE penalty relative to \texttt{shared\_static} was 0.0360, and the corresponding mean Pearson-correlation loss was 0.0347.
 
 These results indicate that, in the only dynamic regime that was even moderately competitive, asking the decoder to reconstruct dynamic targets did not improve held-out predictive quality. The strongest dynamic models were obtained when the dynamic channels were present as inputs but the reconstruction objective remained focused on the shared static targets.
 

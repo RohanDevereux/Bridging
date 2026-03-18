@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{29}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \expandafter\ifx\csname bibnamefont\endcsname\relax
   \def\bibnamefont#1{#1}\fi
@@ -11,6 +11,20 @@
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
 \providecommand{\bibinfo}[2]{#2}
 \providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{\citenamefont{Modell et~al.}(2016)\citenamefont{Modell, Blosser, and
+  Arora}}]{Modell2016PPIs}
+\bibinfo{author}{\bibfnamefont{A.~E.} \bibnamefont{Modell}},
+  \bibinfo{author}{\bibfnamefont{S.~L.} \bibnamefont{Blosser}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{P.~S.} \bibnamefont{Arora}},
+  \bibinfo{journal}{Trends in Pharmacological Sciences}
+  \textbf{\bibinfo{volume}{37}}, \bibinfo{pages}{702} (\bibinfo{year}{2016}).
+
+\bibitem[{\citenamefont{Guo and Yamaguchi}(2022)}]{Guo2022PPBAReview}
+\bibinfo{author}{\bibfnamefont{Z.}~\bibnamefont{Guo}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Yamaguchi}},
+  \bibinfo{journal}{Frontiers in Bioinformatics} \textbf{\bibinfo{volume}{2}},
+  \bibinfo{pages}{1065703} (\bibinfo{year}{2022}).
 
 \bibitem[{\citenamefont{Liu et~al.}(2024)\citenamefont{Liu, Chen, Zhai, Huo,
   Zhou, Han, and Fan}}]{Liu2024PPBAffinity}
@@ -115,6 +129,18 @@
   \bibinfo{journal}{Bioinformatics} \textbf{\bibinfo{volume}{35}},
   \bibinfo{pages}{462} (\bibinfo{year}{2019}).
 
+\bibitem[{\citenamefont{Kastritis et~al.}(2011)\citenamefont{Kastritis, Moal,
+  Hwang, Weng, Bates, Bonvin, and Janin}}]{Kastritis2011Benchmark}
+\bibinfo{author}{\bibfnamefont{P.~L.} \bibnamefont{Kastritis}},
+  \bibinfo{author}{\bibfnamefont{I.~H.} \bibnamefont{Moal}},
+  \bibinfo{author}{\bibfnamefont{H.}~\bibnamefont{Hwang}},
+  \bibinfo{author}{\bibfnamefont{Z.}~\bibnamefont{Weng}},
+  \bibinfo{author}{\bibfnamefont{P.~A.} \bibnamefont{Bates}},
+  \bibinfo{author}{\bibfnamefont{A.~M. J.~J.} \bibnamefont{Bonvin}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Janin}},
+  \bibinfo{journal}{Protein Science} \textbf{\bibinfo{volume}{20}},
+  \bibinfo{pages}{482} (\bibinfo{year}{2011}).
+
 \bibitem[{\citenamefont{Torrie and Valleau}(1977)}]{Torrie1977Umbrella}
 \bibinfo{author}{\bibfnamefont{G.~M.} \bibnamefont{Torrie}} \bibnamefont{and}
   \bibinfo{author}{\bibfnamefont{J.~P.} \bibnamefont{Valleau}},
@@ -140,6 +166,26 @@
   \bibinfo{author}{\bibfnamefont{A.~M. J.~J.} \bibnamefont{Bonvin}},
   \bibinfo{journal}{eLife} \textbf{\bibinfo{volume}{4}},
   \bibinfo{pages}{e07454} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Moal et~al.}(2011)\citenamefont{Moal, Agius, and
+  Bates}}]{Moal2011AffinityPrediction}
+\bibinfo{author}{\bibfnamefont{I.~H.} \bibnamefont{Moal}},
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Agius}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{P.~A.} \bibnamefont{Bates}},
+  \bibinfo{journal}{Bioinformatics} \textbf{\bibinfo{volume}{27}},
+  \bibinfo{pages}{3002} (\bibinfo{year}{2011}).
+
+\bibitem[{\citenamefont{Xie et~al.}(2025)\citenamefont{Xie, Zhang, Wang, Jin,
+  Lu, Ge, and Min}}]{Xie2025PPIGraphomer}
+\bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Xie}},
+  \bibinfo{author}{\bibfnamefont{Y.}~\bibnamefont{Zhang}},
+  \bibinfo{author}{\bibfnamefont{Z.}~\bibnamefont{Wang}},
+  \bibinfo{author}{\bibfnamefont{X.}~\bibnamefont{Jin}},
+  \bibinfo{author}{\bibfnamefont{X.}~\bibnamefont{Lu}},
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Ge}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{X.}~\bibnamefont{Min}}, \bibinfo{journal}{BMC
+  Bioinformatics} \textbf{\bibinfo{volume}{26}}, \bibinfo{pages}{116}
+  (\bibinfo{year}{2025}).
 
 \bibitem[{\citenamefont{Wang et~al.}(2004)\citenamefont{Wang, Fang, Lu, and
   Wang}}]{Wang2004PDBbind}
