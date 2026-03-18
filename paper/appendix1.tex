@@ -60,7 +60,7 @@ The final GraphVAE evaluation is performed with a ridge regressor on the exporte
 \left\|
 \mathbf{y} - \mathbf{X}\mathbf{w}
 \right\|_2^2
-++
++
 \alpha \|\mathbf{w}\|_2^2.
 \end{equation}
 If the latent space is genuinely informative, even this simple model should perform well. If it does not, then the representation itself is probably not strong enough.
@@ -69,6 +69,6 @@ This evaluation choice also makes comparisons cleaner. The direct supervised bas
 
 \section{Why repeated outer resampling matters in practical terms}
 
-Suppose two model configurations differ by only a small amount. On one convenient train/test split, one of them may look clearly better simply by chance. If the project stopped there, the resulting scientific story could be misleading. Repeated outer resampling reduces that risk. Each configuration is retrained from scratch on multiple distinct train/validation/test partitions, and conclusions are based on the aggregate pattern across those runs.
+Suppose two model configurations differ by only a small amount. On one train/test split, one of them may look better simply by chance. If the project stopped there, the resulting scientific story could be misleading. Repeated outer resampling reduces that risk. Each configuration is retrained from scratch on multiple distinct train/validation/test partitions, and conclusions are based on the aggregate pattern across those runs.
 
-In practical terms, this means that the thesis does not rely on one best-looking experiment. Instead, it asks whether a design choice such as using the full graph, using dynamic features, or using a variational objective remains beneficial across many retrainings and many held-out subsets. This is why some results that looked promising in earlier one-split experiments no longer looked compelling in the final confirmatory matrix.
+In practical terms, this means that the thesis does not rely on one favourable experiment. Instead, it asks whether a design choice such as using the full graph, using dynamic features, or using a variational objective remains beneficial across many retrainings and many held-out subsets. This is why some results that looked promising in earlier one-split experiments no longer looked compelling in the final evaluation matrix.

@@ -1,8 +1,8 @@
 \chapter{Repository and Implementation Availability}
 \label{ch:code}
 
-The implementation for this thesis is available in the public repository \url{https://github.com/RohanDevereux/Bridging}. Rather than reproducing long source listings in the thesis itself, I refer the reader to the parts of the repository that correspond directly to the active pipeline described in the main text.
+The implementation for this thesis is available in the public repository \url{https://github.com/RohanDevereux/Bridging}. Rather than reproducing long source listings in the thesis itself, I refer the reader to the parts of the repository that correspond directly to the pipeline described in the main text.
 
 The molecular-dynamics preparation and simulation code lives in \path{src/bridging/MD}. The graph-preparation code, including DeepRank2 integration, dynamic feature extraction, force-proxy construction, and graph-view materialization, lives in \path{src/bridging/graphvae/prep}. The model definitions, dataset preprocessing, supervised baseline, and latent-space regression code live in \path{src/bridging/graphvae/ml}. The command-line runners used to assemble the final pipeline live in \path{src/bridging/graphvae/runners}. Shared dataset parsing and affinity-conversion utilities live in \path{src/bridging/utils}.
 
-The curated input datasets used by the active pipeline are stored under \path{src/bridging/processedData}. The compact summary of the final 52-configuration confirmatory run is stored in \path{RESULTS/final_resample_matrix_summary.csv}. Archived project branches are preserved under \path{ARCHIVE}; Appendix~\ref{ch:appendix_archive} explains their role in the evolution of the project.
+The curated input datasets used by the pipeline are stored under \path{src/bridging/processedData}. The compact summary of the final 52-configuration evaluation matrix is stored in \path{RESULTS/final_resample_matrix_summary.csv}. Archived project branches are preserved under \path{ARCHIVE}; Appendix~\ref{ch:appendix_archive} explains their role in the evolution of the project.

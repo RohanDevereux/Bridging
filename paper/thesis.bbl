@@ -1,4 +1,4 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{30}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \expandafter\ifx\csname bibnamefont\endcsname\relax
   \def\bibnamefont#1{#1}\fi
@@ -37,86 +37,6 @@
   \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Fan}},
   \bibinfo{journal}{Scientific Data} \textbf{\bibinfo{volume}{11}},
   \bibinfo{pages}{1316} (\bibinfo{year}{2024}).
-
-\bibitem[{\citenamefont{Crocioni et~al.}(2024)\citenamefont{Crocioni, Bodor,
-  Baakman, Parizi, Rademaker, Ramakrishnan, van~der Burg, Marzella, Teixeira,
-  and Xue}}]{Crocioni2024DeepRank2}
-\bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Crocioni}},
-  \bibinfo{author}{\bibfnamefont{D.~L.} \bibnamefont{Bodor}},
-  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Baakman}},
-  \bibinfo{author}{\bibfnamefont{F.~M.} \bibnamefont{Parizi}},
-  \bibinfo{author}{\bibfnamefont{D.-T.} \bibnamefont{Rademaker}},
-  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Ramakrishnan}},
-  \bibinfo{author}{\bibfnamefont{S.~A.} \bibnamefont{van~der Burg}},
-  \bibinfo{author}{\bibfnamefont{D.~F.} \bibnamefont{Marzella}},
-  \bibinfo{author}{\bibfnamefont{J.~M.~C.} \bibnamefont{Teixeira}},
-  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{L.~C.} \bibnamefont{Xue}},
-  \bibinfo{journal}{Journal of Open Source Software}
-  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{5983} (\bibinfo{year}{2024}).
-
-\bibitem[{\citenamefont{Xu et~al.}(2019)\citenamefont{Xu, Hu, Leskovec, and
-  Jegelka}}]{Xu2019GIN}
-\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Xu}},
-  \bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
-  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}}, \bibnamefont{and}
-  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Jegelka}}, in
-  \emph{\bibinfo{booktitle}{International Conference on Learning
-  Representations}} (\bibinfo{year}{2019}),
-  \urlprefix\url{https://openreview.net/forum?id=ryGs6iA5Km}.
-
-\bibitem[{\citenamefont{Hu et~al.}(2020)\citenamefont{Hu, Liu, Gomes, Zitnik,
-  Liang, Pande, and Leskovec}}]{Hu2020Pretraining}
-\bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
-  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Liu}},
-  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Gomes}},
-  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Zitnik}},
-  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Liang}},
-  \bibinfo{author}{\bibfnamefont{V.}~\bibnamefont{Pande}}, \bibnamefont{and}
-  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}},
-  \bibinfo{journal}{International Conference on Learning Representations}
-  (\bibinfo{year}{2020}),
-  \urlprefix\url{https://openreview.net/forum?id=HJlWWJSFDH}.
-
-\bibitem[{\citenamefont{Fey and Lenssen}(2019)}]{Fey2019PyG}
-\bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Fey}} \bibnamefont{and}
-  \bibinfo{author}{\bibfnamefont{J.~E.} \bibnamefont{Lenssen}},
-  \bibinfo{journal}{ICLR Workshop on Representation Learning on Graphs and
-  Manifolds}  (\bibinfo{year}{2019}),
-  \urlprefix\url{https://arxiv.org/abs/1903.02428}.
-
-\bibitem[{\citenamefont{Henzler-Wildman and
-  Kern}(2007)}]{HenzlerWildman2007Dynamic}
-\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Henzler-Wildman}}
-  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Kern}},
-  \bibinfo{journal}{Nature} \textbf{\bibinfo{volume}{450}},
-  \bibinfo{pages}{964} (\bibinfo{year}{2007}).
-
-\bibitem[{\citenamefont{Eastman et~al.}(2024)\citenamefont{Eastman, Galvelis,
-  Pel{\'a}ez, Abreu, Farr, Gallicchio et~al.}}]{Eastman2024OpenMM8}
-\bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Eastman}},
-  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Galvelis}},
-  \bibinfo{author}{\bibfnamefont{R.~P.} \bibnamefont{Pel{\'a}ez}},
-  \bibinfo{author}{\bibfnamefont{C.~R.~A.} \bibnamefont{Abreu}},
-  \bibinfo{author}{\bibfnamefont{S.~E.} \bibnamefont{Farr}},
-  \bibinfo{author}{\bibfnamefont{E.}~\bibnamefont{Gallicchio}},
-  \bibnamefont{et~al.}, \bibinfo{journal}{The Journal of Physical Chemistry B}
-  \textbf{\bibinfo{volume}{128}} (\bibinfo{year}{2024}).
-
-\bibitem[{\citenamefont{McGibbon et~al.}(2015)\citenamefont{McGibbon,
-  Beauchamp, Harrigan, Klein, Swails, Hern{\'a}ndez, Schwantes, Wang, Lane, and
-  Pande}}]{McGibbon2015MDTraj}
-\bibinfo{author}{\bibfnamefont{R.~T.} \bibnamefont{McGibbon}},
-  \bibinfo{author}{\bibfnamefont{K.~A.} \bibnamefont{Beauchamp}},
-  \bibinfo{author}{\bibfnamefont{M.~P.} \bibnamefont{Harrigan}},
-  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Klein}},
-  \bibinfo{author}{\bibfnamefont{J.~M.} \bibnamefont{Swails}},
-  \bibinfo{author}{\bibfnamefont{C.~X.} \bibnamefont{Hern{\'a}ndez}},
-  \bibinfo{author}{\bibfnamefont{C.~R.} \bibnamefont{Schwantes}},
-  \bibinfo{author}{\bibfnamefont{L.-P.} \bibnamefont{Wang}},
-  \bibinfo{author}{\bibfnamefont{T.~J.} \bibnamefont{Lane}}, \bibnamefont{and}
-  \bibinfo{author}{\bibfnamefont{V.~S.} \bibnamefont{Pande}},
-  \bibinfo{journal}{Biophysical Journal} \textbf{\bibinfo{volume}{109}},
-  \bibinfo{pages}{1528} (\bibinfo{year}{2015}).
 
 \bibitem[{\citenamefont{Jankauskait{\.e}
   et~al.}(2019)\citenamefont{Jankauskait{\.e}, Jim{\'e}nez-Garc{\'i}a,
@@ -256,11 +176,74 @@
   \bibinfo{journal}{International Conference on Artificial Neural Networks} pp.
   \bibinfo{pages}{412--422} (\bibinfo{year}{2018}).
 
+\bibitem[{\citenamefont{Henzler-Wildman and
+  Kern}(2007)}]{HenzlerWildman2007Dynamic}
+\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Henzler-Wildman}}
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Kern}},
+  \bibinfo{journal}{Nature} \textbf{\bibinfo{volume}{450}},
+  \bibinfo{pages}{964} (\bibinfo{year}{2007}).
+
+\bibitem[{\citenamefont{Crocioni et~al.}(2024)\citenamefont{Crocioni, Bodor,
+  Baakman, Parizi, Rademaker, Ramakrishnan, van~der Burg, Marzella, Teixeira,
+  and Xue}}]{Crocioni2024DeepRank2}
+\bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Crocioni}},
+  \bibinfo{author}{\bibfnamefont{D.~L.} \bibnamefont{Bodor}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Baakman}},
+  \bibinfo{author}{\bibfnamefont{F.~M.} \bibnamefont{Parizi}},
+  \bibinfo{author}{\bibfnamefont{D.-T.} \bibnamefont{Rademaker}},
+  \bibinfo{author}{\bibfnamefont{G.}~\bibnamefont{Ramakrishnan}},
+  \bibinfo{author}{\bibfnamefont{S.~A.} \bibnamefont{van~der Burg}},
+  \bibinfo{author}{\bibfnamefont{D.~F.} \bibnamefont{Marzella}},
+  \bibinfo{author}{\bibfnamefont{J.~M.~C.} \bibnamefont{Teixeira}},
+  \bibnamefont{and} \bibinfo{author}{\bibfnamefont{L.~C.} \bibnamefont{Xue}},
+  \bibinfo{journal}{Journal of Open Source Software}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{5983} (\bibinfo{year}{2024}).
+
+\bibitem[{\citenamefont{Xu et~al.}(2019)\citenamefont{Xu, Hu, Leskovec, and
+  Jegelka}}]{Xu2019GIN}
+\bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Xu}},
+  \bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Jegelka}}, in
+  \emph{\bibinfo{booktitle}{International Conference on Learning
+  Representations}} (\bibinfo{year}{2019}),
+  \urlprefix\url{https://openreview.net/forum?id=ryGs6iA5Km}.
+
+\bibitem[{\citenamefont{Hu et~al.}(2020)\citenamefont{Hu, Liu, Gomes, Zitnik,
+  Liang, Pande, and Leskovec}}]{Hu2020Pretraining}
+\bibinfo{author}{\bibfnamefont{W.}~\bibnamefont{Hu}},
+  \bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Liu}},
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Gomes}},
+  \bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Zitnik}},
+  \bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Liang}},
+  \bibinfo{author}{\bibfnamefont{V.}~\bibnamefont{Pande}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.}~\bibnamefont{Leskovec}},
+  \bibinfo{journal}{International Conference on Learning Representations}
+  (\bibinfo{year}{2020}),
+  \urlprefix\url{https://openreview.net/forum?id=HJlWWJSFDH}.
+
+\bibitem[{\citenamefont{Kohavi}(1995)}]{Kohavi1995CV}
+\bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Kohavi}}, in
+  \emph{\bibinfo{booktitle}{Proceedings of the 14th International Joint
+  Conference on Artificial Intelligence}} (\bibinfo{year}{1995}), pp.
+  \bibinfo{pages}{1137--1143}.
+
 \bibitem[{\citenamefont{{OpenMM Developers}}(2026)}]{PDBFixerSoftware}
 \bibinfo{author}{\bibnamefont{{OpenMM Developers}}},
   \emph{\bibinfo{title}{Pdbfixer}},
   \bibinfo{howpublished}{\url{https://github.com/openmm/pdbfixer}}
   (\bibinfo{year}{2026}), \bibinfo{note}{accessed 2026-03-17}.
+
+\bibitem[{\citenamefont{Eastman et~al.}(2024)\citenamefont{Eastman, Galvelis,
+  Pel{\'a}ez, Abreu, Farr, Gallicchio et~al.}}]{Eastman2024OpenMM8}
+\bibinfo{author}{\bibfnamefont{P.}~\bibnamefont{Eastman}},
+  \bibinfo{author}{\bibfnamefont{R.}~\bibnamefont{Galvelis}},
+  \bibinfo{author}{\bibfnamefont{R.~P.} \bibnamefont{Pel{\'a}ez}},
+  \bibinfo{author}{\bibfnamefont{C.~R.~A.} \bibnamefont{Abreu}},
+  \bibinfo{author}{\bibfnamefont{S.~E.} \bibnamefont{Farr}},
+  \bibinfo{author}{\bibfnamefont{E.}~\bibnamefont{Gallicchio}},
+  \bibnamefont{et~al.}, \bibinfo{journal}{The Journal of Physical Chemistry B}
+  \textbf{\bibinfo{volume}{128}} (\bibinfo{year}{2024}).
 
 \bibitem[{\citenamefont{Maier et~al.}(2015)\citenamefont{Maier, Martinez,
   Kasavajhala, Wickstrom, Hauser, and Simmerling}}]{Maier2015ff14SB}
@@ -279,6 +262,29 @@
   \bibinfo{author}{\bibfnamefont{T.~J.} \bibnamefont{Martinez}},
   \bibinfo{journal}{The Journal of Physical Chemistry Letters}
   \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{1885} (\bibinfo{year}{2014}).
+
+\bibitem[{\citenamefont{McGibbon et~al.}(2015)\citenamefont{McGibbon,
+  Beauchamp, Harrigan, Klein, Swails, Hern{\'a}ndez, Schwantes, Wang, Lane, and
+  Pande}}]{McGibbon2015MDTraj}
+\bibinfo{author}{\bibfnamefont{R.~T.} \bibnamefont{McGibbon}},
+  \bibinfo{author}{\bibfnamefont{K.~A.} \bibnamefont{Beauchamp}},
+  \bibinfo{author}{\bibfnamefont{M.~P.} \bibnamefont{Harrigan}},
+  \bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Klein}},
+  \bibinfo{author}{\bibfnamefont{J.~M.} \bibnamefont{Swails}},
+  \bibinfo{author}{\bibfnamefont{C.~X.} \bibnamefont{Hern{\'a}ndez}},
+  \bibinfo{author}{\bibfnamefont{C.~R.} \bibnamefont{Schwantes}},
+  \bibinfo{author}{\bibfnamefont{L.-P.} \bibnamefont{Wang}},
+  \bibinfo{author}{\bibfnamefont{T.~J.} \bibnamefont{Lane}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{V.~S.} \bibnamefont{Pande}},
+  \bibinfo{journal}{Biophysical Journal} \textbf{\bibinfo{volume}{109}},
+  \bibinfo{pages}{1528} (\bibinfo{year}{2015}).
+
+\bibitem[{\citenamefont{Fey and Lenssen}(2019)}]{Fey2019PyG}
+\bibinfo{author}{\bibfnamefont{M.}~\bibnamefont{Fey}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{J.~E.} \bibnamefont{Lenssen}},
+  \bibinfo{journal}{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}  (\bibinfo{year}{2019}),
+  \urlprefix\url{https://arxiv.org/abs/1903.02428}.
 
 \bibitem[{\citenamefont{Pedregosa et~al.}(2011)\citenamefont{Pedregosa,
   Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss,

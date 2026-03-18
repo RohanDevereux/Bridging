@@ -1,13 +1,13 @@
 \chapter{Background and Theoretical Context}
 \label{ch:theory}
 
-\section{Protein--protein binding affinity as a learning target}
+\section{Affinity as the target quantity}
 
-The quantitative target in this thesis is the standard Gibbs free energy of protein--protein binding, $\Delta G$. If a complex is written schematically as
+The quantitative target in this thesis is the standard Gibbs free energy of binding, $\Delta G$. For a complex written schematically as
 \begin{equation}
 \mathrm{P}_1 + \mathrm{P}_2 \rightleftharpoons \mathrm{P}_1\mathrm{P}_2,
 \end{equation}
-then the equilibrium dissociation constant is
+the equilibrium dissociation constant is
 \begin{equation}
 K_D = \frac{[\mathrm{P}_1][\mathrm{P}_2]}{[\mathrm{P}_1\mathrm{P}_2]},
 \end{equation}
@@ -15,33 +15,21 @@ and the corresponding free energy is
 \begin{equation}
 \Delta G = RT \ln K_D.
 \end{equation}
-This relation matters for two reasons. First, it makes it possible to combine experimental measurements reported in different but thermodynamically compatible formats by converting them to a single continuous regression target. Second, it highlights that affinity is not merely a geometric property of one structure. It is a thermodynamic quantity summarizing the balance of enthalpic and entropic effects across a whole ensemble of conformations and solvent configurations.
+This matters because it gives a single continuous regression target, but it also highlights the central difficulty of the problem: affinity is a thermodynamic quantity, whereas the model sees only structure-derived features from a finite set of observed conformations \citep{Liu2024PPBAffinity}.
 
-For machine learning, this means that affinity prediction from structure is intrinsically a many-to-one problem. A deposited structure provides a highly informative but incomplete snapshot. The model must learn to map that snapshot, or features derived from it, onto a quantity that depends on a broader physical ensemble. This tension is one of the reasons affinity prediction is challenging even when reasonably large curated datasets are available \citep{Liu2024PPBAffinity}.
+\section{Molecular dynamics as a source of descriptors}
 
-\section{Why molecular dynamics may add information}
-
-Molecular dynamics (MD) simulation provides a controlled way to generate short trajectories around an experimentally observed structure. In classical MD, atomic positions evolve under Newton's equations of motion,
+In classical molecular dynamics, atomic coordinates evolve under Newton's equations of motion,
 \begin{equation}
-m_i \frac{d^2 \mathbf{r}_i}{dt^2} = \mathbf{F}_i = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1,\dots,\mathbf{r}_N),
+m_i \frac{d^2 \mathbf{r}_i}{dt^2} = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1,\dots,\mathbf{r}_N),
 \end{equation}
-where $U$ is the force-field potential energy and $\mathbf{F}_i$ is the force on atom $i$. In explicit-solvent simulation, water molecules and ions are included directly, allowing one to observe fluctuations in local hydration, residue mobility, and intermolecular contact geometry. These are all plausible carriers of affinity-relevant information.
+where $U$ is the force-field potential energy. In this thesis, molecular dynamics is used descriptively rather than as a direct free-energy method. The goal is to extract trajectory-derived summaries such as hydration, flexibility, and contact persistence and test whether they improve a downstream affinity predictor. This is plausible because proteins are dynamic rather than rigid objects, but the usefulness of such descriptors depends on simulation length, feature design, and model integration \citep{HenzlerWildman2007Dynamic}.
 
-The motivation for including MD in this thesis is therefore not to replace structure-based learning with full free-energy simulation. The goal is more modest and more practical: to test whether short explicit-solvent trajectories can provide descriptors that are informative enough to improve affinity prediction. This is a descriptor-based use of MD, not a direct free-energy calculation. The distinction matters. Free-energy methods aim to approximate a thermodynamic quantity itself, often at substantial computational cost. Descriptor-based approaches instead ask whether trajectory-derived statistics such as residue flexibility, hydration, or contact persistence can improve a learned predictor. These two uses of MD should not be conflated.
+\section{Residue graphs and message passing}
 
-This motivation is physically plausible because proteins are dynamic molecules rather than rigid objects. Functionally relevant conformational fluctuations, transient contacts, and solvent rearrangements can matter even when the average structure remains similar \citep{HenzlerWildman2007Dynamic}. At the same time, the usefulness of MD-derived descriptors is not guaranteed. Their value depends on simulation length, force-field accuracy, feature design, and how they are integrated with the learning model. One of the central empirical questions of the thesis is whether a coarse but computationally tractable dynamic summary is sufficient to improve performance over a strong static residue graph.
+A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present thesis, the graph topology is static, while some node and edge attributes summarize time-dependent behaviour from molecular dynamics.
 
-\section{Residue graphs as representations of protein complexes}
-
-A protein complex can be represented as a graph $G=(V,E)$ in which each node $i \in V$ corresponds to a residue and each edge $(i,j) \in E$ corresponds to a residue pair connected by a chosen geometric or interaction criterion. This representation is attractive because it preserves local structural relationships while remaining much smaller than an atom-level graph. It also aligns naturally with residue-level descriptors such as solvent exposure, buried surface area, residue depth, or physicochemical identity. DeepRank2 provides a mature framework for constructing such residue graphs and attaching biophysically motivated node and edge features \citep{Crocioni2024DeepRank2}.
-
-In this thesis, the graph representation serves two purposes. First, it organizes the static structural information extracted from a prepared protein complex. Second, it provides a scaffold on which molecular-dynamics-derived summaries can be added as node and edge attributes. The graph itself is therefore static in topology, but some of its attributes summarize time-dependent behaviour. This is computationally convenient, but it also imposes a modelling assumption: dynamics are represented as statistics on a fixed graph rather than as a genuinely time-varying graph process.
-
-Two graph views are important throughout the thesis. The \emph{full} view retains the whole complex graph and therefore allows information to flow through the entire structure. The \emph{interface} view retains only a local patch around the predicted binding region. Interface-focused modelling is intuitive because binding occurs at an interface, but it also removes broader structural context. Comparing these two views is therefore a scientifically meaningful design choice rather than a purely computational convenience.
-
-\section{Graph neural networks and message passing}
-
-Graph neural networks (GNNs) learn node and graph representations by iteratively exchanging information along graph edges. In a generic message-passing layer, a node embedding $\mathbf{h}_i^{(\ell)}$ at layer $\ell$ is updated using its own current state and aggregated messages from neighbouring nodes:
+Graph neural networks learn on such inputs by message passing. In a generic layer,
 \begin{equation}
 \mathbf{h}_i^{(\ell+1)}
 =
@@ -50,19 +38,13 @@ Graph neural networks (GNNs) learn node and graph representations by iteratively
 \mathbf{h}_i^{(\ell)},
 \sum_{j \in \mathcal{N}(i)}
 \psi^{(\ell)}\left(\mathbf{h}_i^{(\ell)}, \mathbf{h}_j^{(\ell)}, \mathbf{e}_{ij}\right)
-\right).
+\right),
 \end{equation}
-Here $\mathbf{e}_{ij}$ denotes the edge features on $(i,j)$, $\psi^{(\ell)}$ computes a message, and $\phi^{(\ell)}$ updates the node state. After several such layers, the graph can be summarized by a readout operation
-\begin{equation}
-\mathbf{g} = \rho\left(\{\mathbf{h}_i^{(L)} : i \in V\}\right),
-\end{equation}
-where $\rho$ is a permutation-invariant pooling operator such as mean, max, or their concatenation.
+where $\mathbf{h}_i^{(\ell)}$ is the node state, $\mathbf{e}_{ij}$ is the edge feature vector, and $\psi^{(\ell)}$ and $\phi^{(\ell)}$ are learnable message and update functions. After several layers, node states are pooled into a graph embedding for downstream prediction. The models used in this thesis employ GINE-style message passing, which is edge-aware and therefore appropriate when both static and dynamic edge features are present \citep{Xu2019GIN,Hu2020Pretraining}.
 
-The specific convolution used in this thesis is GINE, an edge-aware extension of the graph isomorphism network family \citep{Xu2019GIN,Hu2020Pretraining}. GIN-style models are attractive because they are expressive relative to simpler neighbourhood-averaging architectures, and the GINE variant allows edge attributes to contribute explicitly to message passing. This is important here because both static and dynamic edge features are part of the representation. Once a graph-level embedding has been obtained, it can either be used directly for supervised regression or passed into a latent-variable model such as a variational autoencoder.
+\section{Variational graph representation learning}
 
-\section{Variational autoencoders and masked reconstruction}
-
-A variational autoencoder (VAE) is a latent-variable model that combines an encoder, which maps an input to a distribution over latent variables, and a decoder, which reconstructs the input from a sample of the latent variable \citep{Kingma2014VAE}. In the standard formulation, the encoder approximates a posterior $q_{\phi}(\mathbf{z}\mid \mathbf{x})$, the decoder defines a likelihood model $p_{\theta}(\mathbf{x}\mid \mathbf{z})$, and training maximizes a variational lower bound,
+The GraphVAE used in this thesis is a latent-variable model that combines graph encoding, masked reconstruction, and latent regularization. In the standard VAE formulation, training optimizes a variational lower bound,
 \begin{equation}
 \log p_{\theta}(\mathbf{x})
 \ge
@@ -71,14 +53,10 @@ A variational autoencoder (VAE) is a latent-variable model that combines an enco
 \log p_{\theta}(\mathbf{x}\mid \mathbf{z})
 \right]
 -
-D_{\mathrm{KL}}\!\left(q_{\phi}(\mathbf{z}\mid \mathbf{x}) \,\|\, p(\mathbf{z})\right).
+D_{\mathrm{KL}}\!\left(q_{\phi}(\mathbf{z}\mid \mathbf{x}) \,\|\, p(\mathbf{z})\right),
 \end{equation}
-The reconstruction term encourages the latent variable to retain useful information about the input, while the Kullback--Leibler term encourages the latent distribution to remain close to a simple prior, usually a standard normal distribution.
+where the reconstruction term encourages the latent variable to retain useful information about the input and the Kullback--Leibler term keeps the latent distribution close to a simple prior \citep{Kingma2014VAE}. In this thesis, the model is used as a representation learner rather than as a full generative model of protein graphs. The encoder maps a residue graph to a graph-level latent distribution, and the decoder reconstructs selected masked node and edge features. A supervised affinity head can optionally be attached to the latent mean.
 
-In this thesis, the VAE is not used as a classical generative model of entire protein graphs. Instead, it is used as a structured representation learner. The encoder maps a residue graph to a graph-level latent mean and variance, and the decoder is trained to reconstruct selected masked node and edge features. This makes the objective closer in spirit to masked self-supervised learning than to unconditional generation. An additional semi-supervised affinity head can be attached to the latent mean so that the same latent space is encouraged to support both feature reconstruction and affinity prediction. The appeal of this design is that it may learn a compact latent representation that captures both structure and affinity-relevant variation, while still allowing a simple downstream regressor to test how informative the learned representation really is.
+\section{Why repeated held-out evaluation matters}
 
-\section{Why repeated outer resampling matters}
-
-Model selection on a single train/validation/test split is fragile, especially when many closely related configurations are compared. A model can appear superior simply because its inductive biases happened to align well with one particular split. Repeated outer resampling is a practical way to reduce this fragility. Instead of evaluating a configuration on only one held-out test set, the dataset is partitioned repeatedly into new train/validation/test subsets, the model is retrained from scratch each time, and performance is averaged across the resulting held-out fits.
-
-This design is particularly important in the present thesis because the goal is not merely to find a single good model, but to compare design choices such as full versus interface graphs, $S$ versus $SD$ inputs, variational versus direct supervised objectives, and different reconstruction target policies. A repeated outer design does not eliminate all uncertainty, but it does make it much harder for a single lucky split to produce a misleading scientific conclusion. The confirmatory matrix in Chapter~\ref{ch:results} should be understood in this light: it is primarily a robustness study of model-design decisions.
+When many closely related models are compared, a single train/validation/test split can give a misleading impression of relative performance \citep{Kohavi1995CV}. For that reason, the final conclusions in this thesis are based on repeated outer held-out evaluation rather than on a one-off split. The point of the final evaluation matrix is not only to identify the strongest configuration, but to compare design choices such as full versus interface graphs, static versus dynamic features, and variational versus direct supervised training under a more stable evaluation protocol.

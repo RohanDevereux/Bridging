@@ -1,7 +1,7 @@
 \chapter{Archived Approaches and Project Evolution}
 \label{ch:appendix_archive}
 
-This appendix records the main branches that were explored seriously during the project but did not become part of the final reported pipeline. They are preserved in the repository under \path{ARCHIVE}, and can also be browsed on GitHub at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}. The point of this appendix is not to present them as polished alternatives. The point is to show how the final thesis question became narrower and more defensible.
+This appendix records the main branches that were explored seriously during the project but did not become part of the final reported pipeline. They are preserved under \path{ARCHIVE} in the public repository and can also be browsed on GitHub at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}. The purpose of this appendix is to show how the final thesis question became narrower and more defensible.
 
 \section{Correction learning around fast affinity baselines}
 
@@ -11,13 +11,13 @@ One early project idea was to avoid predicting binding affinity entirely from sc
 
 The PRODIGY-related code is preserved under \path{ARCHIVE/PRODIGY}. This branch contains dataset parsing, chain-group normalization, estimate prefetching, and a runner that calls an external PRODIGY executable and parses the predicted $\Delta G$. The motivation was straightforward: if a contact-based structural predictor already gives a rough estimate, perhaps a second model can learn the residual error more easily than predicting affinity from raw structural input alone. That idea is reasonable, and it is grounded in the literature behind PRODIGY itself \citep{Vangone2015Contacts}.
 
-In practice, this branch never became a strong thesis backbone. The preserved outputs in the repository are exploratory rather than confirmatory, and the branch was operationally awkward because many complexes failed during execution. More importantly, the baseline itself was not strong enough to make correction learning an attractive central story. For the final thesis, a direct comparison between static and MD-derived graph representations was easier to justify and easier to audit.
+In practice, this branch never became a strong thesis backbone. The preserved outputs are exploratory rather than part of the final evaluation, and the branch was operationally awkward because many complexes failed during execution. More importantly, the baseline itself was not strong enough to make correction learning an attractive central story. For the final thesis, a direct comparison between static and MD-derived graph representations was easier to justify and easier to audit.
 
 \subsection{MM/GBSA}
 
 The MM/GBSA branch is preserved under \path{ARCHIVE/MMGBSA}. It includes AmberTools-based input preparation, HPC launchers, prefetched estimate handling, and a runner that can execute MM/GBSA from a structure or trajectory. The motivation was again correction learning, but with a stronger physics flavour. MM/GBSA occupies a useful middle ground in the literature: it is more physics-based than a purely empirical scorer, but much cheaper than rigorous free-energy calculation \citep{Genheden2015MMGBSA}.
 
-This branch was substantial from an engineering point of view, but it never matured into a clean final result set comparable to the graph-based matrix reported in the main body of the thesis. That mattered. By the time the project direction settled, the final thesis needed a central result that was easy to inspect, rerun, and explain from the repository state. MM/GBSA did not meet that bar, and the approximation-dependence of MM/GBSA itself made it a difficult foundation for the final story \citep{Genheden2015MMGBSA}.
+This branch was substantial from an engineering point of view, but it never matured into a clean final result set comparable to the graph-based matrix reported in the main body of the thesis. That mattered. By the time the project direction settled, the final thesis needed a central result that was easy to inspect, rerun, and explain directly from the repository. MM/GBSA did not meet that bar, and the approximation-dependence of MM/GBSA itself made it a difficult foundation for the final story \citep{Genheden2015MMGBSA}.
 
 \section{The C$\alpha$ contact-map branch}
 
@@ -39,7 +39,7 @@ This branch was archived mainly because the project focus narrowed. It introduce
 
 The final archived workstream is \path{ARCHIVE/Data_curation}. These scripts cover earlier filtering decisions, partner-size prefetching, subset selection, diverse-sample construction, and older cleaning steps for intermediate datasets.
 
-This material matters because the final dataset definition was not chosen in a vacuum. Earlier in the project there was a real need to balance biological scope, computational tractability, and representation design. Once the final broad, pair-unique PPB-Affinity-derived dataset was fixed, these utilities were no longer part of the active path, but they remain useful as provenance.
+This material matters because the final dataset definition was not chosen in a vacuum. Earlier in the project there was a real need to balance biological scope, computational tractability, and representation design. Once the final broad, pair-unique PPB-Affinity-derived dataset was fixed, these utilities were no longer part of the main pipeline, but they remain useful as provenance.
 
 \section{What the archived branches contributed}
 
