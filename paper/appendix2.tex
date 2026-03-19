@@ -1,7 +1,7 @@
 \chapter{Archived Approaches and Project Evolution}
 \label{ch:appendix_archive}
 
-This appendix records the main branches that were explored seriously during the project but did not become part of the final reported pipeline. They are preserved under \path{ARCHIVE} in the repository and can also be browsed on GitHub at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
+This appendix records the main alternative approaches that were explored seriously during the project but did not become part of the final study. They are preserved under \path{ARCHIVE} in the repository and can also be browsed on GitHub at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
 
 \section{Correction learning around fast affinity baselines}
 
@@ -9,13 +9,13 @@ An early project idea was to predict a correction
 \[
 \delta = \Delta G_{\mathrm{exp}} - \Delta G_{\mathrm{base}}
 \]
-rather than predict $\Delta G$ directly. Two branches were explored in this form: a contact-based baseline using PRODIGY \citep{Vangone2015Contacts} and an endpoint free-energy baseline using MM/GBSA \citep{Genheden2015MMGBSA}.
+rather than predict $\Delta G$ directly. Two approaches were explored in this form: a contact-based baseline using PRODIGY \citep{Vangone2015Contacts} and an endpoint free-energy baseline using MM/GBSA \citep{Genheden2015MMGBSA}.
 
 \subsection{PRODIGY}
 
-The PRODIGY-related code is preserved under \path{ARCHIVE/PRODIGY}. This branch contains dataset parsing, chain-group normalization, estimate prefetching, and a runner that calls an external PRODIGY executable and parses the predicted $\Delta G$ \citep{Vangone2015Contacts}.
+One approach used PRODIGY estimates as a fast structural baseline and then learned a correction to experimental affinity \citep{Vangone2015Contacts}. The corresponding materials are preserved under \path{ARCHIVE/PRODIGY}.
 
-On the preserved TCR subset runs, raw PRODIGY predictions were poor. For the common 13-complex test subset in the saved summaries, PRODIGY gave test RMSE 10.50 and test Pearson correlation $-0.268$. Some learned latent regressors reduced RMSE relative to PRODIGY on the overlapping test cases, but correction-to-PRODIGY was not competitive with direct latent regression.
+On the preserved TCR subset runs, raw PRODIGY predictions were poor. For the common 13-complex test subset in the preserved results, PRODIGY gave test RMSE 10.50 and test Pearson correlation $-0.268$. Some learned latent regressors reduced RMSE relative to PRODIGY on the overlapping test cases, but correction-to-PRODIGY was not competitive with direct latent regression.
 
 The saved subset-specific baseline results also showed that the interaction classes behaved differently. On a TCR-only archived dataset, PRODIGY was essentially uncorrelated with experiment. On a small antibody--antigen archived dataset, the same baseline was better, though still modest. A mixed 100-complex subset was again poor.
 
@@ -52,7 +52,7 @@ Run & PRODIGY $n$ & PRODIGY RMSE & PRODIGY $r$ & Direct RMSE & Direct $r$ & Corr
 
 \subsection{MM/GBSA}
 
-The MM/GBSA branch is preserved under \path{ARCHIVE/MMGBSA}. It includes AmberTools-based input preparation, HPC launchers, prefetched estimate handling, and a runner that can execute MM/GBSA from a structure or trajectory \citep{Massova2000MMPBSA,Genheden2015MMGBSA}.
+A second correction-learning approach used MM/GBSA endpoint estimates \citep{Massova2000MMPBSA,Genheden2015MMGBSA}. The corresponding materials are preserved under \path{ARCHIVE/MMGBSA}.
 
 Across the shard files there were 163 rows with status \texttt{ok}. On the 163 rows that could be compared against the experimental PPB-Affinity target, the MM/GBSA estimates had Pearson correlation $-0.127$, Spearman correlation $-0.096$, RMSE 2458.69, and MAE 1398.31. The numerical scale was pathological: the median successful estimate was 466.38 kcal mol$^{-1}$, the 95th percentile was 5590.71 kcal mol$^{-1}$, and the maximum exceeded 13\,000 kcal mol$^{-1}$, whereas the corresponding experimental free energies lay roughly between $-21$ and $-4$ kcal mol$^{-1}$.
 
@@ -74,19 +74,19 @@ Median predicted MM/GBSA $\Delta G$ & 466.38 \\
 Maximum predicted MM/GBSA $\Delta G$ & 13628.15 \\
 \hline
 \end{tabular}
-\caption{MM/GBSA shard results from the archived branch. The estimates are numerically far outside the scale of experimental protein--protein binding free energies, so the branch was not usable as a quantitative baseline.}
+\caption{MM/GBSA shard results from the archived approach. The estimates are numerically far outside the scale of experimental protein--protein binding free energies, so this method was not usable as a quantitative baseline.}
 \label{tab:appendix-mmgbsa}
 \end{table}
 
 These estimates were far outside the experimental scale and were not used further as a quantitative comparator.
 
-\section{The C$\alpha$ contact-map branch}
+\section{The C$\alpha$ contact-map approach}
 
-The oldest major modelling branch in the repository is the contact-map pipeline preserved under \path{ARCHIVE/CA_contact_map}. This branch converts selected interface residues into fixed two-dimensional tensors built from C$\alpha$--C$\alpha$ contact and distance channels, then trains a convolutional variational autoencoder and downstream regression model on those tensors.
+An earlier model family represented complexes as fixed two-dimensional tensors built from C$\alpha$--C$\alpha$ contact and distance channels, followed by a convolutional variational autoencoder and regression model. The corresponding materials are preserved under \path{ARCHIVE/CA_contact_map}.
 
 A contact map gives a fixed-size, image-like representation that is much easier to batch and process than a variable-size protein graph. That design choice has close relatives in protein--ligand learning, where voxelized or tensorized structural inputs have been used successfully \citep{Stepniewska2018Pafnucy}.
 
-The saved summaries show lower RMSE than raw PRODIGY on some runs, but not a stable predictor. For example, the \texttt{setedge\_e24} run gave test RMSE 2.80 against PRODIGY's 10.50 on the same saved subset, and the \texttt{setedge\_e24\_ols} variant gave test RMSE 2.76. The same runs often had negative test correlations, and a five-seed sweep of the \texttt{setedge\_e24} regressor showed substantial instability: test RMSE ranged from 2.80 to 6.62 and test Pearson correlation ranged from $-0.500$ to 0.462. Semi-supervised training and correction-to-PRODIGY were not improvements in the saved results.
+The preserved results show lower RMSE than raw PRODIGY on some runs, but not a stable predictor. For example, the \texttt{setedge\_e24} run gave test RMSE 2.80 against PRODIGY's 10.50 on the same subset, and the \texttt{setedge\_e24\_ols} variant gave test RMSE 2.76. The same runs often had negative test correlations, and a five-seed sweep of the \texttt{setedge\_e24} regressor showed substantial instability: test RMSE ranged from 2.80 to 6.62 and test Pearson correlation ranged from $-0.500$ to 0.462. Semi-supervised training and correction-to-PRODIGY were not improvements in the preserved results.
 
 \begin{table}[t]
 \centering
@@ -104,20 +104,20 @@ Run & Test $n$ & Direct-latent RMSE & Direct-latent Pearson $r$ \\
 \texttt{allmd\_setedge\_e24} & 12 & 4.23 & 0.087 \\
 \hline
 \end{tabular}
-\caption{Representative CA contact-map regression runs on the archived TCR subset. The branch could achieve lower RMSE than raw PRODIGY on some runs, but the results were unstable and often had weak or negative test correlation.}
+\caption{Representative CA contact-map regression runs on the archived TCR subset. The method could achieve lower RMSE than raw PRODIGY on some runs, but the results were unstable and often had weak or negative test correlation.}
 \label{tab:appendix-contact}
 \end{table}
 
-Once the graph pipeline existed, the contact-map representation looked too compressed: it discarded residue identity detail, side-chain context, and explicit graph structure, while still depending on a fixed interface selection and a fixed tensor ordering. The saved outputs also showed a branch that could sometimes reduce error but did not do so in a stable way. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the final pipeline.
+Once the residue-graph study was in place, the contact-map representation looked too compressed: it discarded residue identity detail, side-chain context, and explicit graph structure, while still depending on a fixed interface selection and a fixed tensor ordering. The preserved results also showed a method that could sometimes reduce error but did not do so in a stable way. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features studied in the main text.
 
-\section{The PPB-inspired augmentation and spatiotemporal branch}
+\section{The PPB-inspired augmentation and spatiotemporal approach}
 
-The PPB-inspired deep-learning branch is preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It contains baseline, frame-level, and trajectory-level training code, together with an ensemble stage that combines those predictions, and a substantial vendored model stack under \path{ARCHIVE/PPB_Affinity_augmentation/src/BaselineModel}.
+Another line of work aimed to use MD more directly, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}.
 
-This path tried to use MD more directly by learning from frames and trajectories rather than reducing the trajectory to a small set of graph-level summaries. PPB-Affinity was introduced as a machine-learning resource for protein drug discovery \citep{Liu2024PPBAffinity}, and recent protein--ligand work has shown that spatio-temporal learning on MD-derived data can be effective in some settings \citep{Libouban2025Spatiotemporal}. The motivation was to test whether that style of learning could transfer to protein--protein affinity prediction, where the interfaces are larger, the labelled benchmarks are less standardized, and the structural heterogeneity is broader \citep{Wang2004PDBbind,Kastritis2011Benchmark,Liu2024PPBAffinity}.
+This path tried to use MD more directly by learning from frames and trajectories rather than reducing the trajectory to a small set of graph-level summaries. PPB-Affinity was introduced as a machine-learning resource for protein drug discovery \citep{Liu2024PPBAffinity}, and recent protein--ligand work has shown that spatio-temporal learning on MD-derived data can be effective in some settings \citep{Libouban2025Spatiotemporal}. The motivation was to test whether that style of learning could transfer to protein--protein affinity prediction, where the interfaces are larger, the labelled benchmarks are less standardised, and the structural heterogeneity is broader \citep{Wang2004PDBbind,Kastritis2011Benchmark,Liu2024PPBAffinity}.
 
-This branch does not have a preserved final benchmark summary comparable with the later residue-graph pipeline. The intended training setup was computationally heavy, so the code was not run through to a comparable evaluation. It remains a plausible future direction.
+This approach does not have a preserved final benchmark summary comparable with the residue-graph study. The intended training setup was computationally heavy, so it was not run through to a comparable evaluation. It remains a plausible future direction.
 
 \section{Exploratory dataset curation utilities}
 
-The final archived workstream is \path{ARCHIVE/Data_curation}. These scripts cover earlier filtering decisions, partner-size prefetching, subset selection, diverse-sample construction, and older cleaning steps for intermediate datasets. They remain useful as provenance for the final dataset definition.
+\path{ARCHIVE/Data_curation} contains earlier filtering decisions, partner-size prefetching, subset selection, diverse-sample construction, and older cleaning steps for intermediate datasets. These files remain useful as provenance for the final dataset definition.

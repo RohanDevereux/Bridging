@@ -3,15 +3,15 @@
 
 \section{Dataset and target}
 
-All experiments used a curated wild-type subset of PPB-Affinity \citep{Liu2024PPBAffinity}. The local curation retained one ordered ligand--receptor chain assignment per complex, removed duplicate entries, and excluded mutant complexes. A complex was kept only if a Protein Data Bank structure, an interpretable ligand/receptor chain definition, and an affinity measurement sufficient to derive a binding free energy were available. The resulting processed CSV contained 2818 complexes.
+All experiments used a curated wild-type subset of PPB-Affinity \citep{Liu2024PPBAffinity}. Curation retained one ordered ligand--receptor chain assignment per complex, removed duplicate entries, and excluded mutant complexes. A complex was kept only if a Protein Data Bank structure, an interpretable ligand/receptor chain definition, and an affinity measurement sufficient to derive a binding free energy were available. The resulting curated table contained 2818 complexes.
 
-The interaction classes in this processed table were 199 TCR-pMHC complexes, 437 antibody--antigen complexes, and 2182 other or unannotated complexes. PPB-Affinity reports different affinity distributions and weaker benchmark performance for the TCR-pMHC and antibody--antigen subsets than for the full test set, so this heterogeneity is part of the benchmark rather than an afterthought \citep{Liu2024PPBAffinity}.
+The interaction classes in this curated table were 199 TCR-pMHC complexes, 437 antibody--antigen complexes, and 2182 other or unannotated complexes. PPB-Affinity reports different affinity distributions and weaker benchmark performance for the TCR-pMHC and antibody--antigen subsets than for the full test set, so this heterogeneity is part of the benchmark rather than an afterthought \citep{Liu2024PPBAffinity}.
 
-The regression target was the standard Gibbs free energy of binding, $\Delta G$, in kcal mol$^{-1}$. In this processed table, the affinity column used by the pipeline was the reported dissociation constant $K_D$. All targets were therefore computed as
+The regression target was the standard Gibbs free energy of binding, $\Delta G$, in kcal mol$^{-1}$. In this curated table, the affinity column used in the study was the reported dissociation constant $K_D$. All targets were therefore computed as
 \begin{equation}
 \Delta G = RT \ln K_D,
 \end{equation}
-with $R = 0.00198720425864083$ kcal mol$^{-1}$ K$^{-1}$ and the experimental temperature in kelvin. When no usable temperature value was available in the processed table, $T=298.15$ K was used.
+with $R = 0.00198720425864083$ kcal mol$^{-1}$ K$^{-1}$ and the experimental temperature in kelvin. When no usable temperature value was available in the curated table, $T=298.15$ K was used.
 
 \section{Molecular-dynamics preparation and simulation}
 
@@ -19,7 +19,7 @@ Complexes were prepared from PDB coordinates with PDBFixer and the OpenMM applic
 
 Prepared complexes were solvated with 1.0 nm padding and ionic strength 0.15 M. The force-field stack was \texttt{amber14-all.xml} for the protein and \texttt{amber14/tip3pfb.xml} for the solvent \citep{Maier2015ff14SB,Wang2014WaterModels}. The processed PPB-Affinity table used here had no pH column, so protonation was carried out at pH 7.0 for every complex.
 
-All simulations were run in OpenMM with PME electrostatics, a 1.0 nm real-space cutoff, constraints on bonds involving hydrogen, rigid water, a Langevin middle integrator with friction 1 ps$^{-1}$, and a 2 fs timestep \citep{Eastman2024OpenMM8}. Each system was minimized for up to 1000 iterations, equilibrated for 100{,}000 steps, and then simulated for 500{,}000 further steps. Reporters were written every 5000 steps. Because the reporters were attached before equilibration, each complex contributed 120 saved frames over 1.2 ns in total.
+All simulations were run in OpenMM with PME electrostatics, a 1.0 nm real-space cutoff, constraints on bonds involving hydrogen, rigid water, a Langevin middle integrator with friction 1 ps$^{-1}$, and a 2 fs timestep \citep{Eastman2024OpenMM8}. Each system was minimised for up to 1000 iterations, equilibrated for 100{,}000 steps, and then simulated for 500{,}000 further steps. Reporters were written every 5000 steps. Because the reporters were attached before equilibration, each complex contributed 120 saved frames over 1.2 ns in total.
 
 \section{Residue-graph construction and features}
 
@@ -39,11 +39,11 @@ Static & DeepRank2 residue descriptors \texttt{bsa}, \texttt{sasa}, \texttt{res\
 Dynamic & Hydration and flexibility summaries \texttt{dyn\_log1p\_water\_count\_5A\_mean}, \texttt{dyn\_water\_count\_5A\_std}, \texttt{dyn\_rmsf\_ca}; torsion summaries \texttt{dyn\_sin\_phi\_mean}, \texttt{dyn\_cos\_phi\_mean}, \texttt{dyn\_sin\_psi\_mean}, \texttt{dyn\_cos\_psi\_mean}; force-proxy summaries \texttt{dyn\_coul\_force\_mean}, \texttt{dyn\_coul\_force\_std}, \texttt{dyn\_lj\_force\_mean}, \texttt{dyn\_lj\_force\_std} & \texttt{dyn\_contact\_freq\_8A}, \texttt{dyn\_dist\_mean}, \texttt{dyn\_dist\_std} \\
 \hline
 \end{tabular}
-\caption{Feature groups used in the residue-graph pipeline. The static mode $S$ used only the static block. The dynamic mode $SD$ used the union of the static and dynamic blocks.}
+\caption{Feature groups used in the residue-graph models. The static mode $S$ used only the static block. The dynamic mode $SD$ used the union of the static and dynamic blocks.}
 \label{tab:feature-groups}
 \end{table}
 
-Dynamic node and edge features were computed from the saved trajectories with MDTraj \citep{McGibbon2015MDTraj}. Hydration was measured from the full solvated trajectory by counting unique water oxygen residues within 5~\AA\ of any heavy atom of a residue. The stored hydration features were $\log(1+\bar{w}_i)$ and the standard deviation of the framewise water counts. The logarithm controls the right tail from highly solvent-exposed residues while preserving zero exactly. C$\alpha$ RMSF was computed after least-squares alignment. Backbone torsions were summarized by frame-averaged values of $\sin\phi$, $\cos\phi$, $\sin\psi$, and $\cos\psi$.
+Dynamic node and edge features were computed from the saved trajectories with MDTraj \citep{McGibbon2015MDTraj}. Hydration was measured from the full solvated trajectory by counting unique water oxygen residues within 5~\AA\ of any heavy atom of a residue. The stored hydration features were $\log(1+\bar{w}_i)$ and the standard deviation of the framewise water counts. The logarithm controls the right tail from highly solvent-exposed residues while preserving zero exactly. C$\alpha$ RMSF was computed after least-squares alignment. Backbone torsions were summarised by frame-averaged values of $\sin\phi$, $\cos\phi$, $\sin\psi$, and $\cos\psi$.
 
 Dynamic edge features were computed only on residue pairs already connected in the static graph. For each edge, the closest heavy-atom distance was evaluated in every saved frame. The dynamic contact frequency was the fraction of frames with closest-heavy distance at most 8~\AA. When enabled, the mean and standard deviation of the closest-heavy distance were also stored.
 
@@ -51,25 +51,25 @@ Each residue also received approximate inter-chain nonbonded force summaries. A 
 
 \section{Graph views, analysis subset, and preprocessing}
 
-Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view kept a local neighborhood around the closest ligand-residue/receptor-residue pair identified from mapped trajectory C$\alpha$ coordinates, under a hard cap of 128 residues.
+Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view retained residues near the closest ligand-residue/receptor-residue pair identified from mapped trajectory C$\alpha$ coordinates, under a cap of 128 residues.
 
-The final thesis did not run MD simulation, feature extraction, and repeated model evaluation on all 2818 curated complexes. Those stages were restricted to a smaller analysis subset for time and compute reasons. The final paired full/interface-restricted graph set contained 1437 complexes: 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. A small additional number of complexes were lost during partner-chain reconciliation and view construction, but the reduction from 2818 to 1437 should be read primarily as a compute limitation rather than as a statement that the remainder of PPB-Affinity was structurally unusable. PPB-Affinity also reports that its benchmark model improves as the training fraction increases, so dataset scale is itself part of the modelling problem \citep{Liu2024PPBAffinity}.
+The full MD-backed comparison was not run on all 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were restricted to a smaller analysis subset for computational reasons. The final paired full/interface-restricted graph set contained 1437 complexes: 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. A small additional number of complexes were lost during partner-chain reconciliation and view construction, but the reduction from 2818 to 1437 should be read primarily as a computational limitation rather than as a statement that the remainder of PPB-Affinity was structurally unusable. PPB-Affinity also reports that its benchmark model improves as the training fraction increases, so dataset scale is itself part of the modelling problem \citep{Liu2024PPBAffinity}.
 
-Feature scaling was fit separately inside each outer split and only on that split's training complexes. Every numeric feature was clipped to its 0.5th and 99.5th training percentiles, standardized to zero mean and unit variance, and clipped again to $[-8,8]$. The same fitted transformation was then applied to the validation and test complexes.
+Feature scaling was fit separately inside each outer split and only on that split's training complexes. Every numeric feature was clipped to its 0.5th and 99.5th training percentiles, standardised to zero mean and unit variance, and clipped again to $[-8,8]$. The same fitted transformation was then applied to the validation and test complexes.
 
 \section{Models}
 
 \subsection{Direct supervised baseline}
 
-The supervised baseline was a residue-graph regressor implemented in PyTorch Geometric \citep{Fey2019PyG}. Node and edge inputs were projected linearly to 128 hidden units, passed through three GINE layers, pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. The same encoder depth, hidden dimension, optimizer, batch size, and early-stopping settings were used for both graph views and both feature modes.
+The supervised baseline was a residue-graph regressor in PyTorch Geometric \citep{Fey2019PyG}. Node and edge inputs were projected linearly to 128 hidden units, passed through three GINE layers, pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. The same encoder depth, hidden dimension, optimizer, batch size, and early-stopping settings were used for both graph views and both feature modes.
 
 \subsection{Masked GraphVAE}
 
-The GraphVAE used the same encoder backbone as the supervised baseline: linear node and edge projections to 128 hidden units, three GINE layers, and mean-plus-max graph pooling. Two linear heads mapped the pooled representation to the latent mean $\mu$ and log-variance $\log\sigma^2$. The latent dimensionality was one of $d_z \in \{8,16,32\}$.
+The GraphVAE used the same encoder architecture as the supervised baseline: linear node and edge projections to 128 hidden units, three GINE layers, and mean-plus-max graph pooling. Two linear heads mapped the pooled representation to the latent mean $\mu$ and log-variance $\log\sigma^2$. The latent dimensionality was one of $d_z \in \{8,16,32\}$.
 
 For every batch, target node entries and target edge entries were masked independently with probability 0.30. The encoder received the masked graph together with binary mask indicators. The node decoder received the graph latent, the unmasked non-target node inputs, the masked target node inputs, and the node-mask indicators. The edge decoder received the analogous edge quantities. Reconstruction was therefore explicit and feature-specific rather than a generic graph-generation objective.
 
-The reconstruction targets used in the final matrix are listed in Table~\ref{tab:target-policies}.
+The reconstruction targets used in the 52-model comparison are listed in Table~\ref{tab:target-policies}.
 
 \begin{table}[t]
 \centering
@@ -93,22 +93,22 @@ For a batch of graphs, the GraphVAE objective was
 \begin{equation}
 \mathcal{L} = \mathcal{L}_{\mathrm{node}} + \mathcal{L}_{\mathrm{edge}} + \beta \mathcal{L}_{\mathrm{KL}} + 0.01\,\mathcal{L}_{\mathrm{corr}} + \lambda_{\mathrm{aff}}\mathcal{L}_{\mathrm{aff}},
 \end{equation}
-where $\mathcal{L}_{\mathrm{node}}$ and $\mathcal{L}_{\mathrm{edge}}$ were masked mean-squared reconstruction losses, $\mathcal{L}_{\mathrm{KL}}$ was the standard Gaussian VAE penalty \citep{Kingma2014VAE}, $\mathcal{L}_{\mathrm{corr}}$ penalized the squared off-diagonal entries of the latent covariance matrix, and $\mathcal{L}_{\mathrm{aff}}$ was an MSE loss on normalized $\Delta G$ from a latent MLP head. Unsupervised runs used $\lambda_{\mathrm{aff}}=0$. Semi-supervised runs used $\lambda_{\mathrm{aff}}=1$.
+where $\mathcal{L}_{\mathrm{node}}$ and $\mathcal{L}_{\mathrm{edge}}$ were masked mean-squared reconstruction losses, $\mathcal{L}_{\mathrm{KL}}$ was the standard Gaussian VAE penalty \citep{Kingma2014VAE}, $\mathcal{L}_{\mathrm{corr}}$ penalised the squared off-diagonal entries of the latent covariance matrix, and $\mathcal{L}_{\mathrm{aff}}$ was an MSE loss on normalised $\Delta G$ from a latent MLP head. Unsupervised runs used $\lambda_{\mathrm{aff}}=0$. Semi-supervised runs used $\lambda_{\mathrm{aff}}=1$.
 
 All GraphVAE models were trained with AdamW, learning rate $10^{-4}$, weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early-stopping patience 20. The KL weight increased linearly from 0 to 1 over the first 30\% of training epochs. Checkpoint selection used validation reconstruction loss for unsupervised runs and validation reconstruction loss plus weighted validation affinity loss for semi-supervised runs.
 
-\subsection{Latent-space ridge probe}
+\subsection{Latent-space ridge regression}
 
-GraphVAE results are reported from a linear probe on the latent means rather than from the neural affinity head alone. After training, each retained checkpoint exported graph-level latent means for the train, validation, and test complexes. A ridge regressor was then fit on the training latents with \texttt{RidgeCV} from scikit-learn \citep{Pedregosa2011Scikit} over
+GraphVAE results are reported from ridge regression on the latent means rather than from the neural affinity head alone. After training, each retained checkpoint exported graph-level latent means for the train, validation, and test complexes. A ridge regressor was then fit on the training latents with \texttt{RidgeCV} from scikit-learn \citep{Pedregosa2011Scikit} over
 \[
 \alpha \in \{10^{-4}, 3\times 10^{-4}, 10^{-3}, 3\times 10^{-3}, 10^{-2}, 3\times 10^{-2}, 10^{-1}, 3\times 10^{-1}, 1, 3, 10, 30, 100\}.
 \]
-The headline GraphVAE metrics in Chapter~\ref{ch:results} are the held-out metrics of this ridge probe.
+The headline GraphVAE metrics in Chapter~\ref{ch:results} are the held-out metrics of this ridge regression.
 
 \section{Repeated outer evaluation}
 
-The final model matrix was evaluated on the matched 1437-complex set with 5 outer folds and 2 repeats. Complex identifiers, not trajectory frames, were the unit of resampling. In each outer fit, one fold was held out as test and the remaining four folds were split into training and validation sets to give an overall train/validation/test proportion of approximately 70/15/15. Every stage of the pipeline was repeated inside each outer split: feature scaling, model training, checkpoint selection, and latent ridge fitting.
+The 52-model comparison was evaluated on the matched 1437-complex set with 5 outer folds and 2 repeats. Complex identifiers, not trajectory frames, were the unit of resampling. In each outer fit, one fold was held out as test and the remaining four folds were split into training and validation sets to give an overall train/validation/test proportion of approximately 70/15/15. At each outer fit, feature scaling, model training, checkpoint selection, and latent ridge fitting were all carried out within that split.
 
-The final matrix contained 52 configurations. Forty-eight were GraphVAE configurations spanning two graph views (full and interface-restricted), two feature modes ($S$ and $SD$), two supervision modes (unsupervised and semi-supervised), and latent dimensions 8, 16, and 32. The $SD$ runs used three target policies; the $S$ runs used only \texttt{shared\_static}. Four further configurations were direct supervised baselines for the Cartesian product of graph view and feature mode.
+The comparison contained 52 models. Forty-eight were GraphVAE models spanning two graph views (full and interface-restricted), two feature modes ($S$ and $SD$), two supervision modes (unsupervised and semi-supervised), and latent dimensions 8, 16, and 32. The $SD$ runs used three reconstruction targets; the $S$ runs used only \texttt{shared\_static}. Four further models were direct supervised baselines for the Cartesian product of graph view and feature mode.
 
-Held-out performance was measured with RMSE, Pearson correlation, and $R^2$. Every metric reported in Chapter~\ref{ch:results} is the arithmetic mean over the 10 outer fits for the corresponding configuration.
+Held-out performance was measured with RMSE, Pearson correlation, and $R^2$. Every metric reported in Chapter~\ref{ch:results} is the arithmetic mean over the 10 outer fits for the corresponding model.

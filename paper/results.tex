@@ -1,11 +1,11 @@
 \chapter{Results}
 \label{ch:results}
 
-The final evaluation used the 1437-complex analysis subset for which paired full and interface-restricted graph views were available. The model matrix contained 52 configurations: 48 GraphVAE configurations and 4 direct supervised baselines. Every reported metric is the mean over 10 outer held-out fits from 5 folds and 2 repeats. The complete 52-model table is given in Appendix~\ref{ch:appendix_matrix}.
+The final evaluation used the 1437-complex analysis subset for which paired full and interface-restricted graph views were available. The comparison contained 52 models: 48 GraphVAE variants and 4 direct supervised baselines. Every reported metric is the mean over 10 outer held-out fits from 5 folds and 2 repeats. The complete 52-model table is given in Appendix~\ref{ch:appendix_matrix}.
 
 \section{Headline models}
 
-Table~\ref{tab:headline-models} lists the strongest models in the final matrix. The best overall model was the direct supervised baseline on the full static graph. The best GraphVAE was the full static semi-supervised model with latent dimension 32. The best interface model was the static supervised baseline.
+Table~\ref{tab:headline-models} lists the strongest models in the comparison. The best overall model was the direct supervised baseline on the full static graph. The best GraphVAE was the full static semi-supervised model with latent dimension 32. The best interface model was the static supervised baseline.
 
 \begin{table}[t]
 \centering
@@ -24,7 +24,7 @@ Interface GraphVAE, $S$, semi, $z=8$ & 2.6041 & 0.3402 & 0.0282 & 0.8018 \\
 \hline
 \end{tabular}
 }
-\caption{Best-performing models in the final matrix. GraphVAE metrics are those of the downstream ridge probe on latent means.}
+\caption{Best-performing models in the 52-model comparison. GraphVAE metrics are those obtained after ridge regression on latent means.}
 \label{tab:headline-models}
 \end{table}
 
@@ -32,7 +32,7 @@ The best supervised baseline outperformed the best GraphVAE by 0.0913 RMSE units
 
 \section{Factor comparisons}
 
-Table~\ref{tab:factor-summary} summarizes the main matched comparisons in the GraphVAE matrix. The dominant effect was graph view: the full graph outperformed the interface-restricted graph in all 24 matched GraphVAE comparisons. Under the \texttt{shared\_static} target policy, the static representation outperformed the static-plus-dynamic representation in 11 of 12 matched GraphVAE comparisons. Semi-supervision helped consistently for the full-graph runs and the interface static runs, but not for the interface dynamic runs.
+Table~\ref{tab:factor-summary} summarises the main matched comparisons in the GraphVAE set. The dominant effect was graph view: the full graph outperformed the interface-restricted graph in all 24 matched GraphVAE comparisons. Under the static reconstruction target (\texttt{shared\_static}), the static representation outperformed the static-plus-dynamic representation in 11 of 12 matched GraphVAE comparisons. Semi-supervision helped consistently for the full-graph runs and the interface static runs, but not for the interface dynamic runs.
 
 \begin{table}[t]
 \centering
@@ -59,7 +59,7 @@ Within the full semi-supervised $SD$ family, the reconstruction target also matt
 
 \section{Family-level train, validation, and test behaviour}
 
-Table~\ref{tab:family-overfit} summarizes the main model families. The unsupervised VAE families had small train--test gaps but weak correlations on all splits. The semi-supervised families fit the training set more strongly. The strongest held-out result remained the full static supervised baseline.
+Table~\ref{tab:family-overfit} summarises the main model families. The unsupervised VAE families had small train--test gaps but weak correlations on all splits. The semi-supervised families fit the training set more strongly. The strongest held-out result remained the full static supervised baseline.
 
 \begin{table}[t]
 \centering
@@ -82,7 +82,7 @@ Interface VAE semi $SD$ & 0.7685 & 0.3231 & 0.3189 & 0.4496 & 1.6479 & 2.6620 \\
 \hline
 \end{tabular}
 }
-\caption{Family-level mean train, validation, and test behaviour. Here $g_r = r_{\mathrm{train}} - r_{\mathrm{test}}$. Each row is averaged over all configurations in that family.}
+\caption{Family-level mean train, validation, and test behaviour. Here $g_r = r_{\mathrm{train}} - r_{\mathrm{test}}$. Each row is averaged over all models in that family.}
 \label{tab:family-overfit}
 \end{table}
 
@@ -90,7 +90,7 @@ Interface VAE semi $SD$ & 0.7685 & 0.3231 & 0.3189 & 0.4496 & 1.6479 & 2.6620 \\
 
 The matched 1437-complex analysis set contained 966 complexes in the broad \emph{other} class, 366 antibody--antigen complexes, and 105 TCR-pMHC complexes. For subgroup analysis, the outer-test predictions were pooled over all 10 fits, so each complex contributes two held-out predictions, one from each repeat.
 
-Table~\ref{tab:subgroup-headline} shows the subgroup behaviour of the main headline models. The full static baseline remained the strongest of these models in all three interaction classes. The full static GraphVAE remained second, and the interface baseline remained weaker in every subgroup.
+Table~\ref{tab:subgroup-headline} shows the subgroup behaviour of the main models. The full static baseline remained the strongest of these models in all three interaction classes. The full static GraphVAE remained second, and the interface baseline remained weaker in every subgroup.
 
 \begin{table}[t]
 \centering
@@ -112,4 +112,4 @@ TCR-pMHC & 105 & 1.663 & 0.466 & 1.879 & 0.406 & 2.440 & 0.333 \\
 
 \section{Summary}
 
-Four results dominate the final matrix. First, the full graph was better than the interface-restricted representation. Second, the dynamic summaries did not improve held-out performance over the static representation. Third, the strongest model was the direct supervised baseline on the full static graph. Fourth, the same model ordering remained in the antibody--antigen, TCR-pMHC, and other interaction classes.
+Four results dominate the comparison. First, the full graph was better than the interface-restricted representation. Second, the dynamic summaries did not improve held-out performance over the static representation. Third, the strongest model was the direct supervised baseline on the full static graph. Fourth, the same model ordering remained in the antibody--antigen, TCR-pMHC, and other interaction classes.

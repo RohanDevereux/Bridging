@@ -27,7 +27,7 @@ where $U$ is the force-field potential energy. In this thesis, molecular dynamic
 
 \section{Residue graphs and message passing}
 
-A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present thesis, the graph topology is static, while some node and edge attributes summarize time-dependent behaviour from molecular dynamics.
+A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present thesis, the graph topology is static, while some node and edge attributes summarise time-dependent behaviour from molecular dynamics.
 
 Graph neural networks learn on such inputs by message passing. In a generic layer,
 \begin{equation}
@@ -44,7 +44,7 @@ where $\mathbf{h}_i^{(\ell)}$ is the node state, $\mathbf{e}_{ij}$ is the edge f
 
 \section{Variational graph representation learning}
 
-The GraphVAE used in this thesis is a latent-variable model that combines graph encoding, masked reconstruction, and latent regularization. In the standard VAE formulation, training optimizes a variational lower bound,
+The GraphVAE used in this thesis is a latent-variable model that combines graph encoding, masked reconstruction, and latent regularisation. In the standard VAE formulation, training optimises a variational lower bound,
 \begin{equation}
 \log p_{\theta}(\mathbf{x})
 \ge

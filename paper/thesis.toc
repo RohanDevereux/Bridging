@@ -2,7 +2,7 @@
 \contentsline {chapter}{\numberline {2}Literature Review}{2}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Protein--protein affinity prediction as a benchmark problem}{2}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Physics-based, empirical, and learned approaches}{3}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Generalization and evaluation}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.3}Generalisation and evaluation}{4}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Why use a variational model}{4}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Position of this thesis}{4}{section.2.5}%
 \contentsline {chapter}{\numberline {3}Methods}{5}{chapter.3}%
@@ -13,7 +13,7 @@
 \contentsline {section}{\numberline {3.5}Models}{8}{section.3.5}%
 \contentsline {subsection}{\numberline {3.5.1}Direct supervised baseline}{8}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}Masked GraphVAE}{8}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Latent-space ridge probe}{9}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.3}Latent-space ridge regression}{9}{subsection.3.5.3}%
 \contentsline {section}{\numberline {3.6}Repeated outer evaluation}{9}{section.3.6}%
 \contentsline {chapter}{\numberline {4}Results}{11}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Headline models}{11}{section.4.1}%
@@ -26,8 +26,8 @@
 \contentsline {section}{\numberline {A.1}Correction learning around fast affinity baselines}{16}{section.A.1}%
 \contentsline {subsection}{\numberline {A.1.1}PRODIGY}{16}{subsection.A.1.1}%
 \contentsline {subsection}{\numberline {A.1.2}MM/GBSA}{17}{subsection.A.1.2}%
-\contentsline {section}{\numberline {A.2}The C$\alpha $ contact-map branch}{17}{section.A.2}%
-\contentsline {section}{\numberline {A.3}The PPB-inspired augmentation and spatiotemporal branch}{19}{section.A.3}%
+\contentsline {section}{\numberline {A.2}The C$\alpha $ contact-map approach}{17}{section.A.2}%
+\contentsline {section}{\numberline {A.3}The PPB-inspired augmentation and spatiotemporal approach}{19}{section.A.3}%
 \contentsline {section}{\numberline {A.4}Exploratory dataset curation utilities}{19}{section.A.4}%
 \contentsline {chapter}{\numberline {B}Complete Model Matrix}{20}{appendix.B}%
 \contentsline {chapter}{\numberline {C}Repository Layout}{23}{appendix.C}%
