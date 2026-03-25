@@ -1,0 +1,63 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,5,"1AO7|A,B,C|D,E|298.00",1AO7,"A,B,C","D,E","A,B,C","D,E",298.0,gb,5,0.15,0.15,21,,5,1518.7384,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1AO7/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/1AO7_A_B_C_D_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,21,1E96|A|B|293.00,1E96,A,B,A,B,293.0,gb,5,0.15,0.15,21,,5,0.0578,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1E96/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/1E96_A_B_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,37,1IAR|A|B|298.00,1IAR,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,5429.071,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1IAR/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/1IAR_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,53,"1MLC|A,B|E|298.00",1MLC,"A,B",E,"A,B",E,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1MLC/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/1MLC_A_B_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,69,1TM1|E|I|298.00,1TM1,E,I,A,B,298.0,gb,5,0.15,0.15,21,,5,1501.4533,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1TM1/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/1TM1_E_I_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,85,2B42|A|B|295.00,2B42,A,B,A,B,295.0,gb,5,0.15,0.15,21,,5,-0.0188,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2B42/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/2B42_A_B_295.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,101,2J12|A|B|298.00,2J12,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0579,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2J12/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/2J12_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,117,"3AAA|A,B|C|293.00",3AAA,"A,B",C,"A,B",C,293.0,gb,5,0.15,0.15,21,,5,2613.7256,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3AAA/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_05/3AAA_A_B_C_293.00

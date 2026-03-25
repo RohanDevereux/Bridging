@@ -1,0 +1,92 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,14,"1CHO|E,F,G|I|294.00",1CHO,"E,F,G",I,"A,B,C",D,294.0,gb,5,0.15,0.15,21,,5,0.1868,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1CHO/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/1CHO_E_F_G_I_294.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,30,1FSS|A|B|298.00,1FSS,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,2655.6821,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1FSS/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/1FSS_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,46,1KNE|A|P|298.00,1KNE,A,P,A,B,298.0,gb,5,0.15,0.15,21,,5,0.0004,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1KNE/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/1KNE_A_P_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,62,"1QAB|A,B,C,D|E|293.00",1QAB,"A,B,C,D",E,"A,B,C,D",E,293.0,gb,5,0.15,0.15,21,,5,-0.0053,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1QAB/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/1QAB_A_B_C_D_E_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,78,2A9K|A|B|310.00,2A9K,A,B,A,B,310.0,gb,5,0.15,0.15,21,,5,1563.4536,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2A9K/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/2A9K_A_B_310.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,94,2FTL|E|I|295.00,2FTL,E,I,A,B,295.0,gb,5,0.15,0.15,21,,5,1.7742,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2FTL/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/2FTL_E_I_295.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,110,2OOB|A|B|298.00,2OOB,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,121.8238,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2OOB/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/2OOB_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,126,3BX1|A|C|298.00,3BX1,A,C,A,C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3BX1/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/3BX1_A_C_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,142,"3LZF|A,B|H,L|298.00",3LZF,"A,B","H,L","A,B","C,D",298.0,gb,5,0.15,0.15,21,,5,2896.4858,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3LZF/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/3LZF_A_B_H_L_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,158,"3R9A|A,C|B|298.00",3R9A,"A,C",B,"A,C",B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3R9A/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+
+STDERR:
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 98, in <module>
+    app.loadcheck_prmtops()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py"", line 651, in loadcheck_prmtops
+    self.normal_system.Map(INPUT['receptor_mask'], INPUT['ligand_mask'])
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/parm_setup.py"", line 239, in Map
+    raise PrmtopError(""Couldn't predict mask from topology files!\n"" +
+    ...<2 lines>...
+          ""this is not the case."")
+PrmtopError: Couldn't predict mask from topology files!
+Your ligand residues must be sequential in your complex.
+There are likely problems with your topology files if this is not the case.
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3R9A/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/3R9A_A_C_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,174,3WWN|A|B|333.00,3WWN,A,B,A,B,333.0,gb,5,0.15,0.15,21,,5,0.0636,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3WWN/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_14/3WWN_A_B_333.00

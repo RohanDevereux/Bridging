@@ -1,0 +1,1492 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,0,1A22|A|B|298.00,1A22,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1A22/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1A22_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,16,1CSO|E|I|294.00,1CSO,E,I,294.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['I']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1CSO/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1CSO_E_I_294.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,32,"1GCQ|A,B|C|298.00",1GCQ,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1GCQ/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1GCQ_A_B_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,48,1LFD|A|B|298.00,1LFD,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1LFD/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1LFD_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,64,"1REW|A,B|C|298.00",1REW,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1REW/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1REW_A_B_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,80,2AJF|A|E|298.00,2AJF,A,E,298.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['E']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2AJF/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2AJF_A_E_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,96,2GOX|A|B|298.00,2GOX,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2GOX/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2GOX_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,112,2REX|A|B|298.00,2REX,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2REX/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2REX_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,128,3EG5|A|B|293.00,3EG5,A,B,293.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3EG5/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3EG5_A_B_293.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,144,3M63|A|B|298.00,3M63,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3M63/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3M63_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,160,3RF3|A|C|298.00,3RF3,A,C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['C']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3RF3/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3RF3_A_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,176,"4B0M|A|B,M|298.00",4B0M,A,"B,M",298.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['M']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4B0M/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4B0M_A_B_M_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,192,4JEU|A|B|298.00,4JEU,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4JEU/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4JEU_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,208,4O27|A|B|298.00,4O27,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4O27/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4O27_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,224,"5C6T|H,L|A|298.00",5C6T,"H,L",A,298.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H', 'L']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5C6T/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5C6T_H_L_A_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,240,"3EOB|H,L|I|298.15",3EOB,"H,L",I,298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['I']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3EOB/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3EOB_H_L_I_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,256,"3B2U|F,G|E|298.15",3B2U,"F,G",E,298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['E']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3B2U/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3B2U_F_G_E_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,272,"2ZPK|I,M|Q|298.15",2ZPK,"I,M",Q,298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['Q']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2ZPK/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2ZPK_I_M_Q_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,288,"2R0L|H,L|A|298.15",2R0L,"H,L",A,298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H', 'L']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2R0L/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2R0L_H_L_A_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,304,"1WEJ|H,L|F|298.15",1WEJ,"H,L",F,298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['F']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1WEJ/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1WEJ_H_L_F_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,320,1M10|A|B|300.15,1M10,A,B,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1M10/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1M10_A_B_300.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,336,1NW9|B|A|312.15,1NW9,B,A,312.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1NW9/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1NW9_B_A_312.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,352,"4DN4|H,L|M|298.00",4DN4,"H,L",M,298.0,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['M']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4DN4/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4DN4_H_L_M_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,368,"1JWH|C,D|A|310.15",1JWH,"C,D",A,310.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['D']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1JWH/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1JWH_C_D_A_310.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,384,4IZ7|A|B|300.00,4IZ7,A,B,300.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4IZ7/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4IZ7_A_B_300.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,400,"1G6R|A,C|D,E|298.15",1G6R,"A,C","D,E",298.15,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['D', 'E']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1G6R/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1G6R_A_C_D_E_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,416,6FE4|F|A|NA,6FE4,F,A,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['F']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/6FE4/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6FE4_F_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,432,"5DRZ|H,L|P|NA",5DRZ,"H,L",P,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['P']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5DRZ/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5DRZ_H_L_P_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,448,"4KHX|H,L|A|NA",4KHX,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H', 'L']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4KHX/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4KHX_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,464,"5AAW|K,K|L|NA",5AAW,"K,k",L,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['L']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5AAW/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5AAW_K_K_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,480,"4JAN|A,B|I|NA",4JAN,"A,B",I,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['I']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4JAN/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4JAN_A_B_I_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,496,"3GJF|H,L|A,C|NA",3GJF,"H,L","A,C",,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H', 'L']; available=['A', 'B', 'C', 'D']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3GJF/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3GJF_H_L_A_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,512,"6FLB|H,L|G|NA",6FLB,"H,L",G,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['G']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/6FLB/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6FLB_H_L_G_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,528,"4QTI|H,L|U|NA",4QTI,"H,L",U,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['U']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4QTI/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4QTI_H_L_U_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,544,"5IGX|H,L|G|NA",5IGX,"H,L",G,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['G']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5IGX/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5IGX_H_L_G_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,560,4KFZ|D|B|NA,4KFZ,D,B,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['D']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4KFZ/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4KFZ_D_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,576,"4ZFO|H,L|K|NA",4ZFO,"H,L",K,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['K']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4ZFO/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4ZFO_H_L_K_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,592,4WEN|B|A|NA,4WEN,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4WEN/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4WEN_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,608,"3UYR|H,L|P|NA",3UYR,"H,L",P,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['P']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3UYR/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3UYR_H_L_P_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,624,3ZKQ|D|A|NA,3ZKQ,D,A,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['D']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3ZKQ/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3ZKQ_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,640,"3IET|C,D|Q|NA",3IET,"C,D",Q,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['Q']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3IET/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3IET_C_D_Q_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,656,5FHX|H|A|NA,5FHX,H,A,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5FHX/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5FHX_H_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,672,"5TE7|H,L|G|NA",5TE7,"H,L",G,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['G']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5TE7/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5TE7_H_L_G_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,688,"4K3J|H,L|B|NA",4K3J,"H,L",B,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['H', 'L']; available=['A', 'B', 'C']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4K3J/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4K3J_H_L_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,704,3PC8|A|C|NA,3PC8,A,C,,gb,5,0.15,0.15,21,,5,,fail,"Missing chain(s) in topology_protein.pdb: ['C']; available=['A', 'B']",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3PC8/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3PC8_A_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,720,1E6E|A|B|NA,1E6E,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1E6E/topology_protein.pdb,md_top_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1E6E_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,736,"2B4J|A,B|C|NA",2B4J,"A,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2B4J.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2B4J_A_B_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,752,"1BTH|P|H,L|NA",1BTH,P,"H,L",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1BTH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1BTH_P_H_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,768,1EJA|B|A|NA,1EJA,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1EJA.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1EJA_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,784,1H59|A|B|NA,1H59,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1H59.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1H59_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,800,"1KGY|A,D|E,H|NA",1KGY,"A,D","E,H",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1KGY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1KGY_A_D_E_H_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,816,1LX5|A|B|NA,1LX5,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1LX5.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1LX5_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,832,1OGY|B|A|NA,1OGY,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1OGY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1OGY_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,848,1PJN|A|B|NA,1PJN,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1PJN.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1PJN_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,864,"1SG1|A,B|X|NA",1SG1,"A,B",X,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1SG1.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1SG1_A_B_X_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,880,1TH1|C|A|NA,1TH1,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1TH1.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1TH1_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,896,1VET|B|A|NA,1VET,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1VET.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1VET_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,912,1WVE|C|A|NA,1WVE,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1WVE.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1WVE_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,928,"1Y76|A,C|B,D|NA",1Y76,"A,C","B,D",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1Y76.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1Y76_A_C_B_D_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,944,1ZVH|A|L|NA,1ZVH,A,L,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/1ZVH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/1ZVH_A_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,960,2B87|B|A|NA,2B87,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2B87.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2B87_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,976,2DJY|B|A|NA,2DJY,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2DJY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2DJY_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,992,2FUH|B|A|NA,2FUH,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2FUH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2FUH_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1008,2I32|E|A|NA,2I32,E,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2I32.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2I32_E_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1024,2IYB|A|E|NA,2IYB,A,E,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2IYB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2IYB_A_E_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1040,2K2S|B|A|NA,2K2S,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2K2S.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2K2S_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1056,2KGX|B|A|NA,2KGX,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2KGX.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2KGX_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1072,2KXW|B|A|NA,2KXW,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2KXW.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2KXW_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1088,2LP0|B|A|NA,2LP0,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2LP0.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2LP0_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1104,2M0J|B|A|NA,2M0J,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2M0J.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2M0J_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1120,2MLY|B|A|NA,2MLY,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2MLY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2MLY_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1136,2NBV|B|A|NA,2NBV,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2NBV.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2NBV_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1152,2OMZ|A|B|NA,2OMZ,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2OMZ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2OMZ_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1168,2PSM|F|A|NA,2PSM,F,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2PSM.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2PSM_F_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1184,2RF9|C|A|NA,2RF9,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2RF9.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2RF9_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1200,2V6X|B|A|NA,2V6X,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2V6X.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2V6X_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1216,"2W83|C,D|A,B,E|NA",2W83,"C,D","A,B,E",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2W83.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2W83_C_D_A_B_E_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1232,2WQZ|A|D|NA,2WQZ,A,D,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2WQZ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2WQZ_A_D_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1248,2XGY|B|A|NA,2XGY,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2XGY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2XGY_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1264,"2YBR|C|A,B|NA",2YBR,C,"A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/2YBR.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/2YBR_C_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1280,3AJB|B|A|NA,3AJB,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3AJB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3AJB_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1296,"3BPN|C|A,B|NA",3BPN,C,"A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3BPN.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3BPN_C_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1312,3D1M|C|B|NA,3D1M,C,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3D1M.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3D1M_C_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1328,3DVU|C|A|NA,3DVU,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3DVU.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3DVU_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1344,3F50|B|A|NA,3F50,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3F50.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3F50_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1360,3G7A|A|B|NA,3G7A,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3G7A.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3G7A_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1376,3GTY|S|X|NA,3GTY,S,X,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3GTY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3GTY_S_X_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1392,"3HUJ|A,B|G,H|NA",3HUJ,"A,B","G,H",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3HUJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3HUJ_A_B_G_H_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1408,"3K3Q|A|B,C|NA",3K3Q,A,"B,C",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3K3Q.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3K3Q_A_B_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1424,3KZ1|F|A|NA,3KZ1,F,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3KZ1.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3KZ1_F_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1440,3ME2|A|R|NA,3ME2,A,R,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3ME2.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3ME2_A_R_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1456,"3O8X|C,D|A|NA",3O8X,"C,D",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3O8X.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3O8X_C_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1472,3OSL|B|A|NA,3OSL,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3OSL.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3OSL_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1488,3PVM|B|A|NA,3PVM,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3PVM.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3PVM_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1504,3QQ8|B|A|NA,3QQ8,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3QQ8.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3QQ8_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1520,3REA|B|A|NA,3REA,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3REA.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3REA_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1536,"3S8V|X|A,B|NA",3S8V,X,"A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3S8V.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3S8V_X_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1552,3T04|D|A|NA,3T04,D,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3T04.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3T04_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1568,3TSR|E|A|NA,3TSR,E,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3TSR.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3TSR_E_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1584,3UKX|C|B|NA,3UKX,C,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3UKX.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3UKX_C_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1600,3V6B|R|A|NA,3V6B,R,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3V6B.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3V6B_R_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1616,3VPJ|E|A|NA,3VPJ,E,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3VPJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3VPJ_E_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1632,3WDG|B|A|NA,3WDG,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3WDG.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3WDG_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1648,3ZNZ|B|A|NA,3ZNZ,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/3ZNZ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/3ZNZ_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1664,4A94|D|A|NA,4A94,D,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4A94.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4A94_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1680,4AWX|B|A|NA,4AWX,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4AWX.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4AWX_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1696,4BRW|B|A|NA,4BRW,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4BRW.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4BRW_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1712,4CJ0|B|A|NA,4CJ0,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4CJ0.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4CJ0_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1728,"4DGI|H,L|A|NA",4DGI,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4DGI.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4DGI_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1744,"4DTG|K|H,L|NA",4DTG,K,"H,L",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4DTG.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4DTG_K_H_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1760,"4EO5|B,C|A|NA",4EO5,"B,C",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4EO5.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4EO5_B_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1776,"4FQJ|H,L|A|NA",4FQJ,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4FQJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4FQJ_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1792,4GI3|C|A|NA,4GI3,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4GI3.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4GI3_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1808,"4H88|H,L|A|NA",4H88,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4H88.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4H88_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1824,4I0C|D|A|NA,4I0C,D,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4I0C.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4I0C_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1840,"4IW4|E,F|C,D|NA",4IW4,"E,F","C,D",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4IW4.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4IW4_E_F_C_D_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1856,4JS0|B|A|NA,4JS0,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4JS0.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4JS0_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1872,"4KHT|H,L|A|NA",4KHT,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4KHT.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4KHT_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1888,4LQW|A|D|NA,4LQW,A,D,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4LQW.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4LQW_A_D_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1904,"4MNE|B,C|A,D|NA",4MNE,"B,C","A,D",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4MNE.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4MNE_B_C_A_D_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1920,4NQW|B|A|NA,4NQW,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4NQW.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4NQW_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1936,"4P2C|G,H,I,J,K|A,B,C,D,E,F|NA",4P2C,"G,H,I,J,K","A,B,C,D,E,F",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4P2C.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4P2C_G_H_I_J_K_A_B_C_D_E_F_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1952,4PGJ|B|A|NA,4PGJ,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4PGJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4PGJ_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1968,4PLO|B|A|NA,4PLO,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4PLO.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4PLO_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,1984,4QXA|B|A|NA,4QXA,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4QXA.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4QXA_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2000,4U0Q|B|A|NA,4U0Q,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4U0Q.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4U0Q_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2016,4V0N|D|C|NA,4V0N,D,C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4V0N.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4V0N_D_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2032,"4XHJ|C,D|A,B|NA",4XHJ,"C,D","A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4XHJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4XHJ_C_D_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2048,4YIQ|B|A|NA,4YIQ,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4YIQ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4YIQ_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2064,"4ZAK|C,D|A,B|NA",4ZAK,"C,D","A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/4ZAK.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/4ZAK_C_D_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2080,"5A3I|C,D|A,B|NA",5A3I,"C,D","A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5A3I.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5A3I_C_D_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2096,5BN5|B|A|NA,5BN5,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5BN5.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5BN5_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2112,5CHV|C|A|NA,5CHV,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5CHV.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5CHV_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2128,"5D5M|G,H|A,B|NA",5D5M,"G,H","A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5D5M.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5D5M_G_H_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2144,5DJU|B|A|NA,5DJU,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5DJU.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5DJU_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2160,"5EOA|C,D|A,B|NA",5EOA,"C,D","A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5EOA.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5EOA_C_D_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2176,"5FO9|F|D,E|NA",5FO9,F,"D,E",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5FO9.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5FO9_F_D_E_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2192,5GTB|B|A|NA,5GTB,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5GTB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5GTB_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2208,5HVF|B|A|NA,5HVF,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5HVF.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5HVF_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2224,5IXD|B|A|NA,5IXD,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5IXD.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5IXD_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2240,5JKE|B|A|NA,5JKE,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5JKE.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5JKE_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2256,5K8Q|B|A|NA,5K8Q,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5K8Q.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5K8Q_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2272,"5L6N|I|H,L|NA",5L6N,I,"H,L",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5L6N.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5L6N_I_H_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2288,5M36|D|A|NA,5M36,D,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5M36.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5M36_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2304,5ML9|A|B|NA,5ML9,A,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5ML9.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5ML9_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2320,"5NHU|J|A,B|NA",5NHU,J,"A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5NHU.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5NHU_J_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2336,5O2T|B|A|NA,5O2T,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5O2T.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5O2T_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2352,"5OSH|A,B|C|NA",5OSH,"A,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5OSH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5OSH_A_B_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2368,"5T5B|E|H,L|NA",5T5B,E,"H,L",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5T5B.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5T5B_E_H_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2384,"5TZN|F,G|A,W|NA",5TZN,"F,G","A,W",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5TZN.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5TZN_F_G_A_W_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2400,5UUL|B|A|NA,5UUL,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5UUL.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5UUL_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2416,"5VAG|B,C|A|NA",5VAG,"B,C",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5VAG.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5VAG_B_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2432,5W3X|B|A|NA,5W3X,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5W3X.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5W3X_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2448,5X0W|F|E|NA,5X0W,F,E,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5X0W.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5X0W_F_E_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2464,"5XOT|A,B,C|D,E|NA",5XOT,"A,B,C","D,E",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5XOT.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5XOT_A_B_C_D_E_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2480,"5YOY|M,P|K|NA",5YOY,"M,P",K,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5YOY.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5YOY_M_P_K_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2496,6AZP|B|A|NA,6AZP,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6AZP.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6AZP_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2512,6BMT|B|A|NA,6BMT,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6BMT.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6BMT_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2528,"6CQR|F,G|I,J|NA",6CQR,"F,G","I,J",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6CQR.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6CQR_F_G_I_J_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2544,"6EYO|H,L|A|NA",6EYO,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6EYO.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6EYO_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2560,"6G10|C|A,B|NA",6G10,C,"A,B",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6G10.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6G10_C_A_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2576,"6MI2|A,B|C|NA",6MI2,"A,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6MI2.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6MI2_A_B_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2592,"6PXH|C,D|A|NA",6PXH,"C,D",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6PXH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6PXH_C_D_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2608,"6OUS|W,X|K,L|NA",6OUS,"W,X","K,L",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6OUS.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6OUS_W_X_K_L_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2624,6O3O|C|A|NA,6O3O,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6O3O.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6O3O_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2640,6NE4|B|A|NA,6NE4,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6NE4.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6NE4_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2656,"6MNQ|H,L|P|NA",6MNQ,"H,L",P,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6MNQ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6MNQ_H_L_P_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2672,6JWJ|C|A|NA,6JWJ,C,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6JWJ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6JWJ_C_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2688,"6J5D|H,L|A|NA",6J5D,"H,L",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6J5D.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6J5D_H_L_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2704,6IRD|C|B|NA,6IRD,C,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6IRD.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6IRD_C_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2720,6H71|D|B|NA,6H71,D,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6H71.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6H71_D_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2736,6FPG|D|B|NA,6FPG,D,B,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6FPG.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6FPG_D_B_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2752,"6DG5|A|B,C|NA",6DG5,A,"B,C",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6DG5.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6DG5_A_B_C_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2768,"6A7V|D,H,K,U|A,C,E,G|NA",6A7V,"D,H,K,U","A,C,E,G",,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6A7V.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6A7V_D_H_K_U_A_C_E_G_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2784,5VMO|B|A|NA,5VMO,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/5VMO.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/5VMO_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2800,6GHO|B|A|NA,6GHO,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6GHO.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6GHO_B_A_NA
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,2816,6UYS|B|A|NA,6UYS,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+
+STDERR:
+
+Please verify that both the operating system and the processor support Intel(R) AVX512VBMI, AVX512_VPOPCNTDQ, AVX512_BITALG, AVX512_VBMI2, AVX512_VNNI, SHSTK and AVX512_FP16 instructions.
+
+
+",/home/people/22455104/scratch/pdb_cache/6UYS.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mod/shard_00/6UYS_B_A_NA

@@ -1,0 +1,56 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,9,"1BJ1|H,L|V,W|298.00",1BJ1,"H,L","V,W","H,L","V,W",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r4/shard_09/1BJ1_H_L_V_W_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/parameters.py:28: SyntaxWarning: invalid escape sequence '\s'
+  '%(FLOATRE)s\s+%(FLOATRE)s\s+%(FLOATRE)s' % subs)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/parameters.py:34: SyntaxWarning: invalid escape sequence '\s'
+  '%(FLOATRE)s\s+%(FLOATRE)s\s+%(FLOATRE)s' % subs)
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/make_trajs.py"", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/make_trajs.py"", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/pdb_cache/1BJ1.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r4/shard_09/1BJ1_H_L_V_W_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,25,1F47|A|B|298.00,1F47,A,B,B,A,298.0,gb,5,0.15,0.15,21,,5,860.479,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1F47/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r4/shard_09/1F47_A_B_298.00

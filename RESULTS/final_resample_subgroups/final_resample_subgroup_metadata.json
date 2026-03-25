@@ -1,0 +1,23 @@
+{
+  "predictions_root": "final_resample_predictions",
+  "dataset_csv": "src\\bridging\\processedData\\PPB_Affinity_broad_pairuniq_train80_test20.csv",
+  "n_rows_combined": 747240,
+  "n_rows_test": 149448,
+  "n_tags": 52,
+  "n_unique_complexes": 1437,
+  "headline_tags": [
+    "full_base_S",
+    "full_base_SD",
+    "full_S_semi_shared_static_z32",
+    "iface_base_S",
+    "iface_S_semi_shared_static_z8"
+  ],
+  "outputs": {
+    "combined_predictions_csv_gz": "RESULTS\\final_resample_subgroups\\final_resample_predictions_combined.csv.gz",
+    "subgroup_counts_csv": "RESULTS\\final_resample_subgroups\\final_resample_subset_subgroup_counts.csv",
+    "subgroup_metrics_by_tag_csv": "RESULTS\\final_resample_subgroups\\final_resample_subgroup_metrics_by_tag.csv",
+    "subgroup_metrics_by_family_csv": "RESULTS\\final_resample_subgroups\\final_resample_subgroup_metrics_by_family.csv",
+    "subgroup_metrics_headline_models_csv": "RESULTS\\final_resample_subgroups\\final_resample_subgroup_metrics_headline_models.csv",
+    "subgroup_best_models_csv": "RESULTS\\final_resample_subgroups\\final_resample_subgroup_best_models.csv"
+  }
+}

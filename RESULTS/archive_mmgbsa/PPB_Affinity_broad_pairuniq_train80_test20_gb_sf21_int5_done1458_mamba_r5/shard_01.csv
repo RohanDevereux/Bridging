@@ -1,0 +1,79 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,1,1A4Y|A|B|298.00,1A4Y,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0073,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1A4Y/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1A4Y_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,17,"1DAN|H,L|T,U|310.00",1DAN,"H,L","T,U","B,A","C,D",310.0,gb,5,0.15,0.15,21,,5,5895.216,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1DAN/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1DAN_H_L_T_U_310.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,33,1GL0|E|I|298.00,1GL0,E,I,A,B,298.0,gb,5,0.15,0.15,21,,5,615.9841,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1GL0/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1GL0_E_I_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,49,"1LP9|A,B,C|E,F|298.00",1LP9,"A,B,C","E,F","A,B,C","E,F",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1LP9_A_B_C_E_F_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py"", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1LP9/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1LP9_A_B_C_E_F_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,65,1S1Q|A|B|293.00,1S1Q,A,B,A,B,293.0,gb,5,0.15,0.15,21,,5,483.0494,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1S1Q/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1S1Q_A_B_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,81,"2AK4|A,B,C|D,E|298.00",2AK4,"A,B,C","D,E","A,B,C","D,E",298.0,gb,5,0.15,0.15,21,,5,497.3898,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2AK4/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/2AK4_A_B_C_D_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,97,2HLE|A|B|298.00,2HLE,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0081,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2HLE/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/2HLE_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,113,2SIC|E|I|298.00,2SIC,E,I,A,B,298.0,gb,5,0.15,0.15,21,,5,1505.6874,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2SIC/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/2SIC_E_I_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,129,3EQS|A|B|298.00,3EQS,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0175,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3EQS/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3EQS_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,145,3MZG|A|B|298.00,3MZG,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,4674.0092,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3MZG/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3MZG_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,161,3SE3|B|A|298.00,3SE3,B,A,B,A,298.0,gb,5,0.15,0.15,21,,5,-0.0055,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SE3/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3SE3_B_A_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,177,"4E6K|A,B|G|295.00",4E6K,"A,B",G,"A,B",C,295.0,gb,5,0.15,0.15,21,,5,0.0985,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4E6K/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/4E6K_A_B_G_295.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,193,"4K71|A|B,C|298.00",4K71,A,"B,C",A,"B,C",298.0,gb,5,0.15,0.15,21,,5,4787.3037,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4K71/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/4K71_A_B_C_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,209,"4PWX|A,B|C,D|298.00",4PWX,"A,B","C,D","A,B","C,D",298.0,gb,5,0.15,0.15,21,,5,2871.9238,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4PWX/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/4PWX_A_B_C_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,225,5M2O|A|B|308.00,5M2O,A,B,A,B,308.0,gb,5,0.15,0.15,21,,5,2342.6723,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5M2O/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/5M2O_A_B_308.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,241,"3FKU|U,U|G,H|298.15",3FKU,"U,u","G,H","U,u","G,H",298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3FKU_U_U_G_H_298.15/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py"", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/pdb_cache/3FKU.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3FKU_U_U_G_H_298.15

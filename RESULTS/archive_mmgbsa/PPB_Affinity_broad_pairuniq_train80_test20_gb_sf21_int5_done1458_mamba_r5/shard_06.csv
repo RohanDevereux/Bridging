@@ -1,0 +1,131 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,6,1B2S|A|D|298.00,1B2S,A,D,A,D,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1B2S/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/1B2S_A_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,22,1EAW|A|B|298.00,1EAW,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0018,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1EAW/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/1EAW_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,38,1JCK|A|B|298.00,1JCK,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,1176.0218,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1JCK/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/1JCK_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,54,1MQ8|A|B|298.00,1MQ8,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,-0.0024,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1MQ8/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/1MQ8_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,70,"1U7F|B|A,C|310.00",1U7F,B,"A,C",B,"A,C",310.0,gb,5,0.15,0.15,21,,5,2257.9181,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1U7F/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/1U7F_B_A_C_310.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,86,"2BDN|H,L|A|298.00",2BDN,"H,L",A,"C,B",A,298.0,gb,5,0.15,0.15,21,,5,3363.2693,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2BDN/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/2BDN_H_L_A_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,102,2J1K|C|T|298.00,2J1K,C,T,C,T,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/2J1K_C_T_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py"", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/pdb_cache/2J1K.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/2J1K_C_T_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,118,"3B4V|A,B|C|298.00",3B4V,"A,B",C,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,3084.6604,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3B4V/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/3B4V_A_B_C_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,134,"3HFM|H,L|Y|298.00",3HFM,"H,L",Y,"B,A",C,298.0,gb,5,0.15,0.15,21,,5,2071.2628,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3HFM/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/3HFM_H_L_Y_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,150,3NVN|B|A|303.00,3NVN,B,A,B,A,303.0,gb,5,0.15,0.15,21,,5,5952.7086,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3NVN/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/3NVN_B_A_303.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,166,3SF4|A|D|298.00,3SF4,A,D,A,B,298.0,gb,5,0.15,0.15,21,,5,274.0431,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SF4/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/3SF4_A_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,182,4GU0|A|E|291.00,4GU0,A,E,A,E,291.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/4GU0_A_E_291.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py"", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py"", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the ""Temporary Files"" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+",/home/people/22455104/scratch/pdb_cache/4GU0.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/4GU0_A_E_291.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,198,"4LRX|A,B|C,D|293.00",4LRX,"A,B","C,D","A,B","C,D",293.0,gb,5,0.15,0.15,21,,5,0.0042,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4LRX/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/4LRX_A_B_C_D_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,214,"4X4M|A,B|E|298.00",4X4M,"A,B",E,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,1529.3646,ok,,/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4X4M/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/4X4M_A_B_E_298.00

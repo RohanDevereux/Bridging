@@ -1,0 +1,3333 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,0,1A22|A|B|298.00,1A22,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: HD1 within residue: .R<HIE 17>
+Created a new atom named: HD1 within residue: .R<HIE 105>
+  total atoms in file: 3108
+  Leap added 8 missing atoms according to residue templates:
+       8 H / lone pairs
+  The file contained 2 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NPHE 1>
+Created a new atom named: HD1 within residue: .R<HIE 18>
+Created a new atom named: HD1 within residue: .R<HIE 21>
+  total atoms in file: 2949
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 3 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NPHE 1>
+Created a new atom named: HD1 within residue: .R<HIE 18>
+Created a new atom named: HD1 within residue: .R<HIE 21>
+Created a new atom named: HD1 within residue: .R<HIE 197>
+Created a new atom named: HD1 within residue: .R<HIE 285>
+  total atoms in file: 6057
+  Leap added 15 missing atoms according to residue templates:
+       15 H / lone pairs
+  The file contained 5 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 12.950 angstroms between C and N atoms:
+-------  .R<THR 19>.A<C 13> and .R<LEU 20>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 9.909 angstroms between C and N atoms:
+-------  .R<ASN 102>.A<C 13> and .R<GLY 103>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-4.000000) is not zero.
+FATAL:  Atom .R<HIE 17>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 105>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 3; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1A22/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1A22_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,16,1CSO|E|I|294.00,1CSO,E,I,A,B,294.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NVAL 1>
+Created a new atom named: HD1 within residue: .R<HIE 47>
+  total atoms in file: 748
+  Leap added 8 missing atoms according to residue templates:
+       8 H / lone pairs
+  The file contained 2 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NILE 1>
+Created a new atom named: HD1 within residue: .R<HIE 33>
+Created a new atom named: HD1 within residue: .R<HIE 107>
+  total atoms in file: 2544
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 3 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NILE 1>
+Created a new atom named: HD1 within residue: .R<HIE 33>
+Created a new atom named: HD1 within residue: .R<HIE 107>
+Created a new atom named: H within residue: .R<NVAL 186>
+Created a new atom named: HD1 within residue: .R<HIE 232>
+  total atoms in file: 3292
+  Leap added 15 missing atoms according to residue templates:
+       15 H / lone pairs
+  The file contained 5 atoms not in residue templates
+Checking Unit.
+FATAL:  Atom .R<NVAL 1>.A<H 19> does not have a type.
+FATAL:  Atom .R<HIE 47>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1CSO/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1CSO_E_I_294.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,32,"1GCQ|A,B|C|298.00",1GCQ,"A,B",C,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 3>
+Created a new atom named: HD1 within residue: .R<HIE 44>
+Created a new atom named: HD1 within residue: .R<HIE 66>
+  total atoms in file: 1077
+  Leap added 4 missing atoms according to residue templates:
+       4 H / lone pairs
+  The file contained 4 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 27>
+Created a new atom named: HD1 within residue: .R<HIE 42>
+Created a new atom named: H within residue: .R<NTHR 57>
+Created a new atom named: HD1 within residue: .R<HIE 82>
+Created a new atom named: HD1 within residue: .R<HIE 97>
+  total atoms in file: 1755
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 6 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 27>
+Created a new atom named: HD1 within residue: .R<HIE 42>
+Created a new atom named: H within residue: .R<NTHR 57>
+Created a new atom named: HD1 within residue: .R<HIE 82>
+Created a new atom named: HD1 within residue: .R<HIE 97>
+Created a new atom named: H within residue: .R<NGLY 114>
+Created a new atom named: HD1 within residue: .R<HIE 116>
+Created a new atom named: HD1 within residue: .R<HIE 157>
+Created a new atom named: HD1 within residue: .R<HIE 179>
+  total atoms in file: 2832
+  Leap added 10 missing atoms according to residue templates:
+       10 H / lone pairs
+  The file contained 10 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+FATAL:  Atom .R<NGLY 1>.A<H 10> does not have a type.
+FATAL:  Atom .R<HIE 3>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 44>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 66>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1GCQ/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1GCQ_A_B_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,48,1LFD|A|B|298.00,1LFD,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 27>
+Created a new atom named: HD1 within residue: .R<HIE 94>
+Created a new atom named: HD1 within residue: .R<HIE 166>
+  total atoms in file: 2648
+  Leap added 4 missing atoms according to residue templates:
+       4 H / lone pairs
+  The file contained 4 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 40>
+Created a new atom named: HD1 within residue: .R<HIE 60>
+  total atoms in file: 1388
+  Leap added 3 missing atoms according to residue templates:
+       3 H / lone pairs
+  The file contained 3 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 40>
+Created a new atom named: HD1 within residue: .R<HIE 60>
+Created a new atom named: H within residue: .R<NMET 88>
+Created a new atom named: HD1 within residue: .R<HIE 114>
+Created a new atom named: HD1 within residue: .R<HIE 181>
+Created a new atom named: HD1 within residue: .R<HIE 253>
+  total atoms in file: 4036
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 7 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-5.000000) is not zero.
+FATAL:  Atom .R<NMET 1>.A<H 20> does not have a type.
+FATAL:  Atom .R<HIE 27>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 94>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 166>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1LFD/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1LFD_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,64,"1REW|A,B|C|298.00",1REW,"A,B",C,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NTHR 1>
+Created a new atom named: HD1 within residue: .R<HIE 12>
+Created a new atom named: HD1 within residue: .R<HIE 27>
+  total atoms in file: 1282
+  Leap added 13 missing atoms according to residue templates:
+       13 H / lone pairs
+  The file contained 3 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 6>
+Created a new atom named: HD1 within residue: .R<HIE 28>
+Created a new atom named: HD1 within residue: .R<HIE 33>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 49>
+Created a new atom named: H within residue: .R<NSER 104>
+Created a new atom named: HD1 within residue: .R<HIE 109>
+Created a new atom named: HD1 within residue: .R<HIE 131>
+Created a new atom named: HD1 within residue: .R<HIE 136>
+Created a new atom named: HD1 within residue: .R<HIE 146>
+Created a new atom named: HD1 within residue: .R<HIE 152>
+  total atoms in file: 3138
+  Leap added 26 missing atoms according to residue templates:
+       26 H / lone pairs
+  The file contained 12 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 6>
+Created a new atom named: HD1 within residue: .R<HIE 28>
+Created a new atom named: HD1 within residue: .R<HIE 33>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 49>
+Created a new atom named: H within residue: .R<NSER 104>
+Created a new atom named: HD1 within residue: .R<HIE 109>
+Created a new atom named: HD1 within residue: .R<HIE 131>
+Created a new atom named: HD1 within residue: .R<HIE 136>
+Created a new atom named: HD1 within residue: .R<HIE 146>
+Created a new atom named: HD1 within residue: .R<HIE 152>
+Created a new atom named: H within residue: .R<NTHR 207>
+Created a new atom named: HD1 within residue: .R<HIE 218>
+Created a new atom named: HD1 within residue: .R<HIE 233>
+  total atoms in file: 4420
+  Leap added 39 missing atoms according to residue templates:
+       39 H / lone pairs
+  The file contained 15 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-4.000000) is not zero.
+FATAL:  Atom .R<NTHR 1>.A<H 17> does not have a type.
+FATAL:  Atom .R<HIE 12>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 27>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 1; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1REW/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1REW_A_B_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,80,2AJF|A|E|298.00,2AJF,A,E,A,E,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Name change in pdb file residue 1 ;
+this residue is split into NAG and HOH.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+1 residues had naming warnings.
+Thus, there are split residues;
+residue sequence numbers will not correspond to those in the pdb.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 174   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+Creating new UNIT for residue: NAG sequence: 175
+Created a new atom named: C1 within residue: .R<NAG 175>
+Created a new atom named: C2 within residue: .R<NAG 175>
+Created a new atom named: C3 within residue: .R<NAG 175>
+Created a new atom named: C4 within residue: .R<NAG 175>
+Created a new atom named: C5 within residue: .R<NAG 175>
+Created a new atom named: C6 within residue: .R<NAG 175>
+Created a new atom named: C7 within residue: .R<NAG 175>
+Created a new atom named: C8 within residue: .R<NAG 175>
+Created a new atom named: N2 within residue: .R<NAG 175>
+Created a new atom named: O3 within residue: .R<NAG 175>
+Created a new atom named: O4 within residue: .R<NAG 175>
+Created a new atom named: O5 within residue: .R<NAG 175>
+Created a new atom named: O6 within residue: .R<NAG 175>
+Created a new atom named: O7 within residue: .R<NAG 175>
+  total atoms in file: 1421
+  Leap added 1345 missing atoms according to residue templates:
+       1345 H / lone pairs
+  The file contained 14 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 597   type: Terminal/beginning
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 598   type: Nonterminal
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 599   type: Nonterminal
+  Added missing heavy atom: .R<CASP 597>.A<OXT 13>
+Creating new UNIT for residue: NAG sequence: 598
+Created a new atom named: C1 within residue: .R<NAG 598>
+Created a new atom named: C2 within residue: .R<NAG 598>
+Created a new atom named: C3 within residue: .R<NAG 598>
+Created a new atom named: C4 within residue: .R<NAG 598>
+Created a new atom named: C5 within residue: .R<NAG 598>
+Created a new atom named: C6 within residue: .R<NAG 598>
+Created a new atom named: C7 within residue: .R<NAG 598>
+Created a new atom named: C8 within residue: .R<NAG 598>
+Created a new atom named: N2 within residue: .R<NAG 598>
+Created a new atom named: O3 within residue: .R<NAG 598>
+Created a new atom named: O4 within residue: .R<NAG 598>
+Created a new atom named: O5 within residue: .R<NAG 598>
+Created a new atom named: O6 within residue: .R<NAG 598>
+Created a new atom named: O7 within residue: .R<NAG 598>
+Creating new UNIT for residue: NAG sequence: 599
+Created a new atom named: C1 within residue: .R<NAG 599>
+Created a new atom named: C2 within residue: .R<NAG 599>
+Created a new atom named: C3 within residue: .R<NAG 599>
+Created a new atom named: C4 within residue: .R<NAG 599>
+Created a new atom named: C5 within residue: .R<NAG 599>
+Created a new atom named: C6 within residue: .R<NAG 599>
+Created a new atom named: C7 within residue: .R<NAG 599>
+Created a new atom named: C8 within residue: .R<NAG 599>
+Created a new atom named: N2 within residue: .R<NAG 599>
+Created a new atom named: O3 within residue: .R<NAG 599>
+Created a new atom named: O4 within residue: .R<NAG 599>
+Created a new atom named: O5 within residue: .R<NAG 599>
+Created a new atom named: O6 within residue: .R<NAG 599>
+Created a new atom named: O7 within residue: .R<NAG 599>
+Creating new UNIT for residue: NAG sequence: 600
+Created a new atom named: C1 within residue: .R<NAG 600>
+Created a new atom named: C2 within residue: .R<NAG 600>
+Created a new atom named: C3 within residue: .R<NAG 600>
+Created a new atom named: C4 within residue: .R<NAG 600>
+Created a new atom named: C5 within residue: .R<NAG 600>
+Created a new atom named: C6 within residue: .R<NAG 600>
+Created a new atom named: C7 within residue: .R<NAG 600>
+Created a new atom named: C8 within residue: .R<NAG 600>
+Created a new atom named: N2 within residue: .R<NAG 600>
+Created a new atom named: O3 within residue: .R<NAG 600>
+Created a new atom named: O4 within residue: .R<NAG 600>
+Created a new atom named: O5 within residue: .R<NAG 600>
+Created a new atom named: O6 within residue: .R<NAG 600>
+Created a new atom named: O7 within residue: .R<NAG 600>
+  total atoms in file: 4950
+  Leap added 4725 missing atoms according to residue templates:
+       1 Heavy
+       4724 H / lone pairs
+  The file contained 42 atoms not in residue templates
+Loading PDB file: ./com.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Name change in pdb file residue 1 ;
+this residue is split into NAG and HOH.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+1 residues had naming warnings.
+Thus, there are split residues;
+residue sequence numbers will not correspond to those in the pdb.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 771   type: Terminal/beginning
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 772   type: Nonterminal
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 773   type: Nonterminal
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 776   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+  Added missing heavy atom: .R<CASP 597>.A<OXT 13>
+Creating new UNIT for residue: NAG sequence: 772
+Created a new atom named: C1 within residue: .R<NAG 772>
+Created a new atom named: C2 within residue: .R<NAG 772>
+Created a new atom named: C3 within residue: .R<NAG 772>
+Created a new atom named: C4 within residue: .R<NAG 772>
+Created a new atom named: C5 within residue: .R<NAG 772>
+Created a new atom named: C6 within residue: .R<NAG 772>
+Created a new atom named: C7 within residue: .R<NAG 772>
+Created a new atom named: C8 within residue: .R<NAG 772>
+Created a new atom named: N2 within residue: .R<NAG 772>
+Created a new atom named: O3 within residue: .R<NAG 772>
+Created a new atom named: O4 within residue: .R<NAG 772>
+Created a new atom named: O5 within residue: .R<NAG 772>
+Created a new atom named: O6 within residue: .R<NAG 772>
+Created a new atom named: O7 within residue: .R<NAG 772>
+Creating new UNIT for residue: NAG sequence: 773
+Created a new atom named: C1 within residue: .R<NAG 773>
+Created a new atom named: C2 within residue: .R<NAG 773>
+Created a new atom named: C3 within residue: .R<NAG 773>
+Created a new atom named: C4 within residue: .R<NAG 773>
+Created a new atom named: C5 within residue: .R<NAG 773>
+Created a new atom named: C6 within residue: .R<NAG 773>
+Created a new atom named: C7 within residue: .R<NAG 773>
+Created a new atom named: C8 within residue: .R<NAG 773>
+Created a new atom named: N2 within residue: .R<NAG 773>
+Created a new atom named: O3 within residue: .R<NAG 773>
+Created a new atom named: O4 within residue: .R<NAG 773>
+Created a new atom named: O5 within residue: .R<NAG 773>
+Created a new atom named: O6 within residue: .R<NAG 773>
+Created a new atom named: O7 within residue: .R<NAG 773>
+Creating new UNIT for residue: NAG sequence: 774
+Created a new atom named: C1 within residue: .R<NAG 774>
+Created a new atom named: C2 within residue: .R<NAG 774>
+Created a new atom named: C3 within residue: .R<NAG 774>
+Created a new atom named: C4 within residue: .R<NAG 774>
+Created a new atom named: C5 within residue: .R<NAG 774>
+Created a new atom named: C6 within residue: .R<NAG 774>
+Created a new atom named: C7 within residue: .R<NAG 774>
+Created a new atom named: C8 within residue: .R<NAG 774>
+Created a new atom named: N2 within residue: .R<NAG 774>
+Created a new atom named: O3 within residue: .R<NAG 774>
+Created a new atom named: O4 within residue: .R<NAG 774>
+Created a new atom named: O5 within residue: .R<NAG 774>
+Created a new atom named: O6 within residue: .R<NAG 774>
+Created a new atom named: O7 within residue: .R<NAG 774>
+Creating new UNIT for residue: NAG sequence: 777
+Created a new atom named: C1 within residue: .R<NAG 777>
+Created a new atom named: C2 within residue: .R<NAG 777>
+Created a new atom named: C3 within residue: .R<NAG 777>
+Created a new atom named: C4 within residue: .R<NAG 777>
+Created a new atom named: C5 within residue: .R<NAG 777>
+Created a new atom named: C6 within residue: .R<NAG 777>
+Created a new atom named: C7 within residue: .R<NAG 777>
+Created a new atom named: C8 within residue: .R<NAG 777>
+Created a new atom named: N2 within residue: .R<NAG 777>
+Created a new atom named: O3 within residue: .R<NAG 777>
+Created a new atom named: O4 within residue: .R<NAG 777>
+Created a new atom named: O5 within residue: .R<NAG 777>
+Created a new atom named: O6 within residue: .R<NAG 777>
+Created a new atom named: O7 within residue: .R<NAG 777>
+  total atoms in file: 6371
+  Leap added 6070 missing atoms according to residue templates:
+       1 Heavy
+       6069 H / lone pairs
+  The file contained 56 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 9.648 angstroms between C and N atoms:
+-------  .R<ASN 53>.A<C 13> and .R<VAL 54>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (3.000000) is not zero.
+FATAL:  Atom .R<NAG 175>.A<C1 1> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C2 2> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C3 3> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C4 4> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C5 5> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C6 6> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C7 7> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<C8 8> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<N2 9> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<O3 10> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<O4 11> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<O5 12> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<O6 13> does not have a type.
+FATAL:  Atom .R<NAG 175>.A<O7 14> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 16; Notes = 2.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/2AJF.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/2AJF_A_E_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,96,2GOX|A|B|298.00,2GOX,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NTHR 1>
+Created a new atom named: HD1 within residue: .R<HIE 25>
+Created a new atom named: HD1 within residue: .R<HIE 30>
+  total atoms in file: 1108
+  Leap added 3 missing atoms according to residue templates:
+       3 H / lone pairs
+  The file contained 3 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 12>
+Created a new atom named: HD1 within residue: .R<HIE 36>
+Created a new atom named: HD1 within residue: .R<HIE 136>
+  total atoms in file: 4677
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 4 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 12>
+Created a new atom named: HD1 within residue: .R<HIE 36>
+Created a new atom named: HD1 within residue: .R<HIE 136>
+Created a new atom named: H within residue: .R<NTHR 298>
+Created a new atom named: HD1 within residue: .R<HIE 322>
+Created a new atom named: HD1 within residue: .R<HIE 327>
+  total atoms in file: 5785
+  Leap added 9 missing atoms according to residue templates:
+       9 H / lone pairs
+  The file contained 7 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (7.000000) is not zero.
+FATAL:  Atom .R<NTHR 1>.A<H 17> does not have a type.
+FATAL:  Atom .R<HIE 25>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 30>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 2; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2GOX/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/2GOX_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,112,2REX|A|B|298.00,2REX,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NARG 1>
+Created a new atom named: HD1 within residue: .R<HIE 124>
+Created a new atom named: HD1 within residue: .R<HIE 160>
+  total atoms in file: 2685
+  Leap added 5 missing atoms according to residue templates:
+       5 H / lone pairs
+  The file contained 3 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NTYR 1>
+Created a new atom named: HD1 within residue: .R<HIE 69>
+Created a new atom named: HD1 within residue: .R<HIE 93>
+  total atoms in file: 1654
+  Leap added 3 missing atoms according to residue templates:
+       3 H / lone pairs
+  The file contained 3 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NTYR 1>
+Created a new atom named: HD1 within residue: .R<HIE 69>
+Created a new atom named: HD1 within residue: .R<HIE 93>
+Created a new atom named: H within residue: .R<NARG 108>
+Created a new atom named: HD1 within residue: .R<HIE 231>
+Created a new atom named: HD1 within residue: .R<HIE 267>
+  total atoms in file: 4339
+  Leap added 8 missing atoms according to residue templates:
+       8 H / lone pairs
+  The file contained 6 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.231 angstroms between C and N atoms:
+-------  .R<GLU 43>.A<C 14> and .R<GLN 44>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 3.377 angstroms between C and N atoms:
+-------  .R<VAL 85>.A<C 15> and .R<ALA 86>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-4.000000) is not zero.
+FATAL:  Atom .R<NARG 1>.A<H 27> does not have a type.
+FATAL:  Atom .R<HIE 124>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 160>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2REX/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/2REX_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,128,3EG5|A|B|293.00,3EG5,A,B,A,B,293.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NVAL 1>
+Created a new atom named: HD1 within residue: .R<HIE 39>
+Created a new atom named: HD1 within residue: .R<HIE 60>
+Created a new atom named: HD1 within residue: .R<HIE 75>
+Created a new atom named: HD1 within residue: .R<HIE 99>
+Created a new atom named: HD1 within residue: .R<HIE 108>
+Created a new atom named: HD1 within residue: .R<HIE 226>
+Created a new atom named: HD1 within residue: .R<HIE 237>
+Created a new atom named: HD1 within residue: .R<HIE 302>
+Created a new atom named: HD1 within residue: .R<HIE 309>
+Created a new atom named: HD1 within residue: .R<CHIE 337>
+  total atoms in file: 5489
+  Leap added 11 missing atoms according to residue templates:
+       11 H / lone pairs
+  The file contained 11 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 103>
+Created a new atom named: HD1 within residue: .R<HIE 104>
+  total atoms in file: 2796
+  Leap added 3 missing atoms according to residue templates:
+       3 H / lone pairs
+  The file contained 3 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 103>
+Created a new atom named: HD1 within residue: .R<HIE 104>
+Created a new atom named: H within residue: .R<NVAL 179>
+Created a new atom named: HD1 within residue: .R<HIE 217>
+Created a new atom named: HD1 within residue: .R<HIE 238>
+Created a new atom named: HD1 within residue: .R<HIE 253>
+Created a new atom named: HD1 within residue: .R<HIE 277>
+Created a new atom named: HD1 within residue: .R<HIE 286>
+Created a new atom named: HD1 within residue: .R<HIE 404>
+Created a new atom named: HD1 within residue: .R<HIE 415>
+Created a new atom named: HD1 within residue: .R<HIE 480>
+Created a new atom named: HD1 within residue: .R<HIE 487>
+Created a new atom named: HD1 within residue: .R<CHIE 515>
+  total atoms in file: 8285
+  Leap added 14 missing atoms according to residue templates:
+       14 H / lone pairs
+  The file contained 14 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 9.975 angstroms between C and N atoms:
+-------  .R<SER 41>.A<C 10> and .R<SER 42>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 7.223 angstroms between C and N atoms:
+-------  .R<LYS 102>.A<C 21> and .R<ASP 103>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-21.000000) is not zero.
+FATAL:  Atom .R<NVAL 1>.A<H 19> does not have a type.
+FATAL:  Atom .R<HIE 39>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 60>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 75>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 99>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 108>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 226>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 237>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 302>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 309>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<CHIE 337>.A<HD1 19> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 6; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3EG5/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/3EG5_A_B_293.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,144,3M63|A|B|298.00,3M63,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NLEU 1>
+Created a new atom named: HD1 within residue: .R<HIE 4>
+Created a new atom named: HD1 within residue: .R<HIE 59>
+Created a new atom named: HD1 within residue: .R<HIE 64>
+Created a new atom named: HD1 within residue: .R<HIE 67>
+  total atoms in file: 1145
+  Leap added 5 missing atoms according to residue templates:
+       5 H / lone pairs
+  The file contained 5 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 168>
+Created a new atom named: HD1 within residue: .R<HIE 171>
+Created a new atom named: HD1 within residue: .R<HIE 256>
+Created a new atom named: HD1 within residue: .R<HIE 263>
+Created a new atom named: HD1 within residue: .R<HIE 294>
+Created a new atom named: HD1 within residue: .R<HIE 300>
+Created a new atom named: HD1 within residue: .R<HIE 306>
+Created a new atom named: HD1 within residue: .R<HIE 400>
+Created a new atom named: HD1 within residue: .R<HIE 434>
+Created a new atom named: HD1 within residue: .R<HIE 468>
+Created a new atom named: HD1 within residue: .R<HIE 494>
+Created a new atom named: HD1 within residue: .R<HIE 520>
+Created a new atom named: HD1 within residue: .R<HIE 578>
+Created a new atom named: HD1 within residue: .R<HIE 608>
+Created a new atom named: HD1 within residue: .R<HIE 699>
+Created a new atom named: HD1 within residue: .R<HIE 913>
+  total atoms in file: 15391
+  Leap added 18 missing atoms according to residue templates:
+       18 H / lone pairs
+  The file contained 18 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 168>
+Created a new atom named: HD1 within residue: .R<HIE 171>
+Created a new atom named: HD1 within residue: .R<HIE 256>
+Created a new atom named: HD1 within residue: .R<HIE 263>
+Created a new atom named: HD1 within residue: .R<HIE 294>
+Created a new atom named: HD1 within residue: .R<HIE 300>
+Created a new atom named: HD1 within residue: .R<HIE 306>
+Created a new atom named: HD1 within residue: .R<HIE 400>
+Created a new atom named: HD1 within residue: .R<HIE 434>
+Created a new atom named: HD1 within residue: .R<HIE 468>
+Created a new atom named: HD1 within residue: .R<HIE 494>
+Created a new atom named: HD1 within residue: .R<HIE 520>
+Created a new atom named: HD1 within residue: .R<HIE 578>
+Created a new atom named: HD1 within residue: .R<HIE 608>
+Created a new atom named: HD1 within residue: .R<HIE 699>
+Created a new atom named: HD1 within residue: .R<HIE 913>
+Created a new atom named: H within residue: .R<NLEU 954>
+Created a new atom named: HD1 within residue: .R<HIE 957>
+Created a new atom named: HD1 within residue: .R<HIE 1012>
+Created a new atom named: HD1 within residue: .R<HIE 1017>
+Created a new atom named: HD1 within residue: .R<HIE 1020>
+  total atoms in file: 16536
+  Leap added 23 missing atoms according to residue templates:
+       23 H / lone pairs
+  The file contained 23 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+FATAL:  Atom .R<NLEU 1>.A<H 22> does not have a type.
+FATAL:  Atom .R<HIE 4>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 59>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 64>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 67>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 3; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3M63/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/3M63_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,160,3RF3|A|C|298.00,3RF3,A,C,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NTHR 1>
+  total atoms in file: 375
+  Leap added 1 missing atom according to residue templates:
+       1 H / lone pairs
+  The file contained 1 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: HD1 within residue: .R<HIE 4>
+Created a new atom named: HD1 within residue: .R<HIE 21>
+Created a new atom named: HD1 within residue: .R<HIE 26>
+Created a new atom named: HD1 within residue: .R<HIE 183>
+Created a new atom named: HD1 within residue: .R<HIE 186>
+  total atoms in file: 4078
+  Leap added 5 missing atoms according to residue templates:
+       5 H / lone pairs
+  The file contained 5 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: HD1 within residue: .R<HIE 4>
+Created a new atom named: HD1 within residue: .R<HIE 21>
+Created a new atom named: HD1 within residue: .R<HIE 26>
+Created a new atom named: HD1 within residue: .R<HIE 183>
+Created a new atom named: HD1 within residue: .R<HIE 186>
+Created a new atom named: H within residue: .R<NTHR 258>
+  total atoms in file: 4453
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 6 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+FATAL:  Atom .R<NTHR 1>.A<H 17> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3RF3/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/3RF3_A_C_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,176,"4B0M|A|B,M|298.00",4B0M,A,"B,M",A,"B,C",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NGLU 1>
+Created a new atom named: HD1 within residue: .R<HIE 68>
+Created a new atom named: H within residue: .R<NASP 136>
+Created a new atom named: HD1 within residue: .R<HIE 306>
+  total atoms in file: 5347
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 4 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NALA 1>
+Created a new atom named: HD1 within residue: .R<HIE 55>
+Created a new atom named: HD1 within residue: .R<HIE 95>
+  total atoms in file: 2081
+  Leap added 5 missing atoms according to residue templates:
+       5 H / lone pairs
+  The file contained 3 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NALA 1>
+Created a new atom named: HD1 within residue: .R<HIE 55>
+Created a new atom named: HD1 within residue: .R<HIE 95>
+Created a new atom named: H within residue: .R<NGLU 132>
+Created a new atom named: HD1 within residue: .R<HIE 199>
+Created a new atom named: H within residue: .R<NASP 267>
+Created a new atom named: HD1 within residue: .R<HIE 437>
+  total atoms in file: 7428
+  Leap added 11 missing atoms according to residue templates:
+       11 H / lone pairs
+  The file contained 7 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 3.854 angstroms between C and N atoms:
+-------  .R<GLU 188>.A<C 14> and .R<ASP 189>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 21.980 angstroms between C and N atoms:
+-------  .R<ASP 236>.A<C 11> and .R<ASP 237>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 6.637 angstroms between C and N atoms:
+-------  .R<GLY 324>.A<C 6> and .R<ASN 325>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+FATAL:  Atom .R<NGLU 1>.A<H 18> does not have a type.
+FATAL:  Atom .R<HIE 68>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<NASP 136>.A<H 15> does not have a type.
+FATAL:  Atom .R<HIE 306>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4B0M/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/4B0M_A_B_M_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,192,4JEU|A|B|298.00,4JEU,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NLYS 1>
+Created a new atom named: HD1 within residue: .R<HIE 40>
+Created a new atom named: HD1 within residue: .R<HIE 102>
+Created a new atom named: HD1 within residue: .R<HIE 181>
+Created a new atom named: HD1 within residue: .R<HIE 195>
+Created a new atom named: HD1 within residue: .R<HIE 221>
+  total atoms in file: 3643
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 6 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: HD1 within residue: .R<HIE 14>
+Created a new atom named: HD1 within residue: .R<HIE 83>
+Created a new atom named: HD1 within residue: .R<HIE 101>
+Created a new atom named: HD1 within residue: .R<HIE 158>
+Created a new atom named: HD1 within residue: .R<HIE 243>
+Created a new atom named: HD1 within residue: .R<HIE 291>
+Created a new atom named: HD1 within residue: .R<HIE 293>
+Created a new atom named: HD1 within residue: .R<HIE 339>
+Created a new atom named: HD1 within residue: .R<HIE 341>
+Created a new atom named: HD1 within residue: .R<HIE 349>
+Created a new atom named: HD1 within residue: .R<HIE 421>
+Created a new atom named: HD1 within residue: .R<HIE 437>
+Created a new atom named: HD1 within residue: .R<HIE 490>
+Created a new atom named: HD1 within residue: .R<HIE 537>
+  total atoms in file: 9040
+  Leap added 14 missing atoms according to residue templates:
+       14 H / lone pairs
+  The file contained 14 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: HD1 within residue: .R<HIE 14>
+Created a new atom named: HD1 within residue: .R<HIE 83>
+Created a new atom named: HD1 within residue: .R<HIE 101>
+Created a new atom named: HD1 within residue: .R<HIE 158>
+Created a new atom named: HD1 within residue: .R<HIE 243>
+Created a new atom named: HD1 within residue: .R<HIE 291>
+Created a new atom named: HD1 within residue: .R<HIE 293>
+Created a new atom named: HD1 within residue: .R<HIE 339>
+Created a new atom named: HD1 within residue: .R<HIE 341>
+Created a new atom named: HD1 within residue: .R<HIE 349>
+Created a new atom named: HD1 within residue: .R<HIE 421>
+Created a new atom named: HD1 within residue: .R<HIE 437>
+Created a new atom named: HD1 within residue: .R<HIE 490>
+Created a new atom named: HD1 within residue: .R<HIE 537>
+Created a new atom named: H within residue: .R<NLYS 559>
+Created a new atom named: HD1 within residue: .R<HIE 598>
+Created a new atom named: HD1 within residue: .R<HIE 660>
+Created a new atom named: HD1 within residue: .R<HIE 739>
+Created a new atom named: HD1 within residue: .R<HIE 753>
+Created a new atom named: HD1 within residue: .R<HIE 779>
+  total atoms in file: 12683
+  Leap added 20 missing atoms according to residue templates:
+       20 H / lone pairs
+  The file contained 20 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 29.508 angstroms between C and N atoms:
+-------  .R<ARG 8>.A<C 23> and .R<ASP 9>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-14.000000) is not zero.
+FATAL:  Atom .R<NLYS 1>.A<H 25> does not have a type.
+FATAL:  Atom .R<HIE 40>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 102>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 181>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 195>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 221>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 5; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4JEU/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/4JEU_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,208,4O27|A|B|298.00,4O27,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 120>
+Created a new atom named: HD1 within residue: .R<HIE 126>
+Created a new atom named: HD1 within residue: .R<HIE 139>
+Created a new atom named: HD1 within residue: .R<HIE 203>
+Created a new atom named: HD1 within residue: .R<HIE 207>
+Created a new atom named: HD1 within residue: .R<HIE 255>
+  total atoms in file: 4540
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 7 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 145>
+Created a new atom named: HD1 within residue: .R<HIE 187>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: HD1 within residue: .R<HIE 211>
+Created a new atom named: HD1 within residue: .R<HIE 233>
+Created a new atom named: HD1 within residue: .R<HIE 268>
+  total atoms in file: 5389
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 7 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NMET 1>
+Created a new atom named: HD1 within residue: .R<HIE 145>
+Created a new atom named: HD1 within residue: .R<HIE 187>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: HD1 within residue: .R<HIE 211>
+Created a new atom named: HD1 within residue: .R<HIE 233>
+Created a new atom named: HD1 within residue: .R<HIE 268>
+Created a new atom named: H within residue: .R<NMET 326>
+Created a new atom named: HD1 within residue: .R<HIE 445>
+Created a new atom named: HD1 within residue: .R<HIE 451>
+Created a new atom named: HD1 within residue: .R<HIE 464>
+Created a new atom named: HD1 within residue: .R<HIE 528>
+Created a new atom named: HD1 within residue: .R<HIE 532>
+Created a new atom named: HD1 within residue: .R<HIE 580>
+  total atoms in file: 9929
+  Leap added 14 missing atoms according to residue templates:
+       14 H / lone pairs
+  The file contained 14 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+FATAL:  Atom .R<NMET 1>.A<H 20> does not have a type.
+FATAL:  Atom .R<HIE 120>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 126>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 139>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 203>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 207>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 255>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4O27/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/4O27_A_B_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,224,"5C6T|H,L|A|298.00",5C6T,"H,L",A,"B,C",A,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NLYS 1>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 63>
+Created a new atom named: HD1 within residue: .R<HIE 84>
+Created a new atom named: HD1 within residue: .R<HIE 85>
+Created a new atom named: HD1 within residue: .R<HIE 89>
+Created a new atom named: HD1 within residue: .R<HIE 109>
+Created a new atom named: HD1 within residue: .R<HIE 127>
+Created a new atom named: HD1 within residue: .R<HIE 139>
+Created a new atom named: HD1 within residue: .R<HIE 166>
+Created a new atom named: HD1 within residue: .R<HIE 221>
+Created a new atom named: HD1 within residue: .R<HIE 267>
+Created a new atom named: HD1 within residue: .R<HIE 339>
+Created a new atom named: HD1 within residue: .R<HIE 347>
+Created a new atom named: HD1 within residue: .R<HIE 476>
+  total atoms in file: 9080
+  Leap added 25 missing atoms according to residue templates:
+       25 H / lone pairs
+  The file contained 15 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLN 1>
+Created a new atom named: H within residue: .R<NLEU 114>
+  total atoms in file: 3325
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 2 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NLYS 1>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 63>
+Created a new atom named: HD1 within residue: .R<HIE 84>
+Created a new atom named: HD1 within residue: .R<HIE 85>
+Created a new atom named: HD1 within residue: .R<HIE 89>
+Created a new atom named: HD1 within residue: .R<HIE 109>
+Created a new atom named: HD1 within residue: .R<HIE 127>
+Created a new atom named: HD1 within residue: .R<HIE 139>
+Created a new atom named: HD1 within residue: .R<HIE 166>
+Created a new atom named: HD1 within residue: .R<HIE 221>
+Created a new atom named: HD1 within residue: .R<HIE 267>
+Created a new atom named: HD1 within residue: .R<HIE 339>
+Created a new atom named: HD1 within residue: .R<HIE 347>
+Created a new atom named: HD1 within residue: .R<HIE 476>
+Created a new atom named: H within residue: .R<NGLN 567>
+Created a new atom named: H within residue: .R<NLEU 680>
+  total atoms in file: 12405
+  Leap added 31 missing atoms according to residue templates:
+       31 H / lone pairs
+  The file contained 17 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 13.615 angstroms between C and N atoms:
+-------  .R<MET 27>.A<C 16> and .R<LEU 28>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 4.262 angstroms between C and N atoms:
+-------  .R<TYR 125>.A<C 20> and .R<THR 126>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.793 angstroms between C and N atoms:
+-------  .R<ARG 141>.A<C 23> and .R<ASN 142>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 35.350 angstroms between C and N atoms:
+-------  .R<GLN 338>.A<C 16> and .R<HIE 339>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+FATAL:  Atom .R<NLYS 1>.A<H 25> does not have a type.
+FATAL:  Atom .R<HIE 43>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 63>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 84>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 85>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 89>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 109>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 127>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 139>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 166>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 221>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 267>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 339>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 347>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 476>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 5; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5C6T/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/5C6T_H_L_A_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,240,"3EOB|H,L|I|298.15",3EOB,"H,L",I,"H,L",I,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: cpptraj -p com.prmtop -i cpptraj.in
+STDOUT:
+
+CPPTRAJ: Trajectory Analysis. V6.24.0 (AmberTools)
+    ___  ___  ___  ___
+     | \/ | \/ | \/ | 
+    _|_/\_|_/\_|_/\_|_
+
+| Date/time: 03/11/26 18:57:35
+| Available memory: 390.330 GB
+
+TIME: Total execution time: 0.0035 seconds.
+
+
+STDERR:
+Error: Could not determine format of topology 'com.prmtop'
+Error: Could not open topology 'com.prmtop'
+Error: Error(s) occurred during execution.
+
+",/home/people/22455104/scratch/pdb_cache/3EOB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/3EOB_H_L_I_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,256,"3B2U|F,G|E|298.15",3B2U,"F,G",E,"F,G",E,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 194   type: Terminal/beginning
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 195   type: Nonterminal
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: SO4   number: 196   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+  Added missing heavy atom: .R<NGLU 1>.A<CG 10>
+  Added missing heavy atom: .R<NGLU 1>.A<CD 13>
+  Added missing heavy atom: .R<NGLU 1>.A<OE1 14>
+  Added missing heavy atom: .R<NGLU 1>.A<OE2 15>
+  Added missing heavy atom: .R<LYS 2>.A<CG 8>
+  Added missing heavy atom: .R<LYS 2>.A<CD 11>
+  Added missing heavy atom: .R<LYS 2>.A<CE 14>
+  Added missing heavy atom: .R<LYS 2>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 14>.A<CG 8>
+  Added missing heavy atom: .R<LYS 14>.A<CD 11>
+  Added missing heavy atom: .R<LYS 14>.A<CE 14>
+  Added missing heavy atom: .R<LYS 14>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 25>.A<CG 8>
+  Added missing heavy atom: .R<LYS 25>.A<CD 11>
+  Added missing heavy atom: .R<LYS 25>.A<CE 14>
+  Added missing heavy atom: .R<LYS 25>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 59>.A<CG 8>
+  Added missing heavy atom: .R<GLU 59>.A<CD 11>
+  Added missing heavy atom: .R<GLU 59>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 59>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 97>.A<CG 8>
+  Added missing heavy atom: .R<ARG 97>.A<CD 11>
+  Added missing heavy atom: .R<ARG 97>.A<NE 14>
+  Added missing heavy atom: .R<ARG 97>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 97>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 97>.A<NH2 20>
+  Added missing heavy atom: .R<LYS 146>.A<CG 8>
+  Added missing heavy atom: .R<LYS 146>.A<CD 11>
+  Added missing heavy atom: .R<LYS 146>.A<CE 14>
+  Added missing heavy atom: .R<LYS 146>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 147>.A<CG 8>
+  Added missing heavy atom: .R<LYS 147>.A<CD 11>
+  Added missing heavy atom: .R<LYS 147>.A<CE 14>
+  Added missing heavy atom: .R<LYS 147>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 157>.A<CG 8>
+  Added missing heavy atom: .R<LYS 157>.A<CD 11>
+  Added missing heavy atom: .R<LYS 157>.A<CE 14>
+  Added missing heavy atom: .R<LYS 157>.A<NZ 17>
+  Added missing heavy atom: .R<LEU 177>.A<CG 8>
+  Added missing heavy atom: .R<LEU 177>.A<CD1 10>
+  Added missing heavy atom: .R<LEU 177>.A<CD2 14>
+  Added missing heavy atom: .R<GLU 181>.A<CG 8>
+  Added missing heavy atom: .R<GLU 181>.A<CD 11>
+  Added missing heavy atom: .R<GLU 181>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 181>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 189>.A<CG 8>
+  Added missing heavy atom: .R<ARG 189>.A<CD 11>
+  Added missing heavy atom: .R<ARG 189>.A<NE 14>
+  Added missing heavy atom: .R<ARG 189>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 189>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 189>.A<NH2 20>
+  Added missing heavy atom: .R<CCYS 194>.A<OXT 12>
+Creating new UNIT for residue: NAG sequence: 195
+Created a new atom named: C1 within residue: .R<NAG 195>
+Created a new atom named: C2 within residue: .R<NAG 195>
+Created a new atom named: C3 within residue: .R<NAG 195>
+Created a new atom named: C4 within residue: .R<NAG 195>
+Created a new atom named: C5 within residue: .R<NAG 195>
+Created a new atom named: C6 within residue: .R<NAG 195>
+Created a new atom named: C7 within residue: .R<NAG 195>
+Created a new atom named: C8 within residue: .R<NAG 195>
+Created a new atom named: N2 within residue: .R<NAG 195>
+Created a new atom named: O3 within residue: .R<NAG 195>
+Created a new atom named: O4 within residue: .R<NAG 195>
+Created a new atom named: O5 within residue: .R<NAG 195>
+Created a new atom named: O6 within residue: .R<NAG 195>
+Created a new atom named: O7 within residue: .R<NAG 195>
+Creating new UNIT for residue: NAG sequence: 196
+Created a new atom named: C1 within residue: .R<NAG 196>
+Created a new atom named: C2 within residue: .R<NAG 196>
+Created a new atom named: C3 within residue: .R<NAG 196>
+Created a new atom named: C4 within residue: .R<NAG 196>
+Created a new atom named: C5 within residue: .R<NAG 196>
+Created a new atom named: C6 within residue: .R<NAG 196>
+Created a new atom named: C7 within residue: .R<NAG 196>
+Created a new atom named: C8 within residue: .R<NAG 196>
+Created a new atom named: N2 within residue: .R<NAG 196>
+Created a new atom named: O3 within residue: .R<NAG 196>
+Created a new atom named: O4 within residue: .R<NAG 196>
+Created a new atom named: O5 within residue: .R<NAG 196>
+Created a new atom named: O6 within residue: .R<NAG 196>
+Created a new atom named: O7 within residue: .R<NAG 196>
+Creating new UNIT for residue: SO4 sequence: 197
+Created a new atom named: S within residue: .R<SO4 197>
+Created a new atom named: O1 within residue: .R<SO4 197>
+Created a new atom named: O2 within residue: .R<SO4 197>
+Created a new atom named: O3 within residue: .R<SO4 197>
+Created a new atom named: O4 within residue: .R<SO4 197>
+  total atoms in file: 1504
+  Leap added 1612 missing atoms according to residue templates:
+       52 Heavy
+       1560 H / lone pairs
+  The file contained 33 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Name change in pdb file residue 1 ;
+this residue is split into SO4 and HOH.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+1 residues had naming warnings.
+Thus, there are split residues;
+residue sequence numbers will not correspond to those in the pdb.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: SO4   number: 428   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+  Added missing heavy atom: .R<ARG 45>.A<CG 8>
+  Added missing heavy atom: .R<ARG 45>.A<CD 11>
+  Added missing heavy atom: .R<ARG 45>.A<NE 14>
+  Added missing heavy atom: .R<ARG 45>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 45>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 45>.A<NH2 20>
+  Added missing heavy atom: .R<ASP 122>.A<CG 8>
+  Added missing heavy atom: .R<ASP 122>.A<OD1 9>
+  Added missing heavy atom: .R<ASP 122>.A<OD2 10>
+  Added missing heavy atom: .R<GLU 123>.A<CG 8>
+  Added missing heavy atom: .R<GLU 123>.A<CD 11>
+  Added missing heavy atom: .R<GLU 123>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 123>.A<OE2 13>
+  Added missing heavy atom: .R<LYS 126>.A<CG 8>
+  Added missing heavy atom: .R<LYS 126>.A<CD 11>
+  Added missing heavy atom: .R<LYS 126>.A<CE 14>
+  Added missing heavy atom: .R<LYS 126>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 169>.A<CG 8>
+  Added missing heavy atom: .R<LYS 169>.A<CD 11>
+  Added missing heavy atom: .R<LYS 169>.A<CE 14>
+  Added missing heavy atom: .R<LYS 169>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 296>.A<CG 8>
+  Added missing heavy atom: .R<LYS 296>.A<CD 11>
+  Added missing heavy atom: .R<LYS 296>.A<CE 14>
+  Added missing heavy atom: .R<LYS 296>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 338>.A<CG 8>
+  Added missing heavy atom: .R<LYS 338>.A<CD 11>
+  Added missing heavy atom: .R<LYS 338>.A<CE 14>
+  Added missing heavy atom: .R<LYS 338>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 363>.A<CG 8>
+  Added missing heavy atom: .R<GLU 363>.A<CD 11>
+  Added missing heavy atom: .R<GLU 363>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 363>.A<OE2 13>
+  Added missing heavy atom: .R<ILE 410>.A<CG2 7>
+  Added missing heavy atom: .R<ILE 410>.A<CG1 11>
+  Added missing heavy atom: .R<ILE 410>.A<CD1 14>
+  Added missing heavy atom: .R<ASN 414>.A<CG 8>
+  Added missing heavy atom: .R<ASN 414>.A<OD1 9>
+  Added missing heavy atom: .R<ASN 414>.A<ND2 10>
+  Added missing heavy atom: .R<LYS 416>.A<CG 8>
+  Added missing heavy atom: .R<LYS 416>.A<CD 11>
+  Added missing heavy atom: .R<LYS 416>.A<CE 14>
+  Added missing heavy atom: .R<LYS 416>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 421>.A<CG 8>
+  Added missing heavy atom: .R<LYS 421>.A<CD 11>
+  Added missing heavy atom: .R<LYS 421>.A<CE 14>
+  Added missing heavy atom: .R<LYS 421>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 425>.A<CG 8>
+  Added missing heavy atom: .R<LYS 425>.A<CD 11>
+  Added missing heavy atom: .R<LYS 425>.A<CE 14>
+  Added missing heavy atom: .R<LYS 425>.A<NZ 17>
+  Added missing heavy atom: .R<CPRO 428>.A<OXT 15>
+Creating new UNIT for residue: SO4 sequence: 429
+Created a new atom named: S within residue: .R<SO4 429>
+Created a new atom named: O1 within residue: .R<SO4 429>
+Created a new atom named: O2 within residue: .R<SO4 429>
+Created a new atom named: O3 within residue: .R<SO4 429>
+Created a new atom named: O4 within residue: .R<SO4 429>
+  total atoms in file: 3275
+  Leap added 3391 missing atoms according to residue templates:
+       52 Heavy
+       3339 H / lone pairs
+  The file contained 5 atoms not in residue templates
+Loading PDB file: ./com.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Name change in pdb file residue 1 ;
+this residue is split into SO4 and NAG.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+1 residues had naming warnings.
+Thus, there are split residues;
+residue sequence numbers will not correspond to those in the pdb.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: SO4   number: 622   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 623   type: Terminal/beginning
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: NAG   number: 624   type: Nonterminal
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Unknown residue: SO4   number: 625   type: Terminal/last
+..relaxing end constraints to try for a dbase match
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+  -no luck
+  Added missing heavy atom: .R<ARG 45>.A<CG 8>
+  Added missing heavy atom: .R<ARG 45>.A<CD 11>
+  Added missing heavy atom: .R<ARG 45>.A<NE 14>
+  Added missing heavy atom: .R<ARG 45>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 45>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 45>.A<NH2 20>
+  Added missing heavy atom: .R<ASP 122>.A<CG 8>
+  Added missing heavy atom: .R<ASP 122>.A<OD1 9>
+  Added missing heavy atom: .R<ASP 122>.A<OD2 10>
+  Added missing heavy atom: .R<GLU 123>.A<CG 8>
+  Added missing heavy atom: .R<GLU 123>.A<CD 11>
+  Added missing heavy atom: .R<GLU 123>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 123>.A<OE2 13>
+  Added missing heavy atom: .R<LYS 126>.A<CG 8>
+  Added missing heavy atom: .R<LYS 126>.A<CD 11>
+  Added missing heavy atom: .R<LYS 126>.A<CE 14>
+  Added missing heavy atom: .R<LYS 126>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 169>.A<CG 8>
+  Added missing heavy atom: .R<LYS 169>.A<CD 11>
+  Added missing heavy atom: .R<LYS 169>.A<CE 14>
+  Added missing heavy atom: .R<LYS 169>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 296>.A<CG 8>
+  Added missing heavy atom: .R<LYS 296>.A<CD 11>
+  Added missing heavy atom: .R<LYS 296>.A<CE 14>
+  Added missing heavy atom: .R<LYS 296>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 338>.A<CG 8>
+  Added missing heavy atom: .R<LYS 338>.A<CD 11>
+  Added missing heavy atom: .R<LYS 338>.A<CE 14>
+  Added missing heavy atom: .R<LYS 338>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 363>.A<CG 8>
+  Added missing heavy atom: .R<GLU 363>.A<CD 11>
+  Added missing heavy atom: .R<GLU 363>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 363>.A<OE2 13>
+  Added missing heavy atom: .R<ILE 410>.A<CG2 7>
+  Added missing heavy atom: .R<ILE 410>.A<CG1 11>
+  Added missing heavy atom: .R<ILE 410>.A<CD1 14>
+  Added missing heavy atom: .R<ASN 414>.A<CG 8>
+  Added missing heavy atom: .R<ASN 414>.A<OD1 9>
+  Added missing heavy atom: .R<ASN 414>.A<ND2 10>
+  Added missing heavy atom: .R<LYS 416>.A<CG 8>
+  Added missing heavy atom: .R<LYS 416>.A<CD 11>
+  Added missing heavy atom: .R<LYS 416>.A<CE 14>
+  Added missing heavy atom: .R<LYS 416>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 421>.A<CG 8>
+  Added missing heavy atom: .R<LYS 421>.A<CD 11>
+  Added missing heavy atom: .R<LYS 421>.A<CE 14>
+  Added missing heavy atom: .R<LYS 421>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 425>.A<CG 8>
+  Added missing heavy atom: .R<LYS 425>.A<CD 11>
+  Added missing heavy atom: .R<LYS 425>.A<CE 14>
+  Added missing heavy atom: .R<LYS 425>.A<NZ 17>
+  Added missing heavy atom: .R<CPRO 428>.A<OXT 15>
+  Added missing heavy atom: .R<NGLU 429>.A<CG 10>
+  Added missing heavy atom: .R<NGLU 429>.A<CD 13>
+  Added missing heavy atom: .R<NGLU 429>.A<OE1 14>
+  Added missing heavy atom: .R<NGLU 429>.A<OE2 15>
+  Added missing heavy atom: .R<LYS 430>.A<CG 8>
+  Added missing heavy atom: .R<LYS 430>.A<CD 11>
+  Added missing heavy atom: .R<LYS 430>.A<CE 14>
+  Added missing heavy atom: .R<LYS 430>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 442>.A<CG 8>
+  Added missing heavy atom: .R<LYS 442>.A<CD 11>
+  Added missing heavy atom: .R<LYS 442>.A<CE 14>
+  Added missing heavy atom: .R<LYS 442>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 453>.A<CG 8>
+  Added missing heavy atom: .R<LYS 453>.A<CD 11>
+  Added missing heavy atom: .R<LYS 453>.A<CE 14>
+  Added missing heavy atom: .R<LYS 453>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 487>.A<CG 8>
+  Added missing heavy atom: .R<GLU 487>.A<CD 11>
+  Added missing heavy atom: .R<GLU 487>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 487>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 525>.A<CG 8>
+  Added missing heavy atom: .R<ARG 525>.A<CD 11>
+  Added missing heavy atom: .R<ARG 525>.A<NE 14>
+  Added missing heavy atom: .R<ARG 525>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 525>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 525>.A<NH2 20>
+  Added missing heavy atom: .R<LYS 574>.A<CG 8>
+  Added missing heavy atom: .R<LYS 574>.A<CD 11>
+  Added missing heavy atom: .R<LYS 574>.A<CE 14>
+  Added missing heavy atom: .R<LYS 574>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 575>.A<CG 8>
+  Added missing heavy atom: .R<LYS 575>.A<CD 11>
+  Added missing heavy atom: .R<LYS 575>.A<CE 14>
+  Added missing heavy atom: .R<LYS 575>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 585>.A<CG 8>
+  Added missing heavy atom: .R<LYS 585>.A<CD 11>
+  Added missing heavy atom: .R<LYS 585>.A<CE 14>
+  Added missing heavy atom: .R<LYS 585>.A<NZ 17>
+  Added missing heavy atom: .R<LEU 605>.A<CG 8>
+  Added missing heavy atom: .R<LEU 605>.A<CD1 10>
+  Added missing heavy atom: .R<LEU 605>.A<CD2 14>
+  Added missing heavy atom: .R<GLU 609>.A<CG 8>
+  Added missing heavy atom: .R<GLU 609>.A<CD 11>
+  Added missing heavy atom: .R<GLU 609>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 609>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 617>.A<CG 8>
+  Added missing heavy atom: .R<ARG 617>.A<CD 11>
+  Added missing heavy atom: .R<ARG 617>.A<NE 14>
+  Added missing heavy atom: .R<ARG 617>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 617>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 617>.A<NH2 20>
+  Added missing heavy atom: .R<CCYS 622>.A<OXT 12>
+Creating new UNIT for residue: SO4 sequence: 623
+Created a new atom named: S within residue: .R<SO4 623>
+Created a new atom named: O1 within residue: .R<SO4 623>
+Created a new atom named: O2 within residue: .R<SO4 623>
+Created a new atom named: O3 within residue: .R<SO4 623>
+Created a new atom named: O4 within residue: .R<SO4 623>
+Creating new UNIT for residue: NAG sequence: 624
+Created a new atom named: C1 within residue: .R<NAG 624>
+Created a new atom named: C2 within residue: .R<NAG 624>
+Created a new atom named: C3 within residue: .R<NAG 624>
+Created a new atom named: C4 within residue: .R<NAG 624>
+Created a new atom named: C5 within residue: .R<NAG 624>
+Created a new atom named: C6 within residue: .R<NAG 624>
+Created a new atom named: C7 within residue: .R<NAG 624>
+Created a new atom named: C8 within residue: .R<NAG 624>
+Created a new atom named: N2 within residue: .R<NAG 624>
+Created a new atom named: O3 within residue: .R<NAG 624>
+Created a new atom named: O4 within residue: .R<NAG 624>
+Created a new atom named: O5 within residue: .R<NAG 624>
+Created a new atom named: O6 within residue: .R<NAG 624>
+Created a new atom named: O7 within residue: .R<NAG 624>
+Creating new UNIT for residue: NAG sequence: 625
+Created a new atom named: C1 within residue: .R<NAG 625>
+Created a new atom named: C2 within residue: .R<NAG 625>
+Created a new atom named: C3 within residue: .R<NAG 625>
+Created a new atom named: C4 within residue: .R<NAG 625>
+Created a new atom named: C5 within residue: .R<NAG 625>
+Created a new atom named: C6 within residue: .R<NAG 625>
+Created a new atom named: C7 within residue: .R<NAG 625>
+Created a new atom named: C8 within residue: .R<NAG 625>
+Created a new atom named: N2 within residue: .R<NAG 625>
+Created a new atom named: O3 within residue: .R<NAG 625>
+Created a new atom named: O4 within residue: .R<NAG 625>
+Created a new atom named: O5 within residue: .R<NAG 625>
+Created a new atom named: O6 within residue: .R<NAG 625>
+Created a new atom named: O7 within residue: .R<NAG 625>
+Creating new UNIT for residue: SO4 sequence: 626
+Created a new atom named: S within residue: .R<SO4 626>
+Created a new atom named: O1 within residue: .R<SO4 626>
+Created a new atom named: O2 within residue: .R<SO4 626>
+Created a new atom named: O3 within residue: .R<SO4 626>
+Created a new atom named: O4 within residue: .R<SO4 626>
+  total atoms in file: 4779
+  Leap added 5003 missing atoms according to residue templates:
+       104 Heavy
+       4899 H / lone pairs
+  The file contained 38 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+FATAL:  Atom .R<NAG 195>.A<C1 1> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C2 2> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C3 3> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C4 4> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C5 5> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C6 6> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C7 7> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<C8 8> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<N2 9> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<O3 10> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<O4 11> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<O5 12> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<O6 13> does not have a type.
+FATAL:  Atom .R<NAG 195>.A<O7 14> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C1 1> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C2 2> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C3 3> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C4 4> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C5 5> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C6 6> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C7 7> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<C8 8> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<N2 9> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<O3 10> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<O4 11> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<O5 12> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<O6 13> does not have a type.
+FATAL:  Atom .R<NAG 196>.A<O7 14> does not have a type.
+FATAL:  Atom .R<SO4 197>.A<S 1> does not have a type.
+FATAL:  Atom .R<SO4 197>.A<O1 2> does not have a type.
+FATAL:  Atom .R<SO4 197>.A<O2 3> does not have a type.
+FATAL:  Atom .R<SO4 197>.A<O3 4> does not have a type.
+FATAL:  Atom .R<SO4 197>.A<O4 5> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 17; Notes = 2.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/3B2U.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/3B2U_F_G_E_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,272,"2ZPK|I,M|Q|298.15",2ZPK,"I,M",Q,"B,A",C,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 123
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NTHR 1>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 96>
+Created a new atom named: HD1 within residue: .R<HIE 190>
+Created a new atom named: HD1 within residue: .R<HIE 199>
+Created a new atom named: HD1 within residue: .R<HIE 202>
+Created a new atom named: H within residue: .R<NGLN 210>
+Created a new atom named: HD1 within residue: .R<HIE 291>
+Created a new atom named: HD1 within residue: .R<HIE 369>
+Created a new atom named: HD1 within residue: .R<HIE 404>
+  total atoms in file: 6278
+  Leap added 18 missing atoms according to residue templates:
+       18 H / lone pairs
+  The file contained 10 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NTHR 1>
+Created a new atom named: HD1 within residue: .R<HIE 43>
+Created a new atom named: HD1 within residue: .R<HIE 96>
+Created a new atom named: HD1 within residue: .R<HIE 190>
+Created a new atom named: HD1 within residue: .R<HIE 199>
+Created a new atom named: HD1 within residue: .R<HIE 202>
+Created a new atom named: H within residue: .R<NGLN 210>
+Created a new atom named: HD1 within residue: .R<HIE 291>
+Created a new atom named: HD1 within residue: .R<HIE 369>
+Created a new atom named: HD1 within residue: .R<HIE 404>
+  total atoms in file: 6401
+  Leap added 18 missing atoms according to residue templates:
+       18 H / lone pairs
+  The file contained 10 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 27 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CVAL	1
+	NPRO	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 15.357 angstroms between C and N atoms:
+-------  .R<PRO 338>.A<C 13> and .R<SER 339>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+FATAL:  Atom .R<NTHR 1>.A<H 17> does not have a type.
+FATAL:  Atom .R<HIE 43>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 96>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 190>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 199>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 202>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<NGLN 210>.A<H 20> does not have a type.
+FATAL:  Atom .R<HIE 291>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 369>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 404>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 3; Notes = 1.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2ZPK/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/2ZPK_I_M_Q_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,288,"2R0L|H,L|A|298.15",2R0L,"H,L",A,"B,A",C,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NILE 1>
+Created a new atom named: HD1 within residue: .R<HIE 12>
+Created a new atom named: HD1 within residue: .R<HIE 31>
+Created a new atom named: HD1 within residue: .R<HIE 40>
+Created a new atom named: HD1 within residue: .R<HIE 44>
+Created a new atom named: HD1 within residue: .R<HIE 58>
+Created a new atom named: HD1 within residue: .R<HIE 89>
+Created a new atom named: HD1 within residue: .R<HIE 126>
+Created a new atom named: HD1 within residue: .R<HIE 135>
+Created a new atom named: HD1 within residue: .R<HIE 158>
+Created a new atom named: HD1 within residue: .R<HIE 219>
+  total atoms in file: 3567
+  Leap added 21 missing atoms according to residue templates:
+       21 H / lone pairs
+  The file contained 11 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NASP 1>
+Created a new atom named: HD1 within residue: .R<HIE 189>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: H within residue: .R<NGLU 215>
+Created a new atom named: HD1 within residue: .R<HIE 249>
+Created a new atom named: HD1 within residue: .R<HIE 382>
+Created a new atom named: HD1 within residue: .R<HIE 418>
+  total atoms in file: 6460
+  Leap added 17 missing atoms according to residue templates:
+       17 H / lone pairs
+  The file contained 7 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NASP 1>
+Created a new atom named: HD1 within residue: .R<HIE 189>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: H within residue: .R<NGLU 215>
+Created a new atom named: HD1 within residue: .R<HIE 249>
+Created a new atom named: HD1 within residue: .R<HIE 382>
+Created a new atom named: HD1 within residue: .R<HIE 418>
+Created a new atom named: H within residue: .R<NILE 435>
+Created a new atom named: HD1 within residue: .R<HIE 446>
+Created a new atom named: HD1 within residue: .R<HIE 465>
+Created a new atom named: HD1 within residue: .R<HIE 474>
+Created a new atom named: HD1 within residue: .R<HIE 478>
+Created a new atom named: HD1 within residue: .R<HIE 492>
+Created a new atom named: HD1 within residue: .R<HIE 523>
+Created a new atom named: HD1 within residue: .R<HIE 560>
+Created a new atom named: HD1 within residue: .R<HIE 569>
+Created a new atom named: HD1 within residue: .R<HIE 592>
+Created a new atom named: HD1 within residue: .R<HIE 653>
+  total atoms in file: 10027
+  Leap added 38 missing atoms according to residue templates:
+       38 H / lone pairs
+  The file contained 18 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+FATAL:  Atom .R<NILE 1>.A<H 22> does not have a type.
+FATAL:  Atom .R<HIE 12>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 31>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 40>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 44>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 58>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 89>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 126>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 135>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 158>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 219>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 1; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2R0L/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/2R0L_H_L_A_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,304,"1WEJ|H,L|F|298.15",1WEJ,"H,L",F,"B,A",C,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 18>
+Created a new atom named: HD1 within residue: .R<HIE 26>
+Created a new atom named: HD1 within residue: .R<HIE 33>
+  total atoms in file: 1672
+  Leap added 4 missing atoms according to residue templates:
+       4 H / lone pairs
+  The file contained 4 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NASP 1>
+Created a new atom named: HD1 within residue: .R<HIE 30>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 189>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: H within residue: .R<NGLU 215>
+Created a new atom named: HD1 within residue: .R<HIE 249>
+Created a new atom named: HD1 within residue: .R<HIE 382>
+Created a new atom named: HD1 within residue: .R<HIE 417>
+  total atoms in file: 6544
+  Leap added 19 missing atoms according to residue templates:
+       19 H / lone pairs
+  The file contained 9 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NASP 1>
+Created a new atom named: HD1 within residue: .R<HIE 30>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 189>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+Created a new atom named: H within residue: .R<NGLU 215>
+Created a new atom named: HD1 within residue: .R<HIE 249>
+Created a new atom named: HD1 within residue: .R<HIE 382>
+Created a new atom named: HD1 within residue: .R<HIE 417>
+Created a new atom named: H within residue: .R<NGLY 438>
+Created a new atom named: HD1 within residue: .R<HIE 455>
+Created a new atom named: HD1 within residue: .R<HIE 463>
+Created a new atom named: HD1 within residue: .R<HIE 470>
+  total atoms in file: 8216
+  Leap added 23 missing atoms according to residue templates:
+       23 H / lone pairs
+  The file contained 13 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (9.000000) is not zero.
+FATAL:  Atom .R<NGLY 1>.A<H 10> does not have a type.
+FATAL:  Atom .R<HIE 18>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 26>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 33>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 2; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1WEJ/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1WEJ_H_L_F_298.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,320,1M10|A|B|300.15,1M10,A,B,A,B,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<HIE 12>
+Created a new atom named: HD1 within residue: .R<HIE 37>
+Created a new atom named: HD1 within residue: .R<HIE 86>
+Created a new atom named: HD1 within residue: .R<HIE 195>
+Created a new atom named: HD1 within residue: .R<HIE 203>
+  total atoms in file: 4218
+  Leap added 13 missing atoms according to residue templates:
+       13 H / lone pairs
+  The file contained 7 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<HIE 55>
+Created a new atom named: HD1 within residue: .R<HIE 59>
+Created a new atom named: HD1 within residue: .R<HIE 152>
+  total atoms in file: 3250
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 5 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<NHIE 1>
+Created a new atom named: HD1 within residue: .R<HIE 55>
+Created a new atom named: HD1 within residue: .R<HIE 59>
+Created a new atom named: HD1 within residue: .R<HIE 152>
+Created a new atom named: H within residue: .R<NHIE 200>
+Created a new atom named: HD1 within residue: .R<NHIE 200>
+Created a new atom named: HD1 within residue: .R<HIE 211>
+Created a new atom named: HD1 within residue: .R<HIE 236>
+Created a new atom named: HD1 within residue: .R<HIE 285>
+Created a new atom named: HD1 within residue: .R<HIE 394>
+Created a new atom named: HD1 within residue: .R<HIE 402>
+  total atoms in file: 7468
+  Leap added 20 missing atoms according to residue templates:
+       20 H / lone pairs
+  The file contained 12 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-4.000000) is not zero.
+FATAL:  Atom .R<NHIE 1>.A<H 20> does not have a type.
+FATAL:  Atom .R<NHIE 1>.A<HD1 21> does not have a type.
+FATAL:  Atom .R<HIE 12>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 37>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 86>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 195>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 203>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 1; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1M10/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1M10_A_B_300.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,336,1NW9|B|A|312.15,1NW9,B,A,B,A,312.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NLEU 1>
+Created a new atom named: HD1 within residue: .R<HIE 47>
+Created a new atom named: HD1 within residue: .R<HIE 65>
+Created a new atom named: HD1 within residue: .R<HIE 88>
+Created a new atom named: HD1 within residue: .R<CHIE 91>
+  total atoms in file: 1449
+  Leap added 5 missing atoms according to residue templates:
+       5 H / lone pairs
+  The file contained 5 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 23>
+Created a new atom named: HD1 within residue: .R<HIE 59>
+Created a new atom named: HD1 within residue: .R<HIE 85>
+Created a new atom named: HD1 within residue: .R<HIE 98>
+Created a new atom named: HD1 within residue: .R<HIE 104>
+Created a new atom named: HD1 within residue: .R<HIE 198>
+  total atoms in file: 3680
+  Leap added 7 missing atoms according to residue templates:
+       7 H / lone pairs
+  The file contained 7 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NLEU 1>
+Created a new atom named: HD1 within residue: .R<HIE 47>
+Created a new atom named: HD1 within residue: .R<HIE 65>
+Created a new atom named: HD1 within residue: .R<HIE 88>
+Created a new atom named: HD1 within residue: .R<CHIE 91>
+Created a new atom named: H within residue: .R<NGLY 92>
+Created a new atom named: HD1 within residue: .R<HIE 114>
+Created a new atom named: HD1 within residue: .R<HIE 150>
+Created a new atom named: HD1 within residue: .R<HIE 176>
+Created a new atom named: HD1 within residue: .R<HIE 189>
+Created a new atom named: HD1 within residue: .R<HIE 195>
+Created a new atom named: HD1 within residue: .R<HIE 289>
+  total atoms in file: 5129
+  Leap added 12 missing atoms according to residue templates:
+       12 H / lone pairs
+  The file contained 12 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-1.000000) is not zero.
+FATAL:  Atom .R<NLEU 1>.A<H 22> does not have a type.
+FATAL:  Atom .R<HIE 47>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 65>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 88>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<CHIE 91>.A<HD1 19> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1NW9/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1NW9_B_A_312.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,352,"4DN4|H,L|M|298.00",4DN4,"H,L",M,"B,A",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NVAL 1>
+Created a new atom named: HD1 within residue: .R<HIE 58>
+  total atoms in file: 1004
+  Leap added 6 missing atoms according to residue templates:
+       6 H / lone pairs
+  The file contained 2 atoms not in residue templates
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLU 1>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 96>
+Created a new atom named: HD1 within residue: .R<HIE 191>
+Created a new atom named: HD1 within residue: .R<HIE 200>
+Created a new atom named: H within residue: .R<NVAL 214>
+Created a new atom named: HD1 within residue: .R<HIE 377>
+Created a new atom named: HD1 within residue: .R<HIE 413>
+  total atoms in file: 6386
+  Leap added 16 missing atoms according to residue templates:
+       16 H / lone pairs
+  The file contained 8 atoms not in residue templates
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NGLU 1>
+Created a new atom named: HD1 within residue: .R<HIE 90>
+Created a new atom named: HD1 within residue: .R<HIE 96>
+Created a new atom named: HD1 within residue: .R<HIE 191>
+Created a new atom named: HD1 within residue: .R<HIE 200>
+Created a new atom named: H within residue: .R<NVAL 214>
+Created a new atom named: HD1 within residue: .R<HIE 377>
+Created a new atom named: HD1 within residue: .R<HIE 413>
+Created a new atom named: H within residue: .R<NVAL 428>
+Created a new atom named: HD1 within residue: .R<HIE 485>
+  total atoms in file: 7390
+  Leap added 22 missing atoms according to residue templates:
+       22 H / lone pairs
+  The file contained 10 atoms not in residue templates
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (6.000000) is not zero.
+FATAL:  Atom .R<NVAL 1>.A<H 19> does not have a type.
+FATAL:  Atom .R<HIE 58>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 1; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4DN4/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/4DN4_H_L_M_298.00
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,368,"1JWH|C,D|A|310.15",1JWH,"C,D",A,"B,C",A,310.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 17>
+Created a new atom named: HD1 within residue: .R<HIE 28>
+Created a new atom named: HD1 within residue: .R<HIE 114>
+Created a new atom named: HD1 within residue: .R<HIE 147>
+Created a new atom named: HD1 within residue: .R<HIE 153>
+Created a new atom named: HD1 within residue: .R<HIE 159>
+Created a new atom named: HD1 within residue: .R<HIE 165>
+Created a new atom named: HD1 within residue: .R<HIE 167>
+Created a new atom named: HD1 within residue: .R<HIE 182>
+Created a new atom named: HD1 within residue: .R<HIE 233>
+Created a new atom named: HD1 within residue: .R<HIE 235>
+Created a new atom named: HD1 within residue: .R<HIE 275>
+Created a new atom named: HD1 within residue: .R<HIE 285>
+Created a new atom named: HD1 within residue: .R<HIE 290>
+Created a new atom named: HD1 within residue: .R<HIE 308>
+Created a new atom named: HD1 within residue: .R<HIE 320>
+  total atoms in file: 5602
+  Leap added 17 missing atoms according to residue templates:
+       17 H / lone pairs
+  The file contained 17 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: H within residue: .R<NGLU 1>
+Created a new atom named: HD1 within residue: .R<HIE 40>
+Created a new atom named: HD1 within residue: .R<HIE 79>
+Created a new atom named: HD1 within residue: .R<HIE 146>
+Created a new atom named: HD1 within residue: .R<HIE 147>
+Created a new atom named: HD1 within residue: .R<HIE 148>
+Created a new atom named: HD1 within residue: .R<HIE 160>
+Created a new atom named: HD1 within residue: .R<HIE 166>
+Created a new atom named: HD1 within residue: .R<HIE 188>
+Created a new atom named: H within residue: .R<NSER 201>
+Created a new atom named: HD1 within residue: .R<HIE 244>
+Created a new atom named: HD1 within residue: .R<HIE 283>
+Created a new atom named: HD1 within residue: .R<HIE 350>
+Created a new atom named: HD1 within residue: .R<HIE 351>
+Created a new atom named: HD1 within residue: .R<HIE 352>
+Created a new atom named: HD1 within residue: .R<HIE 364>
+Created a new atom named: HD1 within residue: .R<HIE 370>
+Created a new atom named: HD1 within residue: .R<HIE 392>
+  total atoms in file: 6424
+  Leap added 18 missing atoms according to residue templates:
+       18 H / lone pairs
+  The file contained 18 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: H within residue: .R<NSER 1>
+Created a new atom named: HD1 within residue: .R<HIE 17>
+Created a new atom named: HD1 within residue: .R<HIE 28>
+Created a new atom named: HD1 within residue: .R<HIE 114>
+Created a new atom named: HD1 within residue: .R<HIE 147>
+Created a new atom named: HD1 within residue: .R<HIE 153>
+Created a new atom named: HD1 within residue: .R<HIE 159>
+Created a new atom named: HD1 within residue: .R<HIE 165>
+Created a new atom named: HD1 within residue: .R<HIE 167>
+Created a new atom named: HD1 within residue: .R<HIE 182>
+Created a new atom named: HD1 within residue: .R<HIE 233>
+Created a new atom named: HD1 within residue: .R<HIE 235>
+Created a new atom named: HD1 within residue: .R<HIE 275>
+Created a new atom named: HD1 within residue: .R<HIE 285>
+Created a new atom named: HD1 within residue: .R<HIE 290>
+Created a new atom named: HD1 within residue: .R<HIE 308>
+Created a new atom named: HD1 within residue: .R<HIE 320>
+Created a new atom named: H within residue: .R<NGLU 337>
+Created a new atom named: HD1 within residue: .R<HIE 376>
+Created a new atom named: HD1 within residue: .R<HIE 415>
+Created a new atom named: HD1 within residue: .R<HIE 482>
+Created a new atom named: HD1 within residue: .R<HIE 483>
+Created a new atom named: HD1 within residue: .R<HIE 484>
+Created a new atom named: HD1 within residue: .R<HIE 496>
+Created a new atom named: HD1 within residue: .R<HIE 502>
+Created a new atom named: HD1 within residue: .R<HIE 524>
+Created a new atom named: H within residue: .R<NSER 537>
+Created a new atom named: HD1 within residue: .R<HIE 580>
+Created a new atom named: HD1 within residue: .R<HIE 619>
+Created a new atom named: HD1 within residue: .R<HIE 686>
+Created a new atom named: HD1 within residue: .R<HIE 687>
+Created a new atom named: HD1 within residue: .R<HIE 688>
+Created a new atom named: HD1 within residue: .R<HIE 700>
+Created a new atom named: HD1 within residue: .R<HIE 706>
+Created a new atom named: HD1 within residue: .R<HIE 728>
+  total atoms in file: 12026
+  Leap added 35 missing atoms according to residue templates:
+       35 H / lone pairs
+  The file contained 35 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+FATAL:  Atom .R<NSER 1>.A<H 14> does not have a type.
+FATAL:  Atom .R<HIE 17>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 28>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 114>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 147>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 153>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 159>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 165>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 167>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 182>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 233>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 235>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 275>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 285>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 290>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 308>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 320>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 3; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1JWH/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/1JWH_C_D_A_310.15
+src/bridging/processedData/PPB_Affinity_broad_pairuniq_train80_test20.csv,384,4IZ7|A|B|300.00,4IZ7,A,B,A,B,300.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+Created a new atom named: H within residue: .R<NGLY 1>
+Created a new atom named: HD1 within residue: .R<HIE 53>
+Created a new atom named: HD1 within residue: .R<HIE 66>
+  total atoms in file: 1455
+  Leap added 3 missing atoms according to residue templates:
+       3 H / lone pairs
+  The file contained 3 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./lig.pdb
+Created a new atom named: HD1 within residue: .R<HIE 51>
+Created a new atom named: HD1 within residue: .R<HIE 70>
+Created a new atom named: HD1 within residue: .R<HIE 110>
+Created a new atom named: HD1 within residue: .R<HIE 115>
+Created a new atom named: HD1 within residue: .R<HIE 131>
+Created a new atom named: HD1 within residue: .R<HIE 137>
+Created a new atom named: HD1 within residue: .R<HIE 168>
+Created a new atom named: HD1 within residue: .R<HIE 216>
+Created a new atom named: HD1 within residue: .R<HIE 223>
+Created a new atom named: HD1 within residue: .R<HIE 253>
+Created a new atom named: HD1 within residue: .R<HIE 283>
+Created a new atom named: HD1 within residue: .R<HIE 294>
+  total atoms in file: 5640
+  Leap added 12 missing atoms according to residue templates:
+       12 H / lone pairs
+  The file contained 12 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Loading PDB file: ./com.pdb
+Created a new atom named: HD1 within residue: .R<HIE 51>
+Created a new atom named: HD1 within residue: .R<HIE 70>
+Created a new atom named: HD1 within residue: .R<HIE 110>
+Created a new atom named: HD1 within residue: .R<HIE 115>
+Created a new atom named: HD1 within residue: .R<HIE 131>
+Created a new atom named: HD1 within residue: .R<HIE 137>
+Created a new atom named: HD1 within residue: .R<HIE 168>
+Created a new atom named: HD1 within residue: .R<HIE 216>
+Created a new atom named: HD1 within residue: .R<HIE 223>
+Created a new atom named: HD1 within residue: .R<HIE 253>
+Created a new atom named: HD1 within residue: .R<HIE 283>
+Created a new atom named: HD1 within residue: .R<HIE 294>
+Created a new atom named: H within residue: .R<NGLY 345>
+Created a new atom named: HD1 within residue: .R<HIE 397>
+Created a new atom named: HD1 within residue: .R<HIE 410>
+  total atoms in file: 7095
+  Leap added 15 missing atoms according to residue templates:
+       15 H / lone pairs
+  The file contained 15 atoms not in residue templates
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+Since the number of added atoms equals the number of missing atoms, it is likely
+that some atoms had incorrect names; you may want to use addPdbAtomMap to map
+these names, or change the names in the PDB file.
+
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+FATAL:  Atom .R<NGLY 1>.A<H 10> does not have a type.
+FATAL:  Atom .R<HIE 53>.A<HD1 18> does not have a type.
+FATAL:  Atom .R<HIE 66>.A<HD1 18> does not have a type.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+Failed to generate parameters
+
+Exiting LEaP: Errors = 1; Warnings = 4; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4IZ7/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_full1458_mamba/shard_00/4IZ7_A_B_300.00

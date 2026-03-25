@@ -1,0 +1,129 @@
+row_index=0 pdb=1B2S cache_key=1B2S|A|D|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=0 pdb=1BJ1 cache_key=1BJ1|H,L|V,W|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r4/shard_09/1BJ1_H_L_V_W_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  "(?:_(.+?)[.](\S+))"               "|"  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  "(?:['](.*?)(?:[']\s|[']$))"       "|"  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  "(?:[\"](.*?)(?:[\"]\s|[\"]$))"    "|"  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  "(?:\s*#.*$)"                      "|"  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  "(\S+)"                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  "(?:_(.+?)[.](\S+))"               "|"  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  "(?:['\"](.*?)(?:['\"]\s|['\"]$))" "|"  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  "(?:\s*#.*$)"                      "|"  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  "(\S+)"                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/parameters.py:28: SyntaxWarning: invalid escape sequence '\s'
+  '%(FLOATRE)s\s+%(FLOATRE)s\s+%(FLOATRE)s' % subs)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/parameters.py:34: SyntaxWarning: invalid escape sequence '\s'
+  '%(FLOATRE)s\s+%(FLOATRE)s\s+%(FLOATRE)s' % subs)
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+

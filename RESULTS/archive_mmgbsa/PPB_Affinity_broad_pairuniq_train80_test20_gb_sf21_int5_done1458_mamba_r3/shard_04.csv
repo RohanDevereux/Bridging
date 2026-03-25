@@ -1,0 +1,1699 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,4,1AK4|A|D|298.00,1AK4,A,D,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1AK4/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1AK4/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1AK4_A_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,20,1E50|A|B|298.00,1E50,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1E50/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1E50/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1E50_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,36,1HE8|A|B|293.00,1HE8,A,B,A,B,293.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1HE8/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1HE8/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1HE8_A_B_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,52,"1MI5|A,B,C|D,E|298.00",1MI5,"A,B,C","D,E","A,B,C","D,E",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 3486
+  Leap added 3318 missing atoms according to residue templates:
+       3318 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3162
+  Leap added 2971 missing atoms according to residue templates:
+       2971 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 6648
+  Leap added 6289 missing atoms according to residue templates:
+       6289 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-12.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 298 1333
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1MI5/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1MI5_A_B_C_D_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,68,1SMF|E|I|300.00,1SMF,E,I,A,B,300.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 66
+  Leap added 66 missing atoms according to residue templates:
+       66 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1629
+  Leap added 1591 missing atoms according to residue templates:
+       1591 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 1695
+  Leap added 1657 missing atoms according to residue templates:
+       1657 H / lone pairs
+Checking Unit.
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 10 129
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1SMF/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1SMF_E_I_300.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,84,2B0Z|A|B|298.00,2B0Z,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2B0Z/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2B0Z/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2B0Z_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,100,2J0T|A|D|298.00,2J0T,A,D,A,D,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2J0T/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2J0T_A_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,116,2WPT|A|B|298.00,2WPT,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2WPT/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2WPT/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2WPT_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,132,"3G6D|H,L|A|298.00",3G6D,"H,L",A,"B,A",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 819
+  Leap added 844 missing atoms according to residue templates:
+       844 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3245
+  Leap added 3130 missing atoms according to residue templates:
+       3130 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 4064
+  Leap added 3974 missing atoms according to residue templates:
+       3974 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 410 802
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3G6D/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/3G6D_H_L_A_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,148,"3NGB|H,L|G|298.00",3NGB,"H,L",G,"H,L",G,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<CGLU 347>.A<OXT 16>
+  total atoms in file: 2713
+  Leap added 2658 missing atoms according to residue templates:
+       1 Heavy
+       2657 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3325
+  Leap added 3237 missing atoms according to residue templates:
+       3237 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CGLU 347>.A<OXT 16>
+  total atoms in file: 6038
+  Leap added 5895 missing atoms according to residue templates:
+       1 Heavy
+       5894 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 6.532 angstroms between C and N atoms:
+-------  .R<ASN 185>.A<C 13> and .R<GLY 186>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 173 457
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/3NGB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/3NGB_H_L_G_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,164,"3SE9|H,L|G|303.00",3SE9,"H,L",G,"B,C",A,303.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2690
+  Leap added 2638 missing atoms according to residue templates:
+       2638 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3340
+  Leap added 3274 missing atoms according to residue templates:
+       3274 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 6030
+  Leap added 5912 missing atoms according to residue templates:
+       5912 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 7.571 angstroms between C and N atoms:
+-------  .R<ASN 185>.A<C 13> and .R<GLY 186>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 4.092 angstroms between C and N atoms:
+-------  .R<GLY 258>.A<C 6> and .R<MET 259>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 173 457
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SE9/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/3SE9_H_L_G_303.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,180,4G2V|A|B|298.00,4G2V,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4G2V/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4G2V/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/4G2V_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,196,4KRP|A|B|298.00,4KRP,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 916
+  Leap added 847 missing atoms according to residue templates:
+       847 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 4120
+  Leap added 4001 missing atoms according to residue templates:
+       4001 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5036
+  Leap added 4848 missing atoms according to residue templates:
+       4848 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 11.357 angstroms between C and N atoms:
+-------  .R<LEU 11>.A<C 18> and .R<LEU 12>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 189 1335
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4KRP/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/4KRP_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,212,4UYP|A|D|308.00,4UYP,A,D,A,B,308.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4UYP/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4UYP/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/4UYP_A_D_308.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,228,5XCO|A|B|298.00,5XCO,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 176
+  Leap added 186 missing atoms according to residue templates:
+       186 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1361
+  Leap added 1340 missing atoms according to residue templates:
+       1340 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 1537
+  Leap added 1526 missing atoms according to residue templates:
+       1526 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 106 263
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5XCO/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/5XCO_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,244,"2HKF|H,L|P|298.15",2HKF,"H,L",P,"B,A",C,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 65
+  Leap added 60 missing atoms according to residue templates:
+       60 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3290
+  Leap added 3184 missing atoms according to residue templates:
+       3184 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3355
+  Leap added 3244 missing atoms according to residue templates:
+       3244 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 20 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CGLY	1
+	NLEU	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 9.922 angstroms between C and N atoms:
+-------  .R<CYX 353>.A<C 9> and .R<THR 354>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 11.815 angstroms between C and N atoms:
+-------  .R<ASN 377>.A<C 13> and .R<SER 378>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 326 1408
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2HKF/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2HKF_H_L_P_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,260,"1TET|H,L|P|296.15",1TET,"H,L",P,"B,A",C,296.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 93
+  Leap added 95 missing atoms according to residue templates:
+       95 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3288
+  Leap added 3191 missing atoms according to residue templates:
+       3191 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3381
+  Leap added 3286 missing atoms according to residue templates:
+       3286 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 32 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CLYS	1
+	NVAL	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 4.965 angstroms between C and N atoms:
+-------  .R<GLY 346>.A<C 6> and .R<SER 347>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.311 angstroms between CA and C atoms:
+-------  .R<GLY 346>.A<CA 3> and .R<GLY 346>.A<C 6>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.228 angstroms between N and CA atoms:
+-------  .R<GLY 346>.A<N 1> and .R<GLY 346>.A<CA 3>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (5.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 329 1414
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1TET/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1TET_H_L_P_296.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,276,"2HFG|H,L|R|298.15",2HFG,"H,L",R,"B,A",C,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 197
+  Leap added 192 missing atoms according to residue templates:
+       192 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3258
+  Leap added 3187 missing atoms according to residue templates:
+       3187 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3455
+  Leap added 3379 missing atoms according to residue templates:
+       3379 H / lone pairs
+Checking Unit.
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 86 281
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2HFG/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2HFG_H_L_R_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,292,"2EH8|H,L|P|310.15",2EH8,"H,L",P,"B,A",C,310.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 84
+  Leap added 64 missing atoms according to residue templates:
+       64 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3296
+  Leap added 3231 missing atoms according to residue templates:
+       3231 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3380
+  Leap added 3295 missing atoms according to residue templates:
+       3295 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 42 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CPHE	1
+	NALA	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (5.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 327 1420
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2EH8/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/2EH8_H_L_P_310.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,308,1UUG|A|B|300.15,1UUG,A,B,A,B,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1UUG/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1UUG/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1UUG_A_B_300.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,324,1GXD|A|C|300.15,1GXD,A,C,A,C,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1GXD/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1GXD_A_C_300.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,340,"1RV6|V,W|X|312.15",1RV6,"V,W",X,"V,W",X,312.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<CARG 92>.A<OXT 25>
+  total atoms in file: 745
+  Leap added 768 missing atoms according to residue templates:
+       1 Heavy
+       767 H / lone pairs
+Loading PDB file: ./lig.pdb
+  Added missing heavy atom: .R<CLEU 94>.A<OXT 20>
+  Added missing heavy atom: .R<CLEU 189>.A<OXT 20>
+  total atoms in file: 1495
+  Leap added 1448 missing atoms according to residue templates:
+       2 Heavy
+       1446 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CLEU 94>.A<OXT 20>
+  Added missing heavy atom: .R<CLEU 189>.A<OXT 20>
+  Added missing heavy atom: .R<CARG 281>.A<OXT 25>
+  total atoms in file: 2240
+  Leap added 2216 missing atoms according to residue templates:
+       3 Heavy
+       2213 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 426 1232
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/1RV6.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1RV6_V_W_X_312.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,356,"1JWH|C,D|A|310.15",1JWH,"C,D",A,"B,C",A,310.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1JWH/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1JWH/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/1JWH_C_D_A_310.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,372,4IZ7|A|B|300.00,4IZ7,A,B,A,B,300.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4IZ7/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4IZ7/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_04/4IZ7_A_B_300.00

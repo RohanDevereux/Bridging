@@ -1,0 +1,1244 @@
+row_index=0 pdb=1B2S cache_key=1B2S|A|D|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=0 pdb=1BJ1 cache_key=1BJ1|H,L|V,W|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_09/1BJ1_H_L_V_W_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=4 pdb=1Z7X cache_key=1Z7X|W|X|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_13/1Z7X_W_X_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=5 pdb=2E7L cache_key=2E7L|E,Q|A,D|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_13/2E7L_E_Q_A_D_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=6 pdb=2OI9 cache_key=2OI9|A,Q|B,C|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2OI9/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 98, in <module>
+    app.loadcheck_prmtops()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 651, in loadcheck_prmtops
+    self.normal_system.Map(INPUT['receptor_mask'], INPUT['ligand_mask'])
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/parm_setup.py", line 239, in Map
+    raise PrmtopError("Couldn't predict mask from topology files!\n" +
+    ...<2 lines>...
+          "this is not the case.")
+PrmtopError: Couldn't predict mask from topology files!
+Your ligand residues must be sequential in your complex.
+There are likely problems with your topology files if this is not the case.
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=3 pdb=1LP9 cache_key=1LP9|A,B,C|E,F|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/1LP9_A_B_C_E_F_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=5 pdb=2AJF cache_key=2AJF|A|E|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_00/2AJF_A_E_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=6 pdb=2J1K cache_key=2J1K|C|T|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/2J1K_C_T_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=9 pdb=3QIB cache_key=3QIB|A,B,P|C,D|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3QIB/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 98, in <module>
+    app.loadcheck_prmtops()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 651, in loadcheck_prmtops
+    self.normal_system.Map(INPUT['receptor_mask'], INPUT['ligand_mask'])
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/parm_setup.py", line 239, in Map
+    raise PrmtopError("Couldn't predict mask from topology files!\n" +
+    ...<2 lines>...
+          "this is not the case.")
+PrmtopError: Couldn't predict mask from topology files!
+Your ligand residues must be sequential in your complex.
+There are likely problems with your topology files if this is not the case.
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=3 pdb=1MLC cache_key=1MLC|A,B|E|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=8 pdb=3EQY cache_key=3EQY|A|C|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=11 pdb=4GU0 cache_key=4GU0|A|E|291.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_06/4GU0_A_E_291.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=7 pdb=3BX1 cache_key=3BX1|A|C|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=7 pdb=3BIW cache_key=3BIW|A|E|293.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_09/3BIW_A_E_293.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=6 pdb=2I26 cache_key=2I26|N|L|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_03/2I26_N_L_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=16 pdb=2VYR cache_key=2VYR|E|A|288.15
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_02/2VYR_E_A_288.15/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=17 pdb=3EYF cache_key=3EYF|A,B|E|297.15
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=10 pdb=3SZK cache_key=3SZK|A,B|C|283.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SZK/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+Error: Number of atoms in NetCDF file (6602) does not match number
+Error:  in associated topology (4484)!
+Error: Could not set up '/scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SZK/traj_protein.nc' for reading.
+Error: Could not set up input trajectory '/scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SZK/traj_protein.nc'.
+Error: Error(s) occurred during execution.
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 69, in make_trajectories
+    traj = Trajectory(FILES.complex_prmtop, FILES.mdcrd, FILES.automem, INPUT['memopt'], pre, INPUT['mthick'], cpptraj)
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 530, in __init__
+    self.Query()
+    ~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 700, in Query
+    raise TrajError('%s failed when querying %s' % (self.exe, traj))
+TrajError: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj failed when querying /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3SZK/traj_protein.nc
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=1 pdb=1FCC cache_key=1FCC|A|C|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=11 pdb=4GXU cache_key=4GXU|A,B,C,D,E,F|M,N|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_07/4GXU_A_B_C_D_E_F_M_N_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=9 pdb=3Q8D cache_key=3Q8D|A|E|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_09/3Q8D_A_E_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=6 pdb=2J0T cache_key=2J0T|A|D|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 324, in run_mmgbsa_delta_g_kcalmol
+    _run_checked([tleap_exe, "-f", "leap.in"], cwd=work_dir)
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+
+
+row_index=10 pdb=3UIG cache_key=3UIG|A|P|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_09/3UIG_A_P_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=12 pdb=4N8V cache_key=4N8V|G|A,B,C|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_09/4N8V_G_A_B_C_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=9 pdb=3R9A cache_key=3R9A|A,C|B|298.00
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3R9A/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 98, in <module>
+    app.loadcheck_prmtops()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 651, in loadcheck_prmtops
+    self.normal_system.Map(INPUT['receptor_mask'], INPUT['ligand_mask'])
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/parm_setup.py", line 239, in Map
+    raise PrmtopError("Couldn't predict mask from topology files!\n" +
+    ...<2 lines>...
+          "this is not the case.")
+PrmtopError: Couldn't predict mask from topology files!
+Your ligand residues must be sequential in your complex.
+There are likely problems with your topology files if this is not the case.
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+
+row_index=15 pdb=3FKU cache_key=3FKU|U,U|G,H|298.15
+Traceback (most recent call last):
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/prefetch_dataset.py", line 388, in fetch_and_save_dataset_estimates
+    delta_g = run_mmgbsa_delta_g_kcalmol(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 343, in run_mmgbsa_delta_g_kcalmol
+    _run_checked(
+  File "/home/people/22455104/Bridging/src/bridging/MMGBSA/runner.py", line 30, in _run_checked
+    raise RuntimeError(
+RuntimeError: Command failed.
+Command: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/python /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r5/shard_01/3FKU_U_U_G_H_298.15/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+Loading and checking parameter files for compatibility...
+cpptraj found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/cpptraj
+mmpbsa_py_energy found! Using /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/mmpbsa_py_energy
+Preparing trajectories for simulation...
+
+STDERR:
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py", line 99, in <module>
+    app.file_setup()
+    ~~~~~~~~~~~~~~^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/main.py", line 162, in file_setup
+    self.numframes, self.numframes_nmode = make_trajectories(INPUT, FILES,
+                                           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+                  self.mpi_size, str(external_progs['cpptraj']), self.pre)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 70, in make_trajectories
+    traj.Setup(INPUT['startframe'], INPUT['endframe'], INPUT['interval'])
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/lib/python3.13/site-packages/MMPBSA_mods/make_trajs.py", line 572, in Setup
+    raise TrajError('start frame (%d) > total frames (%d)' %
+                    (startframe, self.total_frames))
+TrajError: start frame (21) > total frames (1)
+
+Fatal Error! 
+All files have been retained for your error investigation: 
+You should begin by examining the output files of the first failed calculation.
+Consult the "Temporary Files" subsection of the MMPBSA.py chapter in the
+manual for file naming conventions.
+
+
+

@@ -1,0 +1,3257 @@
+dataset,row_index,cache_key,pdb_id,ligand_group,receptor_group,used_ligand_group,used_receptor_group,temperature_k,solvation_model,igb,saltcon,istrng,start_frame,end_frame,interval,delta_g_kcal_mol,status,message,source_pdb,source_kind,work_dir
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,10,1BP3|A|B|298.00,1BP3,A,B,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1625
+  Leap added 1563 missing atoms according to residue templates:
+       1563 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1523
+  Leap added 1500 missing atoms according to residue templates:
+       1500 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3148
+  Leap added 3063 missing atoms according to residue templates:
+       3063 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 10.866 angstroms between C and N atoms:
+-------  .R<GLY 29>.A<C 6> and .R<THR 30>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 3.336 angstroms between C and N atoms:
+-------  .R<ASN 79>.A<C 13> and .R<SER 80>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 176 334
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1BP3/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1BP3_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,26,1F5R|A|I|298.00,1F5R,A,I,A,B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 449
+  Leap added 433 missing atoms according to residue templates:
+       433 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1622
+  Leap added 1562 missing atoms according to residue templates:
+       1562 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 2071
+  Leap added 1995 missing atoms according to residue templates:
+       1995 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (6.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 80 865
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1F5R/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1F5R_A_I_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,42,1K8R|A|B|310.00,1K8R,A,B,A,B,310.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1K8R/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1K8R/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1K8R_A_B_310.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,58,"1NMB|N|H,L|298.00",1NMB,N,"H,L",A,"C,B",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1798
+  Leap added 1694 missing atoms according to residue templates:
+       1694 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3061
+  Leap added 2882 missing atoms according to residue templates:
+       2882 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 4859
+  Leap added 4576 missing atoms according to residue templates:
+       4576 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 329 1325
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1NMB/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1NMB_N_H_L_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,74,1YCS|A|B|293.00,1YCS,A,B,A,B,293.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1YCS/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1YCS/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1YCS_A_B_293.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,90,"2C5D|A,B|C,D|298.00",2C5D,"A,B","C,D","A,B","C,D",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2922
+  Leap added 2822 missing atoms according to residue templates:
+       2822 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 5936
+  Leap added 5954 missing atoms according to residue templates:
+       5954 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 8858
+  Leap added 8776 missing atoms according to residue templates:
+       8776 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-24.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 320 1267
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2C5D/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/2C5D_A_B_C_D_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,106,"2NY7|H,L|G|298.00",2NY7,"H,L",G,"B,C",A,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2266
+  Leap added 2204 missing atoms according to residue templates:
+       2204 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3422
+  Leap added 3315 missing atoms according to residue templates:
+       3315 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5688
+  Leap added 5519 missing atoms according to residue templates:
+       5519 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 11.263 angstroms between C and N atoms:
+-------  .R<VAL 38>.A<C 15> and .R<ALA 39>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 16.876 angstroms between C and N atoms:
+-------  .R<SER 207>.A<C 10> and .R<GLY 208>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 223 1661
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2NY7/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/2NY7_H_L_G_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,122,3BK3|A|C|298.00,3BK3,A,C,A,C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Fatal Error!
+	No atoms!
+
+Exiting LEaP: Errors = 1; Warnings = 0; Notes = 0.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3BK3/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3BK3_A_C_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,138,3KBH|A|E|298.00,3KBH,A,E,A,E,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<CGLU 110>.A<OXT 16>
+  total atoms in file: 860
+  Leap added 804 missing atoms according to residue templates:
+       1 Heavy
+       803 H / lone pairs
+Loading PDB file: ./lig.pdb
+  Added missing heavy atom: .R<CALA 593>.A<OXT 11>
+  total atoms in file: 4840
+  Leap added 4616 missing atoms according to residue templates:
+       1 Heavy
+       4615 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CALA 593>.A<OXT 11>
+  Added missing heavy atom: .R<CGLU 703>.A<OXT 16>
+  total atoms in file: 5700
+  Leap added 5420 missing atoms according to residue templates:
+       2 Heavy
+       5418 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 16.144 angstroms between C and N atoms:
+-------  .R<PHE 73>.A<C 19> and .R<ILE 74>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 210 257
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/3KBH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3KBH_A_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,154,"3QDG|A,B,C|D,E|298.00",3QDG,"A,B,C","D,E","A,B,C","D,E",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 3443
+  Leap added 3271 missing atoms according to residue templates:
+       3271 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3153
+  Leap added 2978 missing atoms according to residue templates:
+       2978 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 6596
+  Leap added 6249 missing atoms according to residue templates:
+       6249 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-11.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 306 1345
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3QDG/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3QDG_A_B_C_D_E_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,170,3UIH|A|P|298.00,3UIH,A,P,A,P,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3UIH_A_P_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/pdb_cache/3UIH.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3UIH_A_P_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,186,"4HSA|A,B|C|298.00",4HSA,"A,B",C,"A,B",C,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2219
+  Leap added 2119 missing atoms according to residue templates:
+       2119 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1735
+  Leap added 1678 missing atoms according to residue templates:
+       1678 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3954
+  Leap added 3797 missing atoms according to residue templates:
+       3797 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 189 281
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4HSA/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4HSA_A_B_C_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,202,"4NKQ|C|A,B|298.00",4NKQ,C,"A,B",B,"A,C",298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 4731
+  Leap added 4528 missing atoms according to residue templates:
+       4528 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 837
+  Leap added 845 missing atoms according to residue templates:
+       845 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5568
+  Leap added 5373 missing atoms according to residue templates:
+       5373 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.142 angstroms between C and N atoms:
+-------  .R<ALA 420>.A<C 9> and .R<GLN 421>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 11.045 angstroms between C and N atoms:
+-------  .R<THR 442>.A<C 13> and .R<ASP 443>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 8.172 angstroms between C and N atoms:
+-------  .R<LEU 448>.A<C 18> and .R<ILE 449>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.151 angstroms between C and N atoms:
+-------  .R<PHE 478>.A<C 19> and .R<SER 479>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 180 333
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4NKQ/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4NKQ_C_A_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,218,"4ZS6|H,L|A|298.00",4ZS6,"H,L",A,"B,A",A,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1622
+  Leap added 1588 missing atoms according to residue templates:
+       1588 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3295
+  Leap added 3225 missing atoms according to residue templates:
+       3225 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3295
+  Leap added 3225 missing atoms according to residue templates:
+       3225 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 340 1315
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4ZS6/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4ZS6_H_L_A_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,234,"3EOB|H,L|I|298.15",3EOB,"H,L",I,"H,L",I,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<CILE 179>.A<OXT 20>
+  total atoms in file: 1438
+  Leap added 1453 missing atoms according to residue templates:
+       1 Heavy
+       1452 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3288
+  Leap added 3200 missing atoms according to residue templates:
+       3200 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CILE 608>.A<OXT 20>
+  total atoms in file: 4726
+  Leap added 4653 missing atoms according to residue templates:
+       1 Heavy
+       4652 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 560 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CILE	1
+	NGLY	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 12.638 angstroms between C and N atoms:
+-------  .R<SER 350>.A<C 10> and .R<GLY 351>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (5.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 326 1320
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/3EOB.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3EOB_H_L_I_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,250,"3B2U|F,G|E|298.15",3B2U,"F,G",E,"F,G",E,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<NGLU 1>.A<CG 10>
+  Added missing heavy atom: .R<NGLU 1>.A<CD 13>
+  Added missing heavy atom: .R<NGLU 1>.A<OE1 14>
+  Added missing heavy atom: .R<NGLU 1>.A<OE2 15>
+  Added missing heavy atom: .R<LYS 2>.A<CG 8>
+  Added missing heavy atom: .R<LYS 2>.A<CD 11>
+  Added missing heavy atom: .R<LYS 2>.A<CE 14>
+  Added missing heavy atom: .R<LYS 2>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 14>.A<CG 8>
+  Added missing heavy atom: .R<LYS 14>.A<CD 11>
+  Added missing heavy atom: .R<LYS 14>.A<CE 14>
+  Added missing heavy atom: .R<LYS 14>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 25>.A<CG 8>
+  Added missing heavy atom: .R<LYS 25>.A<CD 11>
+  Added missing heavy atom: .R<LYS 25>.A<CE 14>
+  Added missing heavy atom: .R<LYS 25>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 59>.A<CG 8>
+  Added missing heavy atom: .R<GLU 59>.A<CD 11>
+  Added missing heavy atom: .R<GLU 59>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 59>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 97>.A<CG 8>
+  Added missing heavy atom: .R<ARG 97>.A<CD 11>
+  Added missing heavy atom: .R<ARG 97>.A<NE 14>
+  Added missing heavy atom: .R<ARG 97>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 97>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 97>.A<NH2 20>
+  Added missing heavy atom: .R<LYS 146>.A<CG 8>
+  Added missing heavy atom: .R<LYS 146>.A<CD 11>
+  Added missing heavy atom: .R<LYS 146>.A<CE 14>
+  Added missing heavy atom: .R<LYS 146>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 147>.A<CG 8>
+  Added missing heavy atom: .R<LYS 147>.A<CD 11>
+  Added missing heavy atom: .R<LYS 147>.A<CE 14>
+  Added missing heavy atom: .R<LYS 147>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 157>.A<CG 8>
+  Added missing heavy atom: .R<LYS 157>.A<CD 11>
+  Added missing heavy atom: .R<LYS 157>.A<CE 14>
+  Added missing heavy atom: .R<LYS 157>.A<NZ 17>
+  Added missing heavy atom: .R<LEU 177>.A<CG 8>
+  Added missing heavy atom: .R<LEU 177>.A<CD1 10>
+  Added missing heavy atom: .R<LEU 177>.A<CD2 14>
+  Added missing heavy atom: .R<GLU 181>.A<CG 8>
+  Added missing heavy atom: .R<GLU 181>.A<CD 11>
+  Added missing heavy atom: .R<GLU 181>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 181>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 189>.A<CG 8>
+  Added missing heavy atom: .R<ARG 189>.A<CD 11>
+  Added missing heavy atom: .R<ARG 189>.A<NE 14>
+  Added missing heavy atom: .R<ARG 189>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 189>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 189>.A<NH2 20>
+  Added missing heavy atom: .R<CCYS 194>.A<OXT 12>
+  total atoms in file: 1441
+  Leap added 1544 missing atoms according to residue templates:
+       52 Heavy
+       1492 H / lone pairs
+Loading PDB file: ./lig.pdb
+  Added missing heavy atom: .R<ARG 45>.A<CG 8>
+  Added missing heavy atom: .R<ARG 45>.A<CD 11>
+  Added missing heavy atom: .R<ARG 45>.A<NE 14>
+  Added missing heavy atom: .R<ARG 45>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 45>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 45>.A<NH2 20>
+  Added missing heavy atom: .R<ASP 122>.A<CG 8>
+  Added missing heavy atom: .R<ASP 122>.A<OD1 9>
+  Added missing heavy atom: .R<ASP 122>.A<OD2 10>
+  Added missing heavy atom: .R<GLU 123>.A<CG 8>
+  Added missing heavy atom: .R<GLU 123>.A<CD 11>
+  Added missing heavy atom: .R<GLU 123>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 123>.A<OE2 13>
+  Added missing heavy atom: .R<LYS 126>.A<CG 8>
+  Added missing heavy atom: .R<LYS 126>.A<CD 11>
+  Added missing heavy atom: .R<LYS 126>.A<CE 14>
+  Added missing heavy atom: .R<LYS 126>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 169>.A<CG 8>
+  Added missing heavy atom: .R<LYS 169>.A<CD 11>
+  Added missing heavy atom: .R<LYS 169>.A<CE 14>
+  Added missing heavy atom: .R<LYS 169>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 296>.A<CG 8>
+  Added missing heavy atom: .R<LYS 296>.A<CD 11>
+  Added missing heavy atom: .R<LYS 296>.A<CE 14>
+  Added missing heavy atom: .R<LYS 296>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 338>.A<CG 8>
+  Added missing heavy atom: .R<LYS 338>.A<CD 11>
+  Added missing heavy atom: .R<LYS 338>.A<CE 14>
+  Added missing heavy atom: .R<LYS 338>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 363>.A<CG 8>
+  Added missing heavy atom: .R<GLU 363>.A<CD 11>
+  Added missing heavy atom: .R<GLU 363>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 363>.A<OE2 13>
+  Added missing heavy atom: .R<ILE 410>.A<CG2 7>
+  Added missing heavy atom: .R<ILE 410>.A<CG1 11>
+  Added missing heavy atom: .R<ILE 410>.A<CD1 14>
+  Added missing heavy atom: .R<ASN 414>.A<CG 8>
+  Added missing heavy atom: .R<ASN 414>.A<OD1 9>
+  Added missing heavy atom: .R<ASN 414>.A<ND2 10>
+  Added missing heavy atom: .R<LYS 416>.A<CG 8>
+  Added missing heavy atom: .R<LYS 416>.A<CD 11>
+  Added missing heavy atom: .R<LYS 416>.A<CE 14>
+  Added missing heavy atom: .R<LYS 416>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 421>.A<CG 8>
+  Added missing heavy atom: .R<LYS 421>.A<CD 11>
+  Added missing heavy atom: .R<LYS 421>.A<CE 14>
+  Added missing heavy atom: .R<LYS 421>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 425>.A<CG 8>
+  Added missing heavy atom: .R<LYS 425>.A<CD 11>
+  Added missing heavy atom: .R<LYS 425>.A<CE 14>
+  Added missing heavy atom: .R<LYS 425>.A<NZ 17>
+  Added missing heavy atom: .R<CPRO 428>.A<OXT 15>
+  total atoms in file: 3180
+  Leap added 3203 missing atoms according to residue templates:
+       52 Heavy
+       3151 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<ARG 45>.A<CG 8>
+  Added missing heavy atom: .R<ARG 45>.A<CD 11>
+  Added missing heavy atom: .R<ARG 45>.A<NE 14>
+  Added missing heavy atom: .R<ARG 45>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 45>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 45>.A<NH2 20>
+  Added missing heavy atom: .R<ASP 122>.A<CG 8>
+  Added missing heavy atom: .R<ASP 122>.A<OD1 9>
+  Added missing heavy atom: .R<ASP 122>.A<OD2 10>
+  Added missing heavy atom: .R<GLU 123>.A<CG 8>
+  Added missing heavy atom: .R<GLU 123>.A<CD 11>
+  Added missing heavy atom: .R<GLU 123>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 123>.A<OE2 13>
+  Added missing heavy atom: .R<LYS 126>.A<CG 8>
+  Added missing heavy atom: .R<LYS 126>.A<CD 11>
+  Added missing heavy atom: .R<LYS 126>.A<CE 14>
+  Added missing heavy atom: .R<LYS 126>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 169>.A<CG 8>
+  Added missing heavy atom: .R<LYS 169>.A<CD 11>
+  Added missing heavy atom: .R<LYS 169>.A<CE 14>
+  Added missing heavy atom: .R<LYS 169>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 296>.A<CG 8>
+  Added missing heavy atom: .R<LYS 296>.A<CD 11>
+  Added missing heavy atom: .R<LYS 296>.A<CE 14>
+  Added missing heavy atom: .R<LYS 296>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 338>.A<CG 8>
+  Added missing heavy atom: .R<LYS 338>.A<CD 11>
+  Added missing heavy atom: .R<LYS 338>.A<CE 14>
+  Added missing heavy atom: .R<LYS 338>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 363>.A<CG 8>
+  Added missing heavy atom: .R<GLU 363>.A<CD 11>
+  Added missing heavy atom: .R<GLU 363>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 363>.A<OE2 13>
+  Added missing heavy atom: .R<ILE 410>.A<CG2 7>
+  Added missing heavy atom: .R<ILE 410>.A<CG1 11>
+  Added missing heavy atom: .R<ILE 410>.A<CD1 14>
+  Added missing heavy atom: .R<ASN 414>.A<CG 8>
+  Added missing heavy atom: .R<ASN 414>.A<OD1 9>
+  Added missing heavy atom: .R<ASN 414>.A<ND2 10>
+  Added missing heavy atom: .R<LYS 416>.A<CG 8>
+  Added missing heavy atom: .R<LYS 416>.A<CD 11>
+  Added missing heavy atom: .R<LYS 416>.A<CE 14>
+  Added missing heavy atom: .R<LYS 416>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 421>.A<CG 8>
+  Added missing heavy atom: .R<LYS 421>.A<CD 11>
+  Added missing heavy atom: .R<LYS 421>.A<CE 14>
+  Added missing heavy atom: .R<LYS 421>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 425>.A<CG 8>
+  Added missing heavy atom: .R<LYS 425>.A<CD 11>
+  Added missing heavy atom: .R<LYS 425>.A<CE 14>
+  Added missing heavy atom: .R<LYS 425>.A<NZ 17>
+  Added missing heavy atom: .R<CPRO 428>.A<OXT 15>
+  Added missing heavy atom: .R<NGLU 429>.A<CG 10>
+  Added missing heavy atom: .R<NGLU 429>.A<CD 13>
+  Added missing heavy atom: .R<NGLU 429>.A<OE1 14>
+  Added missing heavy atom: .R<NGLU 429>.A<OE2 15>
+  Added missing heavy atom: .R<LYS 430>.A<CG 8>
+  Added missing heavy atom: .R<LYS 430>.A<CD 11>
+  Added missing heavy atom: .R<LYS 430>.A<CE 14>
+  Added missing heavy atom: .R<LYS 430>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 442>.A<CG 8>
+  Added missing heavy atom: .R<LYS 442>.A<CD 11>
+  Added missing heavy atom: .R<LYS 442>.A<CE 14>
+  Added missing heavy atom: .R<LYS 442>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 453>.A<CG 8>
+  Added missing heavy atom: .R<LYS 453>.A<CD 11>
+  Added missing heavy atom: .R<LYS 453>.A<CE 14>
+  Added missing heavy atom: .R<LYS 453>.A<NZ 17>
+  Added missing heavy atom: .R<GLU 487>.A<CG 8>
+  Added missing heavy atom: .R<GLU 487>.A<CD 11>
+  Added missing heavy atom: .R<GLU 487>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 487>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 525>.A<CG 8>
+  Added missing heavy atom: .R<ARG 525>.A<CD 11>
+  Added missing heavy atom: .R<ARG 525>.A<NE 14>
+  Added missing heavy atom: .R<ARG 525>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 525>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 525>.A<NH2 20>
+  Added missing heavy atom: .R<LYS 574>.A<CG 8>
+  Added missing heavy atom: .R<LYS 574>.A<CD 11>
+  Added missing heavy atom: .R<LYS 574>.A<CE 14>
+  Added missing heavy atom: .R<LYS 574>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 575>.A<CG 8>
+  Added missing heavy atom: .R<LYS 575>.A<CD 11>
+  Added missing heavy atom: .R<LYS 575>.A<CE 14>
+  Added missing heavy atom: .R<LYS 575>.A<NZ 17>
+  Added missing heavy atom: .R<LYS 585>.A<CG 8>
+  Added missing heavy atom: .R<LYS 585>.A<CD 11>
+  Added missing heavy atom: .R<LYS 585>.A<CE 14>
+  Added missing heavy atom: .R<LYS 585>.A<NZ 17>
+  Added missing heavy atom: .R<LEU 605>.A<CG 8>
+  Added missing heavy atom: .R<LEU 605>.A<CD1 10>
+  Added missing heavy atom: .R<LEU 605>.A<CD2 14>
+  Added missing heavy atom: .R<GLU 609>.A<CG 8>
+  Added missing heavy atom: .R<GLU 609>.A<CD 11>
+  Added missing heavy atom: .R<GLU 609>.A<OE1 12>
+  Added missing heavy atom: .R<GLU 609>.A<OE2 13>
+  Added missing heavy atom: .R<ARG 617>.A<CG 8>
+  Added missing heavy atom: .R<ARG 617>.A<CD 11>
+  Added missing heavy atom: .R<ARG 617>.A<NE 14>
+  Added missing heavy atom: .R<ARG 617>.A<CZ 16>
+  Added missing heavy atom: .R<ARG 617>.A<NH1 17>
+  Added missing heavy atom: .R<ARG 617>.A<NH2 20>
+  Added missing heavy atom: .R<CCYS 622>.A<OXT 12>
+  total atoms in file: 4621
+  Leap added 4747 missing atoms according to residue templates:
+       104 Heavy
+       4643 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 85 463
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/3B2U.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3B2U_F_G_E_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,266,"2WUB|Q,R|C|298.15",2WUB,"Q,R",C,"B,C",A,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1754
+  Leap added 1686 missing atoms according to residue templates:
+       1686 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3164
+  Leap added 3073 missing atoms according to residue templates:
+       3073 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 4918
+  Leap added 4759 missing atoms according to residue templates:
+       4759 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 6.046 angstroms between C and N atoms:
+-------  .R<HIE 135>.A<C 16> and .R<SER 136>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 3.986 angstroms between C and N atoms:
+-------  .R<GLY 204>.A<C 6> and .R<CYX 205>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 349 567
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2WUB/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/2WUB_Q_R_C_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,282,"1QFU|H,L|A|295.15",1QFU,"H,L",A,"C,B",A,295.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2456
+  Leap added 2414 missing atoms according to residue templates:
+       2414 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3405
+  Leap added 3318 missing atoms according to residue templates:
+       3318 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5861
+  Leap added 5732 missing atoms according to residue templates:
+       5732 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (5.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 633 4101
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1QFU/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1QFU_H_L_A_295.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,298,"3RU8|H,L|X|298.15",3RU8,"H,L",X,"B,C",A,298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2067
+  Leap added 1976 missing atoms according to residue templates:
+       1976 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3373
+  Leap added 3269 missing atoms according to residue templates:
+       3269 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5440
+  Leap added 5245 missing atoms according to residue templates:
+       5245 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 3242 3730
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3RU8/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3RU8_H_L_X_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,314,2OZA|B|A|300.15,2OZA,B,A,B,A,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /scratch/22455104/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2OZA/traj_protein.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/2OZA/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/2OZA_B_A_300.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,330,"3LVK|A,C|B|298.00",3LVK,"A,C",B,"A,C",B,298.0,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: MMPBSA.py -O -i mmpbsa.in -cp com.prmtop -rp rec.prmtop -lp lig.prmtop -y /home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3LVK_A_C_B_298.00/traj_single.nc -o FINAL_RESULTS_MMPBSA.dat
+STDOUT:
+
+STDERR:
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:329: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:331: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['](.*?)(?:[']\s|[']$))""       ""|""  # single quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:332: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:[\""](.*?)(?:[\""]\s|[\""]$))""    ""|""  # double quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:334: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:336: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:401: SyntaxWarning: invalid escape sequence '\S'
+  ""(?:_(.+?)[.](\S+))""               ""|""  # _category.attribute
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:403: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:['\""](.*?)(?:['\""]\s|['\""]$))"" ""|""  # quoted strings
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:405: SyntaxWarning: invalid escape sequence '\s'
+  ""(?:\s*#.*$)""                      ""|""  # comments (dumped)
+/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/formats/pdbx/PdbxReader.py:407: SyntaxWarning: invalid escape sequence '\S'
+  ""(\S+)""                                 # unquoted words
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 41, in <module>
+    from MMPBSA_mods import main
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/main.py"", line 45, in <module>
+    from MMPBSA_mods.createinput import create_inputs
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/MMPBSA_mods/createinput.py"", line 43, in <module>
+    from parmed.amber.mdin import Mdin
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/__init__.py"", line 23, in <module>
+    from . import amber, charmm, gromacs, dlpoly, namd, openmm, rosetta, tinker, entos
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/__init__.py"", line 14, in <module>
+    from .netcdffiles import NetCDFTraj, NetCDFRestart
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/amber/netcdffiles.py"", line 25, in <module>
+    from ..utils.netcdf import netcdf_file as NetCDFFile
+  File ""/opt/software/el9/amber/ambertools25/lib/python3.12/site-packages/parmed/utils/netcdf.py"", line 46, in <module>
+    from numpy.compat import asbytes, asstr
+ModuleNotFoundError: No module named 'numpy.compat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/MMPBSA.py"", line 45, in <module>
+    raise ImportError('Could not import Amber Python modules. Please make sure '
+    ...<2 lines>...
+                      (amberhome, amberhome))
+ImportError: Could not import Amber Python modules. Please make sure you have sourced /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.sh (if you are using sh/ksh/bash/zsh) or /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/amber.csh (if you are using csh/tcsh)
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3LVK/final.pdb,md_final_single,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3LVK_A_C_B_298.00
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,346,"1NB5|A,P|I|300.15",1NB5,"A,P",I,"A,P",I,300.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 775
+  Leap added 780 missing atoms according to residue templates:
+       780 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1764
+  Leap added 1673 missing atoms according to residue templates:
+       1673 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 2539
+  Leap added 2453 missing atoms according to residue templates:
+       2453 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 288 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CPHE	1
+	NMET	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-4.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 360 961
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/1NB5.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1NB5_A_P_I_300.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,362,1PPE|E|I|297.15,1PPE,E,I,A,B,297.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 222
+  Leap added 214 missing atoms according to residue templates:
+       214 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1629
+  Leap added 1591 missing atoms according to residue templates:
+       1591 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 1851
+  Leap added 1805 missing atoms according to residue templates:
+       1805 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 50 311
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1PPE/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1PPE_E_I_297.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,378,"4MJI|A,C|D,E|298.15",4MJI,"A,C","D,E","A,C","C,D",298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 3378
+  Leap added 3229 missing atoms according to residue templates:
+       3229 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3755
+  Leap added 3546 missing atoms according to residue templates:
+       3546 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5641
+  Leap added 5342 missing atoms according to residue templates:
+       5342 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-11.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 235 1298
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4MJI/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4MJI_A_C_D_E_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,394,"3TPU|A,C|D,E|298.15",3TPU,"A,C","D,E","A,C","D,D",298.15,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1450
+  Leap added 1334 missing atoms according to residue templates:
+       1334 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3497
+  Leap added 3324 missing atoms according to residue templates:
+       3324 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 4947
+  Leap added 4658 missing atoms according to residue templates:
+       4658 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.593 angstroms between C and N atoms:
+-------  .R<ARG 15>.A<C 23> and .R<GLY 16>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-6.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 1590 2559
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/3TPU/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/3TPU_A_C_D_E_298.15
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,410,5Y7Z|D|B|NA,5Y7Z,D,B,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2500
+  Leap added 2506 missing atoms according to residue templates:
+       2506 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 956
+  Leap added 919 missing atoms according to residue templates:
+       919 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3456
+  Leap added 3425 missing atoms according to residue templates:
+       3425 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-3.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 996 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CASN	1
+	NSER	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (4.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 307 1465
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5Y7Z/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5Y7Z_D_B_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,426,"5TKJ|J,K|L|NA",5TKJ,"J,K",L,"A,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 52
+  Leap added 56 missing atoms according to residue templates:
+       56 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3300
+  Leap added 3222 missing atoms according to residue templates:
+       3222 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3352
+  Leap added 3278 missing atoms according to residue templates:
+       3278 H / lone pairs
+Checking Unit.
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 21 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CPHE	1
+	NALA	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 13.837 angstroms between C and N atoms:
+-------  .R<PRO 131>.A<C 13> and .R<GLY 132>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (4.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 325 1493
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5TKJ/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5TKJ_J_K_L_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,442,"5U8Q|H,L|A|NA",5U8Q,"H,L",A,"B,C",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 6431
+  Leap added 6239 missing atoms according to residue templates:
+       6239 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1737
+  Leap added 1680 missing atoms according to residue templates:
+       1680 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 8168
+  Leap added 7919 missing atoms according to residue templates:
+       7919 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 7.073 angstroms between C and N atoms:
+-------  .R<SER 35>.A<C 10> and .R<ARG 36>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 6.930 angstroms between C and N atoms:
+-------  .R<PRO 148>.A<C 13> and .R<CYX 149>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.904 angstroms between C and N atoms:
+-------  .R<CYX 176>.A<C 9> and .R<ALA 177>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 28.875 angstroms between C and N atoms:
+-------  .R<ALA 628>.A<C 9> and .R<ARG 629>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 73.715 angstroms between C and N atoms:
+-------  .R<PRO 645>.A<C 13> and .R<TYR 646>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 44 350
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5U8Q/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5U8Q_H_L_A_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,458,"5HYS|A,B|G|NA",5HYS,"A,B",G,"A,B",G,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<CPRO 214>.A<OXT 15>
+  total atoms in file: 1693
+  Leap added 1680 missing atoms according to residue templates:
+       1 Heavy
+       1679 H / lone pairs
+Loading PDB file: ./lig.pdb
+  Added missing heavy atom: .R<CLYS 222>.A<OXT 23>
+  Added missing heavy atom: .R<CGLU 439>.A<OXT 16>
+  total atoms in file: 3342
+  Leap added 3222 missing atoms according to residue templates:
+       2 Heavy
+       3220 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CLYS 222>.A<OXT 23>
+  Added missing heavy atom: .R<CGLU 439>.A<OXT 16>
+  Added missing heavy atom: .R<CPRO 653>.A<OXT 15>
+  total atoms in file: 5035
+  Leap added 4902 missing atoms according to residue templates:
+       3 Heavy
+       4899 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (9.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 432 1360
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/5HYS.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5HYS_A_B_G_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,474,"4LMQ|E,I|F|NA",4LMQ,"E,I",F,"E,I",F,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  Added missing heavy atom: .R<NARG 1>.A<CG 10>
+  Added missing heavy atom: .R<NARG 1>.A<CD 13>
+  Added missing heavy atom: .R<NARG 1>.A<NE 16>
+  Added missing heavy atom: .R<NARG 1>.A<CZ 18>
+  Added missing heavy atom: .R<NARG 1>.A<NH1 19>
+  Added missing heavy atom: .R<NARG 1>.A<NH2 22>
+  Added missing heavy atom: .R<CALA 58>.A<OXT 11>
+  total atoms in file: 472
+  Leap added 505 missing atoms according to residue templates:
+       7 Heavy
+       498 H / lone pairs
+Loading PDB file: ./lig.pdb
+  Added missing heavy atom: .R<CPRO 195>.A<OXT 15>
+  Added missing heavy atom: .R<CCYS 409>.A<OXT 12>
+  total atoms in file: 3128
+  Leap added 3048 missing atoms according to residue templates:
+       2 Heavy
+       3046 H / lone pairs
+Loading PDB file: ./com.pdb
+  Added missing heavy atom: .R<CPRO 195>.A<OXT 15>
+  Added missing heavy atom: .R<NARG 196>.A<CG 10>
+  Added missing heavy atom: .R<NARG 196>.A<CD 13>
+  Added missing heavy atom: .R<NARG 196>.A<NE 16>
+  Added missing heavy atom: .R<NARG 196>.A<CZ 18>
+  Added missing heavy atom: .R<NARG 196>.A<NH1 19>
+  Added missing heavy atom: .R<NARG 196>.A<NH2 22>
+  Added missing heavy atom: .R<CALA 253>.A<OXT 11>
+  Added missing heavy atom: .R<CCYS 467>.A<OXT 12>
+  total atoms in file: 3600
+  Leap added 3553 missing atoms according to residue templates:
+       9 Heavy
+       3544 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 34 439
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/pdb_cache/4LMQ.pdb,rcsb_cache,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4LMQ_E_I_F_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,490,5MY6|B|A|NA,5MY6,B,A,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 4283
+  Leap added 4102 missing atoms according to residue templates:
+       4102 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 886
+  Leap added 849 missing atoms according to residue templates:
+       849 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 5169
+  Leap added 4951 missing atoms according to residue templates:
+       4951 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 14.368 angstroms between C and N atoms:
+-------  .R<PRO 99>.A<C 13> and .R<ALA 100>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 4.964 angstroms between C and N atoms:
+-------  .R<CYX 302>.A<C 9> and .R<PRO 303>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 10.394 angstroms between C and N atoms:
+-------  .R<CYX 553>.A<C 9> and .R<PHE 554>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-15.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 43 468
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5MY6/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5MY6_B_A_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,506,"4G6F|H,L|P|NA",4G6F,"H,L",P,"A,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 275
+  Leap added 255 missing atoms according to residue templates:
+       255 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3362
+  Leap added 3258 missing atoms according to residue templates:
+       3258 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3637
+  Leap added 3513 missing atoms according to residue templates:
+       3513 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 135 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CARG	1
+	NASN	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (4.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 309 1483
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4G6F/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4G6F_H_L_P_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,522,4X7D|C|B|NA,4X7D,C,B,B,A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 2402
+  Leap added 2300 missing atoms according to residue templates:
+       2300 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 789
+  Leap added 758 missing atoms according to residue templates:
+       758 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 3191
+  Leap added 3058 missing atoms according to residue templates:
+       3058 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-7.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 1008 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+  (Residues lacking connect0/connect1 - 
+   these don't have chain types marked:
+
+	res	total affected
+
+	CMET	1
+	NSER	1
+  )
+ (no restraints)
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 13.848 angstroms between C and N atoms:
+-------  .R<VAL 12>.A<C 15> and .R<LEU 13>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 5.931 angstroms between C and N atoms:
+-------  .R<GLN 32>.A<C 16> and .R<GLN 33>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (1.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 202 1232
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4X7D/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4X7D_C_B_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,538,"4YBL|B,C|A|NA",4YBL,"B,C",A,"B,C",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1037
+  Leap added 974 missing atoms according to residue templates:
+       974 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 3240
+  Leap added 3154 missing atoms according to residue templates:
+       3154 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 4277
+  Leap added 4128 missing atoms according to residue templates:
+       4128 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 18.036 angstroms between C and N atoms:
+-------  .R<LEU 72>.A<C 18> and .R<ILE 73>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 4.894 angstroms between C and N atoms:
+-------  .R<ASP 90>.A<C 11> and .R<PHE 91>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+There is a bond of 13.294 angstroms between C and N atoms:
+-------  .R<PRO 111>.A<C 13> and .R<ASN 112>.A<N 1>
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-6.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warnings from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 157 435
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/4YBL/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/4YBL_B_C_A_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,554,"5W1M|C,D|T|NA",5W1M,"C,D",T,"C,B",C,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 1195
+  Leap added 1138 missing atoms according to residue templates:
+       1138 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 2866
+  Leap added 2771 missing atoms according to residue templates:
+       2771 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 2866
+  Leap added 2771 missing atoms according to residue templates:
+       2771 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (-2.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 771 1221
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/5W1M/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/5W1M_C_D_T_NA
+tmp/PPB_Affinity_broad_pairuniq_train80_test20_done1458.csv,570,"1QFW|I,M|B|NA",1QFW,"I,M",B,"C,B",A,,gb,5,0.15,0.15,21,,5,,fail,"Command failed.
+Command: tleap -f leap.in
+STDOUT:
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/prep to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm to search path.
+-I: Adding /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.protein.ff14SB done
+Log file: ./leap.log
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/amino12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminoct12.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/aminont12.lib
+----- Source: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p
+----- Source of /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/cmd/leaprc.water.tip3p done
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/atomic_ions.lib
+Loading library: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/lib/solvents.lib
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+This is the additional/replacement parameter set for TIP3P water
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions1lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of monovalent ions for TIP3P water model (12-6 normal usage set)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ionsjc_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Monovalent ion parameters for Ewald and TIP3P water from Joung & Cheatham JPCB (2008)
+Loading parameters: /home/people/22455104/scratch/micromamba/envs/bridging-ambertools/dat/leap/parm/frcmod.ions234lm_126_tip3p
+Reading force field modification type file (frcmod)
+Reading title:
+Li/Merz ion parameters of divalent to tetravalent ions for TIP3P water model (12-6 normal usage set)
+Loading PDB file: ./rec.pdb
+  total atoms in file: 832
+  Leap added 837 missing atoms according to residue templates:
+       837 H / lone pairs
+Loading PDB file: ./lig.pdb
+  total atoms in file: 1779
+  Leap added 1703 missing atoms according to residue templates:
+       1703 H / lone pairs
+Loading PDB file: ./com.pdb
+  total atoms in file: 2611
+  Leap added 2540 missing atoms according to residue templates:
+       2540 H / lone pairs
+Checking Unit.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Warning!
+The unperturbed charge of the unit (4.000000) is not zero.
+
+/home/people/22455104/scratch/micromamba/envs/bridging-ambertools/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+!FATAL ERROR----------------------------------------
+!FATAL:    In file [/home/conda/feedstock_root/build_artifacts/ambertools_1740608186959/work/AmberTools/src/leap/src/leap/unitio.c], line 1955
+!FATAL:    Message: 1-4: cannot add bond 142 852
+This may be caused by duplicate bond specifications;
+for example, explicit bond commands in addition to PDB conect records.
+!
+!ABORTING.
+
+STDERR:
+
+",/home/people/22455104/scratch/MD_datasets/PPB_Affinity_broad_pairuniq_train80_test20/1QFW/topology_protein.pdb,md_top_remapped_with_traj,/home/people/22455104/scratch/mmgbsa_work/PPB_Affinity_broad_pairuniq_train80_test20_gb_sf21_int5_done1458_mamba_r3/shard_10/1QFW_I_M_B_NA

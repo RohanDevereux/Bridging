@@ -1,0 +1,87 @@
+{
+  "records_path": "src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_views_force_mdiface_v3/md_closest_pair_patch/graph_records_full.pt",
+  "out_dir": "src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_resample_matrix_v1/full_SD_unsup_sd_dynamic_all_z32",
+  "model_family": "vae_ridge",
+  "mode": "SD",
+  "supervision_mode": "unsupervised",
+  "affinity_weight": 0.0,
+  "target_policy": "sd_dynamic_all",
+  "latent_dim": 32,
+  "hidden_dim": 128,
+  "num_layers": 3,
+  "n_complexes": 1437,
+  "n_repeats": 2,
+  "n_splits": 5,
+  "n_total_fits": 10,
+  "val_fraction_of_trainval": 0.1875,
+  "fold_metrics_csv": "src/bridging/generatedData/graphvae/PPB_Affinity_broad_pairuniq_train80_test20_resample_matrix_v1/full_SD_unsup_sd_dynamic_all_z32/resample_fold_metrics.csv",
+  "metric_summary": {
+    "train_rmse": {
+      "mean": 2.5989357927617642,
+      "std": 0.07189342073002103,
+      "min": 2.503332962406547,
+      "max": 2.707052377788822
+    },
+    "val_rmse": {
+      "mean": 2.6156253263752296,
+      "std": 0.1485365260304471,
+      "min": 2.2725495277616448,
+      "max": 2.805522066910672
+    },
+    "test_rmse": {
+      "mean": 2.6353364216766573,
+      "std": 0.12004611936746534,
+      "min": 2.4797172603086866,
+      "max": 2.845848318976973
+    },
+    "train_r2": {
+      "mean": 0.04191688945023597,
+      "std": 0.028176222584105817,
+      "min": 0.0012781920793092372,
+      "max": 0.07710992982788767
+    },
+    "val_r2": {
+      "mean": 0.01284173951877129,
+      "std": 0.022006254844520557,
+      "min": -0.016214229550006953,
+      "max": 0.05342328368653937
+    },
+    "test_r2": {
+      "mean": 0.007428573312866204,
+      "std": 0.023814398778618507,
+      "min": -0.03476164080462163,
+      "max": 0.05434252322850652
+    },
+    "train_pearson_r": {
+      "mean": 0.2066534194647795,
+      "std": 0.09117236529234442,
+      "min": 0.04495084202160015,
+      "max": 0.28950073229342005
+    },
+    "val_pearson_r": {
+      "mean": 0.12400015600424985,
+      "std": 0.09999221133673071,
+      "min": -0.11694550760076144,
+      "max": 0.2348895253210135
+    },
+    "test_pearson_r": {
+      "mean": 0.11000171549424875,
+      "std": 0.07420929356136031,
+      "min": 0.009123480289627497,
+      "max": 0.24838783234112574
+    },
+    "test_train_rmse_gap": {
+      "mean": 0.03640062891489295,
+      "std": 0.1658893439102631,
+      "min": -0.22733511748013546,
+      "max": 0.32639194416407014
+    },
+    "train_val_rmse_gap": {
+      "mean": 0.01668953361346568,
+      "std": 0.19877243846403744,
+      "min": -0.42999274481325545,
+      "max": 0.21083472450146878
+    }
+  },
+  "note": "Each fit retrains from scratch on a new outer split. Test metrics are outer-fold held-out metrics."
+}
