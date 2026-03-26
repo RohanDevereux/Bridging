@@ -1,11 +1,11 @@
-\chapter{Archived Approaches and Project Evolution}
+\chapter{Archived Approaches}
 \label{ch:appendix_archive}
 
-This appendix gathers the main alternative approaches explored during the project. These archived branches show other directions considered before the final thesis focused on residue graphs with short-MD summary features. The materials are preserved under \path{ARCHIVE} in the repository and can also be browsed at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
+This appendix summarises the main alternative approaches explored before the residue-graph study reported in the main chapters. The archived materials are preserved under \path{ARCHIVE} in the repository and can also be browsed at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
 
 \section{Correction learning around fast affinity baselines}
 
-An early project idea was to predict a correction
+An early idea was to predict a correction
 \[
 \delta = \Delta G_{\mathrm{exp}} - \Delta G_{\mathrm{base}}
 \]
@@ -82,7 +82,7 @@ Maximum predicted MM/GBSA $\Delta G$ & 13628.15 \\
 
 An earlier model family represented complexes as fixed two-dimensional tensors built from C$\alpha$--C$\alpha$ contact and distance channels, followed by a convolutional variational autoencoder and regression model. The corresponding materials are preserved under \path{ARCHIVE/CA_contact_map}. This image-like representation was appealing because related ideas have worked in protein--ligand learning \citep{Stepniewska2018Pafnucy}, but in the archived runs it was too unstable for the present task. Some variants reduced RMSE relative to raw PRODIGY on small subsets, yet the same runs often had weak or negative test correlations and varied sharply across seeds. The reported values below are test-set outputs from the direct-latent regression path built on that contact-map representation.
 
-Table~\ref{tab:appendix-contact} reports representative direct-latent regressors from that family. The run names differ by training schedule, regression variant, or random seed, but they share the same basic contact-map representation. The spread across those runs explains why the final comparison moved on from this path.
+All runs in Table~\ref{tab:appendix-contact} share the same basic contact-map representation and the same set-based edge encoder. The labels mainly distinguish training and downstream-regression variants: \texttt{e24} marks the 24-epoch latent-model checkpoint used for feature extraction, \texttt{seed1} and \texttt{seed4} change the random seed, \texttt{semisup} adds an auxiliary affinity loss during latent-model training, \texttt{ols} records an archived unregularised regression variant, and \texttt{allmd} marks a broader MD-frame variant preserved in the archived results. The spread across those runs shows why this branch was left behind.
 
 \begin{table}[t]
 \centering
@@ -104,27 +104,12 @@ Run & Test $n$ & Direct-latent RMSE & Direct-latent Pearson $r$ \\
 \label{tab:appendix-contact}
 \end{table}
 
-Compared with the final residue-graph formulation, the contact-map representation threw away residue identity detail, side-chain context, and explicit graph structure while still depending on a fixed interface crop and a fixed tensor ordering. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the main text, so the project later shifted away from the contact-map path.
+Compared with the final residue-graph formulation, the contact-map representation threw away residue identity detail, side-chain context, and explicit graph structure while still depending on a fixed interface crop and a fixed tensor ordering. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the main chapters, so the work later shifted away from the contact-map path.
 
 \section{PPB-Affinity interface-attention augmentation}
 
-Another line of work kept more of the trajectory itself, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It reused a vendored PPB-Affinity-style baseline stack as its starting point, including the same kind of geometry-aware attention model over an interface patch, and then changed the data path around it. Here, augmentation meant treating saved MD frames from one complex as additional supervised inputs that all inherited the same affinity label. The branch then explored three linked routes on top of that PPB-style interface model: a single-structure baseline, frame-level models trained on those augmented examples, and trajectory-level models that passed ordered frame embeddings through a bidirectional gated recurrent unit (BiGRU) before final regression \citep{Schuster1997BRNN,Cho2014GRU}. Recent protein--ligand work had started to learn from MD frame sequences rather than from simple averages \citep{Libouban2025Spatiotemporal}, so the branch tested whether the same idea could transfer to protein--protein affinity prediction.
+Another line of work kept more of the trajectory itself, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It reused a vendored PPB-Affinity-style baseline stack, including the same kind of geometry-aware attention model over an interface patch, and then changed the data path around it. Here, augmentation meant treating saved MD frames from one complex as additional supervised inputs that all inherited the same affinity label. The branch then explored three linked routes on top of that interface-attention model \citep{Liu2024PPBAffinity}: a single-structure baseline, frame-level models trained on those augmented examples, and trajectory-level models that passed ordered frame embeddings through a bidirectional gated recurrent unit (BiGRU) before final regression \citep{Schuster1997BRNN,Cho2014GRU}. Recent protein--ligand work had started to learn from MD frame sequences rather than from simple averages \citep{Libouban2025Spatiotemporal}, so this branch tested whether the same idea could transfer to protein--protein affinity prediction.
 
-\begin{table}[t]
-\centering
-\small
-\begin{tabular}{|p{3.4cm}|p{9.2cm}|}
-\hline
-Component & Role in the archived augmentation branch \\
-\hline
-Single-structure baseline & One structure per complex, passed through the PPB-Affinity-style interface-attention model as the non-augmented reference path. \\
-Frame augmentation & Saved MD frames reused as additional supervised inputs, each carrying the parent complex's affinity label. \\
-Trajectory model & Ordered frame embeddings passed through a BiGRU before regression, so temporal order was retained instead of collapsed to simple averages. \\
-Ensemble stage & Intended to aggregate predictions across the baseline, frame-augmented, and trajectory-level outputs. \\
-\hline
-\end{tabular}
-\caption{Core ideas in the archived PPB-Affinity augmentation branch.}
-\label{tab:appendix-ppb-augmentation}
-\end{table}
+The branch combined four ideas. First, the single-structure baseline kept one structure per complex and passed it through the PPB-Affinity-style interface-attention model as a reference path. Second, frame augmentation reused saved MD frames as additional supervised inputs, each with the parent complex's affinity label. Third, the trajectory model kept the frame order and passed frame embeddings through a BiGRU before regression instead of collapsing the trajectory to simple averages. Fourth, an ensemble stage was intended to combine predictions from the baseline, frame-level, and trajectory-level routes.
 
-The branch remained exploratory after the final comparison shifted toward the residue-graph study used in the main text. The shift says little about the augmentation idea itself. It remains relevant as a follow-on direction because it preserves temporal order that the final summary-feature approach discards.
+This branch remained exploratory after the work shifted toward the residue-graph comparison used in the main chapters. That shift says little about the augmentation idea itself. It remains relevant as a follow-on direction because it preserves temporal order that the final summary-feature approach discards.

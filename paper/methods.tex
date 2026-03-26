@@ -23,7 +23,7 @@ All simulations were run in OpenMM \citep{Eastman2024OpenMM8} with particle mesh
 
 \section{Residue-graph construction and features}
 
-Residue graphs were built with DeepRank2 \citep{Crocioni2024DeepRank2} from the post-preparation protein topology written after preparation. Both the $S$ and $SD$ modes used the same post-prep graph, so the only extra information in $SD$ came from the added trajectory summaries. A query radius of $10^6$~\AA\ retained the entire prepared complex rather than trimming the graph to a local neighbourhood. DeepRank2 supplied the basic residue and edge descriptors for residue identity, contact geometry, solvent exposure, and surface area.
+Residue graphs were built with DeepRank2 \citep{Crocioni2024DeepRank2} from the post-preparation protein topology written after preparation. Both the $S$ and $SD$ modes used the same post-prep graph, so the only extra information in $SD$ came from the added trajectory summaries. A query radius of $10^6$~\AA\ ensured that the entire prepared complex was retained. DeepRank2 supplied the basic residue and edge descriptors for residue identity, contact geometry, solvent exposure, and surface area.
 
 The graph inputs were organised in a 2$\times$2 layout: static versus dynamic features, each at node and edge level. Static features were present in both model modes. Dynamic features were added only in the $SD$ mode. Because the underlying post-prep graph is shared, the incremental difference in $SD$ is the added trajectory-derived information. Dynamic information entered as residue- and edge-level summary features on a fixed graph, with time order left implicit in those summaries.
 
@@ -58,7 +58,7 @@ The graph inputs were organised in a 2$\times$2 layout: static versus dynamic fe
 
 Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view first identified the closest inter-partner C$\alpha$ residue pair in the first protein-only MD frame, then retained up to 128 residues closest to that pair by residue anchor coordinates. The full view keeps the whole complex, whereas the interface view keeps only residues near the binding site. The 128-residue cap follows the fixed interface-window design used in the PPB-Affinity benchmark model \citep{Liu2024PPBAffinity}.
 
-The full MD-backed comparison used 1437 of the 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were carried out on this smaller matched subset. The final paired full/interface comparison used complexes with both graph views and the full MD-derived feature set available. The retained set contained 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. Table~\ref{tab:subset-comparison} compares the retained set with the full curated table.
+The full MD-backed comparison used 1437 of the 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were carried out on this smaller matched subset. The paired full/interface analysis used complexes with both graph views and the full MD-derived feature set available. The retained set contained 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. Table~\ref{tab:subset-comparison} compares the retained set with the full curated table.
 
 \begin{table}[t]
 \centering
