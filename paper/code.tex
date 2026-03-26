@@ -1,6 +1,34 @@
 \chapter{Repository Layout}
 \label{ch:code}
 
-The source code for this thesis is hosted at \url{https://github.com/RohanDevereux/Bridging}. The active molecular-dynamics preparation and simulation code is under \path{src/bridging/MD}. The residue-graph preparation code is under \path{src/bridging/graphvae/prep}. The GraphVAE, supervised baseline, and latent-ridge evaluation code are under \path{src/bridging/graphvae/ml}. The command-line runners used for the final evaluation are under \path{src/bridging/graphvae/runners}. Shared affinity-conversion and dataset utilities are under \path{src/bridging/utils}.
+The source code for the study is hosted at
+\url{https://github.com/RohanDevereux/Bridging}
 
-The curated datasets used in the main pipeline are under \path{src/bridging/processedData}. The compact summary of the final 52-configuration matrix is \path{RESULTS/final_resample_matrix_summary.csv}. The saved subgroup analysis derived from the raw outer-fold prediction files is under \path{RESULTS/final_resample_subgroups}. The script that rebuilds those subgroup summaries from extracted raw predictions is \path{src/bridging/graphvae/tools/export_final_resample_subgroups.py}. Archived branches discussed in Appendix~\ref{ch:appendix_archive} are under \path{ARCHIVE}.
+The main repository layout is:
+
+\begingroup
+\small
+\sloppy
+\begin{itemize}
+\item Molecular-dynamics preparation and simulation:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/MD}
+\item Residue-graph preparation:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/graphvae/prep}
+\item GraphVAE, supervised baseline, and latent-ridge evaluation:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/graphvae/ml}
+\item Command-line runners for the final evaluation:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/graphvae/runners}
+\item Shared affinity-conversion and dataset utilities:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/utils}
+\item Curated datasets used in the main analysis:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/src/bridging/processedData}
+\item Final 52-configuration matrix summary:\\
+\url{https://github.com/RohanDevereux/Bridging/blob/main/RESULTS/final_resample_matrix_summary.csv}
+\item Saved subgroup analysis from the raw outer-fold prediction files:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/RESULTS/final_resample_subgroups}
+\item Subgroup-export script:\\
+\url{https://github.com/RohanDevereux/Bridging/blob/main/src/bridging/graphvae/tools/export_final_resample_subgroups.py}
+\item Archived branches discussed in Appendix~\ref{ch:appendix_archive}:\\
+\url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}
+\end{itemize}
+\endgroup

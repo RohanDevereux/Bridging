@@ -3,7 +3,7 @@
 
 \section{Affinity as the target quantity}
 
-The quantitative target in this thesis is the standard Gibbs free energy of binding, $\Delta G$. For a complex written schematically as
+The quantitative target is the standard Gibbs free energy of binding, $\Delta G$. For a complex written schematically as
 \begin{equation}
 \mathrm{P}_1 + \mathrm{P}_2 \rightleftharpoons \mathrm{P}_1\mathrm{P}_2,
 \end{equation}
@@ -15,7 +15,7 @@ and the corresponding free energy is
 \begin{equation}
 \Delta G = RT \ln K_D.
 \end{equation}
-This matters because it gives a single continuous regression target, but it also highlights the central difficulty of the problem: affinity is a thermodynamic quantity, whereas the model sees only structure-derived features from a finite set of observed conformations \citep{Liu2024PPBAffinity}.
+This provides a single continuous regression target and highlights the central difficulty of the problem: affinity is a thermodynamic quantity, whereas the model sees only structure-derived features from a finite set of observed conformations \citep{Liu2024PPBAffinity}.
 
 \section{Molecular dynamics as a source of descriptors}
 
@@ -23,11 +23,11 @@ In classical molecular dynamics, atomic coordinates evolve under Newton's equati
 \begin{equation}
 m_i \frac{d^2 \mathbf{r}_i}{dt^2} = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1,\dots,\mathbf{r}_N),
 \end{equation}
-where $U$ is the force-field potential energy. In this thesis, molecular dynamics is used descriptively rather than as a direct free-energy method. The goal is to extract trajectory-derived summaries such as hydration, flexibility, and contact persistence and test whether they improve a downstream affinity predictor. This is plausible because proteins are dynamic rather than rigid objects, but the usefulness of such descriptors depends on simulation length, feature design, and model integration \citep{HenzlerWildman2007Dynamic}.
+where $U$ is the force-field potential energy. Molecular dynamics is used here to build extra descriptors for a downstream affinity predictor. The aim is to extract trajectory-derived summaries such as hydration, flexibility, and contact persistence and test whether they help prediction. The value of those descriptors depends on simulation length, feature design, and how the model uses them \citep{HenzlerWildman2007Dynamic}.
 
 \section{Residue graphs and message passing}
 
-A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present thesis, the graph topology is static, while some node and edge attributes summarise time-dependent behaviour from molecular dynamics.
+A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present study, the graph topology is static, while some node and edge attributes summarise time-dependent behaviour from molecular dynamics.
 
 Graph neural networks learn on such inputs by message passing. In a generic layer,
 \begin{equation}
@@ -40,11 +40,11 @@ Graph neural networks learn on such inputs by message passing. In a generic laye
 \psi^{(\ell)}\left(\mathbf{h}_i^{(\ell)}, \mathbf{h}_j^{(\ell)}, \mathbf{e}_{ij}\right)
 \right),
 \end{equation}
-where $\mathbf{h}_i^{(\ell)}$ is the node state, $\mathbf{e}_{ij}$ is the edge feature vector, and $\psi^{(\ell)}$ and $\phi^{(\ell)}$ are learnable message and update functions. After several layers, node states are pooled into a graph embedding for downstream prediction. The models used in this thesis employ GINE-style message passing, which is edge-aware and therefore appropriate when both static and dynamic edge features are present \citep{Xu2019GIN,Hu2020Pretraining}.
+where $\mathbf{h}_i^{(\ell)}$ is the node state, $\mathbf{e}_{ij}$ is the edge feature vector, and $\psi^{(\ell)}$ and $\phi^{(\ell)}$ are learnable message and update functions. After several layers, node states are pooled into a graph embedding for downstream prediction. The models used here employ GINE-style message passing, which is edge-aware and therefore appropriate when both static and dynamic edge features are present \citep{Xu2019GIN,Hu2020Pretraining}.
 
 \section{Variational graph representation learning}
 
-The GraphVAE used in this thesis is a latent-variable model that combines graph encoding, masked reconstruction, and latent regularisation. In the standard VAE formulation, training optimises a variational lower bound,
+The GraphVAE used here is a latent-variable model that combines graph encoding, masked reconstruction, and latent regularisation. In the standard VAE formulation, training optimises a variational lower bound,
 \begin{equation}
 \log p_{\theta}(\mathbf{x})
 \ge
@@ -55,8 +55,8 @@ The GraphVAE used in this thesis is a latent-variable model that combines graph 
 -
 D_{\mathrm{KL}}\!\left(q_{\phi}(\mathbf{z}\mid \mathbf{x}) \,\|\, p(\mathbf{z})\right),
 \end{equation}
-where the reconstruction term encourages the latent variable to retain useful information about the input and the Kullback--Leibler term keeps the latent distribution close to a simple prior \citep{Kingma2014VAE}. In this thesis, the model is used as a representation learner rather than as a full generative model of protein graphs. The encoder maps a residue graph to a graph-level latent distribution, and the decoder reconstructs selected masked node and edge features. A supervised affinity head can optionally be attached to the latent mean.
+where the reconstruction term encourages the latent variable to retain useful information about the input and the Kullback--Leibler term keeps the latent distribution close to a simple prior \citep{Kingma2014VAE}. Here the model is used to learn a compact graph representation for affinity prediction. The encoder maps a residue graph to a graph-level latent distribution, and the decoder reconstructs selected masked node and edge features. A supervised affinity head can optionally be attached to the latent mean.
 
-\section{Why repeated held-out evaluation matters}
+\section{Why repeated held-out evaluation helps}
 
-When many closely related models are compared, a single train/validation/test split can give a misleading impression of relative performance \citep{Kohavi1995CV}. For that reason, the final conclusions in this thesis are based on repeated outer held-out evaluation rather than on a one-off split. The point of the final evaluation matrix is not only to identify the strongest configuration, but to compare design choices such as full versus interface graphs, static versus dynamic features, and variational versus direct supervised training under a more stable evaluation protocol.
+When many closely related models are compared, a single train/validation/test split can give a misleading impression of relative performance \citep{Kohavi1995CV}. For that reason, the final comparison is based on repeated outer held-out evaluation instead of a one-off split. The evaluation matrix compares full versus interface graphs, static versus dynamic features, and variational versus direct supervised training under a more stable protocol.

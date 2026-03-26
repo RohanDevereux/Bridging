@@ -13,9 +13,9 @@ U = U_{\mathrm{bond}} + U_{\mathrm{angle}} + U_{\mathrm{dihedral}} + U_{\mathrm{
 \end{equation}
 The bonded terms maintain local covalent geometry, while the electrostatic and van der Waals terms model longer-range interactions between atoms that are not directly bonded.
 
-In explicit-solvent simulation, water molecules and ions are included as ordinary particles in the simulation box. This is important because solvation contributes substantially to protein behaviour. The thermostat controls temperature, the barostat controls pressure, and periodic boundary conditions prevent the finite simulation box from behaving like an isolated vacuum droplet. Particle-mesh Ewald electrostatics are used because direct electrostatic summation over all periodic images would otherwise be too expensive for realistic systems.
+In explicit-solvent simulation, water molecules and ions are included as ordinary particles in the simulation box because solvation contributes substantially to protein behaviour. The thermostat controls temperature, the barostat controls pressure, and periodic boundary conditions prevent the finite simulation box from behaving like an isolated vacuum droplet. Particle-mesh Ewald electrostatics are used because direct electrostatic summation over all periodic images would otherwise be too expensive for realistic systems.
 
-For the present thesis, the goal of MD is not to compute a rigorous free energy of binding. Instead, short trajectories are used as a source of physically motivated descriptors. The intuition is that even a relatively short trajectory may reveal useful information about which residues remain hydrated, which contacts persist, and which parts of the interface fluctuate more strongly. This is why the trajectory outputs are later reduced to residue- and edge-level summary statistics.
+In this setting, MD is used to derive physically motivated descriptors from short trajectories. A 1.2 ns run is unlikely to sample much of the slower motion that shapes a binding ensemble. It may still reveal which residues stay hydrated, which contacts persist, and which parts of the interface move more strongly, but only if that local signal is strong enough to rise above ordinary thermal variation and preprocessing noise. The trajectory outputs are then reduced to residue- and edge-level summary statistics.
 
 \section{Residue graphs and graph neural networks in plain terms}
 
@@ -34,7 +34,7 @@ A graph neural network updates each node by repeatedly combining its current rep
 \end{equation}
 The message function $\psi^{(\ell)}$ says how much node $j$ should influence node $i$, the update function $\phi^{(\ell)}$ combines that information with the current state of node $i$, and the edge features $\mathbf{e}_{ij}$ allow the strength or type of connection to matter. After several layers, the node states are pooled to form a graph-level vector that can be used for prediction.
 
-The specific convolution used in this thesis is GINE, which extends the graph isomorphism network family to edge-feature-aware message passing \citep{Xu2019GIN,Hu2020Pretraining}. Intuitively, this makes it possible for the model to distinguish not just \emph{which} residues are neighbours, but \emph{how} they are related through distance, interaction type, or trajectory-derived contact statistics.
+The main model uses GINE, which extends the graph isomorphism network family to edge-feature-aware message passing \citep{Xu2019GIN,Hu2020Pretraining}. Intuitively, this lets the model distinguish both \emph{which} residues are neighbours and \emph{how} they are related through distance, interaction type, or trajectory-derived contact statistics.
 
 \section{Variational autoencoders in plain terms}
 
@@ -48,11 +48,11 @@ which is the reparameterization trick introduced by \citet{Kingma2014VAE}. This 
 
 The VAE objective contains two parts. The reconstruction term says that the latent variable should preserve information needed to reconstruct the input. The Kullback--Leibler term says that the latent distribution should remain close to a simple prior, usually a standard normal distribution. If the KL term is too weak, the latent space can become irregular and hard to interpret. If it is too strong, the latent code can collapse and become uninformative. In practice, one often increases the KL weight gradually during training so that the model first learns to reconstruct and then learns to regularize its latent space.
 
-In this thesis, the VAE is used as a representation-learning model on graphs. The encoder produces a graph-level latent code, and the decoder reconstructs masked node and edge features. The model is therefore not being asked to generate full protein complexes from scratch. Instead, it is being asked to learn a latent representation that is useful for reconstructing selected graph attributes and, in the semi-supervised setting, also useful for affinity prediction.
+Here the VAE is used to learn a compact graph representation. The encoder produces a graph-level latent code, and the decoder reconstructs masked node and edge features. In the semi-supervised setting, the same latent space is also trained to support affinity prediction.
 
 \section{Why use ridge regression on the latent space}
 
-The final GraphVAE evaluation is performed with a ridge regressor on the exported latent means rather than with the neural affinity head alone. The reason is interpretability. If a very flexible nonlinear regressor were used after the latent space, it would be difficult to know whether good performance reflected a strong latent representation or simply a strong downstream regressor. Ridge regression is much simpler. It learns a linear mapping from latent space to affinity while penalizing large coefficients:
+Final GraphVAE performance is reported after fitting a ridge regressor to the exported latent means instead of relying only on the neural affinity head. This tests the latent representation with a simple downstream model. If a very flexible nonlinear regressor were used after the latent space, it would be difficult to know whether good performance reflected a strong latent representation or simply a strong downstream regressor. Ridge regression is much simpler. It learns a linear mapping from latent space to affinity while penalizing large coefficients:
 \begin{equation}
 \hat{\mathbf{w}}
 =
@@ -63,12 +63,12 @@ The final GraphVAE evaluation is performed with a ridge regressor on the exporte
 +
 \alpha \|\mathbf{w}\|_2^2.
 \end{equation}
-If the latent space is genuinely informative, even this simple model should perform well. If it does not, then the representation itself is probably not strong enough.
+If the latent space is genuinely informative, even this simple model should perform well. Weak performance from such a simple probe would suggest that the representation itself is too weak.
 
-This evaluation choice also makes comparisons cleaner. The direct supervised baseline answers the question ``how well can affinity be predicted directly from the graph?'' The ridge probe answers the question ``how predictive is the representation learned by the VAE?'' These are related but not identical questions, and it is useful to keep them separate.
+This also separates two related questions. The direct supervised baseline answers ``how well can affinity be predicted directly from the graph?'' The ridge probe answers ``how predictive is the representation learned by the VAE?'' These are related but different questions, so keeping them separate helps interpretation.
 
-\section{Why repeated outer resampling matters in practical terms}
+\section{Repeated outer resampling in plain terms}
 
 Suppose two model configurations differ by only a small amount. On one train/test split, one of them may look better simply by chance. If the project stopped there, the resulting scientific story could be misleading. Repeated outer resampling reduces that risk. Each configuration is retrained from scratch on multiple distinct train/validation/test partitions, and conclusions are based on the aggregate pattern across those runs.
 
-In practical terms, this means that the thesis does not rely on one favourable experiment. Instead, it asks whether a design choice such as using the full graph, using dynamic features, or using a variational objective remains beneficial across many retrainings and many held-out subsets. This is why some results that looked promising in earlier one-split experiments no longer looked compelling in the final evaluation matrix.
+Repeated outer resampling asks whether a design choice such as using the full graph, using dynamic features, or using a variational objective remains beneficial across many retrainings and many held-out subsets. Earlier one-split experiments occasionally looked more promising than the final matrix because repeated evaluation removes split-specific fluctuations.

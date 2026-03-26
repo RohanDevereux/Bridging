@@ -1,7 +1,7 @@
 \chapter{Archived Approaches and Project Evolution}
 \label{ch:appendix_archive}
 
-This appendix records the main alternative approaches that were explored seriously during the project but did not become part of the final study. They are preserved under \path{ARCHIVE} in the repository and can also be browsed on GitHub at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
+This appendix gathers the main alternative approaches explored during the project. These archived branches show other directions considered before the final thesis focused on residue graphs with short-MD summary features. The materials are preserved under \path{ARCHIVE} in the repository and can also be browsed at \url{https://github.com/RohanDevereux/Bridging/tree/main/ARCHIVE}.
 
 \section{Correction learning around fast affinity baselines}
 
@@ -9,15 +9,13 @@ An early project idea was to predict a correction
 \[
 \delta = \Delta G_{\mathrm{exp}} - \Delta G_{\mathrm{base}}
 \]
-rather than predict $\Delta G$ directly. Two approaches were explored in this form: a contact-based baseline using PRODIGY \citep{Vangone2015Contacts} and an endpoint free-energy baseline using MM/GBSA \citep{Genheden2015MMGBSA}.
+instead of predicting $\Delta G$ directly. Two approaches were explored in this form: a contact-based baseline using PRODIGY \citep{Vangone2015Contacts} and an endpoint free-energy baseline using MM/GBSA \citep{Massova2000MMPBSA}.
 
 \subsection{PRODIGY}
 
-One approach used PRODIGY estimates as a fast structural baseline and then learned a correction to experimental affinity \citep{Vangone2015Contacts}. The corresponding materials are preserved under \path{ARCHIVE/PRODIGY}.
+One approach used PRODIGY estimates as a fast structural baseline and then learned a correction to experimental affinity \citep{Vangone2015Contacts}. The corresponding materials are preserved under \path{ARCHIVE/PRODIGY}. In the saved runs, raw PRODIGY predictions were weak on the archived TCR-heavy subsets, and direct prediction from learned structural representations was stronger than learning a correction around PRODIGY. The archived subgroup summaries also already hinted that the interaction classes behave differently.
 
-On the preserved TCR subset runs, raw PRODIGY predictions were poor. For the common 13-complex test subset in the preserved results, PRODIGY gave test RMSE 10.50 and test Pearson correlation $-0.268$. Some learned latent regressors reduced RMSE relative to PRODIGY on the overlapping test cases, but correction-to-PRODIGY was not competitive with direct latent regression.
-
-The saved subset-specific baseline results also showed that the interaction classes behaved differently. On a TCR-only archived dataset, PRODIGY was essentially uncorrelated with experiment. On a small antibody--antigen archived dataset, the same baseline was better, though still modest. A mixed 100-complex subset was again poor.
+The saved subset-specific baseline outputs showed the same pattern. On an archived TCR-only dataset, PRODIGY was essentially uncorrelated with experiment. On a small antibody--antigen archived dataset, the same baseline was better, though still modest. A mixed 100-complex subset was again weak.
 
 \begin{table}[t]
 \centering
@@ -31,30 +29,32 @@ Antibody--antigen & 70 & 2.33 & 1.80 & 0.243 & 0.236 \\
 Diverse100 mixed set & 100 & 6.75 & 4.66 & $-0.175$ & $-0.086$ \\
 \hline
 \end{tabular}
-\caption{Saved subset-specific PRODIGY results from archived curated datasets. The TCR-pMHC subset was especially weak, while the small antibody--antigen subset was better but still modest.}
+\caption{Saved subset-specific PRODIGY results from archived curated datasets. The TCR-pMHC subset was especially weak, while the small antibody--antigen subset was somewhat better.}
 \label{tab:appendix-prodigy-subgroups}
 \end{table}
+
+The next table switches from raw baseline evaluation to the correction-learning setup. It keeps the same PRODIGY baseline column and compares two learned routes on overlapping archived TCR test slices: direct prediction from the learned representation, and prediction of a correction around PRODIGY.
 
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{|l|c|c|c|c|c|c|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.9cm}|c|c|c|c|c|c|}
 \hline
-Run & PRODIGY $n$ & PRODIGY RMSE & PRODIGY $r$ & Direct RMSE & Direct $r$ & Corrected RMSE \\
+Archived regression variant & PRODIGY $n$ & PRODIGY RMSE & PRODIGY $r$ & Direct RMSE & Direct $r$ & Corrected RMSE \\
 \hline
-\texttt{train80\_test20\_cpu} & 13 & 10.50 & $-0.268$ & 6.92 & $-0.018$ & 8.64 \\
-\texttt{setedge\_e24} & 13 & 10.50 & $-0.268$ & 2.80 & $-0.500$ & 7.75 \\
+Early contact-map latent regressor & 13 & 10.50 & $-0.268$ & 6.92 & $-0.018$ & 8.64 \\
+Set-based edge encoder, 24 epochs & 13 & 10.50 & $-0.268$ & 2.80 & $-0.500$ & 7.75 \\
 \hline
 \end{tabular}
-\caption{Representative archived PRODIGY-based regression runs on the TCR subset. Direct latent regression reduced RMSE relative to raw PRODIGY, but the correction-to-PRODIGY route was not competitive.}
+}
+\caption{Representative archived PRODIGY-based regression runs on the TCR subset. The direct model is the learned latent-space regressor, while the corrected model tries to learn an adjustment to PRODIGY.}
 \label{tab:appendix-prodigy}
 \end{table}
 
 \subsection{MM/GBSA}
 
-A second correction-learning approach used MM/GBSA endpoint estimates \citep{Massova2000MMPBSA,Genheden2015MMGBSA}. The corresponding materials are preserved under \path{ARCHIVE/MMGBSA}.
-
-Across the shard files there were 163 rows with status \texttt{ok}. On the 163 rows that could be compared against the experimental PPB-Affinity target, the MM/GBSA estimates had Pearson correlation $-0.127$, Spearman correlation $-0.096$, RMSE 2458.69, and MAE 1398.31. The numerical scale was pathological: the median successful estimate was 466.38 kcal mol$^{-1}$, the 95th percentile was 5590.71 kcal mol$^{-1}$, and the maximum exceeded 13\,000 kcal mol$^{-1}$, whereas the corresponding experimental free energies lay roughly between $-21$ and $-4$ kcal mol$^{-1}$.
+A second correction-learning approach used MM/GBSA endpoint estimates \citep{Massova2000MMPBSA}. The corresponding materials are preserved under \path{ARCHIVE/MMGBSA}. Across the partial result files there were 163 rows with status \texttt{ok}. On those comparable rows, the MM/GBSA estimates had Pearson correlation $-0.127$, Spearman correlation $-0.096$, RMSE 2458.69, and MAE 1398.31. The scale of the predictions was far from the experimental target range: the median successful estimate was 466.38 kcal mol$^{-1}$, the 95th percentile was 5590.71 kcal mol$^{-1}$, and the maximum exceeded 13\,000 kcal mol$^{-1}$, whereas the corresponding experimental free energies lay roughly between $-21$ and $-4$ kcal mol$^{-1}$.
 
 \begin{table}[t]
 \centering
@@ -74,19 +74,15 @@ Median predicted MM/GBSA $\Delta G$ & 466.38 \\
 Maximum predicted MM/GBSA $\Delta G$ & 13628.15 \\
 \hline
 \end{tabular}
-\caption{MM/GBSA shard results from the archived approach. The estimates are numerically far outside the scale of experimental protein--protein binding free energies, so this method was not usable as a quantitative baseline.}
+\caption{MM/GBSA partial-result summary from the archived approach. The estimates were far outside the scale of experimental protein--protein binding free energies, so this route was dropped as a quantitative baseline.}
 \label{tab:appendix-mmgbsa}
 \end{table}
 
-These estimates were far outside the experimental scale and were not used further as a quantitative comparator.
+\section{The C\texorpdfstring{$\alpha$}{alpha} contact-map approach}
 
-\section{The C$\alpha$ contact-map approach}
+An earlier model family represented complexes as fixed two-dimensional tensors built from C$\alpha$--C$\alpha$ contact and distance channels, followed by a convolutional variational autoencoder and regression model. The corresponding materials are preserved under \path{ARCHIVE/CA_contact_map}. This image-like representation was appealing because related ideas have worked in protein--ligand learning \citep{Stepniewska2018Pafnucy}, but in the archived runs it was too unstable for the present task. Some variants reduced RMSE relative to raw PRODIGY on small subsets, yet the same runs often had weak or negative test correlations and varied sharply across seeds. The reported values below are test-set outputs from the direct-latent regression path built on that contact-map representation.
 
-An earlier model family represented complexes as fixed two-dimensional tensors built from C$\alpha$--C$\alpha$ contact and distance channels, followed by a convolutional variational autoencoder and regression model. The corresponding materials are preserved under \path{ARCHIVE/CA_contact_map}.
-
-A contact map gives a fixed-size, image-like representation that is much easier to batch and process than a variable-size protein graph. That design choice has close relatives in protein--ligand learning, where voxelized or tensorized structural inputs have been used successfully \citep{Stepniewska2018Pafnucy}.
-
-The preserved results show lower RMSE than raw PRODIGY on some runs, but not a stable predictor. For example, the \texttt{setedge\_e24} run gave test RMSE 2.80 against PRODIGY's 10.50 on the same subset, and the \texttt{setedge\_e24\_ols} variant gave test RMSE 2.76. The same runs often had negative test correlations, and a five-seed sweep of the \texttt{setedge\_e24} regressor showed substantial instability: test RMSE ranged from 2.80 to 6.62 and test Pearson correlation ranged from $-0.500$ to 0.462. Semi-supervised training and correction-to-PRODIGY were not improvements in the preserved results.
+Table~\ref{tab:appendix-contact} reports representative direct-latent regressors from that family. The run names differ by training schedule, regression variant, or random seed, but they share the same basic contact-map representation. The spread across those runs explains why the final comparison moved on from this path.
 
 \begin{table}[t]
 \centering
@@ -104,20 +100,31 @@ Run & Test $n$ & Direct-latent RMSE & Direct-latent Pearson $r$ \\
 \texttt{allmd\_setedge\_e24} & 12 & 4.23 & 0.087 \\
 \hline
 \end{tabular}
-\caption{Representative CA contact-map regression runs on the archived TCR subset. The method could achieve lower RMSE than raw PRODIGY on some runs, but the results were unstable and often had weak or negative test correlation.}
+\caption{Representative C$\alpha$ contact-map regression runs on the archived TCR subset. Some runs reduced RMSE relative to raw PRODIGY, but the results were unstable and often had weak or negative test correlation.}
 \label{tab:appendix-contact}
 \end{table}
 
-Once the residue-graph study was in place, the contact-map representation looked too compressed: it discarded residue identity detail, side-chain context, and explicit graph structure, while still depending on a fixed interface selection and a fixed tensor ordering. The preserved results also showed a method that could sometimes reduce error but did not do so in a stable way. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features studied in the main text.
+Compared with the final residue-graph formulation, the contact-map representation threw away residue identity detail, side-chain context, and explicit graph structure while still depending on a fixed interface crop and a fixed tensor ordering. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the main text, so the project later shifted away from the contact-map path.
 
-\section{The PPB-inspired augmentation and spatiotemporal approach}
+\section{PPB-Affinity interface-attention augmentation}
 
-Another line of work aimed to use MD more directly, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}.
+Another line of work kept more of the trajectory itself, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It reused a vendored PPB-Affinity-style baseline stack as its starting point, including the same kind of geometry-aware attention model over an interface patch, and then changed the data path around it. Here, augmentation meant treating saved MD frames from one complex as additional supervised inputs that all inherited the same affinity label. The branch then explored three linked routes on top of that PPB-style interface model: a single-structure baseline, frame-level models trained on those augmented examples, and trajectory-level models that passed ordered frame embeddings through a bidirectional gated recurrent unit (BiGRU) before final regression \citep{Schuster1997BRNN,Cho2014GRU}. Recent protein--ligand work had started to learn from MD frame sequences rather than from simple averages \citep{Libouban2025Spatiotemporal}, so the branch tested whether the same idea could transfer to protein--protein affinity prediction.
 
-This path tried to use MD more directly by learning from frames and trajectories rather than reducing the trajectory to a small set of graph-level summaries. PPB-Affinity was introduced as a machine-learning resource for protein drug discovery \citep{Liu2024PPBAffinity}, and recent protein--ligand work has shown that spatio-temporal learning on MD-derived data can be effective in some settings \citep{Libouban2025Spatiotemporal}. The motivation was to test whether that style of learning could transfer to protein--protein affinity prediction, where the interfaces are larger, the labelled benchmarks are less standardised, and the structural heterogeneity is broader \citep{Wang2004PDBbind,Kastritis2011Benchmark,Liu2024PPBAffinity}.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{|p{3.4cm}|p{9.2cm}|}
+\hline
+Component & Role in the archived augmentation branch \\
+\hline
+Single-structure baseline & One structure per complex, passed through the PPB-Affinity-style interface-attention model as the non-augmented reference path. \\
+Frame augmentation & Saved MD frames reused as additional supervised inputs, each carrying the parent complex's affinity label. \\
+Trajectory model & Ordered frame embeddings passed through a BiGRU before regression, so temporal order was retained instead of collapsed to simple averages. \\
+Ensemble stage & Intended to aggregate predictions across the baseline, frame-augmented, and trajectory-level outputs. \\
+\hline
+\end{tabular}
+\caption{Core ideas in the archived PPB-Affinity augmentation branch.}
+\label{tab:appendix-ppb-augmentation}
+\end{table}
 
-This approach does not have a preserved final benchmark summary comparable with the residue-graph study. The intended training setup was computationally heavy, so it was not run through to a comparable evaluation. It remains a plausible future direction.
-
-\section{Exploratory dataset curation utilities}
-
-\path{ARCHIVE/Data_curation} contains earlier filtering decisions, partner-size prefetching, subset selection, diverse-sample construction, and older cleaning steps for intermediate datasets. These files remain useful as provenance for the final dataset definition.
+The branch remained exploratory after the final comparison shifted toward the residue-graph study used in the main text. The shift says little about the augmentation idea itself. It remains relevant as a follow-on direction because it preserves temporal order that the final summary-feature approach discards.
