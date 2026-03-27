@@ -15,7 +15,7 @@ and the corresponding free energy is
 \begin{equation}
 \Delta G = RT \ln K_D.
 \end{equation}
-This provides a single continuous regression target and highlights the central difficulty of the problem: affinity is a thermodynamic quantity, whereas the model sees only structure-derived features from a finite set of observed conformations \citep{Liu2024PPBAffinity}.
+This gives a single continuous regression target. It also highlights a central difficulty of the problem: affinity is a thermodynamic quantity, whereas the model sees only structure-derived features from a finite set of observed conformations \citep{Liu2024PPBAffinity}.
 
 \section{Molecular dynamics as a source of descriptors}
 
@@ -23,11 +23,11 @@ In classical molecular dynamics, atomic coordinates evolve under Newton's equati
 \begin{equation}
 m_i \frac{d^2 \mathbf{r}_i}{dt^2} = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1,\dots,\mathbf{r}_N),
 \end{equation}
-where $U$ is the force-field potential energy. Molecular dynamics is used here to build extra descriptors for a downstream affinity predictor. The aim is to extract trajectory-derived summaries such as hydration, flexibility, and contact persistence and test whether they help prediction. The value of those descriptors depends on simulation length, feature design, and how the model uses them \citep{HenzlerWildman2007Dynamic}.
+where $U$ is the force-field potential energy. Molecular dynamics is used here to build extra descriptors for a downstream affinity predictor. The goal is to extract trajectory-derived summaries such as hydration, flexibility, and contact persistence and test whether they help prediction. Their value depends on simulation length, feature design, and how the model uses them \citep{HenzlerWildman2007Dynamic}.
 
 \section{Residue graphs and message passing}
 
-A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This representation is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In the present study, the graph topology is static, while some node and edge attributes summarise time-dependent behaviour from molecular dynamics.
+A protein complex can be represented as a graph $G=(V,E)$ in which residues form the nodes and selected residue pairs form the edges. This is a natural compromise between atom-level detail and computational tractability, and it aligns well with residue-level descriptors such as solvent exposure, buried surface area, residue depth, and physicochemical identity \citep{Crocioni2024DeepRank2}. In this study, the graph topology is static, while some node and edge attributes summarise time-dependent behaviour from molecular dynamics.
 
 Graph neural networks learn on such inputs by message passing. In a generic layer,
 \begin{equation}
@@ -59,4 +59,4 @@ where the reconstruction term encourages the latent variable to retain useful in
 
 \section{Why repeated held-out evaluation helps}
 
-When many closely related models are compared, a single train/validation/test split can give a misleading impression of relative performance \citep{Kohavi1995CV}. For that reason, the study uses repeated outer held-out evaluation instead of a one-off split. The evaluation matrix compares full versus interface graphs, static versus dynamic features, and variational versus direct supervised training under a more stable protocol.
+When many closely related models are compared, a single train/validation/test split can give a misleading impression of relative performance \citep{Kohavi1995CV}. Repeated outer held-out evaluation reduces that risk by averaging each comparison over multiple train/validation/test partitions.

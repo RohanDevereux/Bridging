@@ -7,7 +7,7 @@ All experiments used a curated wild-type subset of PPB-Affinity \citep{Liu2024PP
 
 The interaction classes in this curated table were 199 T-cell receptor--peptide major histocompatibility complex (TCR-pMHC) complexes, 437 antibody--antigen complexes, and 2182 other or unannotated complexes. PPB-Affinity reports different affinity distributions and weaker benchmark performance for the TCR-pMHC and antibody--antigen subsets than for the full test set \citep{Liu2024PPBAffinity}. The dataset is therefore heterogeneous, and subgroup composition has to be tracked throughout the study.
 
-The regression target was the standard Gibbs free energy of binding, $\Delta G$, in kcal mol$^{-1}$. In this curated table, the affinity column used in the study was the reported dissociation constant $K_D$. All targets were therefore computed as
+The regression target was the standard Gibbs free energy of binding, $\Delta G$, in kcal mol$^{-1}$. In this curated table, the affinity column was the reported dissociation constant $K_D$. All targets were therefore computed as
 \begin{equation}
 \Delta G = RT \ln K_D,
 \end{equation}
@@ -15,7 +15,7 @@ with $R = 0.00198720425864083$ kcal mol$^{-1}$ K$^{-1}$ and the temperature colu
 
 \section{Molecular-dynamics preparation and simulation}
 
-Complexes were prepared from PDB coordinates with PDBFixer and the OpenMM application layer \citep{PDBFixerSoftware,Eastman2024OpenMM8}. The same short-MD procedure was applied to every complex: extract the two partner chains, clean the experimental structure, choose hydrogen and charge states, add water and salt, and then run a short simulation. The annotated ligand and receptor chains were extracted first. Missing residues were detected but not rebuilt. Nonstandard residues were converted when a standard mapping was available, heterogens were removed, missing heavy atoms (that is, non-hydrogen atoms) were added, and hydrogens were assigned before solvation. Uniform preparation allowed the study set to be processed without per-complex manual tuning.
+Complexes were prepared from PDB coordinates with PDBFixer and the OpenMM application layer \citep{PDBFixerSoftware,Eastman2024OpenMM8}. The same short-MD procedure was applied to every complex: extract the two partner chains, clean the experimental structure, choose hydrogen and charge states, add water and salt, and then run a short simulation. The annotated ligand and receptor chains were extracted first. Missing residues were detected but not rebuilt. Nonstandard residues were converted when a standard mapping was available, heterogens were removed, missing heavy atoms (that is, non-hydrogen atoms) were added, and hydrogens were assigned before solvation. The same preparation choices were then applied across complexes rather than tuned case by case.
 
 Prepared complexes were solvated with 1.0 nm padding and ionic strength 0.15 M. Protein parameters came from \texttt{amber14-all.xml} and water from \texttt{amber14/tip3pfb.xml}, corresponding to Amber protein parameters together with the TIP3P-FB water model \citep{Maier2015ff14SB,Wang2014WaterModels}. No per-complex pH values were available, so protonation, that is, assignment of hydrogen and charge states, was carried out at pH 7.0 for every complex.
 
@@ -58,7 +58,7 @@ The graph inputs were organised in a 2$\times$2 layout: static versus dynamic fe
 
 Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view first identified the closest inter-partner C$\alpha$ residue pair in the first protein-only MD frame, then retained up to 128 residues closest to that pair by residue anchor coordinates. The full view keeps the whole complex, whereas the interface view keeps only residues near the binding site. The 128-residue cap follows the fixed interface-window design used in the PPB-Affinity benchmark model \citep{Liu2024PPBAffinity}.
 
-The full MD-backed comparison used 1437 of the 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were carried out on this smaller matched subset. The paired full/interface analysis used complexes with both graph views and the full MD-derived feature set available. The retained set contained 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. Table~\ref{tab:subset-comparison} compares the retained set with the full curated table.
+The matched comparison retained 1437 of the 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were carried out on this smaller subset. The paired full/interface analysis used complexes with both graph views and the full MD-derived feature set available. The retained set contained 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. Table~\ref{tab:subset-comparison} compares the retained set with the full curated table.
 
 \begin{table}[t]
 \centering
@@ -83,7 +83,7 @@ Feature scaling was fit separately inside each outer split and only on that spli
 
 Both model families used the same residue-graph encoder architecture. The supervised baseline predicted affinity directly from the pooled graph representation, whereas the GraphVAE learned a masked latent representation and affinity was then predicted from the latent means with ridge regression.
 
-Figure~\ref{fig:model-architecture-clean} summarises the shared encoder backbone and the two model paths used in the comparison.
+Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and the two model paths used in the comparison.
 
 \begin{figure}[t]
 \centering
