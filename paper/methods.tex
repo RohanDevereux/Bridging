@@ -25,7 +25,7 @@ All simulations were run in OpenMM \citep{Eastman2024OpenMM8} with particle mesh
 
 Residue graphs were built with DeepRank2 \citep{Crocioni2024DeepRank2} from the prepared protein topology written after structure preparation. Both the $S$ and $SD$ modes used the same post-prep graph, so the only extra information in $SD$ came from the added trajectory summaries. DeepRank2 was run in full-complex query mode with influence radius $10^6$~\AA, so the whole prepared complex was retained. DeepRank2 supplied the base residue and edge descriptors for surface exposure, buried area, pair distance, and pairwise interaction terms.
 
-The graph inputs were organised in a 2$\times$2 layout: static versus dynamic features, each at node and edge level. Static features were present in both model modes. Dynamic features were added only in the $SD$ mode. Because the underlying post-prep graph is shared, the incremental difference in $SD$ is the added trajectory-derived information. Dynamic information entered as residue- and edge-level summary features on a fixed graph, with time order left implicit in those summaries.
+The graph inputs were organised in a 2$\times$2 layout: static versus dynamic features, each at node and edge level. Static features were present in both model modes. Dynamic features were added only in the $SD$ mode. Because the underlying post-prep graph is shared, the incremental difference in $SD$ is the added trajectory-derived information. That dynamic information entered only as residue- and edge-level summary features on a fixed graph. The graph itself had no temporal dimension.
 
 \begin{itemize}
 \item \textbf{Static node features}
@@ -83,6 +83,8 @@ Feature scaling was fit separately inside each outer split and only on that spli
 
 Both model families used the same residue-graph encoder architecture. The supervised baseline predicted affinity directly from the pooled graph representation. The GraphVAE learned a masked latent representation, and affinity was then predicted from the latent means with ridge regression.
 
+In each GINE layer, a residue updates its hidden representation by aggregating information from neighbouring residues together with the features on the edges that connect them. Stacking three such layers lets the encoder combine local contact information with a wider structural context before graph pooling.
+
 Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and the two model paths used in the comparison.
 
 \begin{figure}[t]
@@ -123,7 +125,7 @@ where $\beta$ is the weight on the Kullback--Leibler regulariser, $\mathcal{L}_{
 \end{equation}
 where $\mu_{bj}$ is the latent mean for graph $b$ and latent coordinate $j$, and $\sigma_{bj}^{2}$ is the corresponding latent variance. The model predicts $\mu$ and $\log \sigma^{2}$, so $\sigma^{2}$ is obtained by exponentiating the predicted log-variance. Here $B$ is the batch size and $d_z$ is the latent dimensionality, so the loss averages the Kullback--Leibler penalty over graphs and latent coordinates.
 
-All GraphVAE models were trained with AdamW, learning rate $10^{-4}$, weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early-stopping patience 20. Gradient norms were clipped at 5 during optimisation. The KL weight increased linearly from 0 to 1 over the first 30\% of training epochs, following a deterministic warm-up schedule. Checkpoint selection used validation reconstruction loss for unsupervised runs and validation reconstruction loss plus $\lambda_{\mathrm{aff}}\mathcal{L}_{\mathrm{aff}}$ for semi-supervised runs.
+All GraphVAE models were trained with AdamW, learning rate $10^{-4}$, weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early-stopping patience 20. Gradient norms were clipped at 5 during optimisation. The KL weight $\beta$ was annealed linearly from 0 to 1 over the first 30\% of training epochs, following the KL cost annealing or KL warm-up strategy used to stabilise variational training \citep{Bowman2016ContinuousSpace,Sonderby2016LVAE}. Checkpoint selection used validation reconstruction loss for unsupervised runs and validation reconstruction loss plus $\lambda_{\mathrm{aff}}\mathcal{L}_{\mathrm{aff}}$ for semi-supervised runs.
 
 \subsection{Latent-space ridge regression}
 
