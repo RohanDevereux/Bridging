@@ -15,7 +15,7 @@ The bonded terms maintain local covalent geometry, while the electrostatic and v
 
 In explicit-solvent simulation, water molecules and ions are included as ordinary particles in the simulation box because solvation contributes substantially to protein behaviour. The thermostat controls temperature, the barostat controls pressure, and periodic boundary conditions prevent the finite simulation box from behaving like an isolated vacuum droplet. Particle-mesh Ewald electrostatics are used because direct electrostatic summation over all periodic images would otherwise be too expensive for realistic systems.
 
-In this setting, MD is used to derive physically motivated descriptors from short trajectories. A 1.2 ns run is unlikely to sample much of the slower motion that shapes a binding ensemble. It may still reveal which residues stay hydrated, which contacts persist, and which parts of the interface move more strongly, but only if that local signal is strong enough to rise above ordinary thermal variation and preprocessing noise. The trajectory outputs are then reduced to residue- and edge-level summary statistics.
+In this setting, MD is used to derive physically motivated descriptors from short trajectories. A 1.2 ns run is unlikely to sample much of the slower motion that shapes a binding ensemble. It may still reveal which residues stay hydrated, which contacts persist, and which parts of the interface move more strongly, but only if that local signal is strong enough to rise above ordinary thermal variation and standardised-preparation noise. The trajectory outputs are then reduced to residue- and edge-level summary statistics.
 
 \section{Residue graphs and graph neural networks in plain terms}
 

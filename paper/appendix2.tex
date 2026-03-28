@@ -9,7 +9,7 @@ An early idea was to predict a correction
 \[
 \delta = \Delta G_{\mathrm{exp}} - \Delta G_{\mathrm{base}}
 \]
-instead of predicting $\Delta G$ directly. Two approaches were explored in this form: a contact-based baseline using PRODIGY \citep{Vangone2015Contacts} and an endpoint free-energy baseline using MM/GBSA \citep{Massova2000MMPBSA}.
+instead of predicting $\Delta G$ directly. Two approaches were explored in this form. One used the contact-based baseline PRODIGY \citep{Vangone2015Contacts}. The other used endpoint free-energy estimates from MM/GBSA \citep{Massova2000MMPBSA}.
 
 \subsection{PRODIGY}
 
@@ -33,7 +33,7 @@ Diverse100 mixed set & 100 & 6.75 & 4.66 & $-0.175$ & $-0.086$ \\
 \label{tab:appendix-prodigy-subgroups}
 \end{table}
 
-The next table switches from raw baseline evaluation to the correction-learning setup. It keeps the same PRODIGY baseline column and compares two learned routes on overlapping archived TCR test slices: direct prediction from the learned representation, and prediction of a correction around PRODIGY.
+The next table switches from raw baseline evaluation to the correction-learning setup. It keeps the same PRODIGY baseline column and compares two learned routes on overlapping archived TCR test slices. One predicts affinity directly from the learned representation. The other predicts a correction around PRODIGY.
 
 \begin{table}[t]
 \centering
@@ -108,8 +108,6 @@ Compared with the final residue-graph formulation, the contact-map representatio
 
 \section{PPB-Affinity interface-attention augmentation}
 
-Another line of work kept more of the trajectory itself, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It reused a vendored PPB-Affinity-style baseline stack, including the same kind of geometry-aware attention model over an interface patch, and then changed the data path around it. Here, augmentation meant treating saved MD frames from one complex as additional supervised inputs that all inherited the same affinity label. The branch then explored three linked routes on top of that interface-attention model \citep{Liu2024PPBAffinity}: a single-structure baseline, frame-level models trained on those augmented examples, and trajectory-level models that passed ordered frame embeddings through a bidirectional gated recurrent unit (BiGRU) before final regression \citep{Schuster1997BRNN,Cho2014GRU}. Recent protein--ligand work had started to learn from MD frame sequences rather than from simple averages \citep{Libouban2025Spatiotemporal}, so this branch tested whether the same idea could transfer to protein--protein affinity prediction.
+Another line of work kept more of the trajectory itself, with baseline, frame-level, and trajectory-level models together with an ensemble stage. The corresponding materials are preserved under \path{ARCHIVE/PPB_Affinity_augmentation}. It reused a vendored PPB-Affinity-style baseline stack, including a geometry-aware interface-attention model, and paired that baseline with MD-frame augmentation and sequence modelling. Here, augmentation meant treating saved MD frames from one complex as additional supervised inputs that all inherited the same affinity label. The explored routes covered a single-structure baseline, frame-level models trained on the augmented examples, and trajectory-level models that passed ordered frame embeddings through a bidirectional gated recurrent unit (BiGRU) before final regression \citep{Liu2024PPBAffinity,Schuster1997BRNN,Cho2014GRU}. An ensemble stage was intended to combine predictions from the baseline, frame-level, and trajectory-level routes. Recent protein--ligand work had started to learn from MD frame sequences and to retain temporal order instead of reducing trajectories to simple averages \citep{Libouban2025Spatiotemporal}, which made the same question worth asking for protein--protein affinity prediction.
 
-The branch combined four ideas. First, the single-structure baseline kept one structure per complex and passed it through the PPB-Affinity-style interface-attention model as a reference path. Second, frame augmentation reused saved MD frames as additional supervised inputs, each with the parent complex's affinity label. Third, the trajectory model kept the frame order and passed frame embeddings through a BiGRU before regression instead of collapsing the trajectory to simple averages. Fourth, an ensemble stage was intended to combine predictions from the baseline, frame-level, and trajectory-level routes.
-
-This branch remained exploratory after the work shifted toward the residue-graph comparison used in the main chapters. That shift says little about the augmentation idea itself. It remains relevant as a follow-on direction because it preserves temporal order that the final summary-feature approach discards.
+Work later shifted toward the residue-graph comparison used in the main chapters. The change reflected project focus, not a judgement that the augmentation idea lacked promise. The archived materials remain relevant future work, especially for asking whether MD-frame augmentation or spatiotemporal models can improve graph-based protein--protein affinity prediction.

@@ -72,3 +72,29 @@ Interface & GraphVAE & SD & semi & static+dynamic & 32 & 2.6974 & 0.2941 & -0.04
 \hline
 \end{longtable}
 \end{landscape}
+
+\section{Full literature context table}
+
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{1.6cm}|p{2.8cm}|p{3.8cm}|p{3.0cm}|p{5.0cm}|}
+\hline
+Domain & Method & Representation / scope & Model class & Reported result \\
+\hline
+Protein--protein & PRODIGY \citep{Vangone2015Contacts,RomeroMolina2022PPIAffinity} & Interfacial contacts and non-interacting surface descriptors; interface-only & Empirical regression & Original paper: $R=-0.73$ on a cleaned benchmark in the paper's sign convention; later PPI-Affinity re-evaluation: 79-complex subset $r=0.74$; external 90-complex hold-out $r=0.31$ \\
+\hline
+Protein--protein & Moal et al.\ \citep{Moal2011AffinityPrediction} & Engineered descriptor set over diverse complexes; whole-complex with extra terms for flexibility and rearrangement & Ensemble of regressors & Diverse 137-complex benchmark: $r=0.73$, RMSE $2.06$ kcal mol$^{-1}$ \\
+\hline
+Protein--protein & PPI-Affinity \citep{RomeroMolina2022PPIAffinity} & Structure-derived descriptor vector; whole-complex descriptors & Ensemble regressor & Vangone--Bonvin benchmark: $r=0.62$; external 90-complex hold-out: $r=0.50$ \\
+\hline
+Protein--protein & PPB-Affinity benchmark model \citep{Liu2024PPBAffinity} & 128 interface residues and pair geometry; interface-restricted & Geometry-aware deep network & Whole-dataset benchmark: Pearson $r=0.701$, Spearman $\rho=0.691$ \\
+\hline
+Protein--protein & PPI-Graphomer \citep{Xie2025PPIGraphomer} & Complete sequence and structure features combined with an interface-aware module; hybrid complete-plus-interface & Graph transformer & Two external test sets: Pearson $r=0.641$ and $0.625$ \\
+\hline
+\end{tabular}
+}
+\caption{Full protein--protein literature comparison table corresponding to the shorter context table in Chapter~\ref{ch:litreview}.}
+\label{tab:lit-comparison-full}
+\end{table}

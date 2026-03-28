@@ -15,15 +15,15 @@ with $R = 0.00198720425864083$ kcal mol$^{-1}$ K$^{-1}$ and the temperature colu
 
 \section{Molecular-dynamics preparation and simulation}
 
-Complexes were prepared from PDB coordinates with PDBFixer and the OpenMM application layer \citep{PDBFixerSoftware,Eastman2024OpenMM8}. The same short-MD procedure was applied to every complex: extract the two partner chains, clean the experimental structure, choose hydrogen and charge states, add water and salt, and then run a short simulation. The annotated ligand and receptor chains were extracted first. Missing residues were detected but not rebuilt. Nonstandard residues were converted when a standard mapping was available, heterogens were removed, missing heavy atoms (that is, non-hydrogen atoms) were added, and hydrogens were assigned before solvation. The same preparation choices were then applied across complexes rather than tuned case by case.
+Complexes were prepared from PDB coordinates with PDBFixer and the OpenMM application layer \citep{PDBFixerSoftware,Eastman2024OpenMM8}. Each complex then passed through the same short-MD preparation and simulation protocol. The annotated ligand and receptor chains were extracted first, and the simulation model retained protein residues only. Missing residues were detected but not rebuilt. Nonstandard residues were converted when a standard mapping was available. Missing heavy atoms (that is, non-hydrogen atoms) were added, disulfides and cysteine states were assigned automatically, and hydrogens were added before solvation.
 
 Prepared complexes were solvated with 1.0 nm padding and ionic strength 0.15 M. Protein parameters came from \texttt{amber14-all.xml} and water from \texttt{amber14/tip3pfb.xml}, corresponding to Amber protein parameters together with the TIP3P-FB water model \citep{Maier2015ff14SB,Wang2014WaterModels}. No per-complex pH values were available, so protonation, that is, assignment of hydrogen and charge states, was carried out at pH 7.0 for every complex.
 
-All simulations were run in OpenMM \citep{Eastman2024OpenMM8} with particle mesh Ewald (PME) electrostatics, a 1.0 nm real-space cutoff, constraints on bonds involving hydrogen, rigid water, a Monte Carlo barostat at 1 atm, a Langevin middle integrator with friction 1 ps$^{-1}$, and a 2 fs timestep. Each system was simulated at the temperature recorded for that complex in \texttt{Temp\_K}; where no source temperature was available, the same 298.15 K fallback used for the $\Delta G$ conversion was used in simulation. Each system was minimised for up to 1000 iterations, equilibrated for 100{,}000 steps, and then simulated for 500{,}000 further steps. Coordinate frames were written every 5000 steps. Because recording began before equilibration, each complex contributed 120 sampled frames over 1.2 ns in total.
+All simulations were run in OpenMM \citep{Eastman2024OpenMM8} with particle mesh Ewald (PME) electrostatics, Ewald error tolerance $10^{-4}$, a 1.0 nm real-space cutoff, constraints on bonds involving hydrogen, rigid water, a Monte Carlo barostat at 1 atm, a Langevin middle integrator with friction 1 ps$^{-1}$, and a 2 fs timestep. Each system was simulated at the temperature recorded for that complex in \texttt{Temp\_K}; where no source temperature was available, the same 298.15 K fallback used for the $\Delta G$ conversion was used in simulation. Each system was minimised for up to 1000 iterations, equilibrated for 100{,}000 steps, and then simulated for 500{,}000 further steps. Coordinate frames were written every 5000 steps. Because recording began before equilibration, each complex contributed 120 sampled frames over 1.2 ns in total.
 
 \section{Residue-graph construction and features}
 
-Residue graphs were built with DeepRank2 \citep{Crocioni2024DeepRank2} from the post-preparation protein topology written after preparation. Both the $S$ and $SD$ modes used the same post-prep graph, so the only extra information in $SD$ came from the added trajectory summaries. A query radius of $10^6$~\AA\ ensured that the entire prepared complex was retained. DeepRank2 supplied the basic residue and edge descriptors for residue identity, contact geometry, solvent exposure, and surface area.
+Residue graphs were built with DeepRank2 \citep{Crocioni2024DeepRank2} from the prepared protein topology written after structure preparation. Both the $S$ and $SD$ modes used the same post-prep graph, so the only extra information in $SD$ came from the added trajectory summaries. DeepRank2 was run in full-complex query mode with influence radius $10^6$~\AA, so the whole prepared complex was retained. DeepRank2 supplied the base residue and edge descriptors for surface exposure, buried area, pair distance, and pairwise interaction terms.
 
 The graph inputs were organised in a 2$\times$2 layout: static versus dynamic features, each at node and edge level. Static features were present in both model modes. Dynamic features were added only in the $SD$ mode. Because the underlying post-prep graph is shared, the incremental difference in $SD$ is the added trajectory-derived information. Dynamic information entered as residue- and edge-level summary features on a fixed graph, with time order left implicit in those summaries.
 
@@ -31,7 +31,7 @@ The graph inputs were organised in a 2$\times$2 layout: static versus dynamic fe
 \item \textbf{Static node features}
   \begin{itemize}
   \item \textbf{DeepRank2 geometry and exposure descriptors:} buried surface area, solvent-accessible surface area, residue depth, and three half-sphere exposure measures. The half-sphere exposure channels count neighbouring residues in different local directions around each residue.
-  \item \textbf{Neighbour counts:} numbers of nearby residues within 8~\AA\ on the same chain and on the partner chain, computed on the static prepared structure.
+  \item \textbf{Neighbour counts:} numbers of nearby residues within 8~\AA\ on the same chain and on the partner chain, counted in the first sampled MD frame by heavy-atom neighbourhood queries.
   \item \textbf{Residue identity and physicochemical descriptors:} a 20-way amino-acid one-hot vector, broad residue-class indicators (non-polar, polar, charged), physicochemical scalars (side-chain size, net charge, hydrophobicity, $\alpha$-helix propensity, $\beta$-sheet propensity), and N- and C-terminus flags.
   \end{itemize}
 \item \textbf{Static edge features}
@@ -49,14 +49,14 @@ The graph inputs were organised in a 2$\times$2 layout: static versus dynamic fe
   \end{itemize}
 \item \textbf{Dynamic edge features}
   \begin{itemize}
-  \item \textbf{Closest heavy-atom distance summaries:} for each residue pair already connected in the static graph, the closest heavy-atom distance was evaluated in every sampled frame and summarised by its mean and standard deviation.
+  \item \textbf{Closest heavy-atom distance summaries:} for each residue pair already connected in the static graph, MDTraj closest-heavy distances were evaluated in every sampled frame and summarised by their mean and standard deviation.
   \item \textbf{Dynamic contact frequency:} for the same connected residue pairs, the fraction of sampled frames with closest-heavy distance at most 8~\AA.
   \end{itemize}
 \end{itemize}
 
 \section{Graph views, analysis subset, and feature scaling}
 
-Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view first identified the closest inter-partner C$\alpha$ residue pair in the first protein-only MD frame, then retained up to 128 residues closest to that pair by residue anchor coordinates. The full view keeps the whole complex, whereas the interface view keeps only residues near the binding site. The 128-residue cap follows the fixed interface-window design used in the PPB-Affinity benchmark model \citep{Liu2024PPBAffinity}.
+Two graph views were evaluated. The \emph{full} view retained the complete residue graph. The \emph{interface-restricted} view identified the closest inter-partner C$\alpha$ residue pair in the first protein-only MD frame and then retained up to 128 residues nearest to that pair. Proximity for this interface-only representation was measured from one anchor coordinate per residue, using C$\beta$ where available and C$\alpha$ otherwise. The 128-residue cap follows the fixed interface-window design used in the PPB-Affinity benchmark model \citep{Liu2024PPBAffinity}.
 
 The matched comparison retained 1437 of the 2818 curated complexes. MD simulation, feature extraction, and repeated model evaluation were carried out on this smaller subset. The paired full/interface analysis used complexes with both graph views and the full MD-derived feature set available. The retained set contained 105 TCR-pMHC, 366 antibody--antigen, and 966 other complexes. Table~\ref{tab:subset-comparison} compares the retained set with the full curated table.
 
@@ -81,24 +81,24 @@ Feature scaling was fit separately inside each outer split and only on that spli
 
 \section{Models}
 
-Both model families used the same residue-graph encoder architecture. The supervised baseline predicted affinity directly from the pooled graph representation, whereas the GraphVAE learned a masked latent representation and affinity was then predicted from the latent means with ridge regression.
+Both model families used the same residue-graph encoder architecture. The supervised baseline predicted affinity directly from the pooled graph representation. The GraphVAE learned a masked latent representation, and affinity was then predicted from the latent means with ridge regression.
 
 Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and the two model paths used in the comparison.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/model_architecture_clean.pdf}
-\caption{Model structure used in the comparison. The two model families use the same encoder architecture: linear node and edge projections, three GINE layers, and mean-plus-max graph pooling. The supervised baseline predicts $\Delta G$ directly from the pooled graph embedding. The GraphVAE maps the pooled graph embedding to $\mu$ and $\log \sigma^2$, uses sampled latent vectors for masked reconstruction, uses the latent mean for the optional affinity head during training, and reports affinity from ridge regression on latent means.}
+\caption{Model structure used in the comparison. The two model families use the same encoder architecture. Both start with linear node and edge projections, three GINE layers, and mean-plus-max graph pooling. The supervised baseline predicts $\Delta G$ directly from the pooled graph embedding. The GraphVAE maps the pooled graph embedding to $\mu$ and $\log \sigma^2$, uses sampled latent vectors for masked reconstruction, uses the latent mean for the optional affinity head during training, and reports affinity from ridge regression on latent means.}
 \label{fig:model-architecture-clean}
 \end{figure}
 
 \subsection{Direct supervised baseline}
 
-The supervised baseline was a residue-graph regressor in PyTorch Geometric \citep{Fey2019PyG}. Its task is simple: compress each residue graph to one graph-level vector and predict $\Delta G$ directly from that vector. Node and edge inputs were projected linearly to 128 hidden units, passed through three graph isomorphism network layers with edge features (GINE), pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. Training used mean-squared error loss, AdamW with learning rate $10^{-4}$ and weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early stopping after 20 epochs without validation improvement. These settings were kept fixed across all four baseline variants.
+The supervised baseline was a residue-graph regressor in PyTorch Geometric \citep{Fey2019PyG}. Node and edge inputs were projected linearly to 128 hidden units, passed through three graph isomorphism network layers with edge features (GINE), pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. Training used mean-squared error loss, AdamW with learning rate $10^{-4}$ and weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early stopping after 20 epochs without validation improvement. The selected checkpoint was the one with the lowest validation MSE. These settings were kept fixed across all four baseline variants.
 
 \subsection{Masked GraphVAE}
 
-The GraphVAE used the same encoder architecture as the supervised baseline: linear node and edge projections to 128 hidden units, three GINE layers, and mean-plus-max graph pooling. Two linear heads mapped the pooled representation to the latent mean $\mu$ and log-variance $\log\sigma^2$. The latent dimensionality was one of $d_z \in \{8,16,32\}$. The masking task trains the model to fill in deliberately hidden feature values from the rest of the graph. The goal is to learn a compact graph representation for affinity prediction.
+The GraphVAE used the same encoder architecture as the supervised baseline: linear node and edge projections to 128 hidden units, three GINE layers, and mean-plus-max graph pooling. Two linear heads mapped the pooled representation to the latent mean $\mu$ and log-variance $\log\sigma^2$. Predicted log-variances were clipped to the interval $[-8,8]$ before sampling and Kullback--Leibler evaluation. The latent dimensionality was one of $d_z \in \{8,16,32\}$. The masking task trains the model to fill in deliberately hidden feature values from the rest of the graph. The goal is to learn a compact graph representation for affinity prediction.
 
 For every batch, target node entries and target edge entries were masked independently with probability 0.30. The encoder received the masked graph together with binary mask indicators. The node decoder received the graph latent, the unmasked non-target node inputs, the masked target node inputs, and the node-mask indicators. The edge decoder received the analogous edge quantities. The reconstruction task was defined feature by feature for selected node and edge channels, instead of asking the model to generate an entire graph from scratch \citep{Kipf2016VGAE,Simonovsky2018GraphVAE}.
 
@@ -106,8 +106,8 @@ The reconstruction targets used in the 52-model comparison were:
 
 \begin{itemize}
 \item \textbf{Static-only target:} buried surface area, solvent-accessible surface area, residue depth, the three half-sphere exposure channels, same-chain and partner-chain neighbour counts within 8~\AA, and edge distance.
-\item \textbf{Dynamic-only target:} all dynamic node features and all dynamic edge features.
-\item \textbf{Static-plus-dynamic target:} the union of the static and dynamic target sets.
+\item \textbf{Dynamic-only target:} hydration, RMSF, torsion, and force node features together with all dynamic edge features.
+\item \textbf{Static-plus-dynamic target:} the union of the static target and dynamic target sets.
 \end{itemize}
 
 Residue-identity indicators and the same-chain edge flag were input features only; they were excluded from the reconstruction targets.
@@ -116,35 +116,35 @@ For a batch of graphs, the GraphVAE objective was
 \begin{equation}
 \mathcal{L} = \mathcal{L}_{\mathrm{node}} + \mathcal{L}_{\mathrm{edge}} + \beta \mathcal{L}_{\mathrm{KL}} + 0.01\,\mathcal{L}_{\mathrm{corr}} + \lambda_{\mathrm{aff}}\mathcal{L}_{\mathrm{aff}},
 \end{equation}
-where $\beta$ is the weight on the Kullback--Leibler regulariser, $\mathcal{L}_{\mathrm{node}}$ and $\mathcal{L}_{\mathrm{edge}}$ were masked mean-squared reconstruction losses, $\mathcal{L}_{\mathrm{corr}}$ penalised the squared off-diagonal entries of the latent covariance matrix to discourage redundant latent coordinates, and $\mathcal{L}_{\mathrm{aff}}$ was an MSE loss on normalised $\Delta G$ from a latent MLP head. Unsupervised runs used $\lambda_{\mathrm{aff}}=0$. Semi-supervised runs used $\lambda_{\mathrm{aff}}=1$. The Kullback--Leibler term was
+where $\beta$ is the weight on the Kullback--Leibler regulariser, $\mathcal{L}_{\mathrm{node}}$ and $\mathcal{L}_{\mathrm{edge}}$ were masked mean-squared reconstruction losses, $\mathcal{L}_{\mathrm{corr}}$ penalised the squared off-diagonal entries of the latent covariance matrix to discourage redundant latent coordinates, and $\mathcal{L}_{\mathrm{aff}}$ was an MSE loss on a latent-MLP affinity head. For this head, $\Delta G$ was normalised by the mean and standard deviation of the training targets in that outer split. Unsupervised runs used $\lambda_{\mathrm{aff}}=0$. Semi-supervised runs used $\lambda_{\mathrm{aff}}=1$. The Kullback--Leibler term was
 \begin{equation}
 \mathcal{L}_{\mathrm{KL}} = \frac{1}{B}\sum_{b=1}^{B}\frac{1}{d_z}\sum_{j=1}^{d_z}
 \left[-\frac{1}{2}\left(1 + \log \sigma_{bj}^{2} - \mu_{bj}^{2} - \sigma_{bj}^{2}\right)\right],
 \end{equation}
 where $\mu_{bj}$ is the latent mean for graph $b$ and latent coordinate $j$, and $\sigma_{bj}^{2}$ is the corresponding latent variance. The model predicts $\mu$ and $\log \sigma^{2}$, so $\sigma^{2}$ is obtained by exponentiating the predicted log-variance. Here $B$ is the batch size and $d_z$ is the latent dimensionality, so the loss averages the Kullback--Leibler penalty over graphs and latent coordinates.
 
-All GraphVAE models were trained with AdamW, learning rate $10^{-4}$, weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early-stopping patience 20. Gradient norms were clipped at 5 during optimisation. The KL weight increased linearly from 0 to 1 over the first 30\% of training epochs, following the common deterministic warm-up strategy for variational training \citep{Sonderby2016LVAE}. Checkpoint selection used validation reconstruction loss for unsupervised runs and validation reconstruction loss plus weighted validation affinity loss for semi-supervised runs.
+All GraphVAE models were trained with AdamW, learning rate $10^{-4}$, weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early-stopping patience 20. Gradient norms were clipped at 5 during optimisation. The KL weight increased linearly from 0 to 1 over the first 30\% of training epochs, following a deterministic warm-up schedule. Checkpoint selection used validation reconstruction loss for unsupervised runs and validation reconstruction loss plus $\lambda_{\mathrm{aff}}\mathcal{L}_{\mathrm{aff}}$ for semi-supervised runs.
 
 \subsection{Latent-space ridge regression}
 
-GraphVAE results are reported from a linear ridge regressor fit to the latent means. The neural affinity head was used during semi-supervised training, but the reported GraphVAE numbers come from one shared linear downstream model so that the comparison stays focused on the information already present in the learned representation. After training, one graph-level latent-mean vector was extracted per complex for the train, validation, and test splits.
+GraphVAE results are reported from a linear ridge regressor fit to the latent means. The neural affinity head was used during semi-supervised training, but the reported GraphVAE numbers come from one shared linear downstream model so that the comparison stays focused on the information already present in the learned representation. After training, one graph-level latent-mean vector was obtained per complex for the train, validation, and test splits. These latent means were computed from the unmasked standardized graphs, with the mask-indicator channels set to zero.
 
 For training complexes with latent matrix $\mathbf{Z}_{\mathrm{train}}$ and target vector $\mathbf{y}_{\mathrm{train}}$, the ridge model solves
 \begin{equation}
-\hat{\mathbf{w}}
+(\hat{\mathbf{w}}, \hat{b})
 =
-\arg\min_{\mathbf{w}}
+\arg\min_{\mathbf{w}, b}
 \left\|
-\mathbf{y}_{\mathrm{train}} - \mathbf{Z}_{\mathrm{train}}\mathbf{w}
+\mathbf{y}_{\mathrm{train}} - \mathbf{Z}_{\mathrm{train}}\mathbf{w} - b\mathbf{1}
 \right\|_2^2
 +
 \alpha \|\mathbf{w}\|_2^2,
 \end{equation}
-where $\alpha$ controls the strength of $\ell_2$ regularisation. The regularisation strength was selected by 5-fold inner cross-validation on the training latents with \texttt{RidgeCV} from scikit-learn \citep{Pedregosa2011Scikit}, searching the grid $\{10^{-4}, 3\times10^{-4}, 10^{-3}, 3\times10^{-3}, 10^{-2}, 3\times10^{-2}, 10^{-1}, 3\times10^{-1}, 1, 3, 10, 30, 100\}$. The resulting fitted linear model was then applied without refitting to the train, validation, and test complexes in that outer split. The headline GraphVAE metrics in Chapter~\ref{ch:results} are the held-out metrics of this ridge regression.
+where $\alpha$ controls the strength of $\ell_2$ regularisation and $b$ is the fitted intercept. No further scaling was applied to the latent means before this regression step. The regularisation strength was selected by 5-fold inner cross-validation on the training latents with \texttt{RidgeCV} from scikit-learn \citep{Pedregosa2011Scikit}, searching the grid $\{10^{-4}, 3\times10^{-4}, 10^{-3}, 3\times10^{-3}, 10^{-2}, 3\times10^{-2}, 10^{-1}, 3\times10^{-1}, 1, 3, 10, 30, 100\}$. The resulting fitted linear model was then applied without refitting to the train, validation, and test complexes in that outer split. The headline GraphVAE metrics in Chapter~\ref{ch:results} are the held-out metrics of this ridge regression.
 
 \section{Repeated outer evaluation}
 
-The 52-model comparison was evaluated on the matched 1437-complex set with 5 outer folds and 2 repeats. Repeated outer resampling was used because a single split can give a misleading picture of comparative performance when many closely related models are tested \citep{Kohavi1995CV}. Resampling operated at the level of complexes, so all trajectory frames from a complex stayed in the same split. In each outer fit, one fold was held out as test and the remaining four folds were split into training and validation sets with validation fraction 0.1875 of the training-plus-validation pool, giving an overall train/validation/test proportion of approximately 65/15/20. At each outer fit, feature scaling, model training, checkpoint selection, and latent ridge fitting were all carried out within that split. Split generation and model fitting used fixed pseudorandom seeds derived deterministically from the outer repeat and fold.
+The 52-model comparison was evaluated on the matched 1437-complex set with 5 outer folds and 2 repeats. Repeated outer resampling was used because a single split can give a misleading picture of comparative performance when many closely related models are tested \citep{Kohavi1995CV}. Resampling operated at the level of complexes, so all trajectory frames from a complex stayed in the same split. In each outer fit, one fold was held out as test and the remaining four folds were split into training and validation sets with validation fraction 0.1875 of the training-plus-validation pool, giving an overall train/validation/test proportion of approximately 65/15/20. In practice, the outer fits contained 934 training complexes, 215 or 216 validation complexes, and 287 or 288 test complexes. At each outer fit, feature scaling, model training, checkpoint selection, and latent ridge fitting were all carried out within that split. Split generation and model fitting used deterministic pseudorandom seeds derived from the outer repeat and fold from a base seed of 2026.
 
 The comparison contained 52 models. Forty-eight were GraphVAE models spanning two graph views (full and interface-restricted), two feature modes ($S$ and $SD$), two supervision modes (unsupervised and semi-supervised), and latent dimensions 8, 16, and 32. The $SD$ runs used three reconstruction targets; the $S$ runs used only the static-only target. Four further models were direct supervised baselines for the Cartesian product of graph view and feature mode. Throughout the results chapter, $S$ denotes static-only inputs, $SD$ denotes static-plus-dynamic inputs, and $d_z$ or $z$ denotes latent dimension.
 
