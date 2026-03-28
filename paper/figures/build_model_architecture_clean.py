@@ -214,7 +214,7 @@ def build() -> None:
     node_dec = (left_branch_x0 + 30, 1710, left_branch_x0 + 340, 1850)
     edge_dec = (left_branch_x0 + 410, 1710, left_branch_x0 + 720, 1850)
     mask_targets = (left_branch_x0 + 120, 1980, left_branch_x0 + 630, 2120)
-    aff_compare = (left_branch_x0 + 600, 1980, left_branch_x1 - 10, 2120)
+    aff_compare = (left_branch_x0 + 520, 2210, left_branch_x1 - 20, 2350)
 
     export_box = (right_branch_x0 + 40, 1450, right_branch_x1 - 40, 1590)
     ridge_box = (right_branch_x0 + 170, 1710, right_branch_x1 - 170, 1850)
@@ -222,14 +222,21 @@ def build() -> None:
     ridge_truth = (right_branch_x1 - 360, 1980, right_branch_x1 - 30, 2120)
     ridge_eval = (right_branch_x0 + 40, 2250, right_branch_x1 - 40, 2390)
 
-    rounded_box(draw, vae_input, NEUTRAL, NEUTRAL_EDGE, "Masked residue graph\n+ mask indicators", FONT_BOX)
+    rounded_box(
+        draw,
+        vae_input,
+        NEUTRAL,
+        NEUTRAL_EDGE,
+        "Encoder input\nmasked graph + mask indicators in training\nunmasked graph + zero masks for latent export",
+        FONT_BOX,
+    )
     rounded_box(draw, vae_proj, NEUTRAL, NEUTRAL_EDGE, "Linear node / edge projection\n128 hidden units", FONT_BOX)
     rounded_box(draw, vae_gine, NEUTRAL, NEUTRAL_EDGE, "3 x GINE layers\nedge-aware message passing", FONT_BOX)
     rounded_box(draw, vae_pool, NEUTRAL, NEUTRAL_EDGE, "Global mean pooling +\nglobal max pooling", FONT_BOX)
     rounded_box(draw, mu_box, VAE, VAE_EDGE, "mu head + log sigma^2 head", FONT_BOX)
 
-    draw.text((left_label_x, branch_label_y), "VAE training", font=FONT_SMALL, fill=VAE_EDGE)
-    draw.text((right_label_x, branch_label_y), "RidgeCV reporting", font=FONT_SMALL, fill=RIDGE_EDGE)
+    draw.text((left_label_x, branch_label_y), "Masked VAE training", font=FONT_SMALL, fill=VAE_EDGE)
+    draw.text((right_label_x, branch_label_y), "Post-training latent evaluation", font=FONT_SMALL, fill=RIDGE_EDGE)
 
     rounded_box(draw, z_box, VAE, VAE_EDGE, "Sample z\ntraining path", FONT_BOX)
     rounded_box(draw, node_dec, VAE, VAE_EDGE, "Node decoder", FONT_BOX)
@@ -239,7 +246,7 @@ def build() -> None:
     rounded_box(draw, aff_head, VAE, VAE_EDGE, "Optional affinity head\nsemi-supervised only", FONT_BOX)
     rounded_box(draw, aff_compare, VAE, VAE_EDGE, "Affinity loss vs\nexperimental Delta G", FONT_BOX)
 
-    rounded_box(draw, export_box, RIDGE, RIDGE_EDGE, "Export graph-level mu\nfor train / val / test", FONT_BOX)
+    rounded_box(draw, export_box, RIDGE, RIDGE_EDGE, "After training, compute graph-level mu\nfrom unmasked graphs for train / val / test", FONT_BOX)
     rounded_box(draw, ridge_box, RIDGE, RIDGE_EDGE, "RidgeCV on\nexported mu", FONT_BOX)
     rounded_box(draw, ridge_pred, RIDGE, RIDGE_EDGE, "Predicted\nDelta G", FONT_BOX)
     rounded_box(draw, ridge_truth, RIDGE, RIDGE_EDGE, "Held-out experimental\nDelta G", FONT_BOX)
@@ -257,7 +264,7 @@ def build() -> None:
     orthogonal_arrow(draw, [center_bottom(z_box), (center_bottom(z_box)[0], 1660), (center_top(edge_dec)[0], 1660), center_top(edge_dec)], VAE_EDGE)
     orthogonal_arrow(draw, [center_bottom(node_dec), (center_bottom(node_dec)[0], 1930), (center_top(mask_targets)[0] - 140, 1930), (center_top(mask_targets)[0] - 140, center_top(mask_targets)[1]), center_top(mask_targets)], VAE_EDGE)
     orthogonal_arrow(draw, [center_bottom(edge_dec), (center_bottom(edge_dec)[0], 1930), (center_top(mask_targets)[0] + 140, 1930), (center_top(mask_targets)[0] + 140, center_top(mask_targets)[1]), center_top(mask_targets)], VAE_EDGE)
-    orthogonal_arrow(draw, [center_bottom(aff_head), (center_bottom(aff_head)[0], 1930), center_top(aff_compare)], VAE_EDGE)
+    orthogonal_arrow(draw, [center_bottom(aff_head), (center_bottom(aff_head)[0], 2160), center_top(aff_compare)], VAE_EDGE)
 
     orthogonal_arrow(draw, [center_bottom(mu_box), (center_bottom(mu_box)[0], branch_y), (center_top(export_box)[0], branch_y), center_top(export_box)], RIDGE_EDGE)
     orthogonal_arrow(draw, [center_bottom(export_box), (center_bottom(export_box)[0], 1660), center_top(ridge_box)], RIDGE_EDGE)

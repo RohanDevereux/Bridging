@@ -88,7 +88,7 @@ Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/model_architecture_clean.pdf}
-\caption{Model structure used in the comparison. The two model families use the same encoder architecture. Both start with linear node and edge projections, three GINE layers, and mean-plus-max graph pooling. The supervised baseline predicts $\Delta G$ directly from the pooled graph embedding. The GraphVAE maps the pooled graph embedding to $\mu$ and $\log \sigma^2$, uses sampled latent vectors for masked reconstruction, uses the latent mean for the optional affinity head during training, and reports affinity from ridge regression on latent means.}
+\caption{Model structure used in the comparison. The two model families use the same encoder architecture. Both start with linear node and edge projections, three GINE layers, and mean-plus-max graph pooling. The supervised baseline predicts $\Delta G$ directly from the pooled graph embedding. The GraphVAE maps the pooled graph embedding to $\mu$ and $\log \sigma^2$, uses sampled latent vectors for masked reconstruction, uses the latent mean for the optional affinity head during training, and reports affinity from ridge regression on latent means computed after training from unmasked graphs with zero mask indicators.}
 \label{fig:model-architecture-clean}
 \end{figure}
 
@@ -146,6 +146,30 @@ where $\alpha$ controls the strength of $\ell_2$ regularisation and $b$ is the f
 
 The 52-model comparison was evaluated on the matched 1437-complex set with 5 outer folds and 2 repeats. Repeated outer resampling was used because a single split can give a misleading picture of comparative performance when many closely related models are tested \citep{Kohavi1995CV}. Resampling operated at the level of complexes, so all trajectory frames from a complex stayed in the same split. In each outer fit, one fold was held out as test and the remaining four folds were split into training and validation sets with validation fraction 0.1875 of the training-plus-validation pool, giving an overall train/validation/test proportion of approximately 65/15/20. In practice, the outer fits contained 934 training complexes, 215 or 216 validation complexes, and 287 or 288 test complexes. At each outer fit, feature scaling, model training, checkpoint selection, and latent ridge fitting were all carried out within that split. Split generation and model fitting used deterministic pseudorandom seeds derived from the outer repeat and fold from a base seed of 2026.
 
-The comparison contained 52 models. Forty-eight were GraphVAE models spanning two graph views (full and interface-restricted), two feature modes ($S$ and $SD$), two supervision modes (unsupervised and semi-supervised), and latent dimensions 8, 16, and 32. The $SD$ runs used three reconstruction targets; the $S$ runs used only the static-only target. Four further models were direct supervised baselines for the Cartesian product of graph view and feature mode. Throughout the results chapter, $S$ denotes static-only inputs, $SD$ denotes static-plus-dynamic inputs, and $d_z$ or $z$ denotes latent dimension.
+The comparison contained 52 models. Table~\ref{tab:model-matrix} summarises the design axes. Forty-eight models were GraphVAEs and four were direct supervised baselines. Throughout the results chapter, $S$ denotes static-only inputs, $SD$ denotes static-plus-dynamic inputs, and $d_z$ or $z$ denotes latent dimension.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{|p{3.0cm}|p{7.2cm}|p{4.2cm}|}
+\hline
+Axis & Options & Applies to \\
+\hline
+Graph view & Full; interface-restricted & All 52 models \\
+\hline
+Feature mode & $S$ (static-only); $SD$ (static-plus-dynamic) & All 52 models \\
+\hline
+Model family & Direct supervised baseline; GraphVAE with latent-space ridge regression & All 52 models \\
+\hline
+Supervision & Unsupervised; semi-supervised & GraphVAE models only \\
+\hline
+Reconstruction target & Static-only (reported in saved summaries as \emph{shared static}); static-plus-dynamic; dynamic-only & $SD$ GraphVAE models only \\
+\hline
+Latent dimension & 8; 16; 32 & GraphVAE models only \\
+\hline
+\end{tabular}
+\caption{Design axes in the 52-model comparison. The direct supervised baselines cover the Cartesian product of graph view and feature mode. The remaining combinations belong to the GraphVAE family.}
+\label{tab:model-matrix}
+\end{table}
 
 Held-out performance was measured with RMSE, Pearson correlation, and $R^2$. Every metric reported in Chapter~\ref{ch:results} is the arithmetic mean over the 10 outer fits for the corresponding model, and the corresponding standard deviations are reported from the same ten fits.

@@ -32,7 +32,7 @@ A graph neural network updates each node by repeatedly combining its current rep
 \psi^{(\ell)}(\mathbf{h}_i^{(\ell)}, \mathbf{h}_j^{(\ell)}, \mathbf{e}_{ij})
 \right).
 \end{equation}
-The message function $\psi^{(\ell)}$ says how much node $j$ should influence node $i$, the update function $\phi^{(\ell)}$ combines that information with the current state of node $i$, and the edge features $\mathbf{e}_{ij}$ allow the strength or type of connection to matter. After several layers, the node states are pooled to form a graph-level vector that can be used for prediction.
+The message function $\psi^{(\ell)}$ says how much node $j$ should influence node $i$, the update function $\phi^{(\ell)}$ combines that information with the current state of node $i$, and the edge features $\mathbf{e}_{ij}$ allow the connection strength or type to modulate that message. After several layers, the node states are pooled to form a graph-level vector that can be used for prediction.
 
 The main model uses GINE, which extends the graph isomorphism network family to edge-feature-aware message passing \citep{Xu2019GIN,Hu2020Pretraining}. Intuitively, this lets the model distinguish both \emph{which} residues are neighbours and \emph{how} they are related through distance, interaction type, or trajectory-derived contact statistics.
 

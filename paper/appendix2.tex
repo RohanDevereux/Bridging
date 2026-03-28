@@ -29,7 +29,7 @@ Antibody--antigen & 70 & 2.33 & 1.80 & 0.243 & 0.236 \\
 Diverse100 mixed set & 100 & 6.75 & 4.66 & $-0.175$ & $-0.086$ \\
 \hline
 \end{tabular}
-\caption{Saved subset-specific PRODIGY results from archived curated datasets. The TCR-pMHC subset was especially weak, while the small antibody--antigen subset was somewhat better.}
+\caption{Saved subset-specific PRODIGY results from archived curated datasets. The TCR-pMHC subset was especially weak. The small antibody--antigen subset was somewhat better.}
 \label{tab:appendix-prodigy-subgroups}
 \end{table}
 
@@ -48,7 +48,7 @@ Set-based edge encoder, 24 epochs & 13 & 10.50 & $-0.268$ & 2.80 & $-0.500$ & 7.
 \hline
 \end{tabular}
 }
-\caption{Representative archived PRODIGY-based regression runs on the TCR subset. The direct model is the learned latent-space regressor, while the corrected model tries to learn an adjustment to PRODIGY.}
+\caption{Representative archived PRODIGY-based regression runs on the TCR subset. The direct model is the learned latent-space regressor. The corrected model tries to learn an adjustment to PRODIGY.}
 \label{tab:appendix-prodigy}
 \end{table}
 
@@ -104,7 +104,7 @@ Run & Test $n$ & Direct-latent RMSE & Direct-latent Pearson $r$ \\
 \label{tab:appendix-contact}
 \end{table}
 
-Compared with the final residue-graph formulation, the contact-map representation threw away residue identity detail, side-chain context, and explicit graph structure while still depending on a fixed interface crop and a fixed tensor ordering. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the main chapters, so the work later shifted away from the contact-map path.
+Compared with the final residue-graph formulation, the contact-map representation threw away residue identity detail, side-chain context, and explicit graph structure. It still depended on a fixed interface crop and a fixed tensor ordering. The residue-graph formulation retained more structural information and connected more naturally to the MD-derived features used in the main chapters, so the work later shifted away from the contact-map path.
 
 \section{PPB-Affinity interface-attention augmentation}
 
