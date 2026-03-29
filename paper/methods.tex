@@ -83,8 +83,6 @@ Feature scaling was fit separately inside each outer split and only on that spli
 
 Both model families used the same residue-graph encoder architecture. The supervised baseline predicted affinity directly from the pooled graph representation. The GraphVAE learned a masked latent representation, and affinity was then predicted from the latent means with ridge regression.
 
-In each GINE layer, a residue updates its hidden representation by aggregating information from neighbouring residues together with the features on the edges that connect them. Stacking three such layers lets the encoder combine local contact information with a wider structural context before graph pooling.
-
 Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and the two model paths used in the comparison.
 
 \begin{figure}[t]
@@ -96,7 +94,7 @@ Figure~\ref{fig:model-architecture-clean} shows the shared encoder backbone and 
 
 \subsection{Direct supervised baseline}
 
-The supervised baseline was a residue-graph regressor in PyTorch Geometric \citep{Fey2019PyG}. Node and edge inputs were projected linearly to 128 hidden units, passed through three graph isomorphism network layers with edge features (GINE), pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. Training used mean-squared error loss, AdamW with learning rate $10^{-4}$ and weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early stopping after 20 epochs without validation improvement. The selected checkpoint was the one with the lowest validation MSE. These settings were kept fixed across all four baseline variants.
+The supervised baseline was a residue-graph regressor in PyTorch Geometric \citep{Fey2019PyG}. Node and edge inputs were projected linearly to 128 hidden units, passed through three graph isomorphism network layers with edge features (GINE), pooled with the concatenation of global mean pooling and global max pooling, and mapped to $\Delta G$ by a two-layer multilayer perceptron \citep{Xu2019GIN,Hu2020Pretraining}. In each GINE layer, a residue updates its hidden representation by aggregating information from neighbouring residues together with the features on the edges that connect them. Stacking three such layers lets the encoder combine local contact information with a wider structural context before graph pooling. Training used mean-squared error loss, AdamW with learning rate $10^{-4}$ and weight decay $10^{-5}$, batch size 16, maximum 120 epochs, and early stopping after 20 epochs without validation improvement. The selected checkpoint was the one with the lowest validation MSE. These settings were kept fixed across all four baseline variants.
 
 \subsection{Masked GraphVAE}
 
