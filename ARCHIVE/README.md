@@ -6,7 +6,7 @@ Active flow:
 
 `PPB-Affinity dataset -> OpenMM MD -> GraphVAE dataset preparation -> GraphVAE training / sweeps / resampling`
 
-Everything here is preserved for traceability, ablation history, and appendix material.
+Everything here is preserved for appendix material.
 
 ## Archived Workstreams
 
