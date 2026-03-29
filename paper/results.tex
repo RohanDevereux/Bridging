@@ -43,7 +43,7 @@ Graph view had the strongest effect in the matched GraphVAE comparisons. The ful
 Comparison & Pairs & Mean RMSE gain for first option & Mean Pearson $r$ gain for first option & Pair wins for first option \\
 \hline
 Full over interface & 24 & 0.1005 & 0.0993 & 24 / 24 \\
-$S$ over $SD$ (shared static) & 12 & 0.0254 & 0.0215 & 11 / 12 \\
+$S$ over $SD$ (static-only target) & 12 & 0.0254 & 0.0215 & 11 / 12 \\
 Semi over unsup, full $S$ & 3 & 0.1640 & 0.2497 & 3 / 3 \\
 Semi over unsup, full $SD$ & 9 & 0.1604 & 0.3339 & 9 / 9 \\
 Semi over unsup, interface $S$ & 3 & 0.0290 & 0.2436 & 3 / 3 \\
@@ -64,9 +64,15 @@ The full-over-interface effect was also visible in the baseline models. The full
 \label{fig:main-results}
 \end{figure}
 
-\section{Short-MD summaries}
+\section{Supervision}
 
-Short MD summaries did not improve held-out prediction. The clearest evidence comes from the matched $S$ versus $SD$ comparisons and from the family-level train/validation/test table. Under the static-only reconstruction target, the static representation outperformed the static-plus-dynamic representation in 11 of 12 matched GraphVAE comparisons. Within the full semi-supervised $SD$ family, the reconstruction target also changed the ranking of the dynamic models. Averaged over latent dimensions 8, 16, and 32, the mean test RMSE was 2.4434 for the static-only target, 2.4795 for the static-plus-dynamic target, and 2.5150 for the dynamic-only target. The corresponding mean test Pearson correlations were 0.4682, 0.4335, and 0.4221.
+Supervision changed the GraphVAE results more than latent dimension or reconstruction target. In the matched comparisons, semi-supervision improved every full-graph pair and every interface static pair. The interface dynamic pairs were mixed, but mean correlation still increased. The clearest difference is between the unsupervised and semi-supervised family averages in Table~\ref{tab:family-overfit}. For the full static family, mean test correlation rose from 0.2055 in the unsupervised runs to 0.4551 in the semi-supervised runs. In the interface static family, it rose from 0.0925 to 0.3361. The same pattern holds for RMSE.
+
+The unsupervised models therefore learned latent spaces that were weak predictors of affinity on their own. Adding the auxiliary affinity objective made those latents much more useful for the downstream ridge regressor. In this comparison, the latent representation did not become affinity-relevant automatically through masked reconstruction. It became much more affinity-relevant once training was biased toward the binding target.
+
+\section{Dynamic features}
+
+Dynamic features did not improve held-out prediction. The supervision results show that the unsupervised families carried little affinity signal, so the effect of dynamic features is more informative in the semi-supervised GraphVAE families and in the direct baseline comparison. Under the static-only reconstruction target, the static representation outperformed the static-plus-dynamic representation in 11 of 12 matched GraphVAE comparisons. Within the full semi-supervised $SD$ family, the reconstruction target also changed the ranking of the dynamic models. Averaged over latent dimensions 8, 16, and 32, the mean test RMSE was 2.4434 for the static-only target, 2.4795 for the static-plus-dynamic target, and 2.5150 for the dynamic-only target. The corresponding mean test Pearson correlations were 0.4682, 0.4335, and 0.4221.
 
 Table~\ref{tab:family-overfit} separates in-sample fit from held-out prediction. In the semi-supervised families, adding dynamic summaries often increased train correlation and reduced train RMSE, yet those gains faded on validation and test. The clearest example is the full semi-supervised GraphVAE family: moving from $S$ to $SD$ raised mean train correlation from 0.7494 to 0.8218 and lowered mean train RMSE from 1.7385 to 1.4744, yet mean test correlation fell from 0.4551 to 0.4413 and mean test RMSE worsened from 2.4369 to 2.4793. The same pattern appears in the interface semi-supervised families. The dynamic summaries gave the models more variation to fit, but that extra fit stayed on the training set instead of improving held-out prediction.
 
@@ -95,11 +101,11 @@ Interface VAE semi $SD$ & 0.7685 & 0.3231 & 0.3189 & 0.4496 & 1.6479 & 2.6620 \\
 \label{tab:family-overfit}
 \end{table}
 
-The unsupervised VAE families had small train--test gaps but weak correlations on all splits, which is more consistent with underfitting than with strong regularised prediction. Short MD summaries therefore changed the fit more than they changed the held-out predictor. In this study, their main effect was to increase in-sample flexibility.
+In the semi-supervised families, dynamic features changed training fit more than held-out prediction, and their main effect was to increase overfitting.
 
 \section{Model family}
 
-The direct supervised baseline was stronger than the best GraphVAE on held-out prediction. The best full static baseline achieved mean test RMSE $2.3379 \pm 0.1067$. The best GraphVAE achieved $2.4292 \pm 0.0809$. The baseline had lower test RMSE in 8 of the 10 outer fits. Semi-supervision improved every matched full-graph GraphVAE pair and every interface static pair. The interface dynamic pairs were mixed, with mean correlation improving but mean RMSE slightly worsening. This ordering suggests that the shared encoder was strong enough to support both model families, but that direct supervised training made better use of it for the affinity task. The GraphVAE remained competitive, especially in the full static semi-supervised family, but the extra reconstruction objective did not translate into a stronger final predictor.
+The direct supervised baseline was stronger than the best GraphVAE on held-out prediction. The best full static baseline achieved mean test RMSE $2.3379 \pm 0.1067$. The best GraphVAE achieved $2.4292 \pm 0.0809$. The baseline had lower test RMSE in 8 of the 10 outer fits. This ordering suggests that the shared encoder was strong enough to support both model families, but that direct supervised training made better use of it for the affinity task. The GraphVAE remained competitive, especially in the full static semi-supervised family, but the extra reconstruction objective did not translate into a stronger final predictor.
 
 \section{Stability under repeated evaluation}
 
@@ -140,4 +146,4 @@ TCR-pMHC & 105 & 1.663 & 0.466 & 1.879 & 0.406 & 2.440 & 0.333 \\
 
 \section{Summary}
 
-The 52-model comparison answers the four study questions consistently. Whole-complex graphs were stronger than interface-restricted graphs. Short MD summaries offered no held-out gain over the static representation, even though they sometimes improved in-sample fit. The direct supervised baseline on the full static graph was the strongest predictor overall. Those same conclusions persisted across repeated outer splits and across the antibody--antigen, TCR-pMHC, and broad other interaction classes.
+The 52-model comparison answers the four study questions consistently. Whole-complex graphs were stronger than interface-restricted graphs. Dynamic features offered no held-out gain over the static representation, even though they sometimes improved training fit. The direct supervised baseline on the full static graph was the strongest predictor overall. Those same conclusions persisted across repeated outer splits and across the antibody--antigen, TCR-pMHC, and broad other interaction classes.
