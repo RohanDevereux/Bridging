@@ -3,7 +3,7 @@
 
 \section{Evaluation context}
 
-Published protein--protein predictors have reported higher correlations on their own evaluation sets than the best model reached here. Moal et al.\ reported $r=0.73$ on a diverse 137-complex benchmark, PPB-Affinity reported $r=0.701$ on its full test set, and PPI-Graphomer reported $r=0.641$ and $r=0.625$ on two external sets \citep{Moal2011AffinityPrediction,Liu2024PPBAffinity,Xie2025PPIGraphomer}. The best model here reached $r=0.506$ on the matched 1437-complex subset. The main contribution is methodological. It lies in a controlled comparison of representation scope, dynamic features, and model family within one benchmark, one graph-construction procedure, and one repeated held-out evaluation design.
+Published protein--protein predictors have reported higher correlations on their own evaluation sets than the best model reached here. Moal et al.\ reported $r=0.73$ on a diverse 137-complex benchmark, PPB-Affinity reported $r=0.701$ on its full test set, and PPI-Graphomer reported $r=0.641$ and $r=0.625$ on two external sets \citep{Moal2011AffinityPrediction,Liu2024PPBAffinity,Xie2025PPIGraphomer}. The best model here reached $r=0.506$ on the matched 1437-complex subset. The contribution here is not a new state-of-the-art predictor. It is a controlled methodological comparison of representation scope, dynamic features, and model family within one benchmark, one graph-construction procedure, and one repeated held-out evaluation design.
 
 That evaluation design is part of the contribution. Earlier work showed that score changes can come from the split as well as from the model \citep{Moal2011AffinityPrediction,RomeroMolina2022PPIAffinity,Graber2025DataBias}. The repeated 2$\times$5 outer evaluation used here reduces the chance that one favourable split will dominate the conclusion. Across the held-out fits, the same broad ordering and the same factor effects recur even though the top two full-graph models remain fairly close on a few splits.
 
@@ -43,9 +43,11 @@ The retained 1437-complex set is enriched for antibody--antigen complexes and sl
 
 \section{Future work}
 
-A stronger test of dynamics would use longer or better-targeted trajectories, especially if the goal is to capture slower binding-related motion as well as local fluctuation. More careful structure preparation would also help, but that would require substantially more manual preparation work across a benchmark of this size. Recent protein--ligand work suggests that MD becomes more useful when the model keeps richer temporal or ensemble information instead of reducing the trajectory to a few averages \citep{Min2024Dynaformer,Libouban2025Spatiotemporal}.
+A stronger test of dynamics would begin with longer or better-targeted trajectories and more careful structure preparation. Those changes would give the dynamic features a better chance to reflect binding-relevant ensemble differences. If that design remains too expensive on the full benchmark, a smaller but cleaner study would still test the same question.
 
-Richer structure and evaluation settings would also be useful. One shared post-prep graph was used for both $S$ and $SD$ so that the incremental effect of the trajectory summaries stayed isolated. Comparing that controlled design with graphs built directly from raw experimental coordinates would show how much the shared post-prep source affects absolute static performance. Stricter family-aware splits and the same representation choices on unbound or predicted structures would also be useful, since practical affinity prediction is often harder in those settings.
+A second direction is model design. Recent protein--ligand work suggests that MD becomes more useful when the model retains temporal or ensemble structure \citep{Min2024Dynaformer,Libouban2025Spatiotemporal}. The next graph-based comparison should test explicit spatiotemporal models that keep frame order or ensemble structure within the representation.
+
+Evaluation design also remains open. One shared post-prep graph was used for both $S$ and $SD$ so that the incremental effect of the trajectory summaries stayed isolated. Comparing that controlled design with graphs built directly from raw experimental coordinates would show how much the shared post-prep source affects absolute static performance. Stricter family-aware splits and the same representation choices on unbound or predicted structures would show how far the present conclusions extend beyond this matched benchmark setting.
 
 \section{Conclusion}
 
